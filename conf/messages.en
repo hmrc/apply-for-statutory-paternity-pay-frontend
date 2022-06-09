@@ -159,3 +159,10 @@ willTakeTimeToSupportMother.heading = willTakeTimeToSupportMother
 willTakeTimeToSupportMother.checkYourAnswersLabel = willTakeTimeToSupportMother
 willTakeTimeToSupportMother.error.required = Select yes if willTakeTimeToSupportMother
 willTakeTimeToSupportMother.change.hidden = WillTakeTimeToSupportMother
+
+nino.title = What is your National Insurance number?
+nino.heading = What is your National Insurance number?
+nino.checkYourAnswersLabel = National Insurance number
+nino.error.required = Enter your National Insurance number
+nino.error.length = Enter your National Insurance number in the correct format
+nino.change.hidden = your National Insurance number

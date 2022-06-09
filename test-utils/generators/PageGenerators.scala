@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryNinoPage: Arbitrary[NinoPage.type] =
+    Arbitrary(NinoPage)
+
   implicit lazy val arbitraryWillTakeTimeToSupportMotherPage: Arbitrary[WillTakeTimeToSupportMotherPage.type] =
     Arbitrary(WillTakeTimeToSupportMotherPage)
 

@@ -88,3 +88,8 @@ GET        /willTakeTimeToSupportMother                        controllers.WillT
 POST       /willTakeTimeToSupportMother                        controllers.WillTakeTimeToSupportMotherController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWillTakeTimeToSupportMother                  controllers.WillTakeTimeToSupportMotherController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWillTakeTimeToSupportMother                  controllers.WillTakeTimeToSupportMotherController.onSubmit(mode: Mode = CheckMode)
+
+GET        /nino                        controllers.NinoController.onPageLoad(mode: Mode = NormalMode)
+POST       /nino                        controllers.NinoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeNino                  controllers.NinoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeNino                  controllers.NinoController.onSubmit(mode: Mode = CheckMode)
