@@ -77,7 +77,7 @@ babyDueDate.error.invalid = Enter a real date
 babyDueDate.change.hidden = the date the baby is due
 
 babyHasBeenBorn.title = Has the baby been born yet?
-babyHasBeenBorn.heading = has the baby been born yet
+babyHasBeenBorn.heading = Has the baby been born yet
 babyHasBeenBorn.checkYourAnswersLabel = Baby has been born
 babyHasBeenBorn.error.required = Select yes if the baby has been born
 babyHasBeenBorn.change.hidden = if the baby has been born yet
@@ -131,36 +131,45 @@ payStartDate.title = What date would you like your Statutory Paternity Pay to st
 payStartDate.heading = What date would you like your Statutory Paternity Pay to start?
 payStartDate.hint = For example, 12 11 2007
 
-payStartDate.checkYourAnswersLabel = PayStartDate
-payStartDate.error.required.all = Enter the payStartDate
-payStartDate.error.required.two = The payStartDate must include {0} and {1}
-payStartDate.error.required = The payStartDate must include {0}
-payStartDate.error.invalid = Enter a real PayStartDate
-payStartDate.change.hidden = PayStartDate
+payStartDate.title = What date would you like your Statutory Paternity Pay to start?
+payStartDate.heading = What date would you like your Statutory Paternity Pay to start?
+payStartDate.hint = For example, 12 11 2007
+payStartDate.checkYourAnswersLabel = Statutory Paternity Pay start
+payStartDate.error.required.all = Enter the date you would like your Statutory Paternity pay to start
+payStartDate.error.required.two = The date must include {0} and {1}
+payStartDate.error.required = The date must include {0}
+payStartDate.error.invalid = Enter a real date
+payStartDate.change.hidden = the date you would like your Statutory Paternity pay to start
 
-wantPayToStartOnBirthDate.title = wantPayToStartOnBirthDate
-wantPayToStartOnBirthDate.heading = wantPayToStartOnBirthDate
-wantPayToStartOnBirthDate.checkYourAnswersLabel = wantPayToStartOnBirthDate
-wantPayToStartOnBirthDate.error.required = Select yes if wantPayToStartOnBirthDate
-wantPayToStartOnBirthDate.change.hidden = WantPayToStartOnBirthDate
+wantPayToStartOnBirthDate.title = Would you like your Statutory Paternity Pay to start on the day the baby was born?
+wantPayToStartOnBirthDate.heading = Would you like your Statutory Paternity Pay to start on the day the baby was born?
+wantPayToStartOnBirthDate.checkYourAnswersLabel = Start pay on baby’s birth date
+wantPayToStartOnBirthDate.error.required = Select yes if you would like your Statutory Paternity Pay to start on the day the baby was born
+wantPayToStartOnBirthDate.change.hidden = if you would like your Statutory Paternity Pay to start on the day the baby was born
 
-willHaveCaringResponsibility.title = willHaveCaringResponsibility
-willHaveCaringResponsibility.heading = willHaveCaringResponsibility
-willHaveCaringResponsibility.checkYourAnswersLabel = willHaveCaringResponsibility
-willHaveCaringResponsibility.error.required = Select yes if willHaveCaringResponsibility
-willHaveCaringResponsibility.change.hidden = WillHaveCaringResponsibility
+willHaveCaringResponsibility.title = Will you have responsibility for caring for the child?
+willHaveCaringResponsibility.heading = Will you have responsibility for caring for the child?
+willHaveCaringResponsibility.checkYourAnswersLabel = Responsible for caring for the child
+willHaveCaringResponsibility.error.required = Select yes if you will have responsibility for caring for the child
+willHaveCaringResponsibility.change.hidden = if you will have responsibility for caring for the child
 
-willTakeTimeToCareForChild.title = willTakeTimeToCareForChild
-willTakeTimeToCareForChild.heading = willTakeTimeToCareForChild
-willTakeTimeToCareForChild.checkYourAnswersLabel = willTakeTimeToCareForChild
-willTakeTimeToCareForChild.error.required = Select yes if willTakeTimeToCareForChild
-willTakeTimeToCareForChild.change.hidden = WillTakeTimeToCareForChild
+willTakeTimeToCareForChild.title = Will you take time off work to care for the child?
+willTakeTimeToCareForChild.heading = Will you take time off work to care for the child?
+willTakeTimeToCareForChild.checkYourAnswersLabel = Will take time off work to care for the child
+willTakeTimeToCareForChild.error.required = Select yes if you will take time off work to care for the child
+willTakeTimeToCareForChild.change.hidden = if you will take time off work to care for the child
 
-willTakeTimeToSupportMother.title = willTakeTimeToSupportMother
-willTakeTimeToSupportMother.heading = willTakeTimeToSupportMother
-willTakeTimeToSupportMother.checkYourAnswersLabel = willTakeTimeToSupportMother
-willTakeTimeToSupportMother.error.required = Select yes if willTakeTimeToSupportMother
-willTakeTimeToSupportMother.change.hidden = WillTakeTimeToSupportMother
+willTakeTimeToSupportMother.title = Will you take time off work to support the child’s mother
+willTakeTimeToSupportMother.heading = Will you take time off work to support the child’s mother
+willTakeTimeToSupportMother.checkYourAnswersLabel = Will take time off work to support the child’s mother
+willTakeTimeToSupportMother.error.required = Select yes if you will take time off work to support the child’s mother
+willTakeTimeToSupportMother.change.hidden = if you will take time off work to support the child’s mother
+
+wantPayToStartOnDueDate.title = Would you like your Statutory Paternity Pay to start on the day the baby is due?
+wantPayToStartOnDueDate.heading = Would you like your Statutory Paternity Pay to start on the day the baby is due?
+wantPayToStartOnDueDate.checkYourAnswersLabel = Start pay on baby’s due date
+wantPayToStartOnDueDate.error.required = Select yes if you would like your Statutory Paternity Pay to start on the day the baby is due
+wantPayToStartOnDueDate.change.hidden = if you would like your Statutory Paternity Pay to start on the day the baby is due
 
 nino.title = What is your National Insurance number?
 nino.heading = What is your National Insurance number?
@@ -168,9 +177,3 @@ nino.checkYourAnswersLabel = National Insurance number
 nino.error.required = Enter your National Insurance number
 nino.error.length = Enter your National Insurance number in the correct format
 nino.change.hidden = your National Insurance number
-
-wantPayToStartOnDueDate.title = Would you like your Statutory Paternity Pay to start on the day the baby is due?
-wantPayToStartOnDueDate.heading = Would you like your Statutory Paternity Pay to start on the day the baby is due?
-wantPayToStartOnDueDate.checkYourAnswersLabel = Start pay on baby’s due date
-wantPayToStartOnDueDate.error.required = Select yes if you would like your Statutory Paternity Pay to start on the day the baby is due
-wantPayToStartOnDueDate.change.hidden = if you would like your Statutory Paternity Pay to start on the day the baby is due
