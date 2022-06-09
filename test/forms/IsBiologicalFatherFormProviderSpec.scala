@@ -14,24 +14,32 @@
  * limitations under the License.
  */
 
-package generators
+package forms
 
-import models._
-import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.{Arbitrary, Gen}
+import forms.behaviours.BooleanFieldBehaviours
+import play.api.data.FormError
 
-trait ModelGenerators {
+class IsBiologicalFatherFormProviderSpec extends BooleanFieldBehaviours {
 
-  implicit lazy val arbitraryPaternityLeaveLength: Arbitrary[PaternityLeaveLength] =
-    Arbitrary {
-      Gen.oneOf(PaternityLeaveLength.values.toSeq)
-    }
+  val requiredKey = "isBiologicalFather.error.required"
+  val invalidKey = "error.boolean"
 
-  implicit lazy val arbitraryName: Arbitrary[Name] =
-    Arbitrary {
-      for {
-        firstName <- arbitrary[String]
-        lastName <- arbitrary[String]
-      } yield Name(firstName, lastName)
-    }
+  val form = new IsBiologicalFatherFormProvider()()
+
+  ".value" - {
+
+    val fieldName = "value"
+
+    behave like booleanField(
+      form,
+      fieldName,
+      invalidError = FormError(fieldName, invalidKey)
+    )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
 }

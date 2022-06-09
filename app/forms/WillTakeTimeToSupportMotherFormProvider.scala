@@ -14,24 +14,17 @@
  * limitations under the License.
  */
 
-package generators
+package forms
 
-import models._
-import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.{Arbitrary, Gen}
+import javax.inject.Inject
 
-trait ModelGenerators {
+import forms.mappings.Mappings
+import play.api.data.Form
 
-  implicit lazy val arbitraryPaternityLeaveLength: Arbitrary[PaternityLeaveLength] =
-    Arbitrary {
-      Gen.oneOf(PaternityLeaveLength.values.toSeq)
-    }
+class WillTakeTimeToSupportMotherFormProvider @Inject() extends Mappings {
 
-  implicit lazy val arbitraryName: Arbitrary[Name] =
-    Arbitrary {
-      for {
-        firstName <- arbitrary[String]
-        lastName <- arbitrary[String]
-      } yield Name(firstName, lastName)
-    }
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("willTakeTimeToSupportMother.error.required")
+    )
 }

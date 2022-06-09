@@ -14,24 +14,12 @@
  * limitations under the License.
  */
 
-package generators
+package models
 
-import models._
-import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.{Arbitrary, Gen}
+import play.api.libs.json._
 
-trait ModelGenerators {
+case class Name (firstName: String, lastName: String)
 
-  implicit lazy val arbitraryPaternityLeaveLength: Arbitrary[PaternityLeaveLength] =
-    Arbitrary {
-      Gen.oneOf(PaternityLeaveLength.values.toSeq)
-    }
-
-  implicit lazy val arbitraryName: Arbitrary[Name] =
-    Arbitrary {
-      for {
-        firstName <- arbitrary[String]
-        lastName <- arbitrary[String]
-      } yield Name(firstName, lastName)
-    }
+object Name {
+  implicit val format = Json.format[Name]
 }
