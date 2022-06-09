@@ -98,3 +98,10 @@ GET        /wantPayToStartOnDueDate                        controllers.WantPayTo
 POST       /wantPayToStartOnDueDate                        controllers.WantPayToStartOnDueDateController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWantPayToStartOnDueDate                  controllers.WantPayToStartOnDueDateController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWantPayToStartOnDueDate                  controllers.WantPayToStartOnDueDateController.onSubmit(mode: Mode = CheckMode)
+
+GET        /cannotApplyAdopting                       controllers.CannotApplyAdoptingController.onPageLoad()
+
+GET        /isAdopting                        controllers.IsAdoptingController.onPageLoad(mode: Mode = NormalMode)
+POST       /isAdopting                        controllers.IsAdoptingController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIsAdopting                  controllers.IsAdoptingController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIsAdopting                  controllers.IsAdoptingController.onSubmit(mode: Mode = CheckMode)
