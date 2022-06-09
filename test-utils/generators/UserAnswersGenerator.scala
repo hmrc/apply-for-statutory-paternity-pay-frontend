@@ -28,6 +28,7 @@ trait UserAnswersGenerator extends TryValues {
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
     arbitrary[(NinoPage.type, JsValue)] ::
+    arbitrary[(WantPayToStartOnDueDatePage.type, JsValue)] ::
     arbitrary[(WillTakeTimeToSupportMotherPage.type, JsValue)] ::
     arbitrary[(WillTakeTimeToCareForChildPage.type, JsValue)] ::
     arbitrary[(WillHaveCaringResponsibilityPage.type, JsValue)] ::

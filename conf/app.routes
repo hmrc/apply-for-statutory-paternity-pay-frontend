@@ -93,3 +93,8 @@ GET        /nino                        controllers.NinoController.onPageLoad(mo
 POST       /nino                        controllers.NinoController.onSubmit(mode: Mode = NormalMode)
 GET        /changeNino                  controllers.NinoController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeNino                  controllers.NinoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /wantPayToStartOnDueDate                        controllers.WantPayToStartOnDueDateController.onPageLoad(mode: Mode = NormalMode)
+POST       /wantPayToStartOnDueDate                        controllers.WantPayToStartOnDueDateController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWantPayToStartOnDueDate                  controllers.WantPayToStartOnDueDateController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWantPayToStartOnDueDate                  controllers.WantPayToStartOnDueDateController.onSubmit(mode: Mode = CheckMode)
