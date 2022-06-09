@@ -27,8 +27,83 @@ import models._
 class Navigator @Inject()() {
 
   private val normalRoutes: Page => UserAnswers => Call = {
-    case _ => _ => routes.IndexController.onPageLoad
+    case IsAdoptingPage                   => isAdoptingRoute
+    case IsBiologicalFatherPage           => isBiologicalFatherRoute
+    case IsInQualifyingRelationshipPage   => isInQualifyingRelationshipRoute
+    case IsCohabitingPage                 => isCohabitingRoute
+    case WillHaveCaringResponsibilityPage => willHaveCaringResponsibilityRoute
+    case WillTakeTimeToCareForChildPage   => willTakeTimeToCareForChildRoute
+    case WillTakeTimeToSupportMotherPage  => willTakeTimeToSupportMotherRoute
+    case NamePage                         => _ => routes.NinoController.onPageLoad(NormalMode)
+    case NinoPage                         => _ => routes.BabyHasBeenBornController.onPageLoad(NormalMode)
+    case BabyHasBeenBornPage              => babyHasBeenBornRoute
+    case BabyDateOfBirthPage              => _ => routes.WantPayToStartOnBirthDateController.onPageLoad(NormalMode)
+    case BabyDueDatePage                  => _ => routes.WantPayToStartOnDueDateController.onPageLoad(NormalMode)
+    case WantPayToStartOnBirthDatePage    => wantPayToStartOnBirthDateRoute
+    case WantPayToStartOnDueDatePage      => wantPayToStartOnDueDateRoute
+    case PaternityLeaveLengthPage         => _ => routes.CheckYourAnswersController.onPageLoad
+    case _                                => _ => routes.IndexController.onPageLoad
   }
+
+  private def isAdoptingRoute(answers: UserAnswers): Call =
+    answers.get(IsAdoptingPage).map {
+      case true  => routes.CannotApplyAdoptingController.onPageLoad()
+      case false => routes.IsBiologicalFatherController.onPageLoad(NormalMode)
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def isBiologicalFatherRoute(answers: UserAnswers): Call =
+    answers.get(IsBiologicalFatherPage).map {
+      case true  => routes.WillHaveCaringResponsibilityController.onPageLoad(NormalMode)
+      case false => routes.IsInQualifyingRelationshipController.onPageLoad(NormalMode)
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def isInQualifyingRelationshipRoute(answers: UserAnswers): Call =
+    answers.get(IsInQualifyingRelationshipPage).map {
+      case true  => routes.WillHaveCaringResponsibilityController.onPageLoad(NormalMode)
+      case false => routes.IsCohabitingController.onPageLoad(NormalMode)
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def isCohabitingRoute(answers: UserAnswers): Call =
+    answers.get(IsCohabitingPage).map {
+      case true  => routes.WillHaveCaringResponsibilityController.onPageLoad(NormalMode)
+      case false => routes.CannotApplyController.onPageLoad()
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def willHaveCaringResponsibilityRoute(answers: UserAnswers): Call =
+    answers.get(WillHaveCaringResponsibilityPage).map {
+      case true  => routes.WillTakeTimeToCareForChildController.onPageLoad(NormalMode)
+      case false => routes.CannotApplyController.onPageLoad()
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def willTakeTimeToCareForChildRoute(answers: UserAnswers): Call =
+    answers.get(WillTakeTimeToCareForChildPage).map {
+      case true  => routes.NameController.onPageLoad(NormalMode)
+      case false => routes.WillTakeTimeToSupportMotherController.onPageLoad(NormalMode)
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def willTakeTimeToSupportMotherRoute(answers: UserAnswers): Call =
+    answers.get(WillTakeTimeToSupportMotherPage).map {
+      case true  => routes.NameController.onPageLoad(NormalMode)
+      case false => routes.CannotApplyController.onPageLoad()
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def babyHasBeenBornRoute(answers: UserAnswers): Call =
+    answers.get(BabyHasBeenBornPage).map {
+      case true  => routes.BabyDateOfBirthController.onPageLoad(NormalMode)
+      case false => routes.BabyDueDateController.onPageLoad(NormalMode)
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def wantPayToStartOnBirthDateRoute(answers: UserAnswers): Call =
+    answers.get(WantPayToStartOnBirthDatePage).map {
+      case true  => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+      case false => routes.PayStartDateController.onPageLoad(NormalMode)
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def wantPayToStartOnDueDateRoute(answers: UserAnswers): Call =
+    answers.get(WantPayToStartOnDueDatePage).map {
+      case true  => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+      case false => routes.PayStartDateController.onPageLoad(NormalMode)
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   private val checkRouteMap: Page => UserAnswers => Call = {
     case _ => _ => routes.CheckYourAnswersController.onPageLoad

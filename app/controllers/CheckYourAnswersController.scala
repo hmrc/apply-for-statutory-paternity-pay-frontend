@@ -21,6 +21,7 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import viewmodels.checkAnswers._
 import viewmodels.govuk.summarylist._
 import views.html.CheckYourAnswersView
 
@@ -37,7 +38,17 @@ class CheckYourAnswersController @Inject()(
     implicit request =>
 
       val list = SummaryListViewModel(
-        rows = Seq.empty
+        rows = Seq(
+          NameSummary.row(request.userAnswers),
+          NinoSummary.row(request.userAnswers),
+          BabyHasBeenBornSummary.row(request.userAnswers),
+          BabyDateOfBirthSummary.row(request.userAnswers),
+          BabyDueDateSummary.row(request.userAnswers),
+          WantPayToStartOnBirthDateSummary.row(request.userAnswers),
+          WantPayToStartOnDueDateSummary.row(request.userAnswers),
+          PayStartDateSummary.row(request.userAnswers),
+          PaternityLeaveLengthSummary.row(request.userAnswers),
+        ).flatten
       )
 
       Ok(view(list))

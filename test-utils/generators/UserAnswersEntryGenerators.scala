@@ -24,6 +24,22 @@ import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
 
+  implicit lazy val arbitraryIsAdoptingUserAnswersEntry: Arbitrary[(IsAdoptingPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IsAdoptingPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryNinoUserAnswersEntry: Arbitrary[(NinoPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[NinoPage.type]
+        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitraryWantPayToStartOnDueDateUserAnswersEntry: Arbitrary[(WantPayToStartOnDueDatePage.type, JsValue)] =
     Arbitrary {
       for {
