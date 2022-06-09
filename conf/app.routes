@@ -88,3 +88,8 @@ GET        /willTakeTimeToSupportMother                        controllers.WillT
 POST       /willTakeTimeToSupportMother                        controllers.WillTakeTimeToSupportMotherController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWillTakeTimeToSupportMother                  controllers.WillTakeTimeToSupportMotherController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWillTakeTimeToSupportMother                  controllers.WillTakeTimeToSupportMotherController.onSubmit(mode: Mode = CheckMode)
+
+GET        /wantPayToStartOnDueDate                        controllers.WantPayToStartOnDueDateController.onPageLoad(mode: Mode = NormalMode)
+POST       /wantPayToStartOnDueDate                        controllers.WantPayToStartOnDueDateController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWantPayToStartOnDueDate                  controllers.WantPayToStartOnDueDateController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWantPayToStartOnDueDate                  controllers.WantPayToStartOnDueDateController.onSubmit(mode: Mode = CheckMode)
