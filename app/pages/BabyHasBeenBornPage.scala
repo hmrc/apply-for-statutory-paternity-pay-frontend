@@ -16,11 +16,23 @@
 
 package pages
 
+import models.UserAnswers
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object BabyHasBeenBornPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "babyHasBeenBorn"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
+    value.map {
+      case true =>
+        userAnswers.remove(BabyDueDatePage).flatMap(_.remove(WantPayToStartOnDueDatePage))
+
+      case false =>
+        userAnswers.remove(BabyDateOfBirthPage).flatMap(_.remove(WantPayToStartOnBirthDatePage))
+    }.getOrElse(super.cleanup(value, userAnswers))
 }

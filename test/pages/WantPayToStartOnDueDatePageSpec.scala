@@ -18,6 +18,8 @@ package pages
 
 import pages.behaviours.PageBehaviours
 
+import java.time.LocalDate
+
 class WantPayToStartOnDueDatePageSpec extends PageBehaviours {
 
   "WantPayToStartOnDueDatePage" - {
@@ -27,5 +29,25 @@ class WantPayToStartOnDueDatePageSpec extends PageBehaviours {
     beSettable[Boolean](WantPayToStartOnDueDatePage)
 
     beRemovable[Boolean](WantPayToStartOnDueDatePage)
+
+    "must remove Pay Start date when the answer is yes" in {
+
+      val answers = emptyUserAnswers.set(PayStartDatePage, LocalDate.now).success.value
+
+      val result = answers.set(WantPayToStartOnDueDatePage, true).success.value
+
+      result.get(WantPayToStartOnDueDatePage) must be(defined)
+      result.get(PayStartDatePage)            must not be defined
+    }
+
+    "must not remove Pay Start date when the answer is no" in {
+
+      val answers = emptyUserAnswers.set(PayStartDatePage, LocalDate.now).success.value
+
+      val result = answers.set(WantPayToStartOnDueDatePage, false).success.value
+
+      result.get(WantPayToStartOnDueDatePage) must be(defined)
+      result.get(PayStartDatePage)            must be(defined)
+    }
   }
 }

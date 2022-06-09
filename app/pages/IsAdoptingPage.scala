@@ -16,11 +16,37 @@
 
 package pages
 
+import models.UserAnswers
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object IsAdoptingPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "isAdopting"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
+    if (value contains true) {
+      userAnswers
+        .remove(BabyDateOfBirthPage)
+        .flatMap(_.remove(BabyDueDatePage))
+        .flatMap(_.remove(BabyHasBeenBornPage))
+        .flatMap(_.remove(IsBiologicalFatherPage))
+        .flatMap(_.remove(IsCohabitingPage))
+        .flatMap(_.remove(IsInQualifyingRelationshipPage))
+        .flatMap(_.remove(NamePage))
+        .flatMap(_.remove(NinoPage))
+        .flatMap(_.remove(PaternityLeaveLengthPage))
+        .flatMap(_.remove(PayStartDatePage))
+        .flatMap(_.remove(WantPayToStartOnBirthDatePage))
+        .flatMap(_.remove(WantPayToStartOnDueDatePage))
+        .flatMap(_.remove(WillHaveCaringResponsibilityPage))
+        .flatMap(_.remove(WillTakeTimeToCareForChildPage))
+        .flatMap(_.remove(WillTakeTimeToSupportMotherPage))
+    }
+    else {
+      super.cleanup(value, userAnswers)
+    }
 }
