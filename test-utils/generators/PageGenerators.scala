@@ -20,4 +20,43 @@ import org.scalacheck.Arbitrary
 import pages._
 
 trait PageGenerators {
+
+  implicit lazy val arbitraryWillTakeTimeToSupportMotherPage: Arbitrary[WillTakeTimeToSupportMotherPage.type] =
+    Arbitrary(WillTakeTimeToSupportMotherPage)
+
+  implicit lazy val arbitraryWillTakeTimeToCareForChildPage: Arbitrary[WillTakeTimeToCareForChildPage.type] =
+    Arbitrary(WillTakeTimeToCareForChildPage)
+
+  implicit lazy val arbitraryWillHaveCaringResponsibilityPage: Arbitrary[WillHaveCaringResponsibilityPage.type] =
+    Arbitrary(WillHaveCaringResponsibilityPage)
+
+  implicit lazy val arbitraryWantPayToStartOnBirthDatePage: Arbitrary[WantPayToStartOnBirthDatePage.type] =
+    Arbitrary(WantPayToStartOnBirthDatePage)
+
+  implicit lazy val arbitraryPayStartDatePage: Arbitrary[PayStartDatePage.type] =
+    Arbitrary(PayStartDatePage)
+
+  implicit lazy val arbitraryPaternityLeaveLengthPage: Arbitrary[PaternityLeaveLengthPage.type] =
+    Arbitrary(PaternityLeaveLengthPage)
+
+  implicit lazy val arbitraryNamePage: Arbitrary[NamePage.type] =
+    Arbitrary(NamePage)
+
+  implicit lazy val arbitraryIsInQualifyingRelationshipPage: Arbitrary[IsInQualifyingRelationshipPage.type] =
+    Arbitrary(IsInQualifyingRelationshipPage)
+
+  implicit lazy val arbitraryIsCohabitingPage: Arbitrary[IsCohabitingPage.type] =
+    Arbitrary(IsCohabitingPage)
+
+  implicit lazy val arbitraryIsBiologicalFatherPage: Arbitrary[IsBiologicalFatherPage.type] =
+    Arbitrary(IsBiologicalFatherPage)
+
+  implicit lazy val arbitraryBabyHasBeenBornPage: Arbitrary[BabyHasBeenBornPage.type] =
+    Arbitrary(BabyHasBeenBornPage)
+
+  implicit lazy val arbitraryBabyDueDatePage: Arbitrary[BabyDueDatePage.type] =
+    Arbitrary(BabyDueDatePage)
+
+  implicit lazy val arbitraryBabyDateOfBirthPage: Arbitrary[BabyDateOfBirthPage.type] =
+    Arbitrary(BabyDateOfBirthPage)
 }

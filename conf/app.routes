@@ -19,3 +19,72 @@ GET         /account/sign-out                            controllers.auth.AuthCo
 GET         /account/signed-out                          controllers.auth.SignedOutController.onPageLoad
 
 GET         /unauthorised                                controllers.UnauthorisedController.onPageLoad
+
+GET        /babyDateOfBirth                  controllers.BabyDateOfBirthController.onPageLoad(mode: Mode = NormalMode)
+POST       /babyDateOfBirth                  controllers.BabyDateOfBirthController.onSubmit(mode: Mode = NormalMode)
+GET        /changeBabyDateOfBirth                        controllers.BabyDateOfBirthController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeBabyDateOfBirth                        controllers.BabyDateOfBirthController.onSubmit(mode: Mode = CheckMode)
+
+GET        /babyDueDate                  controllers.BabyDueDateController.onPageLoad(mode: Mode = NormalMode)
+POST       /babyDueDate                  controllers.BabyDueDateController.onSubmit(mode: Mode = NormalMode)
+GET        /changeBabyDueDate                        controllers.BabyDueDateController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeBabyDueDate                        controllers.BabyDueDateController.onSubmit(mode: Mode = CheckMode)
+
+GET        /babyHasBeenBorn                        controllers.BabyHasBeenBornController.onPageLoad(mode: Mode = NormalMode)
+POST       /babyHasBeenBorn                        controllers.BabyHasBeenBornController.onSubmit(mode: Mode = NormalMode)
+GET        /changeBabyHasBeenBorn                  controllers.BabyHasBeenBornController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeBabyHasBeenBorn                  controllers.BabyHasBeenBornController.onSubmit(mode: Mode = CheckMode)
+
+GET        /cannotApply                       controllers.CannotApplyController.onPageLoad()
+
+GET        /confirmation                       controllers.ConfirmationController.onPageLoad()
+
+GET        /isBiologicalFather                        controllers.IsBiologicalFatherController.onPageLoad(mode: Mode = NormalMode)
+POST       /isBiologicalFather                        controllers.IsBiologicalFatherController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIsBiologicalFather                  controllers.IsBiologicalFatherController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIsBiologicalFather                  controllers.IsBiologicalFatherController.onSubmit(mode: Mode = CheckMode)
+
+GET        /isCohabiting                        controllers.IsCohabitingController.onPageLoad(mode: Mode = NormalMode)
+POST       /isCohabiting                        controllers.IsCohabitingController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIsCohabiting                  controllers.IsCohabitingController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIsCohabiting                  controllers.IsCohabitingController.onSubmit(mode: Mode = CheckMode)
+
+GET        /isInQualifyingRelationship                        controllers.IsInQualifyingRelationshipController.onPageLoad(mode: Mode = NormalMode)
+POST       /isInQualifyingRelationship                        controllers.IsInQualifyingRelationshipController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIsInQualifyingRelationship                  controllers.IsInQualifyingRelationshipController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIsInQualifyingRelationship                  controllers.IsInQualifyingRelationshipController.onSubmit(mode: Mode = CheckMode)
+
+GET        /name                        controllers.NameController.onPageLoad(mode: Mode = NormalMode)
+POST       /name                        controllers.NameController.onSubmit(mode: Mode = NormalMode)
+GET        /changeName                  controllers.NameController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeName                  controllers.NameController.onSubmit(mode: Mode = CheckMode)
+
+GET        /paternityLeaveLength                        controllers.PaternityLeaveLengthController.onPageLoad(mode: Mode = NormalMode)
+POST       /paternityLeaveLength                        controllers.PaternityLeaveLengthController.onSubmit(mode: Mode = NormalMode)
+GET        /changePaternityLeaveLength                  controllers.PaternityLeaveLengthController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePaternityLeaveLength                  controllers.PaternityLeaveLengthController.onSubmit(mode: Mode = CheckMode)
+
+GET        /payStartDate                  controllers.PayStartDateController.onPageLoad(mode: Mode = NormalMode)
+POST       /payStartDate                  controllers.PayStartDateController.onSubmit(mode: Mode = NormalMode)
+GET        /changePayStartDate                        controllers.PayStartDateController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePayStartDate                        controllers.PayStartDateController.onSubmit(mode: Mode = CheckMode)
+
+GET        /wantPayToStartOnBirthDate                        controllers.WantPayToStartOnBirthDateController.onPageLoad(mode: Mode = NormalMode)
+POST       /wantPayToStartOnBirthDate                        controllers.WantPayToStartOnBirthDateController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWantPayToStartOnBirthDate                  controllers.WantPayToStartOnBirthDateController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWantPayToStartOnBirthDate                  controllers.WantPayToStartOnBirthDateController.onSubmit(mode: Mode = CheckMode)
+
+GET        /willHaveCaringResponsibility                        controllers.WillHaveCaringResponsibilityController.onPageLoad(mode: Mode = NormalMode)
+POST       /willHaveCaringResponsibility                        controllers.WillHaveCaringResponsibilityController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWillHaveCaringResponsibility                  controllers.WillHaveCaringResponsibilityController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWillHaveCaringResponsibility                  controllers.WillHaveCaringResponsibilityController.onSubmit(mode: Mode = CheckMode)
+
+GET        /willTakeTimeToCareForChild                        controllers.WillTakeTimeToCareForChildController.onPageLoad(mode: Mode = NormalMode)
+POST       /willTakeTimeToCareForChild                        controllers.WillTakeTimeToCareForChildController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWillTakeTimeToCareForChild                  controllers.WillTakeTimeToCareForChildController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWillTakeTimeToCareForChild                  controllers.WillTakeTimeToCareForChildController.onSubmit(mode: Mode = CheckMode)
+
+GET        /willTakeTimeToSupportMother                        controllers.WillTakeTimeToSupportMotherController.onPageLoad(mode: Mode = NormalMode)
+POST       /willTakeTimeToSupportMother                        controllers.WillTakeTimeToSupportMotherController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWillTakeTimeToSupportMother                  controllers.WillTakeTimeToSupportMotherController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWillTakeTimeToSupportMother                  controllers.WillTakeTimeToSupportMotherController.onSubmit(mode: Mode = CheckMode)

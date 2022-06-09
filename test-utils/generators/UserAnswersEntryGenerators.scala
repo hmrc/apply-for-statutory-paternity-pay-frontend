@@ -23,4 +23,108 @@ import pages._
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
+
+  implicit lazy val arbitraryWillTakeTimeToSupportMotherUserAnswersEntry: Arbitrary[(WillTakeTimeToSupportMotherPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[WillTakeTimeToSupportMotherPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryWillTakeTimeToCareForChildUserAnswersEntry: Arbitrary[(WillTakeTimeToCareForChildPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[WillTakeTimeToCareForChildPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryWillHaveCaringResponsibilityUserAnswersEntry: Arbitrary[(WillHaveCaringResponsibilityPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[WillHaveCaringResponsibilityPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryWantPayToStartOnBirthDateUserAnswersEntry: Arbitrary[(WantPayToStartOnBirthDatePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[WantPayToStartOnBirthDatePage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryPayStartDateUserAnswersEntry: Arbitrary[(PayStartDatePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[PayStartDatePage.type]
+        value <- arbitrary[Int].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryPaternityLeaveLengthUserAnswersEntry: Arbitrary[(PaternityLeaveLengthPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[PaternityLeaveLengthPage.type]
+        value <- arbitrary[PaternityLeaveLength].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryNameUserAnswersEntry: Arbitrary[(NamePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[NamePage.type]
+        value <- arbitrary[Name].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryIsInQualifyingRelationshipUserAnswersEntry: Arbitrary[(IsInQualifyingRelationshipPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IsInQualifyingRelationshipPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryIsCohabitingUserAnswersEntry: Arbitrary[(IsCohabitingPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IsCohabitingPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryIsBiologicalFatherUserAnswersEntry: Arbitrary[(IsBiologicalFatherPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IsBiologicalFatherPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryBabyHasBeenBornUserAnswersEntry: Arbitrary[(BabyHasBeenBornPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[BabyHasBeenBornPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryBabyDueDateUserAnswersEntry: Arbitrary[(BabyDueDatePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[BabyDueDatePage.type]
+        value <- arbitrary[Int].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryBabyDateOfBirthUserAnswersEntry: Arbitrary[(BabyDateOfBirthPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[BabyDateOfBirthPage.type]
+        value <- arbitrary[Int].map(Json.toJson(_))
+      } yield (page, value)
+    }
 }
