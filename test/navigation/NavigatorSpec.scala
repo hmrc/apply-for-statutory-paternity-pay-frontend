@@ -20,6 +20,7 @@ import base.SpecBase
 import controllers.routes
 import pages._
 import models._
+import java.time.LocalDate
 
 class NavigatorSpec extends SpecBase {
 
@@ -223,6 +224,290 @@ class NavigatorSpec extends SpecBase {
 
         case object UnknownPage extends Page
         navigator.nextPage(UnknownPage, CheckMode, UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad
+      }
+
+      "must go from Is Adopting" - {
+
+        "to Cannot Apply Adopting when the answer is yes" in {
+
+          val answers = emptyUserAnswers.set(IsAdoptingPage, true).success.value
+          navigator.nextPage(IsAdoptingPage, CheckMode, answers) mustEqual routes.CannotApplyAdoptingController.onPageLoad()
+        }
+
+        "to Check Answers when the answer is no" in {
+
+          val answers = emptyUserAnswers.set(IsAdoptingPage, false).success.value
+          navigator.nextPage(IsAdoptingPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+        }
+      }
+
+      "must go from Is Biological Father" - {
+
+        "when the answer is yes" - {
+
+          "to Check Answers" in {
+
+            val answers = emptyUserAnswers.set(IsBiologicalFatherPage, true).success.value
+            navigator.nextPage(IsBiologicalFatherPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+        }
+
+        "when the answer is no" - {
+
+          "to Check Answers when Is In Qualifying Relationship has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(IsBiologicalFatherPage, false).success.value
+                .set(IsInQualifyingRelationshipPage, true).success.value
+
+            navigator.nextPage(IsBiologicalFatherPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "to Is In Qualifying Relationship when that has not already been answered" in {
+
+            val answers = emptyUserAnswers.set(IsBiologicalFatherPage, false).success.value
+            navigator.nextPage(IsBiologicalFatherPage, CheckMode, answers) mustEqual routes.IsInQualifyingRelationshipController.onPageLoad(CheckMode)
+          }
+        }
+      }
+
+      "must go from Is In Qualifying Relationship" - {
+
+        "when the answer is yes" - {
+
+          "to Check Answers" in {
+
+            val answers = emptyUserAnswers.set(IsInQualifyingRelationshipPage, true).success.value
+            navigator.nextPage(IsInQualifyingRelationshipPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+        }
+
+        "when the answer is no" - {
+
+          "to Check Answers when Is Cohabiting has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(IsInQualifyingRelationshipPage, false).success.value
+                .set(IsCohabitingPage, true).success.value
+
+            navigator.nextPage(IsInQualifyingRelationshipPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "to Is Cohabiting when that has not already been answered" in {
+
+            val answers = emptyUserAnswers.set(IsInQualifyingRelationshipPage, false).success.value
+            navigator.nextPage(IsInQualifyingRelationshipPage, CheckMode, answers) mustEqual routes.IsCohabitingController.onPageLoad(CheckMode)
+          }
+        }
+      }
+
+      "must go from Is Cohabiting" - {
+
+        "to Check Answers when the answer is yes" in {
+
+          val answers = emptyUserAnswers.set(IsCohabitingPage, true).success.value
+          navigator.nextPage(IsCohabitingPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+        }
+
+        "to Cannot Apply when the answer is no" in {
+
+          val answers = emptyUserAnswers.set(IsCohabitingPage, false).success.value
+          navigator.nextPage(IsCohabitingPage, CheckMode, answers) mustEqual routes.CannotApplyController.onPageLoad()
+        }
+      }
+
+      "must go from Will Have Caring Responsibility" - {
+
+        "to Check Answers when the answer is yes" in {
+
+          val answers = emptyUserAnswers.set(WillHaveCaringResponsibilityPage, true).success.value
+          navigator.nextPage(WillHaveCaringResponsibilityPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+        }
+
+        "to Cannot Apply when the answer is no" in {
+
+          val answers = emptyUserAnswers.set(WillHaveCaringResponsibilityPage, false).success.value
+          navigator.nextPage(WillHaveCaringResponsibilityPage, CheckMode, answers) mustEqual routes.CannotApplyController.onPageLoad()
+        }
+      }
+
+      "must go from Will Take Time to Care for Child" - {
+
+        "when the answer is yes" - {
+
+          "to Check Answers" in {
+
+            val answers = emptyUserAnswers.set(WillTakeTimeToCareForChildPage, true).success.value
+            navigator.nextPage(WillTakeTimeToCareForChildPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+        }
+
+        "when the answer is no" - {
+
+          "to Check Answers when Will Take Time to Support Mother has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(WillTakeTimeToCareForChildPage, false).success.value
+                .set(WillTakeTimeToSupportMotherPage, true).success.value
+
+            navigator.nextPage(WillTakeTimeToCareForChildPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "to Will Take Time to Support Mother when that question has not been answered" in {
+
+            val answers = emptyUserAnswers.set(WillTakeTimeToCareForChildPage, false).success.value
+            navigator.nextPage(WillTakeTimeToCareForChildPage, CheckMode, answers) mustEqual routes.WillTakeTimeToSupportMotherController.onPageLoad(CheckMode)
+          }
+        }
+      }
+
+      "must go from Will Take Time to Support Mother" - {
+
+        "to Check Answers when the answer is yes" in {
+
+          val answers = emptyUserAnswers.set(WillTakeTimeToSupportMotherPage, true).success.value
+          navigator.nextPage(WillTakeTimeToSupportMotherPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+        }
+
+        "to Cannot Apply when the answer is no" in {
+
+          val answers = emptyUserAnswers.set(WillTakeTimeToSupportMotherPage, false).success.value
+          navigator.nextPage(WillTakeTimeToSupportMotherPage, CheckMode, answers) mustEqual routes.CannotApplyController.onPageLoad()
+        }
+      }
+
+      "must go from Baby Has Been Born" - {
+
+        "when the answer is yes" - {
+
+          "to Check Answers if Baby Date of Birth has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(BabyHasBeenBornPage, true).success.value
+                .set(BabyDateOfBirthPage, LocalDate.now).success.value
+
+            navigator.nextPage(BabyHasBeenBornPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "to Baby Date of Birth if it has not been answered" in {
+
+            val answers = emptyUserAnswers.set(BabyHasBeenBornPage, true).success.value
+            navigator.nextPage(BabyHasBeenBornPage, CheckMode, answers) mustEqual routes.BabyDateOfBirthController.onPageLoad(CheckMode)
+          }
+        }
+
+        "when the answer is no" - {
+
+          "to Check Answers if Baby Due Date has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(BabyHasBeenBornPage, false).success.value
+                .set(BabyDueDatePage, LocalDate.now).success.value
+
+            navigator.nextPage(BabyHasBeenBornPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "to Baby Due Date if it has not been answered" in {
+
+            val answers = emptyUserAnswers.set(BabyHasBeenBornPage, false).success.value
+            navigator.nextPage(BabyHasBeenBornPage, CheckMode, answers) mustEqual routes.BabyDueDateController.onPageLoad(CheckMode)
+          }
+        }
+      }
+
+      "must go from Baby Date of Birth" - {
+
+        "to Check Answers when Want Pay to Start on Birth Date has been answered" in {
+
+          val answers = emptyUserAnswers.set(WantPayToStartOnBirthDatePage, true).success.value
+          navigator.nextPage(BabyDateOfBirthPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+        }
+
+        "to Want Pay to Start on Birth Date when it has not been answered" in {
+
+          navigator.nextPage(BabyDateOfBirthPage, CheckMode, emptyUserAnswers) mustEqual routes.WantPayToStartOnBirthDateController.onPageLoad(CheckMode)
+        }
+      }
+
+      "must go from Baby Due Date" - {
+
+        "to Check Answers when Want Pay to Start on Due Date has been answered" in {
+
+          val answers = emptyUserAnswers.set(WantPayToStartOnDueDatePage, true).success.value
+          navigator.nextPage(BabyDueDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+        }
+
+        "to Want Pay to Start on Birth Date when it has not been answered" in {
+
+          navigator.nextPage(BabyDueDatePage, CheckMode, emptyUserAnswers) mustEqual routes.WantPayToStartOnDueDateController.onPageLoad(CheckMode)
+        }
+      }
+
+      "must go from Want Pay to Start on Birth Date" - {
+
+        "when the answer is yes" - {
+
+          "to Check Answers" in {
+
+            val answers = emptyUserAnswers.set(WantPayToStartOnBirthDatePage, true).success.value
+            navigator.nextPage(WantPayToStartOnBirthDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+        }
+
+        "when the answer is no" - {
+
+          "to Check Answers when Pay Start Date has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(WantPayToStartOnBirthDatePage, true).success.value
+                .set(PayStartDatePage, LocalDate.now).success.value
+
+            navigator.nextPage(WantPayToStartOnBirthDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "to Pay Start Date when it has not already been answered" in {
+
+            val answers = emptyUserAnswers.set(WantPayToStartOnBirthDatePage, false).success.value
+            navigator.nextPage(WantPayToStartOnBirthDatePage, CheckMode, answers) mustEqual routes.PayStartDateController.onPageLoad(CheckMode)
+          }
+        }
+      }
+
+      "must go from Want Pay to Start on Due Date" - {
+
+        "when the answer is yes" - {
+
+          "to Check Answers" in {
+
+            val answers = emptyUserAnswers.set(WantPayToStartOnDueDatePage, true).success.value
+            navigator.nextPage(WantPayToStartOnDueDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+        }
+
+        "when the answer is no" - {
+
+          "to Check Answers when Pay Start Date has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(WantPayToStartOnDueDatePage, true).success.value
+                .set(PayStartDatePage, LocalDate.now).success.value
+
+            navigator.nextPage(WantPayToStartOnDueDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "to Pay Start Date when it has not already been answered" in {
+
+            val answers = emptyUserAnswers.set(WantPayToStartOnDueDatePage, false).success.value
+            navigator.nextPage(WantPayToStartOnDueDatePage, CheckMode, answers) mustEqual routes.PayStartDateController.onPageLoad(CheckMode)
+          }
+        }
       }
     }
   }
