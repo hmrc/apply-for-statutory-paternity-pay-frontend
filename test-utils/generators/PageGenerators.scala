@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryWantPayToStartOnDueDatePage: Arbitrary[WantPayToStartOnDueDatePage.type] =
+    Arbitrary(WantPayToStartOnDueDatePage)
+
   implicit lazy val arbitraryWillTakeTimeToSupportMotherPage: Arbitrary[WillTakeTimeToSupportMotherPage.type] =
     Arbitrary(WillTakeTimeToSupportMotherPage)
 
