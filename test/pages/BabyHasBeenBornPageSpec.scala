@@ -18,6 +18,8 @@ package pages
 
 import pages.behaviours.PageBehaviours
 
+import java.time.LocalDate
+
 class BabyHasBeenBornPageSpec extends PageBehaviours {
 
   "BabyHasBeenBornPage" - {
@@ -27,5 +29,47 @@ class BabyHasBeenBornPageSpec extends PageBehaviours {
     beSettable[Boolean](BabyHasBeenBornPage)
 
     beRemovable[Boolean](BabyHasBeenBornPage)
+
+    "when the answer is yes" - {
+
+      "must remove Baby Due Date and Want Pay to Start On Due Date" in {
+
+        val answers =
+          emptyUserAnswers
+            .set(BabyDateOfBirthPage, LocalDate.now).success.value
+            .set(BabyDueDatePage, LocalDate.now).success.value
+            .set(WantPayToStartOnDueDatePage, true).success.value
+            .set(WantPayToStartOnBirthDatePage, true).success.value
+
+        val result = answers.set(BabyHasBeenBornPage, true).success.value
+
+        result.get(BabyDateOfBirthPage)           must be(defined)
+        result.get(WantPayToStartOnBirthDatePage) must be(defined)
+
+        result.get(BabyDueDatePage)             must not be defined
+        result.get(WantPayToStartOnDueDatePage) must not be defined
+      }
+    }
+
+    "when the answer is no" - {
+
+      "must remove Baby Date of Birth and Want Pay to Start On Birth Date" in {
+
+        val answers =
+          emptyUserAnswers
+            .set(BabyDateOfBirthPage, LocalDate.now).success.value
+            .set(BabyDueDatePage, LocalDate.now).success.value
+            .set(WantPayToStartOnDueDatePage, true).success.value
+            .set(WantPayToStartOnBirthDatePage, true).success.value
+
+        val result = answers.set(BabyHasBeenBornPage, false).success.value
+
+        result.get(BabyDueDatePage)             must be(defined)
+        result.get(WantPayToStartOnDueDatePage) must be(defined)
+
+        result.get(BabyDateOfBirthPage)           must not be defined
+        result.get(WantPayToStartOnBirthDatePage) must not be defined
+      }
+    }
   }
 }
