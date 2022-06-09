@@ -39,6 +39,13 @@ class CheckYourAnswersController @Inject()(
 
       val list = SummaryListViewModel(
         rows = Seq(
+          IsAdoptingSummary.row(request.userAnswers),
+          IsBiologicalFatherSummary.row(request.userAnswers),
+          IsInQualifyingRelationshipSummary.row(request.userAnswers),
+          IsCohabitingSummary.row(request.userAnswers),
+          WillHaveCaringResponsibilitySummary.row(request.userAnswers),
+          WillTakeTimeToCareForChildSummary.row(request.userAnswers),
+          WillTakeTimeToSupportMotherSummary.row(request.userAnswers),
           NameSummary.row(request.userAnswers),
           NinoSummary.row(request.userAnswers),
           BabyHasBeenBornSummary.row(request.userAnswers),
