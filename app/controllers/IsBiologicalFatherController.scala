@@ -18,9 +18,7 @@ package controllers
 
 import controllers.actions._
 import forms.IsBiologicalFatherFormProvider
-
-import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.Navigator
 import pages.IsBiologicalFatherPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -29,6 +27,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.IsBiologicalFatherView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class IsBiologicalFatherController @Inject()(
@@ -37,6 +36,7 @@ class IsBiologicalFatherController @Inject()(
                                          navigator: Navigator,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
+                                         requireData: DataRequiredAction,
                                          formProvider: IsBiologicalFatherFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: IsBiologicalFatherView
@@ -44,10 +44,10 @@ class IsBiologicalFatherController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(IsBiologicalFatherPage) match {
+      val preparedForm = request.userAnswers.get(IsBiologicalFatherPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -55,7 +55,7 @@ class IsBiologicalFatherController @Inject()(
       Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -64,7 +64,7 @@ class IsBiologicalFatherController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.getOrElse(UserAnswers(request.userId)).set(IsBiologicalFatherPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(IsBiologicalFatherPage, value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(IsBiologicalFatherPage, mode, updatedAnswers))
       )

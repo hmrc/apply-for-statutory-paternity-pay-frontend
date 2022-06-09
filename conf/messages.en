@@ -178,11 +178,11 @@ nino.error.required = Enter your National Insurance number
 nino.error.length = Enter your National Insurance number in the correct format
 nino.change.hidden = your National Insurance number
 
-cannotApplyAdopting.title = cannotApplyAdopting
-cannotApplyAdopting.heading = cannotApplyAdopting
+cannotApplyAdopting.title = You cannot apply for Statutory paternity Pay using this form
+cannotApplyAdopting.heading = You cannot apply for Statutory paternity Pay using this form
 
-isAdopting.title = isAdopting
-isAdopting.heading = isAdopting
-isAdopting.checkYourAnswersLabel = isAdopting
-isAdopting.error.required = Select yes if isAdopting
-isAdopting.change.hidden = IsAdopting
+isAdopting.title = Are you or your partner adopting the child?
+isAdopting.heading = Are you or your partner adopting the child?
+isAdopting.checkYourAnswersLabel = Are you or your partner adopting the child?
+isAdopting.error.required = Select yes if you or your partner are adopting the child
+isAdopting.change.hidden = if you or your partner are adopting the child

@@ -35,6 +35,21 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(UnknownPage, NormalMode, UserAnswers("id")) mustBe routes.IndexController.onPageLoad
       }
 
+      "must go from Is Adopting" - {
+
+        "to Cannot Apply Adopting when the answer is yes" in {
+
+          val answers = emptyUserAnswers.set(IsAdoptingPage, true).success.value
+          navigator.nextPage(IsAdoptingPage, NormalMode, answers) mustEqual routes.CannotApplyAdoptingController.onPageLoad()
+        }
+
+        "to Is Biological Father when the answer is no" in {
+
+          val answers = emptyUserAnswers.set(IsAdoptingPage, false).success.value
+          navigator.nextPage(IsAdoptingPage, NormalMode, answers) mustEqual routes.IsBiologicalFatherController.onPageLoad(NormalMode)
+        }
+      }
+
       "must go from Is Biological Father" - {
 
         "to Will Have Caring Responsibility when the answer is yes" in {

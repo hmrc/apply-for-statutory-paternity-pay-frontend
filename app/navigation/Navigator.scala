@@ -27,6 +27,7 @@ import models._
 class Navigator @Inject()() {
 
   private val normalRoutes: Page => UserAnswers => Call = {
+    case IsAdoptingPage                   => isAdoptingRoute
     case IsBiologicalFatherPage           => isBiologicalFatherRoute
     case IsInQualifyingRelationshipPage   => isInQualifyingRelationshipRoute
     case IsCohabitingPage                 => isCohabitingRoute
@@ -43,6 +44,12 @@ class Navigator @Inject()() {
     case PaternityLeaveLengthPage         => _ => routes.CheckYourAnswersController.onPageLoad
     case _                                => _ => routes.IndexController.onPageLoad
   }
+
+  private def isAdoptingRoute(answers: UserAnswers): Call =
+    answers.get(IsAdoptingPage).map {
+      case true  => routes.CannotApplyAdoptingController.onPageLoad()
+      case false => routes.IsBiologicalFatherController.onPageLoad(NormalMode)
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   private def isBiologicalFatherRoute(answers: UserAnswers): Call =
     answers.get(IsBiologicalFatherPage).map {
