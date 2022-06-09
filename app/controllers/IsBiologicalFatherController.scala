@@ -18,8 +18,9 @@ package controllers
 
 import controllers.actions._
 import forms.IsBiologicalFatherFormProvider
+
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, UserAnswers}
 import navigation.Navigator
 import pages.IsBiologicalFatherPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -36,7 +37,6 @@ class IsBiologicalFatherController @Inject()(
                                          navigator: Navigator,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
                                          formProvider: IsBiologicalFatherFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: IsBiologicalFatherView
@@ -44,10 +44,10 @@ class IsBiologicalFatherController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(IsBiologicalFatherPage) match {
+      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(IsBiologicalFatherPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -55,7 +55,7 @@ class IsBiologicalFatherController @Inject()(
       Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -64,7 +64,7 @@ class IsBiologicalFatherController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(IsBiologicalFatherPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.getOrElse(UserAnswers(request.userId)).set(IsBiologicalFatherPage, value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(IsBiologicalFatherPage, mode, updatedAnswers))
       )
