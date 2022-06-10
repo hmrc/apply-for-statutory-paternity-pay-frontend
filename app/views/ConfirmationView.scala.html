@@ -14,7 +14,10 @@
  * limitations under the License.
  *@
 
+@import config.FrontendAppConfig
+
 @this(
+        config: FrontendAppConfig,
         layout: templates.Layout,
         govukButton: GovukButton
 )
@@ -57,7 +60,7 @@
     <a href="#" class="govuk-button">@messages("confirmation.download")</a>
 
     <p class="govuk-body">
-        <a href="#" class="govuk-link">@messages("confirmation.survey.link.text")</a>
+        <a href="@config.exitSurveyUrl" class="govuk-link">@messages("confirmation.survey.link.text")</a>
         @messages("confirmation.survey.guidance")
     </p>
 }
