@@ -20,7 +20,7 @@ import models.requests.DataRequest
 import play.api.libs.json.Reads
 import play.api.mvc.{AnyContent, Result}
 import play.api.mvc.Results.Redirect
-import queries.Gettable
+import queries.{Derivable, Gettable}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -37,6 +37,22 @@ trait AnswerExtractor {
   def getAnswerAsync[A](query: Gettable[A])
                        (block: A => Future[Result])
                        (implicit request: DataRequest[AnyContent], ec: ExecutionContext, ev: Reads[A]): Future[Result] =
+    request.userAnswers
+      .get(query)
+      .map(block(_))
+      .getOrElse(Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad())))
+
+  def getAnswer[A, B](query: Derivable[A, B])
+                     (block: B => Result)
+                     (implicit request: DataRequest[AnyContent], ev: Reads[A]): Result =
+    request.userAnswers
+      .get(query)
+      .map(block(_))
+      .getOrElse(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+
+  def getAnswerAsync[A, B](query: Derivable[A, B])
+                          (block: B => Future[Result])
+                          (implicit request: DataRequest[AnyContent], ec: ExecutionContext, ev: Reads[A]): Future[Result] =
     request.userAnswers
       .get(query)
       .map(block(_))

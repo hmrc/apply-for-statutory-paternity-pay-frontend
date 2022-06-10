@@ -16,13 +16,13 @@
 
 package forms
 
-import java.time.LocalDate
-
+import java.time.{Clock, LocalDate}
 import forms.mappings.Mappings
+
 import javax.inject.Inject
 import play.api.data.Form
 
-class BabyDueDateFormProvider @Inject() extends Mappings {
+class BabyDueDateFormProvider @Inject()(clock: Clock) extends Mappings {
 
   def apply(): Form[LocalDate] =
     Form(
@@ -31,6 +31,6 @@ class BabyDueDateFormProvider @Inject() extends Mappings {
         allRequiredKey = "babyDueDate.error.required.all",
         twoRequiredKey = "babyDueDate.error.required.two",
         requiredKey    = "babyDueDate.error.required"
-      )
+      ).verifying(minDate(LocalDate.now(clock), "babyDueDate.error.past"))
     )
 }

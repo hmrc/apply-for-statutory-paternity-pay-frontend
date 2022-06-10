@@ -16,9 +16,8 @@
 
 package controllers
 
-import java.time.{LocalDate, ZoneOffset}
-
 import base.SpecBase
+import config.Formats.dateTimeHintFormat
 import forms.BabyDueDateFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
@@ -33,20 +32,24 @@ import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.BabyDueDateView
 
+import java.time.{Clock, LocalDate, ZoneId}
 import scala.concurrent.Future
 
 class BabyDueDateControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new BabyDueDateFormProvider()
+  private val today        = LocalDate.now
+  private val fixedInstant = today.atStartOfDay(ZoneId.systemDefault).toInstant
+  private val clock        = Clock.fixed(fixedInstant, ZoneId.systemDefault)
+  private val dateHint     = today.plusWeeks(15).format(dateTimeHintFormat)
+
+  val formProvider = new BabyDueDateFormProvider(clock)
   private def form = formProvider()
 
   def onwardRoute = Call("GET", "/foo")
 
-  val validAnswer = LocalDate.now(ZoneOffset.UTC)
+  val validAnswer = today
 
   lazy val babyDueDateRoute = routes.BabyDueDateController.onPageLoad(NormalMode).url
-
-  override val emptyUserAnswers = UserAnswers(userAnswersId)
 
   def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, babyDueDateRoute)
@@ -71,7 +74,7 @@ class BabyDueDateControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[BabyDueDateView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, dateHint)(getRequest, messages(application)).toString
       }
     }
 
@@ -87,7 +90,7 @@ class BabyDueDateControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, getRequest).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, dateHint)(getRequest, messages(application)).toString
       }
     }
 
@@ -129,7 +132,7 @@ class BabyDueDateControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, dateHint)(request, messages(application)).toString
       }
     }
 

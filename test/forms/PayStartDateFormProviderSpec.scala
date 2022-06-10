@@ -16,23 +16,46 @@
 
 package forms
 
-import java.time.{LocalDate, ZoneOffset}
-
+import config.Formats.dateTimeFormat
 import forms.behaviours.DateBehaviours
+import play.api.data.FormError
+import queries.PayStartDateLimits
+
+import java.time.LocalDate
 
 class PayStartDateFormProviderSpec extends DateBehaviours {
 
-  val form = new PayStartDateFormProvider()()
+  private val today = LocalDate.now()
+  private val formProvider = new PayStartDateFormProvider()
+  private val minDate = LocalDate.of(2000, 1, 1)
+  private val maxDate = LocalDate.of(2100, 1, 1)
+  private val dateLimits = PayStartDateLimits(minDate, maxDate)
+
+  private val form = formProvider(dateLimits)
 
   ".value" - {
 
     val validData = datesBetween(
-      min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
+      min = minDate,
+      max = maxDate
     )
 
     behave like dateField(form, "value", validData)
 
     behave like mandatoryDateField(form, "value", "payStartDate.error.required.all")
+
+    behave like dateFieldWithMin(
+      form,
+      "value",
+      minDate,
+      FormError("value", "payStartDate.error.belowMinimum", Seq(minDate.format(dateTimeFormat)))
+    )
+
+    behave like dateFieldWithMax(
+      form,
+      "value",
+      maxDate,
+      FormError("value", "payStartDate.error.aboveMaximum", Seq(maxDate.format(dateTimeFormat)))
+    )
   }
 }

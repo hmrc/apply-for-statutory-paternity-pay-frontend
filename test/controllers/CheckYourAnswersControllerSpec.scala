@@ -17,18 +17,21 @@
 package controllers
 
 import base.SpecBase
+import generators.Generators
 import models.{Name, PaternityLeaveLength}
+import org.scalacheck.Arbitrary.arbitrary
 import pages._
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.domain.Nino
 import viewmodels.checkAnswers._
 import viewmodels.govuk.SummaryListFluency
 import views.html.CheckYourAnswersView
 
 import java.time.LocalDate
 
-class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
+class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency with Generators {
 
   "Check Your Answers Controller" - {
 
@@ -44,7 +47,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
           .set(IsCohabitingPage, true).success.value
           .set(IsInQualifyingRelationshipPage, true).success.value
           .set(NamePage, Name("first", "last")).success.value
-          .set(NinoPage, "QQ123465C").success.value
+          .set(NinoPage, arbitrary[Nino].sample.value).success.value
           .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
           .set(PayStartDatePage, LocalDate.now).success.value
           .set(WantPayToStartOnBirthDatePage, true).success.value

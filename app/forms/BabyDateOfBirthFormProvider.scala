@@ -16,13 +16,13 @@
 
 package forms
 
-import java.time.LocalDate
-
+import java.time.{Clock, LocalDate}
 import forms.mappings.Mappings
+
 import javax.inject.Inject
 import play.api.data.Form
 
-class BabyDateOfBirthFormProvider @Inject() extends Mappings {
+class BabyDateOfBirthFormProvider @Inject()(clock: Clock) extends Mappings {
 
   def apply(): Form[LocalDate] =
     Form(
@@ -31,6 +31,6 @@ class BabyDateOfBirthFormProvider @Inject() extends Mappings {
         allRequiredKey = "babyDateOfBirth.error.required.all",
         twoRequiredKey = "babyDateOfBirth.error.required.two",
         requiredKey    = "babyDateOfBirth.error.required"
-      )
+      ).verifying(maxDate(LocalDate.now(clock), "babyDateOfBirth.error.future"))
     )
 }

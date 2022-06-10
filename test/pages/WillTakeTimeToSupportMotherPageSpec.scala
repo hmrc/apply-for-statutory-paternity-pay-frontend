@@ -17,7 +17,9 @@
 package pages
 
 import models.{Name, PaternityLeaveLength}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
+import uk.gov.hmrc.domain.Nino
 
 import java.time.LocalDate
 
@@ -43,7 +45,7 @@ class WillTakeTimeToSupportMotherPageSpec extends PageBehaviours {
           .set(IsCohabitingPage, true).success.value
           .set(IsInQualifyingRelationshipPage, true).success.value
           .set(NamePage, Name("first", "last")).success.value
-          .set(NinoPage, "QQ123465C").success.value
+          .set(NinoPage, arbitrary[Nino].sample.value).success.value
           .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
           .set(PayStartDatePage, LocalDate.now).success.value
           .set(WantPayToStartOnBirthDatePage, true).success.value

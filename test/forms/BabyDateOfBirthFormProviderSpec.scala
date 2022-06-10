@@ -16,13 +16,17 @@
 
 package forms
 
-import java.time.{LocalDate, ZoneOffset}
-
+import java.time.{Clock, LocalDate, ZoneId, ZoneOffset}
 import forms.behaviours.DateBehaviours
+import play.api.data.FormError
 
 class BabyDateOfBirthFormProviderSpec extends DateBehaviours {
 
-  val form = new BabyDateOfBirthFormProvider()()
+  private val today        = LocalDate.now
+  private val fixedInstant = today.atStartOfDay(ZoneId.systemDefault).toInstant
+  private val clock        = Clock.fixed(fixedInstant, ZoneId.systemDefault)
+
+  private val form = new BabyDateOfBirthFormProvider(clock)()
 
   ".value" - {
 
@@ -34,5 +38,7 @@ class BabyDateOfBirthFormProviderSpec extends DateBehaviours {
     behave like dateField(form, "value", validData)
 
     behave like mandatoryDateField(form, "value", "babyDateOfBirth.error.required.all")
+
+    behave like dateFieldWithMax(form, "value", today, FormError("value", "babyDateOfBirth.error.future"))
   }
 }

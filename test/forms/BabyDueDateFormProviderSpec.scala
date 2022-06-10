@@ -16,23 +16,29 @@
 
 package forms
 
-import java.time.{LocalDate, ZoneOffset}
-
+import java.time.{Clock, LocalDate, ZoneId, ZoneOffset}
 import forms.behaviours.DateBehaviours
+import play.api.data.FormError
 
 class BabyDueDateFormProviderSpec extends DateBehaviours {
 
-  val form = new BabyDueDateFormProvider()()
+  private val today        = LocalDate.now
+  private val fixedInstant = today.atStartOfDay(ZoneId.systemDefault).toInstant
+  private val clock        = Clock.fixed(fixedInstant, ZoneId.systemDefault)
+
+  val form = new BabyDueDateFormProvider(clock)()
 
   ".value" - {
 
     val validData = datesBetween(
-      min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
+      min = today,
+      max = today.plusDays(10) // TODO: Change when we understand rules around dates
     )
 
     behave like dateField(form, "value", validData)
 
     behave like mandatoryDateField(form, "value", "babyDueDate.error.required.all")
+
+    behave like dateFieldWithMin(form, "value", today, FormError("value", "babyDueDate.error.past"))
   }
 }
