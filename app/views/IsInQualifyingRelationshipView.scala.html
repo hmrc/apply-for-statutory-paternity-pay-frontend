@@ -37,6 +37,7 @@
                 field = form("value"),
                 legend = LegendViewModel(messages("isInQualifyingRelationship.heading")).asPageHeading()
             )
+            .withHint(HintViewModel(messages("isInQualifyingRelationship.hint")))
         )
 
         @govukButton(

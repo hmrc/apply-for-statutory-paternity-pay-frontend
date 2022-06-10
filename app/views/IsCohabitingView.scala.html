@@ -37,6 +37,7 @@
                 field = form("value"),
                 legend = LegendViewModel(messages("isCohabiting.heading")).asPageHeading()
             )
+            .withHint(HintViewModel(messages("isCohabiting.hint")))
         )
 
         @govukButton(
