@@ -82,6 +82,7 @@ babyDateOfBirth.error.required.all = Enter the date the baby was born
 babyDateOfBirth.error.required.two = The date must include {0} and {1}
 babyDateOfBirth.error.required = The date must include {0}
 babyDateOfBirth.error.invalid = Enter a real date
+babyDateOfBirth.error.future = The date the baby was born cannot be in the future
 babyDateOfBirth.change.hidden = the date the baby was born
 
 babyDueDate.title = What date is the baby due?
@@ -92,6 +93,7 @@ babyDueDate.error.required.all = Enter the date the baby is due
 babyDueDate.error.required.two = The date must include {0} and {1}
 babyDueDate.error.required = The date must include {0}
 babyDueDate.error.invalid = Enter a real date
+babyDueDate.error.past = The date the baby is due cannot be in the past
 babyDueDate.change.hidden = the date the baby is due
 
 babyHasBeenBorn.title = Has the baby been born yet?
@@ -170,6 +172,8 @@ payStartDate.error.required.all = Enter the date you would like your Statutory P
 payStartDate.error.required.two = The date must include {0} and {1}
 payStartDate.error.required = The date must include {0}
 payStartDate.error.invalid = Enter a real date
+payStartDate.error.belowMinimum = The date must be on or after {0}
+payStartDate.error.aboveMaximum = The date must be on or before {0}
 payStartDate.change.hidden = the date you would like your Statutory Paternity pay to start
 
 wantPayToStartOnBirthDate.title = Would you like your Statutory Paternity Pay to start on the day the baby was born?

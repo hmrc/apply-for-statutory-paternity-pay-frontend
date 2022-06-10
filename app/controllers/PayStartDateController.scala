@@ -16,19 +16,20 @@
 
 package controllers
 
+import config.Formats.dateTimeHintFormat
 import controllers.actions._
 import forms.PayStartDateFormProvider
-
-import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
 import pages.{BabyHasBeenBornPage, PayStartDatePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import queries.DerivePayStartDateLimits
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.PayStartDateView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class PayStartDateController @Inject()(
@@ -53,35 +54,43 @@ class PayStartDateController @Inject()(
     implicit request =>
       getAnswer(BabyHasBeenBornPage) {
         babyBorn =>
+          getAnswer(DerivePayStartDateLimits(babyBorn)) {
+            payStartDateLimits =>
 
-          val form = formProvider()
+              val hintDate = payStartDateLimits.max.format(dateTimeHintFormat)
+              val form = formProvider(payStartDateLimits)
 
-          val preparedForm = request.userAnswers.get(PayStartDatePage) match {
-            case None => form
-            case Some(value) => form.fill(value)
-          }
+              val preparedForm = request.userAnswers.get(PayStartDatePage) match {
+                case None => form
+                case Some(value) => form.fill(value)
+              }
 
-          Ok(view(preparedForm, mode, guidanceSubString(babyBorn)))
-        }
+              Ok(view(preparedForm, mode, guidanceSubString(babyBorn), hintDate))
+            }
+      }
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       getAnswerAsync(BabyHasBeenBornPage) {
         babyBorn =>
+          getAnswerAsync(DerivePayStartDateLimits(babyBorn)) {
+            payStartDateLimits =>
 
-          val form = formProvider()
+              val hintDate = payStartDateLimits.max.format(dateTimeHintFormat)
+              val form = formProvider(payStartDateLimits)
 
-          form.bindFromRequest().fold(
-            formWithErrors =>
-              Future.successful(BadRequest(view(formWithErrors, mode, guidanceSubString(babyBorn)))),
+              form.bindFromRequest().fold(
+                formWithErrors =>
+                  Future.successful(BadRequest(view(formWithErrors, mode, guidanceSubString(babyBorn), hintDate))),
 
-            value =>
-              for {
-                updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDatePage, value))
-                _ <- sessionRepository.set(updatedAnswers)
-              } yield Redirect(navigator.nextPage(PayStartDatePage, mode, updatedAnswers))
-          )
+                value =>
+                  for {
+                    updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDatePage, value))
+                    _ <- sessionRepository.set(updatedAnswers)
+                  } yield Redirect(navigator.nextPage(PayStartDatePage, mode, updatedAnswers))
+              )
+          }
       }
   }
 }

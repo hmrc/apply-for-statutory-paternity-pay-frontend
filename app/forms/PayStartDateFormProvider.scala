@@ -16,21 +16,25 @@
 
 package forms
 
-import java.time.LocalDate
+import config.Formats.dateTimeFormat
 
+import java.time.LocalDate
 import forms.mappings.Mappings
+
 import javax.inject.Inject
 import play.api.data.Form
+import queries.PayStartDateLimits
 
 class PayStartDateFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[LocalDate] =
+  def apply(dateLimits: PayStartDateLimits): Form[LocalDate] =
     Form(
       "value" -> localDate(
         invalidKey     = "payStartDate.error.invalid",
         allRequiredKey = "payStartDate.error.required.all",
         twoRequiredKey = "payStartDate.error.required.two",
         requiredKey    = "payStartDate.error.required"
-      )
+      ).verifying(minDate(dateLimits.min, "payStartDate.error.belowMinimum", dateLimits.min.format(dateTimeFormat)))
+        .verifying(maxDate(dateLimits.max, "payStartDate.error.aboveMaximum", dateLimits.max.format(dateTimeFormat)))
     )
 }

@@ -14,26 +14,15 @@
  * limitations under the License.
  */
 
-package queries
+package config
 
-import models.UserAnswers
-import play.api.libs.json.JsPath
+import java.time.format.DateTimeFormatter
 
-import scala.util.{Success, Try}
+object Formats {
 
-sealed trait Query {
+  val dateTimeFormat: DateTimeFormatter =
+    DateTimeFormatter.ofPattern("d MMMM yyyy")
 
-  def path: JsPath
-}
-
-trait Gettable[A] extends Query
-
-trait Settable[A] extends Query {
-
-  def cleanup(value: Option[A], userAnswers: UserAnswers): Try[UserAnswers] =
-    Success(userAnswers)
-}
-
-trait Derivable[A, B] extends Query {
-  val derive: A => B
+  val dateTimeHintFormat: DateTimeFormatter =
+    DateTimeFormatter.ofPattern("d M yyyy")
 }
