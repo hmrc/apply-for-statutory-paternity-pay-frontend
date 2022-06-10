@@ -65,7 +65,6 @@ signedOut.heading = For your security, the application form has been reset
 signedOut.guidance = We did not save your answers. You will need to start this form again.
 signedOut.restart = Start again
 
-
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 

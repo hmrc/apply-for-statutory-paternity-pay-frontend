@@ -17,11 +17,18 @@
 package controllers
 
 import base.SpecBase
+import org.mockito.ArgumentMatchers.{any, eq => eqTo}
+import org.mockito.Mockito.{times, verify, when}
+import org.scalatestplus.mockito.MockitoSugar
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.ConfirmationView
 
-class ConfirmationControllerSpec extends SpecBase {
+import scala.concurrent.Future
+
+class ConfirmationControllerSpec extends SpecBase with MockitoSugar {
 
   "Confirmation Controller" - {
 
@@ -38,6 +45,31 @@ class ConfirmationControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view()(request, messages(application)).toString
+      }
+    }
+
+
+    "start again must clear user answers and redirect to Index" in {
+
+      val mockSessionRepository = mock[SessionRepository]
+      when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(None)
+          .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+          .build()
+
+      running(application) {
+
+        val request = FakeRequest(GET, routes.ConfirmationController.startAgain().url)
+
+        val result = route(application, request).value
+
+        val expectedRedirectUrl = routes.IndexController.onPageLoad.url
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual expectedRedirectUrl
+        verify(mockSessionRepository, times(1)).clear(eqTo(userAnswersId))
       }
     }
   }
