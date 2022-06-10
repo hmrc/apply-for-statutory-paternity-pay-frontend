@@ -37,9 +37,12 @@
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages("nino.heading")).asPageHeading()
+                label = HmrcPageHeadingLabel(
+                    content = messages("nino.heading"),
+                    caption = HmrcSectionCaption(messages("section.personalDetails"))
+                )
             )
-            .withWidth(Full)
+            .withWidth(Fixed10)
             .withHint(HintViewModel(messages("nino.hint")))
         )
 

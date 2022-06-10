@@ -35,7 +35,10 @@
         @govukRadios(
             RadiosViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages("paternityLeaveLength.heading")).asPageHeading(),
+                legend = HmrcPageHeadingLegend(
+                    content = messages("paternityLeaveLength.heading"),
+                    caption = HmrcSectionCaption(messages("section.paternityDetails"))
+                ),
                 items  = PaternityLeaveLength.options
             )
         )

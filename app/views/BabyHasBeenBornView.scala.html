@@ -35,8 +35,10 @@
         @govukRadios(
             RadiosViewModel.yesNo(
                 field = form("value"),
-                legend = LegendViewModel(messages("babyHasBeenBorn.heading")).asPageHeading()
-            )
+                legend = HmrcPageHeadingLegend(
+                    content = messages("babyHasBeenBorn.heading"),
+                    caption = HmrcSectionCaption(messages("section.babyDetails"))
+                )            )
         )
 
         @govukButton(

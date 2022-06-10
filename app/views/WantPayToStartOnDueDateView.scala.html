@@ -35,8 +35,10 @@
         @govukRadios(
             RadiosViewModel.yesNo(
                 field = form("value"),
-                legend = LegendViewModel(messages("wantPayToStartOnDueDate.heading")).asPageHeading()
-            )
+                legend = HmrcPageHeadingLegend(
+                    content = messages("wantPayToStartOnDueDate.heading"),
+                    caption = HmrcSectionCaption(messages("section.paternityDetails"))
+                )            )
         )
 
         @govukButton(
