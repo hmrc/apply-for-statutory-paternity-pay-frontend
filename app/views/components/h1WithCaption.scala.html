@@ -14,18 +14,14 @@
  * limitations under the License.
  *@
 
-@this(
-        layout: templates.Layout,
-        govukButton: GovukButton
-)
+@this()
 
-@()(implicit request: Request[_], messages: Messages)
+@(content: Content, caption: Content, size: String = "xl")(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("cannotApplyAdopting.title"))) {
-
-    <div class="govuk-panel govuk-panel--confirmation text-overflow">
-        <h1 class="govuk-panel__title">
-            @messages("cannotApplyAdopting.heading")
-        </h1>
-    </div>
-}
+<header class="hmrc-page-heading">
+    <h1 class="govuk-heading-@size">@content.asHtml</h1>
+    <p class="hmrc-caption govuk-caption-@size">
+        <span class="govuk-visually-hidden">@messages("thisSectionIs") </span>
+        @caption.asHtml
+    </p>
+</header>

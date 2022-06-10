@@ -38,6 +38,7 @@ POST       /changeBabyHasBeenBorn                  controllers.BabyHasBeenBornCo
 GET        /cannotApply                       controllers.CannotApplyController.onPageLoad()
 
 GET        /confirmation                       controllers.ConfirmationController.onPageLoad()
+GET        /start-again                         controllers.ConfirmationController.startAgain()
 
 GET        /isBiologicalFather                        controllers.IsBiologicalFatherController.onPageLoad(mode: Mode = NormalMode)
 POST       /isBiologicalFather                        controllers.IsBiologicalFatherController.onSubmit(mode: Mode = NormalMode)

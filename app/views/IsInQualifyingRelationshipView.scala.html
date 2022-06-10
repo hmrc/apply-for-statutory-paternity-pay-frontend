@@ -35,8 +35,12 @@
         @govukRadios(
             RadiosViewModel.yesNo(
                 field = form("value"),
-                legend = LegendViewModel(messages("isInQualifyingRelationship.heading")).asPageHeading()
+                legend = HmrcPageHeadingLegend(
+                    content = messages("isInQualifyingRelationship.heading"),
+                    caption = HmrcSectionCaption(messages("section.relationship"))
+                )
             )
+            .withHint(HintViewModel(messages("isInQualifyingRelationship.hint")))
         )
 
         @govukButton(

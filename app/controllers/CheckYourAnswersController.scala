@@ -37,7 +37,7 @@ class CheckYourAnswersController @Inject()(
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val list = SummaryListViewModel(
+      val relationshipDetails = SummaryListViewModel(
         rows = Seq(
           IsAdoptingSummary.row(request.userAnswers),
           IsBiologicalFatherSummary.row(request.userAnswers),
@@ -45,12 +45,28 @@ class CheckYourAnswersController @Inject()(
           IsCohabitingSummary.row(request.userAnswers),
           WillHaveCaringResponsibilitySummary.row(request.userAnswers),
           WillTakeTimeToCareForChildSummary.row(request.userAnswers),
-          WillTakeTimeToSupportMotherSummary.row(request.userAnswers),
+          WillTakeTimeToSupportMotherSummary.row(request.userAnswers)
+        ).flatten
+      )
+
+      val personalDetails = SummaryListViewModel(
+        rows = Seq(
+
           NameSummary.row(request.userAnswers),
-          NinoSummary.row(request.userAnswers),
+          NinoSummary.row(request.userAnswers)
+        ).flatten
+      )
+
+      val babyDetails = SummaryListViewModel(
+        rows = Seq(
           BabyHasBeenBornSummary.row(request.userAnswers),
           BabyDateOfBirthSummary.row(request.userAnswers),
-          BabyDueDateSummary.row(request.userAnswers),
+          BabyDueDateSummary.row(request.userAnswers)
+        ).flatten
+      )
+
+      val paternityDetails = SummaryListViewModel(
+        rows = Seq(
           WantPayToStartOnBirthDateSummary.row(request.userAnswers),
           WantPayToStartOnDueDateSummary.row(request.userAnswers),
           PayStartDateSummary.row(request.userAnswers),
@@ -58,6 +74,6 @@ class CheckYourAnswersController @Inject()(
         ).flatten
       )
 
-      Ok(view(list))
+      Ok(view(relationshipDetails, personalDetails, babyDetails, paternityDetails))
   }
 }

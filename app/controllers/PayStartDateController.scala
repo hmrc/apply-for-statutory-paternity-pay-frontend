@@ -18,10 +18,11 @@ package controllers
 
 import controllers.actions._
 import forms.PayStartDateFormProvider
+
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.PayStartDatePage
+import pages.{BabyHasBeenBornPage, PayStartDatePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -40,33 +41,47 @@ class PayStartDateController @Inject()(
                                         formProvider: PayStartDateFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: PayStartDateView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                      )(implicit ec: ExecutionContext)
+  extends FrontendBaseController
+    with I18nSupport
+    with AnswerExtractor {
 
-  def form = formProvider()
+  private def guidanceSubString(babyBorn: Boolean): String =
+    if(babyBorn) "babyBorn" else "babyDue"
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      getAnswer(BabyHasBeenBornPage) {
+        babyBorn =>
 
-      val preparedForm = request.userAnswers.get(PayStartDatePage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
+          val form = formProvider()
 
-      Ok(view(preparedForm, mode))
+          val preparedForm = request.userAnswers.get(PayStartDatePage) match {
+            case None => form
+            case Some(value) => form.fill(value)
+          }
+
+          Ok(view(preparedForm, mode, guidanceSubString(babyBorn)))
+        }
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      getAnswerAsync(BabyHasBeenBornPage) {
+        babyBorn =>
 
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          val form = formProvider()
 
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDatePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PayStartDatePage, mode, updatedAnswers))
-      )
+          form.bindFromRequest().fold(
+            formWithErrors =>
+              Future.successful(BadRequest(view(formWithErrors, mode, guidanceSubString(babyBorn)))),
+
+            value =>
+              for {
+                updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDatePage, value))
+                _ <- sessionRepository.set(updatedAnswers)
+              } yield Redirect(navigator.nextPage(PayStartDatePage, mode, updatedAnswers))
+          )
+      }
   }
 }

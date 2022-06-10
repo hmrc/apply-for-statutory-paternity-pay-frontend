@@ -35,8 +35,12 @@
         @govukRadios(
             RadiosViewModel.yesNo(
                 field = form("value"),
-                legend = LegendViewModel(messages("isCohabiting.heading")).asPageHeading()
+                legend = HmrcPageHeadingLegend(
+                    content = messages("isCohabiting.heading"),
+                    caption = HmrcSectionCaption(messages("section.relationship"))
+                )
             )
+            .withHint(HintViewModel(messages("isCohabiting.hint")))
         )
 
         @govukButton(
