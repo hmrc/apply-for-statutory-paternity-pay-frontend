@@ -18,8 +18,10 @@ package controllers
 
 import base.SpecBase
 import forms.NinoFormProvider
+import generators.Generators
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
+import org.scalacheck.Arbitrary.arbitrary
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -29,11 +31,14 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import uk.gov.hmrc.domain.Nino
 import views.html.NinoView
 
 import scala.concurrent.Future
 
-class NinoControllerSpec extends SpecBase with MockitoSugar {
+class NinoControllerSpec extends SpecBase with MockitoSugar with Generators {
+
+  private val nino = arbitrary[Nino].sample.value
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -62,7 +67,7 @@ class NinoControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(NinoPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(NinoPage, nino).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -74,7 +79,7 @@ class NinoControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(nino), NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -95,7 +100,7 @@ class NinoControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, ninoRoute)
-            .withFormUrlEncodedBody(("value", "answer"))
+            .withFormUrlEncodedBody(("value", nino.value))
 
         val result = route(application, request).value
 
@@ -145,7 +150,7 @@ class NinoControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, ninoRoute)
-            .withFormUrlEncodedBody(("value", "answer"))
+            .withFormUrlEncodedBody(("value", nino.value))
 
         val result = route(application, request).value
 
