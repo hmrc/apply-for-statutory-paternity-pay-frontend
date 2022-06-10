@@ -41,6 +41,7 @@ class Navigator @Inject()() {
     case BabyDueDatePage                  => _ => routes.WantPayToStartOnDueDateController.onPageLoad(NormalMode)
     case WantPayToStartOnBirthDatePage    => wantPayToStartOnBirthDateRoute
     case WantPayToStartOnDueDatePage      => wantPayToStartOnDueDateRoute
+    case PayStartDatePage                 => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
     case PaternityLeaveLengthPage         => _ => routes.CheckYourAnswersController.onPageLoad
     case _                                => _ => routes.IndexController.onPageLoad
   }
