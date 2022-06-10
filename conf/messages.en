@@ -49,6 +49,9 @@ index.guidance.beforeYouStart.p3 = Once you have completed the form, you will ne
 
 checkYourAnswers.title = Check Your Answers
 checkYourAnswers.heading = Check Your Answers
+checkYourAnswers.beforeYouContinue = Before you continue
+checkYourAnswers.beforeYouContinue.guidance = By continuing this application you are confirming that, to the best of your knowledge, the details you are providing are correct.
+checkYourAnswers.acceptAndContinue = Accept and continue
 
 journeyRecovery.continue.title = Sorry, there is a problem with the service
 journeyRecovery.continue.heading = Sorry, there is a problem with the service
@@ -65,9 +68,10 @@ unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
 thisSectionIs = This section is
-section.paternityDetails = Paternity details
-section.babyDetails = Baby details
 section.relationship = Relationship with child
+section.personalDetails = Personal details
+section.babyDetails = Baby details
+section.paternityDetails = Paternity details
 
 babyDateOfBirth.title = What date was the baby born?
 babyDateOfBirth.heading = What date was the baby born?
@@ -98,9 +102,22 @@ babyHasBeenBorn.change.hidden = if the baby has been born yet
 cannotApply.title = You are not eligible for Statutory Paternity Pay
 cannotApply.heading = You are not eligible for Statutory Paternity Pay
 
-
-confirmation.title = Confirmation
-confirmation.heading = Confirmation
+confirmation.title = Your application form is ready to send to your employer
+confirmation.heading = Your application form is ready to send to your employer
+confirmation.guidance.p1 = You can download the completed form, save a copy for your records and give or email a copy to your employer.
+confirmation.guidance.p2.1 = If you notice a mistake before sending the form you can
+confirmation.guidance.p2.link1.text = change your answers
+confirmation.guidance.p2.2 = or
+confirmation.guidance.p2.link2.text = start the application form again
+confirmation.guidance.whatHappensNext = What happens next
+confirmation.guidance.p3 = Your employer will use this information to assess your eligibility for Statutory Paternity Pay (SPP) and/or paternity leave. If your request is approved, you will receive your SPP from your employer.
+confirmation.guidance.p4 = If your employer does not approve your request, they must give you an SSP1 form to tell you why. You can use hte SSP1 form to support a claim for Employment and Support Allowance.
+confirmation.guidance.p5.1 = If you disagree with your employer’s decision you can content the
+confirmation.guidance.p5.link.text = Statutory Payments Dispute Team
+confirmation.guidance.p5.2 = You must do this within 6 months of the day you were notified of your employer’s decision.
+confirmation.download = Download form
+confirmation.survey.link.text = What did you think of this service?
+confirmation.survey.guidance = (takes 30 seconds)
 
 isBiologicalFather.title = Are you the child’s biological father?
 isBiologicalFather.heading = Are you the child’s biological father?

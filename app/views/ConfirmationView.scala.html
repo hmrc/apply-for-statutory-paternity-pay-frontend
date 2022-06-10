@@ -21,7 +21,43 @@
 
 @()(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("confirmation.title"))) {
+@layout(pageTitle = titleNoForm(messages("confirmation.title")), showBackLink = false) {
 
-    <h1 class="govuk-heading-xl">@messages("confirmation.heading")</h1>
+    <div class="govuk-panel govuk-panel--confirmation text-overflow">
+        <h2 class="govuk-panel__title">
+            @messages("confirmation.heading")
+        </h2>
+    </div>
+
+    <p class="govuk-body">@messages("confirmation.guidance.p1")</p>
+
+    <p class="govuk-body">
+        @messages("confirmation.guidance.p2.1")
+        <a href="@routes.CheckYourAnswersController.onPageLoad" class="govuk-link">
+            @messages("confirmation.guidance.p2.link1.text")
+        </a>
+        @messages("confirmation.guidance.p2.2")
+        <a href="@routes.CheckYourAnswersController.onPageLoad" class="govuk-link">
+            @messages("confirmation.guidance.p2.link2.text")
+        </a>.
+    </p>
+
+    <h2 class="govuk-heading-m">@messages("confirmation.guidance.whatHappensNext")</h2>
+
+    <p class="govuk-body">@messages("confirmation.guidance.p3")</p>
+    <p class="govuk-body">@messages("confirmation.guidance.p4")</p>
+    <p class="govuk-body">
+        @messages("confirmation.guidance.p5.1")
+        <a href="@messages("confirmation.guidance.p5.link.href")" class="govuk-link">
+            @messages("confirmation.guidance.p5.link.text")
+        </a>.
+        @messages("confirmation.guidance.p5.2")
+    </p>
+
+    <a href="#" class="govuk-button">@messages("confirmation.download")</a>
+
+    <p class="govuk-body">
+        <a href="#" class="govuk-link">@messages("confirmation.survey.link.text")</a>
+        @messages("confirmation.survey.guidance")
+    </p>
 }
