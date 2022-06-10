@@ -16,8 +16,10 @@
 
 package controllers
 
+import config.Formats.dateTimeHintFormat
 import controllers.actions._
 import forms.BabyDueDateFormProvider
+
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
@@ -28,6 +30,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.BabyDueDateView
 
+import java.time.{Clock, LocalDate}
 import scala.concurrent.{ExecutionContext, Future}
 
 class BabyDueDateController @Inject()(
@@ -39,7 +42,8 @@ class BabyDueDateController @Inject()(
                                         requireData: DataRequiredAction,
                                         formProvider: BabyDueDateFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: BabyDueDateView
+                                        view: BabyDueDateView,
+                                        clock: Clock
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def form = formProvider()
@@ -47,20 +51,24 @@ class BabyDueDateController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
+      val dateHint = LocalDate.now(clock).plusWeeks(15).format(dateTimeHintFormat)
+
       val preparedForm = request.userAnswers.get(BabyDueDatePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, dateHint))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
+      val dateHint = LocalDate.now(clock).plusWeeks(15).format(dateTimeHintFormat)
+
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, dateHint))),
 
         value =>
           for {
