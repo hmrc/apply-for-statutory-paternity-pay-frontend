@@ -16,6 +16,8 @@
 
 package forms
 
+import config.Formats.dateTimeFormat
+
 import java.time.{Clock, LocalDate, ZoneId, ZoneOffset}
 import forms.behaviours.DateBehaviours
 import play.api.data.FormError
@@ -23,6 +25,7 @@ import play.api.data.FormError
 class BabyDueDateFormProviderSpec extends DateBehaviours {
 
   private val today        = LocalDate.now
+  private val maximumDate  = today.plusWeeks(40)
   private val fixedInstant = today.atStartOfDay(ZoneId.systemDefault).toInstant
   private val clock        = Clock.fixed(fixedInstant, ZoneId.systemDefault)
 
@@ -32,7 +35,7 @@ class BabyDueDateFormProviderSpec extends DateBehaviours {
 
     val validData = datesBetween(
       min = today,
-      max = today.plusDays(10) // TODO: Change when we understand rules around dates
+      max = maximumDate
     )
 
     behave like dateField(form, "value", validData)
@@ -40,5 +43,12 @@ class BabyDueDateFormProviderSpec extends DateBehaviours {
     behave like mandatoryDateField(form, "value", "babyDueDate.error.required.all")
 
     behave like dateFieldWithMin(form, "value", today, FormError("value", "babyDueDate.error.past"))
+
+    behave like dateFieldWithMax(
+      form,
+      "value",
+      maximumDate,
+      FormError("value", "babyDueDate.error.afterMaximum", Seq(maximumDate.format(dateTimeFormat)))
+    )
   }
 }

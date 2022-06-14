@@ -89,6 +89,7 @@ babyDateOfBirth.error.required.two = The date must include {0} and {1}
 babyDateOfBirth.error.required = The date must include {0}
 babyDateOfBirth.error.invalid = Enter a real date
 babyDateOfBirth.error.future = The date the baby was born cannot be in the future
+babyDateOfBirth.error.beforeMinimum = The date the baby was born cannot be before {0}
 babyDateOfBirth.change.hidden = the date the baby was born
 
 babyDueDate.title = What date is the baby due?
@@ -100,6 +101,7 @@ babyDueDate.error.required.two = The date must include {0} and {1}
 babyDueDate.error.required = The date must include {0}
 babyDueDate.error.invalid = Enter a real date
 babyDueDate.error.past = The date the baby is due cannot be in the past
+babyDueDate.error.afterMaximum = The date the baby is due cannot be after {0}
 babyDueDate.change.hidden = the date the baby is due
 
 babyHasBeenBorn.title = Has the baby been born yet?

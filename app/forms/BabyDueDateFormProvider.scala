@@ -16,6 +16,8 @@
 
 package forms
 
+import config.Formats.dateTimeFormat
+
 import java.time.{Clock, LocalDate}
 import forms.mappings.Mappings
 
@@ -24,13 +26,18 @@ import play.api.data.Form
 
 class BabyDueDateFormProvider @Inject()(clock: Clock) extends Mappings {
 
-  def apply(): Form[LocalDate] =
+  def apply(): Form[LocalDate] = {
+
+    val maximumDate = LocalDate.now(clock).plusWeeks(40)
+
     Form(
       "value" -> localDate(
-        invalidKey     = "babyDueDate.error.invalid",
+        invalidKey = "babyDueDate.error.invalid",
         allRequiredKey = "babyDueDate.error.required.all",
         twoRequiredKey = "babyDueDate.error.required.two",
-        requiredKey    = "babyDueDate.error.required"
+        requiredKey = "babyDueDate.error.required"
       ).verifying(minDate(LocalDate.now(clock), "babyDueDate.error.past"))
+        .verifying(maxDate(maximumDate, "babyDueDate.error.afterMaximum", maximumDate.format(dateTimeFormat)))
     )
+  }
 }
