@@ -103,7 +103,7 @@ class Navigator @Inject()() {
   private def wantPayToStartOnDueDateRoute(answers: UserAnswers): Call =
     answers.get(WantPayToStartOnDueDatePage).map {
       case true  => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
-      case false => routes.PayStartDateBabyBornController.onPageLoad(NormalMode)
+      case false => routes.PayStartDateBabyDueController.onPageLoad(NormalMode)
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   private val checkRouteMap: Page => UserAnswers => Call = {
@@ -196,7 +196,7 @@ class Navigator @Inject()() {
 
   private def wantPayToStartOnDueDateCheckRoute(answers: UserAnswers): Call =
     (answers.get(WantPayToStartOnDueDatePage), answers.get(PayStartDateBabyBornPage)) match {
-      case (Some(false), None) => routes.PayStartDateBabyBornController.onPageLoad(CheckMode)
+      case (Some(false), None) => routes.PayStartDateBabyDueController.onPageLoad(CheckMode)
       case _                   => routes.CheckYourAnswersController.onPageLoad
     }
 
