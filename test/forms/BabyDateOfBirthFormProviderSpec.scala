@@ -16,6 +16,8 @@
 
 package forms
 
+import config.Formats.dateTimeFormat
+
 import java.time.{Clock, LocalDate, ZoneId, ZoneOffset}
 import forms.behaviours.DateBehaviours
 import play.api.data.FormError
@@ -23,6 +25,7 @@ import play.api.data.FormError
 class BabyDateOfBirthFormProviderSpec extends DateBehaviours {
 
   private val today        = LocalDate.now
+  private val minimumDate  = today.minusWeeks(7)
   private val fixedInstant = today.atStartOfDay(ZoneId.systemDefault).toInstant
   private val clock        = Clock.fixed(fixedInstant, ZoneId.systemDefault)
 
@@ -31,8 +34,8 @@ class BabyDateOfBirthFormProviderSpec extends DateBehaviours {
   ".value" - {
 
     val validData = datesBetween(
-      min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
+      min = minimumDate,
+      max = today
     )
 
     behave like dateField(form, "value", validData)
@@ -40,5 +43,12 @@ class BabyDateOfBirthFormProviderSpec extends DateBehaviours {
     behave like mandatoryDateField(form, "value", "babyDateOfBirth.error.required.all")
 
     behave like dateFieldWithMax(form, "value", today, FormError("value", "babyDateOfBirth.error.future"))
+
+    behave like dateFieldWithMin(
+      form,
+      "value",
+      minimumDate,
+      FormError("value", "babyDateOfBirth.error.beforeMinimum", Seq(minimumDate.format(dateTimeFormat)))
+    )
   }
 }
