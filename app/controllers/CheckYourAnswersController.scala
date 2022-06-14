@@ -70,6 +70,7 @@ class CheckYourAnswersController @Inject()(
           WantPayToStartOnBirthDateSummary.row(request.userAnswers),
           WantPayToStartOnDueDateSummary.row(request.userAnswers),
           PayStartDateBabyBornSummary.row(request.userAnswers),
+          PayStartDateBabyDueSummary.row(request.userAnswers),
           PaternityLeaveLengthSummary.row(request.userAnswers),
         ).flatten
       )
