@@ -21,7 +21,24 @@
 
 @()(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("cannotApply.title"))) {
+@layout(pageTitle = titleNoForm(messages("cannotApply.title")), showBackLink = false) {
+    
+    <div class="govuk-panel govuk-panel--confirmation text-overflow">
+        <h1 class="govuk-panel__title">
+        @messages("cannotApply.heading")
+        </h1>
+    </div>
 
-    <h1 class="govuk-heading-xl">@messages("cannotApply.heading")</h1>
+    <p class="govuk-body">@messages("cannotApply.guidance.p1")</p>
+
+    <p class="govuk-body">
+        @messages("cannotApply.guidance.p2.1")
+        <a href="@messages("cannotApply.guidance.p2.link.href")" class="govuk-link">@messages("cannotApply.guidance.p2.link.text")</a>.
+        @messages("cannotApply.guidance.p2.2")
+    </p>
+
+    <p class="govuk-body">
+        @messages("cannotApply.guidance.p3")
+        <a href="@routes.ConfirmationController.startAgain().url" class="govuk-link">@messages("cannotApply.guidance.p3.link.text")</a>.
+    </p>
 }
