@@ -65,10 +65,10 @@ POST       /paternityLeaveLength                        controllers.PaternityLea
 GET        /changePaternityLeaveLength                  controllers.PaternityLeaveLengthController.onPageLoad(mode: Mode = CheckMode)
 POST       /changePaternityLeaveLength                  controllers.PaternityLeaveLengthController.onSubmit(mode: Mode = CheckMode)
 
-GET        /payStartDate                  controllers.PayStartDateController.onPageLoad(mode: Mode = NormalMode)
-POST       /payStartDate                  controllers.PayStartDateController.onSubmit(mode: Mode = NormalMode)
-GET        /changePayStartDate                        controllers.PayStartDateController.onPageLoad(mode: Mode = CheckMode)
-POST       /changePayStartDate                        controllers.PayStartDateController.onSubmit(mode: Mode = CheckMode)
+GET        /payStartDateBabyBorn                  controllers.PayStartDateBabyBornController.onPageLoad(mode: Mode = NormalMode)
+POST       /payStartDateBabyBorn                  controllers.PayStartDateBabyBornController.onSubmit(mode: Mode = NormalMode)
+GET        /changePayStartDateBabyBorn                        controllers.PayStartDateBabyBornController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePayStartDateBabyBorn                        controllers.PayStartDateBabyBornController.onSubmit(mode: Mode = CheckMode)
 
 GET        /wantPayToStartOnBirthDate                        controllers.WantPayToStartOnBirthDateController.onPageLoad(mode: Mode = NormalMode)
 POST       /wantPayToStartOnBirthDate                        controllers.WantPayToStartOnBirthDateController.onSubmit(mode: Mode = NormalMode)

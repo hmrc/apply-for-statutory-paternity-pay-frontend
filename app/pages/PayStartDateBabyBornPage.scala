@@ -16,20 +16,13 @@
 
 package pages
 
-import models.UserAnswers
+import java.time.LocalDate
+
 import play.api.libs.json.JsPath
 
-import scala.util.Try
-
-case object WantPayToStartOnBirthDatePage extends QuestionPage[Boolean] {
+case object PayStartDateBabyBornPage extends QuestionPage[LocalDate] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "wantPayToStartOnBirthDate"
-
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
-    value.map {
-      case true  => userAnswers.remove(PayStartDateBabyBornPage)
-      case false => super.cleanup(value, userAnswers)
-    }.getOrElse(super.cleanup(value, userAnswers))
+  override def toString: String = "payStartDate"
 }

@@ -14,25 +14,8 @@
  * limitations under the License.
  */
 
-package queries
-
-import pages.{BabyDateOfBirthPage, BabyDueDatePage}
-import play.api.libs.json.JsPath
+package models
 
 import java.time.LocalDate
-import java.time.DayOfWeek.SUNDAY
-
-import java.time.temporal.TemporalAdjusters.next
 
 case class PayStartDateLimits(min: LocalDate, max: LocalDate)
-
-case class DerivePayStartDateLimits(babyBorn: Boolean) extends Derivable[LocalDate, PayStartDateLimits] {
-
-  override val derive: LocalDate => PayStartDateLimits = {
-    date =>
-      if (babyBorn) PayStartDateLimits(date.plusDays(1), date.plusWeeks(8))
-      else          PayStartDateLimits(date.plusDays(1), date.plusWeeks(8).`with`(next(SUNDAY)))
-  }
-
-  override def path: JsPath = if (babyBorn) BabyDateOfBirthPage.path else BabyDueDatePage.path
-}

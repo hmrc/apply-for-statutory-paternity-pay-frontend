@@ -193,7 +193,7 @@ class NavigatorSpec extends SpecBase {
         "to Pay Start Date when the answer is no" in {
 
           val answers = emptyUserAnswers.set(WantPayToStartOnBirthDatePage, false).success.value
-          navigator.nextPage(WantPayToStartOnBirthDatePage, NormalMode, answers) mustEqual routes.PayStartDateController.onPageLoad(NormalMode)
+          navigator.nextPage(WantPayToStartOnBirthDatePage, NormalMode, answers) mustEqual routes.PayStartDateBabyBornController.onPageLoad(NormalMode)
         }
       }
 
@@ -208,12 +208,12 @@ class NavigatorSpec extends SpecBase {
         "to Pay Start Date when the answer is no" in {
 
           val answers = emptyUserAnswers.set(WantPayToStartOnDueDatePage, false).success.value
-          navigator.nextPage(WantPayToStartOnDueDatePage, NormalMode, answers) mustEqual routes.PayStartDateController.onPageLoad(NormalMode)
+          navigator.nextPage(WantPayToStartOnDueDatePage, NormalMode, answers) mustEqual routes.PayStartDateBabyBornController.onPageLoad(NormalMode)
         }
       }
       "must go from Pay Start Date to Paternity Leave Length" in {
 
-        navigator.nextPage(PayStartDatePage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+        navigator.nextPage(PayStartDateBabyBornPage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
       }
 
 
@@ -471,7 +471,7 @@ class NavigatorSpec extends SpecBase {
             val answers =
               emptyUserAnswers
                 .set(WantPayToStartOnBirthDatePage, true).success.value
-                .set(PayStartDatePage, LocalDate.now).success.value
+                .set(PayStartDateBabyBornPage, LocalDate.now).success.value
 
             navigator.nextPage(WantPayToStartOnBirthDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
           }
@@ -479,7 +479,7 @@ class NavigatorSpec extends SpecBase {
           "to Pay Start Date when it has not already been answered" in {
 
             val answers = emptyUserAnswers.set(WantPayToStartOnBirthDatePage, false).success.value
-            navigator.nextPage(WantPayToStartOnBirthDatePage, CheckMode, answers) mustEqual routes.PayStartDateController.onPageLoad(CheckMode)
+            navigator.nextPage(WantPayToStartOnBirthDatePage, CheckMode, answers) mustEqual routes.PayStartDateBabyBornController.onPageLoad(CheckMode)
           }
         }
       }
@@ -502,7 +502,7 @@ class NavigatorSpec extends SpecBase {
             val answers =
               emptyUserAnswers
                 .set(WantPayToStartOnDueDatePage, true).success.value
-                .set(PayStartDatePage, LocalDate.now).success.value
+                .set(PayStartDateBabyBornPage, LocalDate.now).success.value
 
             navigator.nextPage(WantPayToStartOnDueDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
           }
@@ -510,7 +510,7 @@ class NavigatorSpec extends SpecBase {
           "to Pay Start Date when it has not already been answered" in {
 
             val answers = emptyUserAnswers.set(WantPayToStartOnDueDatePage, false).success.value
-            navigator.nextPage(WantPayToStartOnDueDatePage, CheckMode, answers) mustEqual routes.PayStartDateController.onPageLoad(CheckMode)
+            navigator.nextPage(WantPayToStartOnDueDatePage, CheckMode, answers) mustEqual routes.PayStartDateBabyBornController.onPageLoad(CheckMode)
           }
         }
       }

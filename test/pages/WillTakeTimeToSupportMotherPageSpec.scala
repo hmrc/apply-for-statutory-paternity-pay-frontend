@@ -47,7 +47,7 @@ class WillTakeTimeToSupportMotherPageSpec extends PageBehaviours {
           .set(NamePage, Name("first", "last")).success.value
           .set(NinoPage, arbitrary[Nino].sample.value).success.value
           .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
-          .set(PayStartDatePage, LocalDate.now).success.value
+          .set(PayStartDateBabyBornPage, LocalDate.now).success.value
           .set(WantPayToStartOnBirthDatePage, true).success.value
           .set(WantPayToStartOnDueDatePage, true).success.value
           .set(WillHaveCaringResponsibilityPage, true).success.value
@@ -70,7 +70,7 @@ class WillTakeTimeToSupportMotherPageSpec extends PageBehaviours {
       result.get(NamePage)                         must not be defined
       result.get(NinoPage)                         must not be defined
       result.get(PaternityLeaveLengthPage)         must not be defined
-      result.get(PayStartDatePage)                 must not be defined
+      result.get(PayStartDateBabyBornPage)                 must not be defined
       result.get(WantPayToStartOnBirthDatePage)    must not be defined
       result.get(WantPayToStartOnDueDatePage)      must not be defined
     }

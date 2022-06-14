@@ -18,11 +18,21 @@ package pages
 
 import java.time.LocalDate
 
-import play.api.libs.json.JsPath
+import org.scalacheck.Arbitrary
+import pages.behaviours.PageBehaviours
 
-case object PayStartDatePage extends QuestionPage[LocalDate] {
+class PayStartDateBabyBornPageSpec extends PageBehaviours {
 
-  override def path: JsPath = JsPath \ toString
+  "PayStartDatePage" - {
 
-  override def toString: String = "payStartDate"
+    implicit lazy val arbitraryLocalDate: Arbitrary[LocalDate] = Arbitrary {
+      datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2100, 1, 1))
+    }
+
+    beRetrievable[LocalDate](PayStartDateBabyBornPage)
+
+    beSettable[LocalDate](PayStartDateBabyBornPage)
+
+    beRemovable[LocalDate](PayStartDateBabyBornPage)
+  }
 }

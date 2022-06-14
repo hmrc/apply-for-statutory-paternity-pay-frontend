@@ -20,26 +20,26 @@ import java.time.format.DateTimeFormatter
 
 import controllers.routes
 import models.{CheckMode, UserAnswers}
-import pages.PayStartDatePage
+import pages.PayStartDateBabyBornPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object PayStartDateSummary  {
+object PayStartDateBabyBornSummary  {
 
   def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(PayStartDatePage).map {
+    answers.get(PayStartDateBabyBornPage).map {
       answer =>
 
         val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
         SummaryListRowViewModel(
-          key     = "payStartDate.checkYourAnswersLabel",
+          key     = "payStartDateBabyBorn.checkYourAnswersLabel",
           value   = ValueViewModel(answer.format(dateFormatter)),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.PayStartDateController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("payStartDate.change.hidden"))
+            ActionItemViewModel("site.change", routes.PayStartDateBabyBornController.onPageLoad(CheckMode).url)
+              .withVisuallyHiddenText(messages("payStartDateBabyBorn.change.hidden"))
           )
         )
     }

@@ -18,47 +18,44 @@ package controllers
 
 import base.SpecBase
 import config.Formats.dateTimeHintFormat
-import forms.PayStartDateFormProvider
+import forms.PayStartDateBabyBornFormProvider
 import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{BabyDateOfBirthPage, BabyHasBeenBornPage, PayStartDatePage}
+import pages.{BabyDateOfBirthPage, PayStartDateBabyBornPage}
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import queries.DerivePayStartDateLimits
+import queries.DerivePayStartDateLimitsBabyBorn
 import repositories.SessionRepository
-import views.html.PayStartDateView
+import views.html.PayStartDateBabyBornView
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class PayStartDateControllerSpec extends SpecBase with MockitoSugar {
+class PayStartDateBabyBornControllerSpec extends SpecBase with MockitoSugar {
 
   private val today = LocalDate.now()
 
   private val baseAnswers =
     emptyUserAnswers
-      .set(BabyHasBeenBornPage, true).success.value
       .set(BabyDateOfBirthPage, today).success.value
 
-  private val dateLimits = baseAnswers.get(DerivePayStartDateLimits(true)).value
+  private val dateLimits = baseAnswers.get(DerivePayStartDateLimitsBabyBorn).value
 
   private val dateHint = dateLimits.max.format(dateTimeHintFormat)
 
-  private val formProvider = new PayStartDateFormProvider()
+  private val formProvider = new PayStartDateBabyBornFormProvider()
   private def form = formProvider(dateLimits)
 
   def onwardRoute = Call("GET", "/foo")
 
   val validAnswer = today.plusDays(1)
 
-  lazy val payStartDateRoute = routes.PayStartDateController.onPageLoad(NormalMode).url
-
-  private val guidanceSubString = "babyBorn"
+  lazy val payStartDateRoute = routes.PayStartDateBabyBornController.onPageLoad(NormalMode).url
 
   def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, payStartDateRoute)
@@ -80,26 +77,26 @@ class PayStartDateControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val result = route(application, getRequest).value
 
-        val view = application.injector.instanceOf[PayStartDateView]
+        val view = application.injector.instanceOf[PayStartDateBabyBornView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, guidanceSubString, dateHint)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, dateHint)(getRequest, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = baseAnswers.set(PayStartDatePage, validAnswer).success.value
+      val userAnswers = baseAnswers.set(PayStartDateBabyBornPage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val view = application.injector.instanceOf[PayStartDateView]
+        val view = application.injector.instanceOf[PayStartDateBabyBornView]
 
         val result = route(application, getRequest).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, guidanceSubString, dateHint)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, dateHint)(getRequest, messages(application)).toString
       }
     }
 
@@ -136,12 +133,12 @@ class PayStartDateControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[PayStartDateView]
+        val view = application.injector.instanceOf[PayStartDateBabyBornView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, guidanceSubString, dateHint)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, dateHint)(request, messages(application)).toString
       }
     }
 

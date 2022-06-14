@@ -32,22 +32,22 @@ class WantPayToStartOnDueDatePageSpec extends PageBehaviours {
 
     "must remove Pay Start date when the answer is yes" in {
 
-      val answers = emptyUserAnswers.set(PayStartDatePage, LocalDate.now).success.value
+      val answers = emptyUserAnswers.set(PayStartDateBabyBornPage, LocalDate.now).success.value
 
       val result = answers.set(WantPayToStartOnDueDatePage, true).success.value
 
       result.get(WantPayToStartOnDueDatePage) must be(defined)
-      result.get(PayStartDatePage)            must not be defined
+      result.get(PayStartDateBabyBornPage)            must not be defined
     }
 
     "must not remove Pay Start date when the answer is no" in {
 
-      val answers = emptyUserAnswers.set(PayStartDatePage, LocalDate.now).success.value
+      val answers = emptyUserAnswers.set(PayStartDateBabyBornPage, LocalDate.now).success.value
 
       val result = answers.set(WantPayToStartOnDueDatePage, false).success.value
 
       result.get(WantPayToStartOnDueDatePage) must be(defined)
-      result.get(PayStartDatePage)            must be(defined)
+      result.get(PayStartDateBabyBornPage)            must be(defined)
     }
   }
 }

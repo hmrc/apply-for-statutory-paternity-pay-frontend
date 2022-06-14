@@ -23,29 +23,29 @@
     h1WithCaption: components.h1WithCaption
 )
 
-@(form: Form[_], mode: Mode, guidanceSubString: String, dateHint: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, dateHint: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages(s"payStartDate.$guidanceSubString.title"))) {
+@layout(pageTitle = title(form, messages(s"payStartDateBabyBorn.title"))) {
 
-    @formHelper(action = routes.PayStartDateController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.PayStartDateBabyBornController.onSubmit(mode), 'autoComplete -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))
         }
 
         @h1WithCaption(
-            content = messages("payStartDate.heading"),
+            content = messages("payStartDateBabyBorn.heading"),
             caption = messages("section.paternityDetails")
         )
 
-        <p class="govuk-body">@messages(s"payStartDate.$guidanceSubString.guidance")</p>
+        <p class="govuk-body">@messages(s"payStartDateBabyBorn.guidance")</p>
 
         @govukDateInput(
             DateViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages(s"payStartDate.$guidanceSubString.heading")).withCssClass("govuk-visually-hidden")
+                legend = LegendViewModel(messages(s"payStartDateBabyBorn.heading")).withCssClass("govuk-visually-hidden")
             )
-            .withHint(HintViewModel(messages(s"payStartDate.$guidanceSubString.hint", dateHint)))
+            .withHint(HintViewModel(messages(s"payStartDateBabyBorn.hint", dateHint)))
         )
 
         @govukButton(
