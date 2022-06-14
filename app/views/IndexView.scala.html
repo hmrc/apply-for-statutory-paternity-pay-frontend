@@ -28,7 +28,20 @@
     <h1 class="govuk-heading-xl">@messages("index.heading")</h1>
 
     <p class="govuk-body">@messages("index.guidance.p1")</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("index.guidance.bullet.1")</li>
+        <li>@messages("index.guidance.bullet.2")</li>
+    </ul>
+
     <p class="govuk-body">@messages("index.guidance.p2")</p>
+
+    <div class="govuk-inset-text">
+        @messages("index.guidance.panel.1")
+        <a href="@messages("index.guidance.panel.link.href")" class="govuk-link">@messages("index.guidance.panel.link.text")</a>
+        @messages("index.guidance.panel.2")
+    </div>
+
     <p class="govuk-body">
         @messages("index.guidance.p3")
         <a href="@messages("index.guidance.p3.link.href")" class="govuk-link">@messages("index.guidance.p3.link.text")</a>.

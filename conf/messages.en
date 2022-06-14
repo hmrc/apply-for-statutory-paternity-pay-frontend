@@ -37,14 +37,20 @@ error.summary.title = There is a problem
 
 index.title = Ask your employer for Statutory Paternity Pay
 index.heading = Ask your employer for Statutory Paternity Pay
-index.guidance.p1 = If you want to take time off work to support the mother of the baby or look after the baby you may be entitled to Statutory Paternity Pay (SPP) and one or two weeks of paternity pay.
+index.guidance.p1 = If you want to take time off work to support the mother of the baby or look after the baby you may be entitled to:
+index.guidance.bullet.1 = Statutory Paternity Pay (SPP)
+index.guidance.bullet.2 = one or two weeks of paternity pay.
 index.guidance.p2 = You may use this form to ask your employer for Statutory Sick Pay (SPP).
+index.guidance.panel.1 = Use the
+index.guidance.panel.link.text = paternity planner
+index.guidance.panel.link.href = #
+index.guidance.panel.2 = to find out when you need to claim Paternity Leave by.
 index.guidance.p3 = You can find out more about SPP and your eligibility on the
 index.guidance.p3.link.text = Paternity and pay guidance page
 index.guidance.p3.link.href = #
 index.guidance.beforeYouStart.heading = Before you start
 index.guidance.beforeYouStart.p1 = You can only start paternity leave after the child is born.
-index.guidance.beforeYouStart.p2 = You should discuss your pay and leave plans with your employer and tell them what time you want off by the qualifying week. The qualifying week starts at the end of the 15th week before the baby is due.
+index.guidance.beforeYouStart.p2 = You should discuss your pay and leave plans with your employer by the qualifying week. The qualifying week is the end of the 15th week before the baby is due.
 index.guidance.beforeYouStart.p3 = Once you have completed the form, you will need to download it and send a copy to your employer. If you are sending it in the post, you will need a printer.
 
 checkYourAnswers.title = Check Your Answers
@@ -130,14 +136,12 @@ isBiologicalFather.change.hidden = if you are the child’s biological father
 
 isCohabiting.title = Do you live with the mother and child in an enduring family relationship?
 isCohabiting.heading = Do you live with the mother and child in an enduring family relationship?
-isCohabiting.hint = This includes mothers that are having a child through a surrogacy arrangement.
 isCohabiting.checkYourAnswersLabel = Do you live with the mother and child in an enduring family relationship?
 isCohabiting.error.required = Select yes if you live with the mother and child in an enduring family relationship
 isCohabiting.change.hidden = if you live with the mother and child in an enduring family relationship
 
 isInQualifyingRelationship.title = Are you in a marriage or civil partnership with the child’s mother?
 isInQualifyingRelationship.heading = Are you in a marriage or civil partnership with the child’s mother?
-isInQualifyingRelationship.hint = This includes mothers that are having a child through a surrogacy arrangement.
 isInQualifyingRelationship.checkYourAnswersLabel = Are you in a marriage or civil partnership with the child’s mother?
 isInQualifyingRelationship.error.required = Select yes if you are in a marriage or civil partnership with the child’s mother
 isInQualifyingRelationship.change.hidden = if you are in a marriage or civil partnership with the child’s mother
@@ -228,8 +232,9 @@ nino.change.hidden = your National Insurance number
 cannotApplyAdopting.title = You must use a different form to claim Statutory Paternity Pay
 cannotApplyAdopting.heading = You must use a different form to claim Statutory Paternity Pay
 
-isAdopting.title = Are you or a partner adopting the child?
-isAdopting.heading = Are you or a partner adopting the child?
-isAdopting.checkYourAnswersLabel = Are you or a partner adopting the child?
-isAdopting.error.required = Select yes if you or a partner are adopting the child
-isAdopting.change.hidden = if you or a partner are adopting the child
+isAdopting.title = Are you or a partner becoming adoptive or parental order parents?
+isAdopting.heading = Are you or a partner becoming adoptive or parental order parents?
+isAdopting.hint = A parental order is when a person who is part of a couple has a child through a surrogacy arrangement.
+isAdopting.checkYourAnswersLabel = Are you or a partner becoming adoptive or parental order parents?
+isAdopting.error.required = Select yes if you or a partner are becoming adoptive or parental order parents
+isAdopting.change.hidden = if you or a partner are becoming adoptive or parental order parents
