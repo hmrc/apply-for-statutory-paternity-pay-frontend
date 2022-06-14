@@ -41,7 +41,7 @@ class Navigator @Inject()() {
     case BabyDueDatePage                  => _ => routes.WantPayToStartOnDueDateController.onPageLoad(NormalMode)
     case WantPayToStartOnBirthDatePage    => wantPayToStartOnBirthDateRoute
     case WantPayToStartOnDueDatePage      => wantPayToStartOnDueDateRoute
-    case PayStartDatePage                 => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+    case PayStartDateBabyBornPage                 => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
     case PaternityLeaveLengthPage         => _ => routes.CheckYourAnswersController.onPageLoad
     case _                                => _ => routes.IndexController.onPageLoad
   }
@@ -97,13 +97,13 @@ class Navigator @Inject()() {
   private def wantPayToStartOnBirthDateRoute(answers: UserAnswers): Call =
     answers.get(WantPayToStartOnBirthDatePage).map {
       case true  => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
-      case false => routes.PayStartDateController.onPageLoad(NormalMode)
+      case false => routes.PayStartDateBabyBornController.onPageLoad(NormalMode)
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   private def wantPayToStartOnDueDateRoute(answers: UserAnswers): Call =
     answers.get(WantPayToStartOnDueDatePage).map {
       case true  => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
-      case false => routes.PayStartDateController.onPageLoad(NormalMode)
+      case false => routes.PayStartDateBabyDueController.onPageLoad(NormalMode)
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   private val checkRouteMap: Page => UserAnswers => Call = {
@@ -189,14 +189,14 @@ class Navigator @Inject()() {
       .getOrElse(routes.WantPayToStartOnDueDateController.onPageLoad(CheckMode))
 
   private def wantPayToStartOnBirthDateCheckRoute(answers: UserAnswers): Call =
-    (answers.get(WantPayToStartOnBirthDatePage), answers.get(PayStartDatePage)) match {
-      case (Some(false), None) => routes.PayStartDateController.onPageLoad(CheckMode)
+    (answers.get(WantPayToStartOnBirthDatePage), answers.get(PayStartDateBabyBornPage)) match {
+      case (Some(false), None) => routes.PayStartDateBabyBornController.onPageLoad(CheckMode)
       case _                   => routes.CheckYourAnswersController.onPageLoad
     }
 
   private def wantPayToStartOnDueDateCheckRoute(answers: UserAnswers): Call =
-    (answers.get(WantPayToStartOnDueDatePage), answers.get(PayStartDatePage)) match {
-      case (Some(false), None) => routes.PayStartDateController.onPageLoad(CheckMode)
+    (answers.get(WantPayToStartOnDueDatePage), answers.get(PayStartDateBabyBornPage)) match {
+      case (Some(false), None) => routes.PayStartDateBabyDueController.onPageLoad(CheckMode)
       case _                   => routes.CheckYourAnswersController.onPageLoad
     }
 

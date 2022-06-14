@@ -15,37 +15,37 @@
  *@
 
 @this(
-    layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    govukErrorSummary: GovukErrorSummary,
-    govukDateInput: GovukDateInput,
-    govukButton: GovukButton,
-    h1WithCaption: components.h1WithCaption
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukDateInput: GovukDateInput,
+        govukButton: GovukButton,
+        h1WithCaption: components.h1WithCaption
 )
 
-@(form: Form[_], mode: Mode, guidanceSubString: String, dateHint: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, dateHint: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages(s"payStartDate.$guidanceSubString.title"))) {
+@layout(pageTitle = title(form, messages(s"payStartDateBabyDue.title"))) {
 
-    @formHelper(action = routes.PayStartDateController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.PayStartDateBabyDueController.onSubmit(mode), 'autoComplete -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))
         }
 
         @h1WithCaption(
-            content = messages("payStartDate.heading"),
+            content = messages("payStartDateBabyDue.heading"),
             caption = messages("section.paternityDetails")
         )
 
-        <p class="govuk-body">@messages(s"payStartDate.$guidanceSubString.guidance")</p>
+        <p class="govuk-body">@messages(s"payStartDateBabyDue.guidance")</p>
 
         @govukDateInput(
             DateViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages(s"payStartDate.$guidanceSubString.heading")).withCssClass("govuk-visually-hidden")
+                legend = LegendViewModel(messages(s"payStartDateBabyDue.heading")).withCssClass("govuk-visually-hidden")
             )
-            .withHint(HintViewModel(messages(s"payStartDate.$guidanceSubString.hint", dateHint)))
+                    .withHint(HintViewModel(messages(s"payStartDateBabyDue.hint", dateHint)))
         )
 
         @govukButton(

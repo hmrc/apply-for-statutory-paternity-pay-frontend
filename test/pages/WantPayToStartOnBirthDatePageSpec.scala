@@ -30,24 +30,24 @@ class WantPayToStartOnBirthDatePageSpec extends PageBehaviours {
 
     beRemovable[Boolean](WantPayToStartOnBirthDatePage)
 
-    "must remove Pay Start date when the answer is yes" in {
+    "must remove Pay Start Date Baby Born when the answer is yes" in {
 
-      val answers = emptyUserAnswers.set(PayStartDatePage, LocalDate.now).success.value
+      val answers = emptyUserAnswers.set(PayStartDateBabyBornPage, LocalDate.now).success.value
 
       val result = answers.set(WantPayToStartOnBirthDatePage, true).success.value
 
       result.get(WantPayToStartOnBirthDatePage) must be(defined)
-      result.get(PayStartDatePage)              must not be defined
+      result.get(PayStartDateBabyBornPage)      must not be defined
     }
 
-    "must not remove Pay Start date when the answer is no" in {
+    "must not remove Pay Start Date Baby Born when the answer is no" in {
 
-      val answers = emptyUserAnswers.set(PayStartDatePage, LocalDate.now).success.value
+      val answers = emptyUserAnswers.set(PayStartDateBabyBornPage, LocalDate.now).success.value
 
       val result = answers.set(WantPayToStartOnBirthDatePage, false).success.value
 
       result.get(WantPayToStartOnBirthDatePage) must be(defined)
-      result.get(PayStartDatePage)              must be(defined)
+      result.get(PayStartDateBabyBornPage)      must be(defined)
     }
   }
 }

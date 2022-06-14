@@ -14,25 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package queries
+
+import models.PayStartDateLimits
+import pages.BabyDateOfBirthPage
+import play.api.libs.json.JsPath
 
 import java.time.LocalDate
 
-import org.scalacheck.Arbitrary
-import pages.behaviours.PageBehaviours
+case object DerivePayStartDateLimitsBabyBorn extends Derivable[LocalDate, PayStartDateLimits] {
 
-class PayStartDatePageSpec extends PageBehaviours {
+  override val derive: LocalDate => PayStartDateLimits =
+    date => PayStartDateLimits(date.plusDays(1), date.plusWeeks(8))
 
-  "PayStartDatePage" - {
-
-    implicit lazy val arbitraryLocalDate: Arbitrary[LocalDate] = Arbitrary {
-      datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2100, 1, 1))
-    }
-
-    beRetrievable[LocalDate](PayStartDatePage)
-
-    beSettable[LocalDate](PayStartDatePage)
-
-    beRemovable[LocalDate](PayStartDatePage)
-  }
+  override def path: JsPath = BabyDateOfBirthPage.path
 }

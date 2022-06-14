@@ -14,22 +14,8 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import models.UserAnswers
-import play.api.libs.json.JsPath
+import java.time.LocalDate
 
-import scala.util.Try
-
-case object WantPayToStartOnDueDatePage extends QuestionPage[Boolean] {
-
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "wantPayToStartOnDueDate"
-
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
-    value.map {
-      case true  => userAnswers.remove(PayStartDateBabyDuePage)
-      case false => super.cleanup(value, userAnswers)
-    }.getOrElse(super.cleanup(value, userAnswers))
-}
+case class PayStartDateLimits(min: LocalDate, max: LocalDate)

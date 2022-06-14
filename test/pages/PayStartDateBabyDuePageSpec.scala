@@ -16,20 +16,23 @@
 
 package pages
 
-import models.UserAnswers
-import play.api.libs.json.JsPath
+import java.time.LocalDate
 
-import scala.util.Try
+import org.scalacheck.Arbitrary
+import pages.behaviours.PageBehaviours
 
-case object WantPayToStartOnDueDatePage extends QuestionPage[Boolean] {
+class PayStartDateBabyDuePageSpec extends PageBehaviours {
 
-  override def path: JsPath = JsPath \ toString
+  "PayStartDatePage" - {
 
-  override def toString: String = "wantPayToStartOnDueDate"
+    implicit lazy val arbitraryLocalDate: Arbitrary[LocalDate] = Arbitrary {
+      datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2100, 1, 1))
+    }
 
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
-    value.map {
-      case true  => userAnswers.remove(PayStartDateBabyDuePage)
-      case false => super.cleanup(value, userAnswers)
-    }.getOrElse(super.cleanup(value, userAnswers))
+    beRetrievable[LocalDate](PayStartDateBabyDuePage)
+
+    beSettable[LocalDate](PayStartDateBabyDuePage)
+
+    beRemovable[LocalDate](PayStartDateBabyDuePage)
+  }
 }

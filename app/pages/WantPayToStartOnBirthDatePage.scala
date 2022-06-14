@@ -29,7 +29,7 @@ case object WantPayToStartOnBirthDatePage extends QuestionPage[Boolean] {
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     value.map {
-      case true  => userAnswers.remove(PayStartDatePage)
+      case true  => userAnswers.remove(PayStartDateBabyBornPage)
       case false => super.cleanup(value, userAnswers)
     }.getOrElse(super.cleanup(value, userAnswers))
 }

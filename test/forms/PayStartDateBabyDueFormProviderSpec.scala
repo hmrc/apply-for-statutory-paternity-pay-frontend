@@ -18,15 +18,14 @@ package forms
 
 import config.Formats.dateTimeFormat
 import forms.behaviours.DateBehaviours
+import models.PayStartDateLimits
 import play.api.data.FormError
-import queries.PayStartDateLimits
 
 import java.time.LocalDate
 
-class PayStartDateFormProviderSpec extends DateBehaviours {
+class PayStartDateBabyDueFormProviderSpec extends DateBehaviours {
 
-  private val today = LocalDate.now()
-  private val formProvider = new PayStartDateFormProvider()
+  private val formProvider = new PayStartDateBabyDueFormProvider()
   private val minDate = LocalDate.of(2000, 1, 1)
   private val maxDate = LocalDate.of(2100, 1, 1)
   private val dateLimits = PayStartDateLimits(minDate, maxDate)
@@ -42,20 +41,20 @@ class PayStartDateFormProviderSpec extends DateBehaviours {
 
     behave like dateField(form, "value", validData)
 
-    behave like mandatoryDateField(form, "value", "payStartDate.error.required.all")
+    behave like mandatoryDateField(form, "value", "payStartDateBabyDue.error.required.all")
 
     behave like dateFieldWithMin(
       form,
       "value",
       minDate,
-      FormError("value", "payStartDate.error.belowMinimum", Seq(minDate.format(dateTimeFormat)))
+      FormError("value", "payStartDateBabyDue.error.belowMinimum", Seq(minDate.format(dateTimeFormat)))
     )
 
     behave like dateFieldWithMax(
       form,
       "value",
       maxDate,
-      FormError("value", "payStartDate.error.aboveMaximum", Seq(maxDate.format(dateTimeFormat)))
+      FormError("value", "payStartDateBabyDue.error.aboveMaximum", Seq(maxDate.format(dateTimeFormat)))
     )
   }
 }
