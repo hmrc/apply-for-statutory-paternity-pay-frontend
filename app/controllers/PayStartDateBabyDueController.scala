@@ -18,56 +18,56 @@ package controllers
 
 import config.Formats.dateTimeHintFormat
 import controllers.actions._
-import forms.PayStartDateBabyBornFormProvider
+import forms.PayStartDateBabyDueFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.PayStartDateBabyBornPage
+import pages.PayStartDateBabyDuePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import queries.DerivePayStartDateLimitsBabyBorn
+import queries.DerivePayStartDateLimitsBabyDue
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.PayStartDateBabyBornView
+import views.html.PayStartDateBabyDueView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class PayStartDateBabyBornController @Inject()(
+class PayStartDateBabyDueController @Inject()(
                                                 override val messagesApi: MessagesApi,
                                                 sessionRepository: SessionRepository,
                                                 navigator: Navigator,
                                                 identify: IdentifierAction,
                                                 getData: DataRetrievalAction,
                                                 requireData: DataRequiredAction,
-                                                formProvider: PayStartDateBabyBornFormProvider,
+                                                formProvider: PayStartDateBabyDueFormProvider,
                                                 val controllerComponents: MessagesControllerComponents,
-                                                view: PayStartDateBabyBornView
-                                      )(implicit ec: ExecutionContext)
+                                                view: PayStartDateBabyDueView
+                                              )(implicit ec: ExecutionContext)
   extends FrontendBaseController
     with I18nSupport
     with AnswerExtractor {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      getAnswer(DerivePayStartDateLimitsBabyBorn) {
+      getAnswer(DerivePayStartDateLimitsBabyDue) {
         payStartDateLimits =>
 
           val hintDate = payStartDateLimits.max.format(dateTimeHintFormat)
           val form     = formProvider(payStartDateLimits)
 
-          val preparedForm = request.userAnswers.get(PayStartDateBabyBornPage) match {
+          val preparedForm = request.userAnswers.get(PayStartDateBabyDuePage) match {
             case None => form
             case Some(value) => form.fill(value)
           }
 
           Ok(view(preparedForm, mode, hintDate))
-        }
       }
+  }
 
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      getAnswerAsync(DerivePayStartDateLimitsBabyBorn) {
+      getAnswerAsync(DerivePayStartDateLimitsBabyDue) {
         payStartDateLimits =>
 
           val hintDate = payStartDateLimits.max.format(dateTimeHintFormat)
@@ -79,9 +79,9 @@ class PayStartDateBabyBornController @Inject()(
 
             value =>
               for {
-                updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDateBabyBornPage, value))
+                updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDateBabyDuePage, value))
                 _ <- sessionRepository.set(updatedAnswers)
-              } yield Redirect(navigator.nextPage(PayStartDateBabyBornPage, mode, updatedAnswers))
+              } yield Redirect(navigator.nextPage(PayStartDateBabyDuePage, mode, updatedAnswers))
           )
       }
   }

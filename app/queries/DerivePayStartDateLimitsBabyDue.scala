@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package pages
+package queries
 
-import java.time.LocalDate
-
+import models.PayStartDateLimits
+import pages.BabyDueDatePage
 import play.api.libs.json.JsPath
 
-case object PayStartDateBabyBornPage extends QuestionPage[LocalDate] {
+import java.time.DayOfWeek.SUNDAY
+import java.time.LocalDate
+import java.time.temporal.TemporalAdjusters.next
 
-  override def path: JsPath = JsPath \ toString
+case object DerivePayStartDateLimitsBabyDue extends Derivable[LocalDate, PayStartDateLimits] {
 
-  override def toString: String = "payStartDateBabyBorn"
+  override val derive: LocalDate => PayStartDateLimits =
+    date => PayStartDateLimits(date.plusDays(1), date.plusWeeks(8).`with`(next(SUNDAY)))
+
+  override def path: JsPath = BabyDueDatePage.path
 }

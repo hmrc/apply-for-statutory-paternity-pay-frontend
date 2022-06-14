@@ -70,6 +70,11 @@ POST       /payStartDateBabyBorn                  controllers.PayStartDateBabyBo
 GET        /changePayStartDateBabyBorn                        controllers.PayStartDateBabyBornController.onPageLoad(mode: Mode = CheckMode)
 POST       /changePayStartDateBabyBorn                        controllers.PayStartDateBabyBornController.onSubmit(mode: Mode = CheckMode)
 
+GET        /payStartDateBabyDue                  controllers.PayStartDateBabyDueController.onPageLoad(mode: Mode = NormalMode)
+POST       /payStartDateBabyDue                  controllers.PayStartDateBabyDueController.onSubmit(mode: Mode = NormalMode)
+GET        /changePayStartDateBabyDue                        controllers.PayStartDateBabyDueController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePayStartDateBabyDue                        controllers.PayStartDateBabyDueController.onSubmit(mode: Mode = CheckMode)
+
 GET        /wantPayToStartOnBirthDate                        controllers.WantPayToStartOnBirthDateController.onPageLoad(mode: Mode = NormalMode)
 POST       /wantPayToStartOnBirthDate                        controllers.WantPayToStartOnBirthDateController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWantPayToStartOnBirthDate                  controllers.WantPayToStartOnBirthDateController.onPageLoad(mode: Mode = CheckMode)
