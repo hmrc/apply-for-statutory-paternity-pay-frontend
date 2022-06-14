@@ -47,12 +47,14 @@ class WillTakeTimeToSupportMotherPageSpec extends PageBehaviours {
           .set(NamePage, Name("first", "last")).success.value
           .set(NinoPage, arbitrary[Nino].sample.value).success.value
           .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
+          .set(WantPayToStartOnBirthDatePage, false).success.value
+          .set(WantPayToStartOnDueDatePage, false).success.value
           .set(PayStartDateBabyBornPage, LocalDate.now).success.value
-          .set(WantPayToStartOnBirthDatePage, true).success.value
-          .set(WantPayToStartOnDueDatePage, true).success.value
+          .set(PayStartDateBabyDuePage, LocalDate.now).success.value
           .set(WillHaveCaringResponsibilityPage, true).success.value
-          .set(WillTakeTimeToCareForChildPage, false).success.value
+          .set(WillTakeTimeToCareForChildPage, true).success.value
           .set(WillTakeTimeToSupportMotherPage, true).success.value
+
 
       val result = answers.set(WillTakeTimeToSupportMotherPage, false).success.value
 
@@ -70,7 +72,8 @@ class WillTakeTimeToSupportMotherPageSpec extends PageBehaviours {
       result.get(NamePage)                         must not be defined
       result.get(NinoPage)                         must not be defined
       result.get(PaternityLeaveLengthPage)         must not be defined
-      result.get(PayStartDateBabyBornPage)                 must not be defined
+      result.get(PayStartDateBabyBornPage)         must not be defined
+      result.get(PayStartDateBabyDuePage)          must not be defined
       result.get(WantPayToStartOnBirthDatePage)    must not be defined
       result.get(WantPayToStartOnDueDatePage)      must not be defined
     }
