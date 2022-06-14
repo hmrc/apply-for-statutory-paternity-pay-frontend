@@ -40,6 +40,6 @@ case object BabyHasBeenBornPage extends QuestionPage[Boolean] {
           .remove(BabyDateOfBirthPage)
           .flatMap(_.remove(WantPayToStartOnBirthDatePage))
           .flatMap(_.remove(PayStartDateBabyBornPage))
-        
+
     }.getOrElse(super.cleanup(value, userAnswers))
 }
