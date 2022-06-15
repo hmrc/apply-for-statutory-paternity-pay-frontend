@@ -37,6 +37,7 @@ case object WillHaveCaringResponsibilityPage extends QuestionPage[Boolean] {
         .flatMap(_.remove(NinoPage))
         .flatMap(_.remove(PaternityLeaveLengthPage))
         .flatMap(_.remove(PayStartDateBabyBornPage))
+        .flatMap(_.remove(PayStartDateBabyDuePage))
         .flatMap(_.remove(WantPayToStartOnBirthDatePage))
         .flatMap(_.remove(WantPayToStartOnDueDatePage))
         .flatMap(_.remove(WillTakeTimeToCareForChildPage))
