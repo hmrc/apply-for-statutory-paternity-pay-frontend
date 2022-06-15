@@ -211,11 +211,16 @@ class NavigatorSpec extends SpecBase {
           navigator.nextPage(WantPayToStartOnDueDatePage, NormalMode, answers) mustEqual routes.PayStartDateBabyDueController.onPageLoad(NormalMode)
         }
       }
-      "must go from Pay Start Date to Paternity Leave Length" in {
+
+      "must go from Pay Start Date Baby Born to Paternity Leave Length" in {
 
         navigator.nextPage(PayStartDateBabyBornPage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
       }
 
+      "must go from Pay Start Date Baby Due to Paternity Leave Length" in {
+
+        navigator.nextPage(PayStartDateBabyDuePage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+      }
 
       "must go from Paternity Leave Length to Check Answers" in {
 
