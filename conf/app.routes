@@ -37,8 +37,9 @@ POST       /change-if-the-baby-has-been-born                controllers.BabyHasB
 
 GET        /you-are-not-eligible                                controllers.CannotApplyController.onPageLoad()
 
-GET        /print-form                                  controllers.ConfirmationController.onPageLoad()
+GET        /next-steps                                  controllers.ConfirmationController.onPageLoad()
 GET        /start-again                                 controllers.ConfirmationController.startAgain()
+GET        /print-form                                  controllers.PrintController.onDownload
 
 GET        /are-you-the-biological-father                           controllers.IsBiologicalFatherController.onPageLoad(mode: Mode = NormalMode)
 POST       /are-you-the-biological-father                           controllers.IsBiologicalFatherController.onSubmit(mode: Mode = NormalMode)

@@ -16,6 +16,7 @@
 
 package models
 
+import models.JourneyModel.BirthDetails
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{EitherValues, OptionValues, TryValues}
@@ -227,6 +228,68 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         errors must contain (
           CannotApplyPage
         )
+      }
+    }
+  }
+
+  "BirthDetails" - {
+
+    ".resolvedStartDate" - {
+
+      "Due" - {
+
+        val dueDate = LocalDate.of(2000, 2, 1)
+        val startDate = LocalDate.of(2001, 2, 1)
+
+        "must return the due date if the user wants their paternity to start from due date" in {
+          val model = BirthDetails.Due(
+            dueDate = dueDate, payShouldStartFromDueDate = true, payStartDate = Some(startDate)
+          )
+          model.resolvedStartDate mustEqual dueDate
+        }
+
+        "must return the payStartDate if the user doesn't want their paternity to start from the due date" in {
+          val model = BirthDetails.Due(
+            dueDate = dueDate, payShouldStartFromDueDate = false, payStartDate = Some(startDate)
+          )
+          model.resolvedStartDate mustEqual startDate
+        }
+
+        "must fail if the user doesn't want their paternity to start from the due date but there is no pay start date given" in {
+          val model = BirthDetails.Due(
+            dueDate = dueDate, payShouldStartFromDueDate = false, payStartDate = None
+          )
+          val error = intercept[Throwable](model.resolvedStartDate)
+          error.getMessage mustEqual "Invalid data given"
+        }
+      }
+
+      "AlreadyBorn" - {
+
+        val birthDate = LocalDate.of(2000, 2, 1)
+        val startDate = LocalDate.of(2001, 2, 1)
+
+        "must return the birth date if the user wants their paternity to start from the birth date" in {
+          val model = BirthDetails.AlreadyBorn(
+            birthDate = birthDate, payShouldStartFromBirthDay = true, payStartDate = Some(startDate)
+          )
+          model.resolvedStartDate mustEqual birthDate
+        }
+
+        "must return the payStartDate if the user doesn't want their paternity to start from the birth date" in {
+          val model = BirthDetails.AlreadyBorn(
+            birthDate = birthDate, payShouldStartFromBirthDay = false, payStartDate = Some(startDate)
+          )
+          model.resolvedStartDate mustEqual startDate
+        }
+
+        "must fail if the user doesn't want their paternity to start from the birth date but there is no pay start date given" in {
+          val model = BirthDetails.AlreadyBorn(
+            birthDate = birthDate, payShouldStartFromBirthDay = false, payStartDate = None
+          )
+          val error = intercept[Throwable](model.resolvedStartDate)
+          error.getMessage mustEqual "Invalid data given"
+        }
       }
     }
   }

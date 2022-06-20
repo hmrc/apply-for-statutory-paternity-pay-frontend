@@ -1,0 +1,279 @@
+@*
+* Copyright 2022 HM Revenue & Customs
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*@
+
+@import java.time.LocalDate
+
+@this()
+
+@(model: JourneyModel)(implicit request: RequestHeader, messages: Messages)
+
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:fox="http://xmlgraphics.apache.org/fop/extensions" font-family="sans-serif">
+
+    <fo:layout-master-set>
+        <fo:simple-page-master master-name="main" page-height="297mm" page-width="210mm" margin="2cm">
+            <fo:region-body region-name="xsl-region-body" margin-top="3cm"/>
+            <fo:region-before region-name="xsl-region-before"/>
+            <fo:region-after region-name="xsl-region-after"/>
+        </fo:simple-page-master>
+    </fo:layout-master-set>
+
+    <fo:page-sequence master-reference="main">
+
+        <!-- Header -->
+        <fo:static-content flow-name="xsl-region-before">
+            <fo:block>
+                <fo:external-graphic src="url(conf/resources/logo.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
+                <fo:block margin-left="3cm" margin-top="-1.25cm" text-align="right" font-size="16pt" font-weight="bold">@messages("pdf.title")</fo:block>
+            </fo:block>
+        </fo:static-content>
+
+        <!-- Body -->
+        <fo:flow flow-name="xsl-region-body">
+            <fo:block-container>
+
+                <fo:block-container>
+                    <!-- Personal details -->
+                    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.personalDetails")</fo:block>
+
+                    <!-- Name -->
+                    <fo:block-container>
+                        <fo:block-container margin-bottom="3mm">
+                            <fo:block>
+                                <fo:inline font-weight="bold">@messages("pdf.name"): </fo:inline>
+                                <fo:inline>@model.name.firstName @model.name.lastName</fo:inline>
+                            </fo:block>
+                        </fo:block-container>
+                    </fo:block-container>
+
+                    <!-- NINO -->
+                    <fo:block>
+                        <fo:block-container margin-bottom="3mm">
+                            <fo:block>
+                                <fo:inline font-weight="bold">@messages("pdf.nino"): </fo:inline>
+                                <fo:inline>@model.nino.value</fo:inline>
+                            </fo:block>
+                        </fo:block-container>
+                    </fo:block>
+
+                </fo:block-container>
+
+                <fo:block-container margin-top="8mm">
+                    <!-- Baby details -->
+                    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.babyDetails")</fo:block>
+
+                    <!-- Has the baby been born yet? -->
+                    <fo:block-container>
+                        <fo:block-container margin-bottom="3mm">
+                            <fo:block>
+                                <fo:inline font-weight="bold">@messages("babyHasBeenBorn.heading"): </fo:inline>
+                                <fo:inline>@messages(s"pdf.boolean.${model.hasTheBabyBeenBorn}")</fo:inline>
+                            </fo:block>
+                        </fo:block-container>
+                    </fo:block-container>
+
+                    @model.birthDetails match {
+                        case JourneyModel.BirthDetails.Due(dueDate, _, _) => {
+                            <!-- Due date -->
+                            <fo:block-container>
+                                <fo:block-container margin-bottom="3mm">
+                                    <fo:block>
+                                        <fo:inline font-weight="bold">@messages("babyDueDate.heading"): </fo:inline>
+                                        <fo:inline>@govUkDateFormat(dueDate)</fo:inline>
+                                    </fo:block>
+                                </fo:block-container>
+                            </fo:block-container>
+                        }
+                        case JourneyModel.BirthDetails.AlreadyBorn(birthDate, _, _) => {
+                            <!-- Birth date -->
+                            <fo:block-container>
+                                <fo:block-container margin-bottom="3mm">
+                                    <fo:block>
+                                        <fo:inline font-weight="bold">@messages("babyDateOfBirth.heading"): </fo:inline>
+                                        <fo:inline>@govUkDateFormat(birthDate)</fo:inline>
+                                    </fo:block>
+                                </fo:block-container>
+                            </fo:block-container>
+                        }
+                    }
+
+                </fo:block-container>
+
+                <fo:block-container margin-top="8mm">
+                    <!-- Relationship with child -->
+                    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.relationship")</fo:block>
+
+                    <!-- Biological father -->
+                    <fo:block-container>
+                        <fo:block-container margin-bottom="3mm">
+                            <fo:block>
+                                <fo:inline font-weight="bold">@messages("isBiologicalFather.heading"): </fo:inline>
+                                <fo:inline>@messages(s"pdf.boolean.${model.eligibility.biologicalFather}")</fo:inline>
+                            </fo:block>
+                        </fo:block-container>
+                    </fo:block-container>
+
+                    <!-- In relationship with mother -->
+                    @model.eligibility.inRelationshipWithMother.map { inRelationshipWithMother =>
+                    <fo:block-container>
+                        <fo:block-container margin-bottom="3mm">
+                            <fo:block>
+                                <fo:inline font-weight="bold">@messages("isInQualifyingRelationship.heading"): </fo:inline>
+                                <fo:inline>@messages(s"pdf.boolean.${inRelationshipWithMother}")</fo:inline>
+                            </fo:block>
+                        </fo:block-container>
+                    </fo:block-container>
+                    }
+
+                    <!-- Cohabiting with mother -->
+                    @model.eligibility.livingWithMother.map { livingWithMother =>
+                    <fo:block-container>
+                        <fo:block-container margin-bottom="3mm">
+                            <fo:block>
+                                <fo:inline font-weight="bold">@messages("isCohabiting.heading"): </fo:inline>
+                                <fo:inline>@messages(s"pdf.boolean.${livingWithMother}")</fo:inline>
+                            </fo:block>
+                        </fo:block-container>
+                    </fo:block-container>
+                    }
+
+                    <!-- Responsibility for child -->
+                    <fo:block-container>
+                        <fo:block-container margin-bottom="3mm">
+                            <fo:block>
+                                <fo:inline font-weight="bold">@messages("willHaveCaringResponsibility.heading"): </fo:inline>
+                                <fo:inline>@messages(s"pdf.boolean.${model.eligibility.responsibilityForChild}")</fo:inline>
+                            </fo:block>
+                        </fo:block-container>
+                    </fo:block-container>
+
+                    <!-- Time off to care for child -->
+                    <fo:block-container>
+                        <fo:block-container margin-bottom="3mm">
+                            <fo:block>
+                                <fo:inline font-weight="bold">@messages("willTakeTimeToCareForChild.heading"): </fo:inline>
+                                <fo:inline>@messages(s"pdf.boolean.${model.eligibility.timeOffToCareForChild}")</fo:inline>
+                            </fo:block>
+                        </fo:block-container>
+                    </fo:block-container>
+
+                    <!-- Time off to care for child -->
+                    @model.eligibility.timeOffToSupportMother.map { timeOffToSupportMother =>
+                    <fo:block-container>
+                        <fo:block-container margin-bottom="3mm">
+                            <fo:block>
+                                <fo:inline font-weight="bold">@messages("willTakeTimeToSupportMother.heading"): </fo:inline>
+                                <fo:inline>@messages(s"pdf.boolean.${timeOffToSupportMother}")</fo:inline>
+                            </fo:block>
+                        </fo:block-container>
+                    </fo:block-container>
+                    }
+
+                </fo:block-container>
+
+
+                <fo:block-container margin-top="8mm">
+                    <!-- Paternity details -->
+                    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.paternityDetails")</fo:block>
+
+                    <!-- Pay start date -->
+                    <fo:block-container>
+                        <fo:block-container margin-bottom="3mm">
+                            <fo:block>
+                                <fo:inline font-weight="bold">@messages("pdf.payStartDate"): </fo:inline>
+                                <fo:inline>@govUkDateFormat(model.birthDetails.resolvedStartDate)</fo:inline>
+                            </fo:block>
+                        </fo:block-container>
+                    </fo:block-container>
+
+                    <!-- Paternity length -->
+                    <fo:block-container>
+                        <fo:block-container margin-bottom="3mm">
+                            <fo:block>
+                                <fo:inline font-weight="bold">@messages("pdf.paternityLength"): </fo:inline>
+                                <fo:inline>@messages(s"paternityLeaveLength.${model.howLongWillYouBeOnLeave}")</fo:inline>
+                            </fo:block>
+                        </fo:block-container>
+                    </fo:block-container>
+
+                </fo:block-container>
+
+            </fo:block-container>
+
+            <fo:block keep-together="always" margin-top="8mm">
+                <fo:block margin-bottom="2mm" font-weight="bold" font-size="18pt">@messages("pdf.declaration")</fo:block>
+                <fo:block margin-bottom="4mm">@messages("pdf.declaration.declaration")</fo:block>
+                <fo:block font-weight="bold" margin-bottom="1mm">@messages("pdf.declaration.signature")</fo:block>
+
+                <fo:block margin-right="6cm" padding-top="1.5cm" margin-bottom="4mm" border="0.5mm solid black"> </fo:block>
+
+                <fo:block font-weight="bold" margin-bottom="1mm">@messages("pdf.declaration.date")</fo:block>
+
+                <fo:block margin-top="2mm">
+                    <fo:inline>@messages("date.day")</fo:inline>
+                    <fo:inline padding-left="2.5cm">@messages("date.month")</fo:inline>
+                    <fo:inline padding-left="2.2cm">@messages("date.year")</fo:inline>
+                </fo:block>
+
+                <fo:block margin-top="0.9cm">
+                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">D</fo:inline>
+                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">D</fo:inline>
+                    <fo:inline padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">/</fo:inline>
+
+                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">M</fo:inline>
+                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">M</fo:inline>
+                    <fo:inline padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">/</fo:inline>
+
+                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
+                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
+                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
+                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
+                </fo:block>
+
+            </fo:block>
+        </fo:flow>
+
+    </fo:page-sequence>
+
+    <fo:page-sequence master-reference="main">
+
+        <!-- Header -->
+        <fo:static-content flow-name="xsl-region-before">
+            <fo:block>
+                <fo:external-graphic src="url(conf/resources/logo.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
+                <fo:block margin-left="3cm" margin-top="-1.25cm" text-align="right" font-size="16pt" font-weight="bold">@messages("pdf.title")</fo:block>
+            </fo:block>
+        </fo:static-content>
+
+        <!-- Instructions -->
+        <fo:flow flow-name="xsl-region-body">
+            <fo:block-container>
+
+                <fo:block margin-bottom="8mm">
+                    <fo:block font-weight="bold">@messages("pdf.whatToDoNow.heading")</fo:block>
+                    <fo:inline>@messages("pdf.whatToDoNow.p")</fo:inline>
+                </fo:block>
+
+                <fo:block margin-bottom="8mm">
+                    <fo:block font-weight="bold">@messages("pdf.furtherInfo.heading")</fo:block>
+                    <fo:inline>@messages("pdf.furtherInfo.p")</fo:inline>
+                </fo:block>
+
+            </fo:block-container>
+        </fo:flow>
+
+    </fo:page-sequence>
+
+</fo:root>
