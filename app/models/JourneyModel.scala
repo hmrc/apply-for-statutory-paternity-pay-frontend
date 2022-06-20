@@ -47,7 +47,10 @@ object JourneyModel {
                                 timeOffToSupportMother: Option[Boolean]
                               )
 
-  sealed abstract class BirthDetails
+  sealed abstract class BirthDetails {
+    def payStartDate: Option[LocalDate]
+    def resolvedStartDate: LocalDate
+  }
 
   object BirthDetails {
 
@@ -55,13 +58,21 @@ object JourneyModel {
                                   birthDate: LocalDate,
                                   payShouldStartFromBirthDay: Boolean,
                                   payStartDate: Option[LocalDate]
-                                ) extends BirthDetails
+                                ) extends BirthDetails {
+
+      override def resolvedStartDate: LocalDate =
+        if (payShouldStartFromBirthDay) birthDate else payStartDate.getOrElse(throw new IllegalStateException("Invalid data given"))
+    }
 
     final case class Due(
                           dueDate: LocalDate,
                           payShouldStartFromDueDate: Boolean,
                           payStartDate: Option[LocalDate]
-                        ) extends BirthDetails
+                        ) extends BirthDetails {
+
+      override def resolvedStartDate: LocalDate =
+        if (payShouldStartFromDueDate) dueDate else payStartDate.getOrElse(throw new IllegalStateException("Invalid data given"))
+    }
   }
 
   def from(answers: UserAnswers): EitherNec[Page, JourneyModel] =

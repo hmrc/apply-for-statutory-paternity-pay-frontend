@@ -224,9 +224,9 @@ willTakeTimeToCareForChild.checkYourAnswersLabel = Will you take time off work t
 willTakeTimeToCareForChild.error.required = Select yes if you will take time off work to care for the child
 willTakeTimeToCareForChild.change.hidden = if you will take time off work to care for the child
 
-willTakeTimeToSupportMother.title = Will you take time off work to support the child’s mother
-willTakeTimeToSupportMother.heading = Will you take time off work to support the child’s mother
-willTakeTimeToSupportMother.checkYourAnswersLabel = Will you take time off work to support the child’s mother
+willTakeTimeToSupportMother.title = Will you take time off work to support the child’s mother?
+willTakeTimeToSupportMother.heading = Will you take time off work to support the child’s mother?
+willTakeTimeToSupportMother.checkYourAnswersLabel = Will you take time off work to support the child’s mother?
 willTakeTimeToSupportMother.error.required = Select yes if you will take time off work to support the child’s mother
 willTakeTimeToSupportMother.change.hidden = if you will take time off work to support the child’s mother
 
@@ -241,6 +241,7 @@ nino.heading = What is your National Insurance number?
 nino.hint = It’s on your National Insurance card, benefit letter, payslip or P60. For example, QQ 12 34 56 C.
 nino.checkYourAnswersLabel = What is your National Insurance number?
 nino.error.required = Enter your National Insurance number
+nino.error.invalid = Enter your National Insurance number in the correct format
 nino.error.length = Enter your National Insurance number in the correct format
 nino.change.hidden = your National Insurance number
 
@@ -265,3 +266,19 @@ isAdopting.hint = A parental order is when a person who is part of a couple has 
 isAdopting.checkYourAnswersLabel = Are you or a partner becoming adoptive or parental order parents?
 isAdopting.error.required = Select yes if you or a partner are becoming adoptive or parental order parents
 isAdopting.change.hidden = if you or a partner are becoming adoptive or parental order parents
+
+pdf.title = Apply for Statutory Paternity Pay (SC3)
+pdf.boolean.true = Yes
+pdf.boolean.false = No
+pdf.name = Name
+pdf.nino = National Insurance number
+pdf.payStartDate = Paternity pay should start from
+pdf.paternityLength = Amount of paternity pay requested
+pdf.declaration = Declaration
+pdf.declaration.declaration = I declare that the information on this form is correct and complete to the best of my knowledge.
+pdf.declaration.signature = Signature
+pdf.declaration.date = Date
+pdf.whatToDoNow.heading = What to do now
+pdf.whatToDoNow.p = Print, sign and date your declaration then give this form to your employer. You can also sign and date this form electronically and email it to your employer.
+pdf.furtherInfo.heading = Further information and other help
+pdf.furtherInfo.p = Depending on your circumstances you may not qualify for Statutory Paternity Pay (SPP) and/or paternity leave. Your employer will let you know. If this is the case you''ll get more advice and information at the time. If you''re not entitled to SPP you may be entitled to other government help. Contact any Jobcentre Plus office for further information.
