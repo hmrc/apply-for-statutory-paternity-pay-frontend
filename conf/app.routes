@@ -81,8 +81,8 @@ POST       /want-pay-to-start-on-birth-date                      controllers.Wan
 GET        /change-if-want-pay-to-start-on-birth-date                   controllers.WantPayToStartOnBirthDateController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-if-want-pay-to-start-on-birth-date                   controllers.WantPayToStartOnBirthDateController.onSubmit(mode: Mode = CheckMode)
 
-GET        /will-you-have-reponsibililty-for-caring                     controllers.WillHaveCaringResponsibilityController.onPageLoad(mode: Mode = NormalMode)
-POST       /will-you-have-reponsibililty-for-caring                     controllers.WillHaveCaringResponsibilityController.onSubmit(mode: Mode = NormalMode)
+GET        /will-you-have-responsibility-for-caring                     controllers.WillHaveCaringResponsibilityController.onPageLoad(mode: Mode = NormalMode)
+POST       /will-you-have-responsibility-for-caring                     controllers.WillHaveCaringResponsibilityController.onSubmit(mode: Mode = NormalMode)
 GET        /change-if-you-will-have-responsibility-for-caring               controllers.WillHaveCaringResponsibilityController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-if-you-will-have-responsibility-for-caring               controllers.WillHaveCaringResponsibilityController.onSubmit(mode: Mode = CheckMode)
 
