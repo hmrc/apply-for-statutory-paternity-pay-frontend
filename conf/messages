@@ -59,12 +59,12 @@ checkYourAnswers.beforeYouContinue = Before you continue
 checkYourAnswers.beforeYouContinue.guidance = By continuing this application you are confirming that, to the best of your knowledge, the details you are providing are correct.
 checkYourAnswers.acceptAndContinue = Accept and continue
 
-journeyRecovery.continue.title = Sorry, there is a problem with the service
-journeyRecovery.continue.heading = Sorry, there is a problem with the service
-journeyRecovery.continue.guidance = [Add content to explain how to proceed.]
-journeyRecovery.startAgain.title = Sorry, there is a problem with the service
-journeyRecovery.startAgain.heading = Sorry, there is a problem with the service
-journeyRecovery.startAgain.guidance = [Add content to explain why the user needs to start again.]
+journeyRecovery.continue.title = Sorry, there is a problem with the application form
+journeyRecovery.continue.heading = Sorry, there is a problem with the application form
+journeyRecovery.continue.guidance = We have saved your answers and you can continue completing the form.
+journeyRecovery.startAgain.title = Sorry, there is a problem with the application form
+journeyRecovery.startAgain.heading = Sorry, there is a problem with the application form
+journeyRecovery.startAgain.guidance = We have not been able to save your answers. You will need to start again from the beginning of the form.
 
 signedOut.title = For your security, the application form has been reset
 signedOut.heading = For your security, the application form has been reset
