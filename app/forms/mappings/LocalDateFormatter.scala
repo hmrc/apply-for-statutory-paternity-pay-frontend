@@ -16,11 +16,10 @@
 
 package forms.mappings
 
-import java.time.LocalDate
-
 import play.api.data.FormError
 import play.api.data.format.Formatter
 
+import java.time.LocalDate
 import scala.util.{Failure, Success, Try}
 
 private[mappings] class LocalDateFormatter(
@@ -50,12 +49,25 @@ private[mappings] class LocalDateFormatter(
       args
     )
 
-    for {
-      day   <- int.bind(s"$key.day", data).right
-      month <- int.bind(s"$key.month", data).right
-      year  <- int.bind(s"$key.year", data).right
-      date  <- toDate(key, day, month, year).right
-    } yield date
+    val day   = ("day",   int.bind(s"$key.day", data))
+    val month = ("month", int.bind(s"$key.month", data))
+    val year  = ("year",  int.bind(s"$key.year", data))
+
+    val invalidFields =
+      Seq(day, month, year)
+        .filter(_._2.isLeft)
+        .map(_._1)
+
+    if (invalidFields.nonEmpty) {
+      Left(Seq(FormError(key, invalidKey, invalidFields ++ args)))
+    } else {
+      for {
+        day   <- day._2.right
+        month <- month._2.right
+        year  <- year._2.right
+        date  <- toDate(key, day, month, year).right
+      } yield date
+    }
   }
 
   override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], LocalDate] = {
@@ -72,9 +84,7 @@ private[mappings] class LocalDateFormatter(
 
     fields.count(_._2.isDefined) match {
       case 3 =>
-        formatDate(key, data).left.map {
-          _.map(_.copy(key = key, args = args))
-        }
+        formatDate(key, data)
       case 2 =>
         Left(List(FormError(key, requiredKey, missingFields ++ args)))
       case 1 =>

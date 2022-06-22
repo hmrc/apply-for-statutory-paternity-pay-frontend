@@ -43,7 +43,15 @@ trait DateFluency {
                fieldset: Fieldset
              )(implicit messages: Messages): DateInput = {
 
-      val errorClass = if (errorMessage(field).isDefined) "govuk-input--error" else ""
+      val overallError =
+        field.error.exists {
+          e =>
+            !e.args.contains("day") && !e.args.contains("month") && !e.args.contains("year")
+        }
+
+      val dayError = if(overallError || field.error.exists(e => e.args.contains("day"))) "govuk-input--error" else ""
+      val monthError = if(overallError || field.error.exists(e => e.args.contains("month"))) "govuk-input--error" else ""
+      val yearError = if(overallError || field.error.exists(e => e.args.contains("year"))) "govuk-input--error" else ""
 
       val items = Seq(
         InputItem(
@@ -51,21 +59,21 @@ trait DateFluency {
           name    = s"${field.name}.day",
           value   = field("day").value,
           label   = Some(messages("date.day")),
-          classes = s"govuk-input--width-2 $errorClass".trim
+          classes = s"govuk-input--width-2 $dayError".trim
         ),
         InputItem(
           id      = s"${field.id}.month",
           name    = s"${field.name}.month",
           value   = field("month").value,
           label   = Some(messages("date.month")),
-          classes = s"govuk-input--width-2 $errorClass".trim
+          classes = s"govuk-input--width-2 $monthError".trim
         ),
         InputItem(
           id      = s"${field.id}.year",
           name    = s"${field.name}.year",
           value   = field("year").value,
           label   = Some(messages("date.year")),
-          classes = s"govuk-input--width-4 $errorClass".trim
+          classes = s"govuk-input--width-4 $yearError".trim
         )
       )
 
