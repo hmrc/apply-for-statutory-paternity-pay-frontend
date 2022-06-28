@@ -40,7 +40,7 @@
                     caption = HmrcSectionCaption(messages("section.paternityDetails"))
                 ),
                 items  = PaternityLeaveLength.options
-            )
+            ).withHint(Hint(content = messages("paternityLeaveLength.hint")))
         )
 
         @govukButton(
