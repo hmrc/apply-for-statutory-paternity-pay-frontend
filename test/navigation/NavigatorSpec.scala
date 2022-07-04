@@ -177,17 +177,27 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(BabyDateOfBirthPage, NormalMode, emptyUserAnswers) mustEqual routes.WantPayToStartOnBirthDateController.onPageLoad(NormalMode)
       }
 
-      "must go from Baby Due Date to Want Pay to Start on Due Date" in {
+      "must go from Baby Due Date" - {
 
-        navigator.nextPage(BabyDueDatePage, NormalMode, emptyUserAnswers) mustEqual routes.WantPayToStartOnDueDateController.onPageLoad(NormalMode)
+        "to Want Pay to Start on Due Date when the child has not already been born" in {
+
+          val answers = emptyUserAnswers.set(BabyHasBeenBornPage, false).success.value
+          navigator.nextPage(BabyDueDatePage, NormalMode, answers) mustEqual routes.WantPayToStartOnDueDateController.onPageLoad(NormalMode)
+        }
+
+        "to Paternity Leave Length when the child has already been born" in {
+
+          val answers = emptyUserAnswers.set(BabyHasBeenBornPage, true).success.value
+          navigator.nextPage(BabyDueDatePage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+        }
       }
 
       "must go from Want Pay To Start on Birth Date" - {
 
-        "to Paternity Leave Length when the answer is yes" in {
+        "to Baby Due Date page when the answer is yes" in {
 
           val answers = emptyUserAnswers.set(WantPayToStartOnBirthDatePage, true).success.value
-          navigator.nextPage(WantPayToStartOnBirthDatePage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+          navigator.nextPage(WantPayToStartOnBirthDatePage, NormalMode, answers) mustEqual routes.BabyDueDateController.onPageLoad(NormalMode)
         }
 
         "to Pay Start Date Baby Born when the answer is no" in {
@@ -212,9 +222,9 @@ class NavigatorSpec extends SpecBase {
         }
       }
 
-      "must go from Pay Start Date Baby Born to Paternity Leave Length" in {
+      "must go from Pay Start Date Baby Born to Baby Due Date" in {
 
-        navigator.nextPage(PayStartDateBabyBornPage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+        navigator.nextPage(PayStartDateBabyBornPage, NormalMode, emptyUserAnswers) mustEqual routes.BabyDueDateController.onPageLoad(NormalMode)
       }
 
       "must go from Pay Start Date Baby Due to Paternity Leave Length" in {
