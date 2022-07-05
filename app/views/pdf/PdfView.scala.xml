@@ -74,29 +74,29 @@
                     <!-- Baby details -->
                     <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.babyDetails")</fo:block>
 
+                    <!-- Due date -->
+                    <fo:block-container>
+                        <fo:block-container margin-bottom="3mm">
+                            <fo:block>
+                                <fo:inline font-weight="bold">@messages("pdf.dueDate"): </fo:inline>
+                                <fo:inline>@govUkDateFormat(model.dueDate)</fo:inline>
+                            </fo:block>
+                        </fo:block-container>
+                    </fo:block-container>
+
                     @model.birthDetails match {
-                        case JourneyModel.BirthDetails.Due(dueDate, _, _) => {
-                            <!-- Due date -->
-                            <fo:block-container>
-                                <fo:block-container margin-bottom="3mm">
-                                    <fo:block>
-                                        <fo:inline font-weight="bold">@messages("pdf.birthDate"): </fo:inline>
-                                        <fo:inline>@govUkDateFormat(dueDate)</fo:inline>
-                                    </fo:block>
-                                </fo:block-container>
-                            </fo:block-container>
-                        }
-                        case JourneyModel.BirthDetails.AlreadyBorn(birthDate, _, _) => {
+                        case JourneyModel.BirthDetails.AlreadyBorn(birthDate, _) => {
                             <!-- Birth date -->
                             <fo:block-container>
                                 <fo:block-container margin-bottom="3mm">
                                     <fo:block>
-                                        <fo:inline font-weight="bold">@messages("pdf.dueDate"): </fo:inline>
+                                        <fo:inline font-weight="bold">@messages("pdf.birthDate"): </fo:inline>
                                         <fo:inline>@govUkDateFormat(birthDate)</fo:inline>
                                     </fo:block>
                                 </fo:block-container>
                             </fo:block-container>
                         }
+                        case _ => {}
                     }
 
                 </fo:block-container>
@@ -110,7 +110,7 @@
                         <fo:block-container margin-bottom="3mm">
                             <fo:block>
                                 <fo:inline font-weight="bold">@messages("pdf.payStartDate"): </fo:inline>
-                                <fo:inline>@govUkDateFormat(model.birthDetails.resolvedStartDate)</fo:inline>
+                                <fo:inline>@govUkDateFormat(model.resolvedStartDate)</fo:inline>
                             </fo:block>
                         </fo:block-container>
                     </fo:block-container>

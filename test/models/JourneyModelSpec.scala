@@ -31,8 +31,9 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
 
     val emptyUserAnswers = UserAnswers("id")
 
-    "must return a completed journey model when the user stays that the child has already been born" - {
+    "must return a completed journey model when the user says that the child has already been born" - {
 
+      val dueDate = LocalDate.now.minusDays(2)
       val birthDate = LocalDate.now.minusDays(1)
 
       val answers = emptyUserAnswers
@@ -45,6 +46,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         .set(BabyHasBeenBornPage, true).success.value
         .set(BabyDateOfBirthPage, birthDate).success.value
         .set(WantPayToStartOnBirthDatePage, true).success.value
+        .set(BabyDueDatePage, dueDate).success.value
         .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
 
       val expected = JourneyModel(
@@ -60,11 +62,12 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         name = Name("foo", "bar"),
         nino = Nino("AA123456A"),
         hasTheBabyBeenBorn = true,
+        dueDate = dueDate,
         birthDetails = JourneyModel.BirthDetails.AlreadyBorn(
           birthDate = birthDate,
-          payShouldStartFromBirthDay = true,
-          payStartDate = None
+          payShouldStartFromBirthDay = true
         ),
+        payStartDate = None,
         howLongWillYouBeOnLeave = PaternityLeaveLength.Oneweek
       )
 
@@ -83,9 +86,9 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         val expectedWithPayStartDate = expected.copy(
           birthDetails = JourneyModel.BirthDetails.AlreadyBorn(
             birthDate = birthDate,
-            payShouldStartFromBirthDay = false,
-            payStartDate = Some(payStartDate)
-          )
+            payShouldStartFromBirthDay = false
+          ),
+          payStartDate = Some(payStartDate)
         )
 
         JourneyModel.from(answersWithPayDate).right.value mustEqual expectedWithPayStartDate
@@ -123,11 +126,11 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         name = Name("foo", "bar"),
         nino = Nino("AA123456A"),
         hasTheBabyBeenBorn = false,
+        dueDate = babyDueDate,
         birthDetails = JourneyModel.BirthDetails.Due(
-          dueDate = babyDueDate,
-          payShouldStartFromDueDate = true,
-          payStartDate = None
+          payShouldStartFromDueDate = true
         ),
+        payStartDate = None,
         howLongWillYouBeOnLeave = PaternityLeaveLength.Oneweek
       )
 
@@ -145,10 +148,9 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
 
         val expectedWithPayStartDate = expected.copy(
           birthDetails = JourneyModel.BirthDetails.Due(
-            dueDate = babyDueDate,
             payShouldStartFromDueDate = false,
-            payStartDate = Some(payStartDate)
-          )
+          ),
+          payStartDate = Some(payStartDate)
         )
 
         JourneyModel.from(answersWithPayDate).right.value mustEqual expectedWithPayStartDate
@@ -166,6 +168,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         WillTakeTimeToCareForChildPage,
         NamePage,
         NinoPage,
+        BabyDueDatePage,
         BabyHasBeenBornPage,
         PaternityLeaveLengthPage
       )
@@ -232,64 +235,107 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
     }
   }
 
-  "BirthDetails" - {
+  ".resolvedStartDate" - {
 
-    ".resolvedStartDate" - {
+    "Due" - {
 
-      "Due" - {
+      val dueDate = LocalDate.of(2000, 2, 1)
+      val startDate = LocalDate.of(2001, 2, 1)
 
-        val dueDate = LocalDate.of(2000, 2, 1)
-        val startDate = LocalDate.of(2001, 2, 1)
+      val model = JourneyModel(
+        eligibility = JourneyModel.Eligibility(
+          becomingAdoptiveParents = false,
+          biologicalFather = false,
+          inRelationshipWithMother = Some(true),
+          livingWithMother = None,
+          responsibilityForChild = true,
+          timeOffToCareForChild = false,
+          timeOffToSupportMother = Some(true)
+        ),
+        name = Name("foo", "bar"),
+        nino = Nino("AA123456A"),
+        hasTheBabyBeenBorn = false,
+        dueDate = dueDate,
+        birthDetails = JourneyModel.BirthDetails.Due(
+          payShouldStartFromDueDate = true
+        ),
+        payStartDate = None,
+        howLongWillYouBeOnLeave = PaternityLeaveLength.Oneweek
+      )
 
-        "must return the due date if the user wants their paternity to start from due date" in {
-          val model = BirthDetails.Due(
-            dueDate = dueDate, payShouldStartFromDueDate = true, payStartDate = Some(startDate)
-          )
-          model.resolvedStartDate mustEqual dueDate
-        }
-
-        "must return the payStartDate if the user doesn't want their paternity to start from the due date" in {
-          val model = BirthDetails.Due(
-            dueDate = dueDate, payShouldStartFromDueDate = false, payStartDate = Some(startDate)
-          )
-          model.resolvedStartDate mustEqual startDate
-        }
-
-        "must fail if the user doesn't want their paternity to start from the due date but there is no pay start date given" in {
-          val model = BirthDetails.Due(
-            dueDate = dueDate, payShouldStartFromDueDate = false, payStartDate = None
-          )
-          val error = intercept[Throwable](model.resolvedStartDate)
-          error.getMessage mustEqual "Invalid data given"
-        }
+      "must return the due date if the user wants their paternity to start from due date" in {
+        model.resolvedStartDate mustEqual dueDate
       }
 
-      "AlreadyBorn" - {
+      "must return the payStartDate if the user doesn't want their paternity to start from the due date" in {
+        val updatedModel = model.copy(
+          birthDetails = BirthDetails.Due(false),
+          payStartDate = Some(startDate)
+        )
+        updatedModel.resolvedStartDate mustEqual startDate
+      }
 
-        val birthDate = LocalDate.of(2000, 2, 1)
-        val startDate = LocalDate.of(2001, 2, 1)
+      "must fail if the user doesn't want their paternity to start from the due date but there is no pay start date given" in {
+        val updatedModel = model.copy(
+          birthDetails = BirthDetails.Due(false)
+        )
+        val error = intercept[Throwable](updatedModel.resolvedStartDate)
+        error.getMessage mustEqual "Invalid data given"
+      }
+    }
 
-        "must return the birth date if the user wants their paternity to start from the birth date" in {
-          val model = BirthDetails.AlreadyBorn(
-            birthDate = birthDate, payShouldStartFromBirthDay = true, payStartDate = Some(startDate)
+    "AlreadyBorn" - {
+
+      val dueDate = LocalDate.of(2000, 2, 1)
+      val birthDate = LocalDate.of(2000, 2, 1)
+      val startDate = LocalDate.of(2001, 2, 1)
+
+      val model = JourneyModel(
+        eligibility = JourneyModel.Eligibility(
+          becomingAdoptiveParents = false,
+          biologicalFather = true,
+          inRelationshipWithMother = None,
+          livingWithMother = None,
+          responsibilityForChild = true,
+          timeOffToCareForChild = true,
+          timeOffToSupportMother = None
+        ),
+        name = Name("foo", "bar"),
+        nino = Nino("AA123456A"),
+        hasTheBabyBeenBorn = true,
+        dueDate = dueDate,
+        birthDetails = JourneyModel.BirthDetails.AlreadyBorn(
+          birthDate = birthDate,
+          payShouldStartFromBirthDay = true
+        ),
+        payStartDate = None,
+        howLongWillYouBeOnLeave = PaternityLeaveLength.Oneweek
+      )
+
+      "must return the birth date if the user wants their paternity to start from the birth date" in {
+        model.resolvedStartDate mustEqual birthDate
+      }
+
+      "must return the payStartDate if the user doesn't want their paternity to start from the birth date" in {
+        val updatedModel = model.copy(
+          birthDetails = BirthDetails.AlreadyBorn(
+            birthDate = birthDate,
+            payShouldStartFromBirthDay = false
+          ),
+          payStartDate = Some(startDate)
+        )
+        updatedModel.resolvedStartDate mustEqual startDate
+      }
+
+      "must fail if the user doesn't want their paternity to start from the birth date but there is no pay start date given" in {
+        val updatedModel = model.copy(
+          birthDetails = BirthDetails.AlreadyBorn(
+            birthDate = birthDate,
+            payShouldStartFromBirthDay = false
           )
-          model.resolvedStartDate mustEqual birthDate
-        }
-
-        "must return the payStartDate if the user doesn't want their paternity to start from the birth date" in {
-          val model = BirthDetails.AlreadyBorn(
-            birthDate = birthDate, payShouldStartFromBirthDay = false, payStartDate = Some(startDate)
-          )
-          model.resolvedStartDate mustEqual startDate
-        }
-
-        "must fail if the user doesn't want their paternity to start from the birth date but there is no pay start date given" in {
-          val model = BirthDetails.AlreadyBorn(
-            birthDate = birthDate, payShouldStartFromBirthDay = false, payStartDate = None
-          )
-          val error = intercept[Throwable](model.resolvedStartDate)
-          error.getMessage mustEqual "Invalid data given"
-        }
+        )
+        val error = intercept[Throwable](updatedModel.resolvedStartDate)
+        error.getMessage mustEqual "Invalid data given"
       }
     }
   }

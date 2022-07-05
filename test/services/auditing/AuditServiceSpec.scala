@@ -45,6 +45,7 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
     "must call the audit connector with the correct payload" in {
 
       val birthDate = LocalDate.now
+      val dueDate = LocalDate.now.minusDays(1)
 
       val model: JourneyModel = JourneyModel(
         eligibility = JourneyModel.Eligibility(
@@ -59,11 +60,12 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
         name = Name("foo", "bar"),
         nino = Nino("AA123456A"),
         hasTheBabyBeenBorn = true,
+        dueDate = dueDate,
         birthDetails = JourneyModel.BirthDetails.AlreadyBorn(
           birthDate = birthDate,
-          payShouldStartFromBirthDay = true,
-          payStartDate = None
+          payShouldStartFromBirthDay = true
         ),
+        payStartDate = None,
         howLongWillYouBeOnLeave = PaternityLeaveLength.Oneweek
       )
 
@@ -80,11 +82,12 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
         name = Name("foo", "bar"),
         nino = Nino("AA123456A"),
         hasTheBabyBeenBorn = true,
+        dueDate = dueDate,
         birthDetails = DownloadAuditEvent.BirthDetails.AlreadyBorn(
           birthDate = birthDate,
           payShouldStartFromBirthDay = true,
-          payStartDate = None
         ),
+        payStartDate = None,
         howLongWillYouBeOnLeave = PaternityLeaveLength.Oneweek
       )
 
