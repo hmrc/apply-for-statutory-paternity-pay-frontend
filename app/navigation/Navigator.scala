@@ -177,12 +177,10 @@ class Navigator @Inject()() {
         answers.get(BabyDateOfBirthPage)
           .map(_ => routes.CheckYourAnswersController.onPageLoad)
           .getOrElse(routes.BabyDateOfBirthController.onPageLoad(CheckMode))
-
       case false =>
-        answers.get(BabyDueDatePage)
+        answers.get(WantPayToStartOnDueDatePage)
           .map(_ => routes.CheckYourAnswersController.onPageLoad)
-          .getOrElse(routes.BabyDueDateController.onPageLoad(CheckMode))
-
+          .getOrElse(routes.WantPayToStartOnDueDateController.onPageLoad(CheckMode))
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   private def babyDateOfBirthCheckRoute(answers: UserAnswers): Call =
