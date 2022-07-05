@@ -92,17 +92,19 @@ babyDateOfBirth.error.future = The date the baby was born cannot be in the futur
 babyDateOfBirth.error.beforeMinimum = The date the baby was born cannot be before {0}
 babyDateOfBirth.change.hidden = the date the baby was born
 
-babyDueDate.title = What date is the baby due?
-babyDueDate.heading = What date is the baby due?
+babyDueDate.title.false = What date is the baby due?
+babyDueDate.title.true = What date was the baby due?
+babyDueDate.heading.false = What date is the baby due?
+babyDueDate.heading.true = What date was the baby due?
 babyDueDate.hint = For example, {0}
-babyDueDate.checkYourAnswersLabel = What date is the baby due?
-babyDueDate.error.required.all = Enter the date the baby is due
+babyDueDate.checkYourAnswersLabel = Baby’s due date
+babyDueDate.error.required.all = Enter the baby’s due date
 babyDueDate.error.required.two = The date must include {0} and {1}
 babyDueDate.error.required = The date must include {0}
 babyDueDate.error.invalid = Enter a real date
-babyDueDate.error.beforeMinimum = The date the baby is due cannot be before {0}
-babyDueDate.error.afterMaximum = The date the baby is due cannot be after {0}
-babyDueDate.change.hidden = the date the baby is due
+babyDueDate.error.beforeMinimum = The date cannot be before {0}
+babyDueDate.error.afterMaximum = The date cannot be after {0}
+babyDueDate.change.hidden = the baby’s due date
 
 babyHasBeenBorn.title = Has the baby been born yet?
 babyHasBeenBorn.heading = Has the baby been born yet?

@@ -24,7 +24,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.BabyDueDatePage
+import pages.{BabyDueDatePage, BabyHasBeenBornPage}
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
@@ -66,7 +66,9 @@ class BabyDueDateControllerSpec extends SpecBase with MockitoSugar {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val answers = emptyUserAnswers
+        .set(BabyHasBeenBornPage, false).success.value
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
 
       running(application) {
         val result = route(application, getRequest).value
@@ -74,13 +76,15 @@ class BabyDueDateControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[BabyDueDateView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, dateHint)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, false, dateHint)(getRequest, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(BabyDueDatePage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(BabyHasBeenBornPage, false).success.value
+        .set(BabyDueDatePage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -90,18 +94,19 @@ class BabyDueDateControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, getRequest).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, dateHint)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, false, dateHint)(getRequest, messages(application)).toString
       }
     }
 
     "must redirect to the next page when valid data is submitted" in {
 
       val mockSessionRepository = mock[SessionRepository]
+      val answers = emptyUserAnswers.set(BabyHasBeenBornPage, false).success.value
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(answers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -118,7 +123,8 @@ class BabyDueDateControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val answers = emptyUserAnswers.set(BabyHasBeenBornPage, false).success.value
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
 
       val request =
         FakeRequest(POST, babyDueDateRoute)
@@ -132,7 +138,7 @@ class BabyDueDateControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, dateHint)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, false, dateHint)(request, messages(application)).toString
       }
     }
 

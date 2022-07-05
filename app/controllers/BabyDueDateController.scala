@@ -23,7 +23,7 @@ import forms.BabyDueDateFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.BabyDueDatePage
+import pages.{BabyDueDatePage, BabyHasBeenBornPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -44,37 +44,44 @@ class BabyDueDateController @Inject()(
                                         val controllerComponents: MessagesControllerComponents,
                                         view: BabyDueDateView,
                                         clock: Clock
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                      )(implicit ec: ExecutionContext)
+  extends FrontendBaseController
+    with I18nSupport
+    with AnswerExtractor {
 
   def form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      getAnswer(BabyHasBeenBornPage) { babyHasBeenBorn =>
 
-      val dateHint = LocalDate.now(clock).plusWeeks(15).format(dateTimeHintFormat)
+        val dateHint = LocalDate.now(clock).plusWeeks(15).format(dateTimeHintFormat)
 
-      val preparedForm = request.userAnswers.get(BabyDueDatePage) match {
-        case None => form
-        case Some(value) => form.fill(value)
+        val preparedForm = request.userAnswers.get(BabyDueDatePage) match {
+          case None => form
+          case Some(value) => form.fill(value)
+        }
+
+        Ok(view(preparedForm, mode, babyHasBeenBorn, dateHint))
       }
-
-      Ok(view(preparedForm, mode, dateHint))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      getAnswerAsync(BabyHasBeenBornPage) { babyHasBeenBorn =>
 
-      val dateHint = LocalDate.now(clock).plusWeeks(15).format(dateTimeHintFormat)
+        val dateHint = LocalDate.now(clock).plusWeeks(15).format(dateTimeHintFormat)
 
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, dateHint))),
+        form.bindFromRequest().fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, mode, babyHasBeenBorn, dateHint))),
 
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(BabyDueDatePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(BabyDueDatePage, mode, updatedAnswers))
-      )
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(BabyDueDatePage, value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(BabyDueDatePage, mode, updatedAnswers))
+        )
+      }
   }
 }
