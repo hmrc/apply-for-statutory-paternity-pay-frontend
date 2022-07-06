@@ -37,7 +37,7 @@ class BabyDueDateFormProvider @Inject()(clock: Clock) extends Mappings {
         allRequiredKey = "babyDueDate.error.required.all",
         twoRequiredKey = "babyDueDate.error.required.two",
         requiredKey = "babyDueDate.error.required"
-      ).verifying(minDate(LocalDate.now(clock), "babyDueDate.error.beforeMinimum", minimumDate.format(dateTimeFormat)))
+      ).verifying(minDate(minimumDate, "babyDueDate.error.beforeMinimum", minimumDate.format(dateTimeFormat)))
         .verifying(maxDate(maximumDate, "babyDueDate.error.afterMaximum", maximumDate.format(dateTimeFormat)))
     )
   }
