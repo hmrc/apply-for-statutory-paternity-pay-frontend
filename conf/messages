@@ -39,7 +39,7 @@ index.title = Ask your employer for Statutory Paternity Pay or Paternity Leave o
 index.heading = Ask your employer for Statutory Paternity Pay or Paternity Leave or both
 index.guidance.p1 = If you want to take time off work to support the mother of the baby or look after the baby you may be entitled to:
 index.guidance.bullet.1 = Statutory Paternity Pay (SPP)
-index.guidance.bullet.2 = one or two weeks of paternity leave.
+index.guidance.bullet.2 = one or two weeks of Paternity Leave
 index.guidance.p2 = You may use this form to ask your employer for Statutory Paternity Pay (SPP) and/or Paternity Leave.
 index.guidance.panel.1 = Use the
 index.guidance.panel.link.text = paternity planner
@@ -49,7 +49,7 @@ index.guidance.p3 = You can find out more about SPP and your eligibility on the
 index.guidance.p3.link.text = Paternity and pay guidance page
 index.guidance.p3.link.href = https://www.gov.uk/paternity-pay-leave
 index.guidance.beforeYouStart.heading = Before you start
-index.guidance.beforeYouStart.p1 = You can only start paternity leave after the child is born.
+index.guidance.beforeYouStart.p1 = You can only start Paternity Leave after the child is born.
 index.guidance.beforeYouStart.p2 = You should discuss your pay and leave plans with your employer by the qualifying week. The qualifying week is the end of the 15th week before the baby is due.
 index.guidance.beforeYouStart.p3 = Once you have completed the form, you will need to download it and send a copy to your employer. If you are sending it in the post, you will need a printer.
 
@@ -136,7 +136,7 @@ confirmation.guidance.p5.1 = If you disagree with your employer’s decision you
 confirmation.guidance.p5.link1.text = Statutory Payments Dispute Team
 confirmation.guidance.p5.link1.href = https://www.gov.uk/government/organisations/hm-revenue-customs/contact/statutory-payment-dispute-team
 confirmation.guidance.p5.2 = You must do this within 6 months of the day you were notified of your employer’s decision.
-confirmation.guidance.p6.1 = For disagreement on paternity leave, contact the
+confirmation.guidance.p6.1 = For disagreement on Paternity Leave, contact the
 confirmation.guidance.p6.link1.text = Advisory Conciliation and Arbitration Service (Acas)
 confirmation.guidance.p6.link1.href = https://www.gov.uk/government/organisations/acas#:~:text=The%20Advisory%2C%20Conciliation%20and%20Arbitration,solve%20problems%20and%20improve%20performance.
 confirmation.guidance.p6.2 = In Northern Ireland, contact the
@@ -175,14 +175,14 @@ name.error.firstName.length = First name must be 100 characters or less
 name.error.lastName.length = Last name must be 100 characters or less
 name.change.hidden = your name
 
-paternityLeaveLength.title = How long will you be on paternity leave for?
-paternityLeaveLength.heading = How long will you be on paternity leave for?
+paternityLeaveLength.title = How long will you be on Paternity Leave for?
+paternityLeaveLength.heading = How long will you be on Paternity Leave for?
 paternityLeaveLength.hint = If you take two weeks off, they must be taken one after the other and cannot be taken separately.
 paternityLeaveLength.oneWeek = 1 week
 paternityLeaveLength.twoWeeks = 2 weeks
-paternityLeaveLength.checkYourAnswersLabel = How long will you be on paternity leave for?
-paternityLeaveLength.error.required = Select how long you will be on paternity leave for
-paternityLeaveLength.change.hidden = how long you will be on paternity leave for
+paternityLeaveLength.checkYourAnswersLabel = How long will you be on Paternity Leave for?
+paternityLeaveLength.error.required = Select how long you will be on Paternity Leave for
+paternityLeaveLength.change.hidden = how long you will be on Paternity Leave for
 
 payStartDateBabyBorn.title = What date would you like your Statutory Paternity Pay and/or Paternity Leave to start?
 payStartDateBabyBorn.heading = What date would you like your Statutory Paternity Pay and/or Paternity Leave to start?
