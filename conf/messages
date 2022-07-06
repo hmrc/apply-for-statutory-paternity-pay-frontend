@@ -291,3 +291,5 @@ pdf.whatToDoNow.heading = What to do now
 pdf.whatToDoNow.p = Print, sign and date your declaration then give this form to your employer. You can also sign and date this form electronically and email it to your employer.
 pdf.furtherInfo.heading = Further information and other help
 pdf.furtherInfo.p = Depending on your circumstances you may not qualify for Statutory Paternity Pay (SPP) and/or Paternity Leave. Your employer will let you know. If this is the case you’ll get more advice and information at the time. If you’re not entitled to SPP you may be entitled to other government help. Contact any Jobcentre Plus office for further information.
+pdf.penalties.heading = Penalties
+pdf.penalties.p = Penalties may be charged where a person, either fraudulently or negligently, gives incorrect information or makes a false statement or declaration for the purpose of claiming entitlement to SPP.
