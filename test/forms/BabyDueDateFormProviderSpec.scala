@@ -26,6 +26,7 @@ class BabyDueDateFormProviderSpec extends DateBehaviours {
 
   private val today        = LocalDate.now
   private val maximumDate  = today.plusWeeks(40)
+  private val minimumDate  = today.minusWeeks(8)
   private val fixedInstant = today.atStartOfDay(ZoneId.systemDefault).toInstant
   private val clock        = Clock.fixed(fixedInstant, ZoneId.systemDefault)
 
@@ -42,7 +43,7 @@ class BabyDueDateFormProviderSpec extends DateBehaviours {
 
     behave like mandatoryDateField(form, "value", "babyDueDate.error.required.all")
 
-    behave like dateFieldWithMin(form, "value", today, FormError("value", "babyDueDate.error.past"))
+    behave like dateFieldWithMin(form, "value", minimumDate, FormError("value", "babyDueDate.error.beforeMinimum", Seq(minimumDate.format(dateTimeFormat))))
 
     behave like dateFieldWithMax(
       form,

@@ -22,9 +22,9 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode, dateHint: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, babyHasBeenBorn: Boolean, dateHint: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("babyDueDate.title"))) {
+@layout(pageTitle = title(form, messages(s"babyDueDate.title.$babyHasBeenBorn"))) {
 
     @formHelper(action = routes.BabyDueDateController.onSubmit(mode), 'autoComplete -> "off") {
 
@@ -36,7 +36,7 @@
             DateViewModel(
                 field  = form("value"),
                 legend = HmrcPageHeadingLegend(
-                    content = messages("babyDueDate.heading"),
+                    content = messages(s"babyDueDate.heading.$babyHasBeenBorn"),
                     caption = HmrcSectionCaption(messages("section.babyDetails"))
                 )
             )

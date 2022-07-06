@@ -31,8 +31,7 @@ case object BabyHasBeenBornPage extends QuestionPage[Boolean] {
     value.map {
       case true =>
         userAnswers
-          .remove(BabyDueDatePage)
-          .flatMap(_.remove(WantPayToStartOnDueDatePage))
+          .remove(WantPayToStartOnDueDatePage)
           .flatMap(_.remove(PayStartDateBabyDuePage))
 
       case false =>

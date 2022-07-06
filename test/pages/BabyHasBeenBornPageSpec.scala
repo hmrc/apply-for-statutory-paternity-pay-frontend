@@ -45,11 +45,11 @@ class BabyHasBeenBornPageSpec extends PageBehaviours {
 
         val result = answers.set(BabyHasBeenBornPage, true).success.value
 
+        result.get(BabyDueDatePage)               must be(defined)
         result.get(BabyDateOfBirthPage)           must be(defined)
         result.get(WantPayToStartOnBirthDatePage) must be(defined)
         result.get(PayStartDateBabyBornPage)      must be(defined)
 
-        result.get(BabyDueDatePage)             must not be defined
         result.get(WantPayToStartOnDueDatePage) must not be defined
         result.get(PayStartDateBabyDuePage)     must not be defined
       }

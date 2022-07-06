@@ -177,17 +177,27 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(BabyDateOfBirthPage, NormalMode, emptyUserAnswers) mustEqual routes.WantPayToStartOnBirthDateController.onPageLoad(NormalMode)
       }
 
-      "must go from Baby Due Date to Want Pay to Start on Due Date" in {
+      "must go from Baby Due Date" - {
 
-        navigator.nextPage(BabyDueDatePage, NormalMode, emptyUserAnswers) mustEqual routes.WantPayToStartOnDueDateController.onPageLoad(NormalMode)
+        "to Want Pay to Start on Due Date when the child has not already been born" in {
+
+          val answers = emptyUserAnswers.set(BabyHasBeenBornPage, false).success.value
+          navigator.nextPage(BabyDueDatePage, NormalMode, answers) mustEqual routes.WantPayToStartOnDueDateController.onPageLoad(NormalMode)
+        }
+
+        "to Paternity Leave Length when the child has already been born" in {
+
+          val answers = emptyUserAnswers.set(BabyHasBeenBornPage, true).success.value
+          navigator.nextPage(BabyDueDatePage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+        }
       }
 
       "must go from Want Pay To Start on Birth Date" - {
 
-        "to Paternity Leave Length when the answer is yes" in {
+        "to Baby Due Date page when the answer is yes" in {
 
           val answers = emptyUserAnswers.set(WantPayToStartOnBirthDatePage, true).success.value
-          navigator.nextPage(WantPayToStartOnBirthDatePage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+          navigator.nextPage(WantPayToStartOnBirthDatePage, NormalMode, answers) mustEqual routes.BabyDueDateController.onPageLoad(NormalMode)
         }
 
         "to Pay Start Date Baby Born when the answer is no" in {
@@ -212,9 +222,9 @@ class NavigatorSpec extends SpecBase {
         }
       }
 
-      "must go from Pay Start Date Baby Born to Paternity Leave Length" in {
+      "must go from Pay Start Date Baby Born to Baby Due Date" in {
 
-        navigator.nextPage(PayStartDateBabyBornPage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+        navigator.nextPage(PayStartDateBabyBornPage, NormalMode, emptyUserAnswers) mustEqual routes.BabyDueDateController.onPageLoad(NormalMode)
       }
 
       "must go from Pay Start Date Baby Due to Paternity Leave Length" in {
@@ -393,17 +403,15 @@ class NavigatorSpec extends SpecBase {
 
         "when the answer is yes" - {
 
-          "to Check Answers if Baby Date of Birth has been answered" in {
+          "to Check Answers when Baby Date of Birth has been answered" in {
 
-            val answers =
-              emptyUserAnswers
-                .set(BabyHasBeenBornPage, true).success.value
-                .set(BabyDateOfBirthPage, LocalDate.now).success.value
-
+            val answers = emptyUserAnswers
+              .set(BabyHasBeenBornPage, true).success.value
+              .set(BabyDateOfBirthPage, LocalDate.now).success.value
             navigator.nextPage(BabyHasBeenBornPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
           }
 
-          "to Baby Date of Birth if it has not been answered" in {
+          "to Baby Date of Birth when it has not been answered" in {
 
             val answers = emptyUserAnswers.set(BabyHasBeenBornPage, true).success.value
             navigator.nextPage(BabyHasBeenBornPage, CheckMode, answers) mustEqual routes.BabyDateOfBirthController.onPageLoad(CheckMode)
@@ -412,20 +420,18 @@ class NavigatorSpec extends SpecBase {
 
         "when the answer is no" - {
 
-          "to Check Answers if Baby Due Date has been answered" in {
+          "to Check Answers when Want To Start on Due Date has been answered" in {
 
-            val answers =
-              emptyUserAnswers
-                .set(BabyHasBeenBornPage, false).success.value
-                .set(BabyDueDatePage, LocalDate.now).success.value
-
+            val answers = emptyUserAnswers
+              .set(BabyHasBeenBornPage, false).success.value
+              .set(WantPayToStartOnDueDatePage, true).success.value
             navigator.nextPage(BabyHasBeenBornPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
           }
 
-          "to Baby Due Date if it has not been answered" in {
+          "to Want Pay to Start on Due Date when it has not been answered" in {
 
             val answers = emptyUserAnswers.set(BabyHasBeenBornPage, false).success.value
-            navigator.nextPage(BabyHasBeenBornPage, CheckMode, answers) mustEqual routes.BabyDueDateController.onPageLoad(CheckMode)
+            navigator.nextPage(BabyHasBeenBornPage, CheckMode, answers) mustEqual routes.WantPayToStartOnDueDateController.onPageLoad(CheckMode)
           }
         }
       }
@@ -460,13 +466,10 @@ class NavigatorSpec extends SpecBase {
 
       "must go from Want Pay to Start on Birth Date" - {
 
-        "when the answer is yes" - {
+        "to Check Answers when the answer is yes" in {
 
-          "to Check Answers" in {
-
-            val answers = emptyUserAnswers.set(WantPayToStartOnBirthDatePage, true).success.value
-            navigator.nextPage(WantPayToStartOnBirthDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
-          }
+          val answers = emptyUserAnswers.set(WantPayToStartOnBirthDatePage, true).success.value
+          navigator.nextPage(WantPayToStartOnBirthDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
         }
 
         "when the answer is no" - {
@@ -491,13 +494,10 @@ class NavigatorSpec extends SpecBase {
 
       "must go from Want Pay to Start on Due Date" - {
 
-        "when the answer is yes" - {
+        "to Check Answers when the answer is yes" in {
 
-          "to Check Answers" in {
-
-            val answers = emptyUserAnswers.set(WantPayToStartOnDueDatePage, true).success.value
-            navigator.nextPage(WantPayToStartOnDueDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
-          }
+          val answers = emptyUserAnswers.set(WantPayToStartOnDueDatePage, true).success.value
+          navigator.nextPage(WantPayToStartOnDueDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
         }
 
         "when the answer is no" - {

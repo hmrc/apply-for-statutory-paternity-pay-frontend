@@ -31,20 +31,17 @@ class DownloadAuditEventSpec extends AnyFreeSpec with Matchers {
       "for BirthDetails.AlreadyBorn" - {
 
         val birthDate = LocalDate.of(2000, 2, 1)
-        val payStartDate = LocalDate.of(2001, 2, 1)
 
         "when payStartDate exists" in {
 
           val model = DownloadAuditEvent.BirthDetails.AlreadyBorn(
             birthDate = birthDate,
-            payShouldStartFromBirthDay = false,
-            payStartDate = Some(payStartDate)
+            payShouldStartFromBirthDay = false
           )
 
           val expected = Json.obj(
             "birthDate" -> birthDate,
-            "payShouldStartFromBirthDay" -> false,
-            "payStartDate" -> payStartDate
+            "payShouldStartFromBirthDay" -> false
           )
 
           Json.toJson[DownloadAuditEvent.BirthDetails](model) mustEqual expected
@@ -54,8 +51,7 @@ class DownloadAuditEventSpec extends AnyFreeSpec with Matchers {
 
           val model = DownloadAuditEvent.BirthDetails.AlreadyBorn(
             birthDate = birthDate,
-            payShouldStartFromBirthDay = true,
-            payStartDate = None
+            payShouldStartFromBirthDay = true
           )
 
           val expected = Json.obj(
@@ -69,21 +65,14 @@ class DownloadAuditEventSpec extends AnyFreeSpec with Matchers {
 
       "for BirthDetails.Due" - {
 
-        val dueDate = LocalDate.of(2000, 2, 1)
-        val payStartDate = LocalDate.of(2001, 2, 1)
-
         "when payStartDate exists" in {
 
           val model = DownloadAuditEvent.BirthDetails.Due(
-            dueDate = dueDate,
-            payShouldStartFromDueDate = false,
-            payStartDate = Some(payStartDate)
+            payShouldStartFromDueDate = false
           )
 
           val expected = Json.obj(
-            "dueDate" -> dueDate,
-            "payShouldStartFromDueDate" -> false,
-            "payStartDate" -> payStartDate
+            "payShouldStartFromDueDate" -> false
           )
 
           Json.toJson[DownloadAuditEvent.BirthDetails](model) mustEqual expected
@@ -92,13 +81,10 @@ class DownloadAuditEventSpec extends AnyFreeSpec with Matchers {
         "when payStartDate is empty" in {
 
           val model = DownloadAuditEvent.BirthDetails.Due(
-            dueDate = dueDate,
-            payShouldStartFromDueDate = true,
-            payStartDate = None
+            payShouldStartFromDueDate = true
           )
 
           val expected = Json.obj(
-            "dueDate" -> dueDate,
             "payShouldStartFromDueDate" -> true
           )
 

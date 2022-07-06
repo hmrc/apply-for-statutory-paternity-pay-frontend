@@ -24,13 +24,15 @@ import uk.gov.hmrc.domain.Nino
 import java.time.LocalDate
 
 final case class DownloadAuditEvent(
-                               eligibility: Eligibility,
-                               name: Name,
-                               nino: Nino,
-                               hasTheBabyBeenBorn: Boolean,
-                               birthDetails: BirthDetails,
-                               howLongWillYouBeOnLeave: PaternityLeaveLength
-                             ) {
+                                     eligibility: Eligibility,
+                                     name: Name,
+                                     nino: Nino,
+                                     hasTheBabyBeenBorn: Boolean,
+                                     dueDate: LocalDate,
+                                     birthDetails: BirthDetails,
+                                     payStartDate: Option[LocalDate],
+                                     howLongWillYouBeOnLeave: PaternityLeaveLength
+                                   ) {
 
 }
 
@@ -56,22 +58,19 @@ object DownloadAuditEvent {
 
     final case class AlreadyBorn(
                                   birthDate: LocalDate,
-                                  payShouldStartFromBirthDay: Boolean,
-                                  payStartDate: Option[LocalDate]
+                                  payShouldStartFromBirthDay: Boolean
                                 ) extends BirthDetails
 
     final case class Due(
-                          dueDate: LocalDate,
-                          payShouldStartFromDueDate: Boolean,
-                          payStartDate: Option[LocalDate]
+                          payShouldStartFromDueDate: Boolean
                         ) extends BirthDetails
 
     private[auditing] def from(model: JourneyModel.BirthDetails): BirthDetails =
       model match {
-        case JourneyModel.BirthDetails.AlreadyBorn(birthDate, payShouldStartFromBirthDay, payStartDate) =>
-          AlreadyBorn(birthDate, payShouldStartFromBirthDay, payStartDate)
-        case JourneyModel.BirthDetails.Due(dueDate, payShouldStartFromDueDate, payStartDate) =>
-          Due(dueDate, payShouldStartFromDueDate, payStartDate)
+        case JourneyModel.BirthDetails.AlreadyBorn(birthDate, payShouldStartFromBirthDay) =>
+          AlreadyBorn(birthDate, payShouldStartFromBirthDay)
+        case JourneyModel.BirthDetails.Due(payShouldStartFromDueDate) =>
+          Due(payShouldStartFromDueDate)
       }
 
     implicit lazy val writes: Writes[BirthDetails] = Writes {
@@ -93,8 +92,10 @@ object DownloadAuditEvent {
       ),
       name = model.name,
       nino = model.nino,
+      dueDate = model.dueDate,
       hasTheBabyBeenBorn = model.hasTheBabyBeenBorn,
       birthDetails = BirthDetails.from(model.birthDetails),
+      payStartDate = model.payStartDate,
       howLongWillYouBeOnLeave = model.howLongWillYouBeOnLeave
     )
 

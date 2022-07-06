@@ -38,10 +38,10 @@ class Navigator @Inject()() {
     case NinoPage                         => _ => routes.BabyHasBeenBornController.onPageLoad(NormalMode)
     case BabyHasBeenBornPage              => babyHasBeenBornRoute
     case BabyDateOfBirthPage              => _ => routes.WantPayToStartOnBirthDateController.onPageLoad(NormalMode)
-    case BabyDueDatePage                  => _ => routes.WantPayToStartOnDueDateController.onPageLoad(NormalMode)
+    case BabyDueDatePage                  => babyDueDateRoute
     case WantPayToStartOnBirthDatePage    => wantPayToStartOnBirthDateRoute
     case WantPayToStartOnDueDatePage      => wantPayToStartOnDueDateRoute
-    case PayStartDateBabyBornPage         => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+    case PayStartDateBabyBornPage         => _ => routes.BabyDueDateController.onPageLoad(NormalMode)
     case PayStartDateBabyDuePage          => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
     case PaternityLeaveLengthPage         => _ => routes.CheckYourAnswersController.onPageLoad
     case _                                => _ => routes.IndexController.onPageLoad
@@ -95,9 +95,15 @@ class Navigator @Inject()() {
       case false => routes.BabyDueDateController.onPageLoad(NormalMode)
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
+  private def babyDueDateRoute(answers: UserAnswers): Call =
+    answers.get(BabyHasBeenBornPage).map {
+      case true  => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+      case false => routes.WantPayToStartOnDueDateController.onPageLoad(NormalMode)
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
   private def wantPayToStartOnBirthDateRoute(answers: UserAnswers): Call =
     answers.get(WantPayToStartOnBirthDatePage).map {
-      case true  => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+      case true  => routes.BabyDueDateController.onPageLoad(NormalMode)
       case false => routes.PayStartDateBabyBornController.onPageLoad(NormalMode)
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
@@ -171,12 +177,10 @@ class Navigator @Inject()() {
         answers.get(BabyDateOfBirthPage)
           .map(_ => routes.CheckYourAnswersController.onPageLoad)
           .getOrElse(routes.BabyDateOfBirthController.onPageLoad(CheckMode))
-
       case false =>
-        answers.get(BabyDueDatePage)
+        answers.get(WantPayToStartOnDueDatePage)
           .map(_ => routes.CheckYourAnswersController.onPageLoad)
-          .getOrElse(routes.BabyDueDateController.onPageLoad(CheckMode))
-
+          .getOrElse(routes.WantPayToStartOnDueDateController.onPageLoad(CheckMode))
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   private def babyDateOfBirthCheckRoute(answers: UserAnswers): Call =

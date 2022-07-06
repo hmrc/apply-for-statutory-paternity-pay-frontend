@@ -29,6 +29,7 @@ class BabyDueDateFormProvider @Inject()(clock: Clock) extends Mappings {
   def apply(): Form[LocalDate] = {
 
     val maximumDate = LocalDate.now(clock).plusWeeks(40)
+    val minimumDate = LocalDate.now(clock).minusWeeks(8)
 
     Form(
       "value" -> localDate(
@@ -36,7 +37,7 @@ class BabyDueDateFormProvider @Inject()(clock: Clock) extends Mappings {
         allRequiredKey = "babyDueDate.error.required.all",
         twoRequiredKey = "babyDueDate.error.required.two",
         requiredKey = "babyDueDate.error.required"
-      ).verifying(minDate(LocalDate.now(clock), "babyDueDate.error.past"))
+      ).verifying(minDate(LocalDate.now(clock), "babyDueDate.error.beforeMinimum", minimumDate.format(dateTimeFormat)))
         .verifying(maxDate(maximumDate, "babyDueDate.error.afterMaximum", maximumDate.format(dateTimeFormat)))
     )
   }
