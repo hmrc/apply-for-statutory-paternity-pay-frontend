@@ -35,7 +35,7 @@ class BabyDueDateFormProviderSpec extends DateBehaviours {
   ".value" - {
 
     val validData = datesBetween(
-      min = today,
+      min = minimumDate,
       max = maximumDate
     )
 
