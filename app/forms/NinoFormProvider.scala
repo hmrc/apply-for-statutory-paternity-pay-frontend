@@ -28,7 +28,7 @@ class NinoFormProvider @Inject() extends Mappings {
   def apply(): Form[Nino] =
     Form(
       "value" -> text("nino.error.required")
-        .verifying("nino.error.invalid", s => Try(Nino(s.trim.toUpperCase)).isSuccess)
-        .transform[Nino](s => Nino(s.trim.toUpperCase), nino => nino.toString)
+        .verifying("nino.error.invalid", s => Try(Nino(s.replaceAll("\\s", "").toUpperCase)).isSuccess)
+        .transform[Nino](s => Nino(s.replaceAll("\\s", "").toUpperCase), nino => nino.toString)
     )
 }
