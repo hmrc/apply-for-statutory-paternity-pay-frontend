@@ -21,6 +21,7 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import models.JourneyModel
 import org.apache.fop.apps.FOUserAgent
 import org.apache.xmlgraphics.util.MimeConstants
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.auditing.AuditService
@@ -39,7 +40,7 @@ class PrintController @Inject() (
                                   pdfView: PdfView,
                                   auditService: AuditService,
                                   fop: PlayFop
-                                ) extends FrontendBaseController with I18nSupport {
+                                ) extends FrontendBaseController with I18nSupport with Logging {
 
   private val userAgentBlock: FOUserAgent => Unit = { foUserAgent: FOUserAgent =>
     foUserAgent.setAccessibility(true)
@@ -53,12 +54,19 @@ class PrintController @Inject() (
 
   def onDownload: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      JourneyModel.from(request.userAnswers).map { model =>
-        auditService.auditDownload(model)
-        val pdf = fop.processTwirlXml(pdfView(model), MimeConstants.MIME_PDF, foUserAgentBlock = userAgentBlock)
-        Ok(pdf)
-          .as("application/octet-stream")
-          .withHeaders(CONTENT_DISPOSITION -> "attachment; filename=apply-for-statutory-paternity-pay-sc3.pdf")
-      }.getOrElse(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+      JourneyModel.from(request.userAnswers).fold(
+        pages => {
+          val message = pages.toNonEmptyList.toList.mkString(", ")
+          logger.warn(s"Failed to generate journey model, missing pages: $message")
+          Redirect(routes.JourneyRecoveryController.onPageLoad())
+        },
+        model => {
+          auditService.auditDownload(model)
+          val pdf = fop.processTwirlXml(pdfView(model), MimeConstants.MIME_PDF, foUserAgentBlock = userAgentBlock)
+          Ok(pdf)
+            .as("application/octet-stream")
+            .withHeaders(CONTENT_DISPOSITION -> "attachment; filename=apply-for-statutory-paternity-pay-sc3.pdf")
+        }
+      )
   }
 }
