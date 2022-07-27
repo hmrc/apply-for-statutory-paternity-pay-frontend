@@ -16,8 +16,9 @@
 
 package pages
 
-import models.UserAnswers
+import models.{Mode, UserAnswers}
 import play.api.libs.json.JsPath
+import play.api.mvc.Call
 
 import scala.util.Try
 
@@ -47,4 +48,6 @@ case object IsCohabitingPage extends QuestionPage[Boolean] {
     else {
       super.cleanup(value, userAnswers)
     }
+
+  override def route(mode: Mode): Call = controllers.routes.IsCohabitingController.onPageLoad(mode)
 }

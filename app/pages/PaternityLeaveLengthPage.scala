@@ -16,12 +16,15 @@
 
 package pages
 
-import models.PaternityLeaveLength
+import models.{Mode, PaternityLeaveLength}
 import play.api.libs.json.JsPath
+import play.api.mvc.Call
 
 case object PaternityLeaveLengthPage extends QuestionPage[PaternityLeaveLength] {
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "paternityLeaveLength"
+
+  override def route(mode: Mode): Call = controllers.routes.PaternityLeaveLengthController.onPageLoad(mode)
 }

@@ -16,7 +16,9 @@
 
 package pages
 
+import models.Mode
 import play.api.libs.json.JsPath
+import play.api.mvc.Call
 
 case object IsBiologicalFatherPage extends QuestionPage[Boolean] {
 
@@ -24,4 +26,5 @@ case object IsBiologicalFatherPage extends QuestionPage[Boolean] {
 
   override def toString: String = "isBiologicalFather"
 
+  override def route(mode: Mode): Call = controllers.routes.IsBiologicalFatherController.onPageLoad(mode)
 }
