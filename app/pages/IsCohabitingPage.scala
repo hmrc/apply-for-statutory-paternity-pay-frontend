@@ -16,38 +16,15 @@
 
 package pages
 
-import models.{Mode, UserAnswers}
+import models.Mode
 import play.api.libs.json.JsPath
 import play.api.mvc.Call
-
-import scala.util.Try
 
 case object IsCohabitingPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "isCohabiting"
-
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
-    if (value contains false) {
-      userAnswers
-        .remove(BabyDateOfBirthPage)
-        .flatMap(_.remove(BabyDueDatePage))
-        .flatMap(_.remove(BabyHasBeenBornPage))
-        .flatMap(_.remove(NamePage))
-        .flatMap(_.remove(NinoPage))
-        .flatMap(_.remove(PaternityLeaveLengthPage))
-        .flatMap(_.remove(PayStartDateBabyBornPage))
-        .flatMap(_.remove(PayStartDateBabyDuePage))
-        .flatMap(_.remove(WantPayToStartOnBirthDatePage))
-        .flatMap(_.remove(WantPayToStartOnDueDatePage))
-        .flatMap(_.remove(WillHaveCaringResponsibilityPage))
-        .flatMap(_.remove(WillTakeTimeToCareForChildPage))
-        .flatMap(_.remove(WillTakeTimeToSupportMotherPage))
-    }
-    else {
-      super.cleanup(value, userAnswers)
-    }
 
   override def route(mode: Mode): Call = controllers.routes.IsCohabitingController.onPageLoad(mode)
 }
