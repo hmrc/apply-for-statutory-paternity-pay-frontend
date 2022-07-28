@@ -14,31 +14,35 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.actions
 
 import base.SpecBase
 import generators.ModelGenerators
-import models.{Name, PaternityLeaveLength}
-import org.mockito.ArgumentMatchers.{any, eq => eqTo}
-import org.mockito.Mockito.{times, verify, when}
-import org.scalatestplus.mockito.MockitoSugar
-import pages._
-import play.api.inject.bind
-import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import repositories.SessionRepository
-import uk.gov.hmrc.domain.Nino
-import views.html.ConfirmationView
+import models.requests.DataRequest
+import models.{Name, NormalMode, PaternityLeaveLength}
 import org.scalacheck.Arbitrary.arbitrary
+import org.scalatest.concurrent.ScalaFutures
+import pages._
+import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.mvc.AnyContent
+import play.api.mvc.Results.Ok
+import play.api.test.FakeRequest
+import uk.gov.hmrc.domain.Nino
+import play.api.test.Helpers._
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class ConfirmationControllerSpec extends SpecBase with MockitoSugar with ModelGenerators {
+class JourneyModelFilterSpec extends SpecBase with ScalaFutures with ModelGenerators {
 
-  "Confirmation Controller" - {
+  "JourneyModelFilter" - {
 
-    "must return OK and the correct view for a GET" in {
+    lazy val app = new GuiceApplicationBuilder()
+      .build()
+
+    lazy val filter = app.injector.instanceOf[JourneyModelFilter]
+
+    "must not filter requests which contain data for a complete journey model" in {
 
       val answers =
         emptyUserAnswers
@@ -59,42 +63,17 @@ class ConfirmationControllerSpec extends SpecBase with MockitoSugar with ModelGe
           .set(WillTakeTimeToCareForChildPage, true).success.value
           .set(WillTakeTimeToSupportMotherPage, true).success.value
 
-      val application = applicationBuilder(userAnswers = Some(answers)).build()
-
-      running(application) {
-        val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[ConfirmationView]
-
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(request, messages(application)).toString
-      }
+      val completedDataRequest = DataRequest[AnyContent](FakeRequest(), "id", answers)
+      val result = filter.invokeBlock[AnyContent](completedDataRequest, _ => Future.successful(Ok))
+      status(result) mustEqual OK
     }
 
-    "start again must clear user answers and redirect to Index" in {
+    "must redirect to the first page in the journey which fails" in {
 
-      val mockSessionRepository = mock[SessionRepository]
-      when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
-
-      val application =
-        applicationBuilder(None)
-          .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
-          .build()
-
-      running(application) {
-
-        val request = FakeRequest(GET, routes.ConfirmationController.startAgain().url)
-
-        val result = route(application, request).value
-
-        val expectedRedirectUrl = routes.IndexController.onPageLoad.url
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual expectedRedirectUrl
-        verify(mockSessionRepository, times(1)).clear(eqTo(userAnswersId))
-      }
+      val completedDataRequest = DataRequest[AnyContent](FakeRequest(), "id", emptyUserAnswers)
+      val result = filter.invokeBlock[AnyContent](completedDataRequest, _ => Future.successful(Ok))
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual controllers.routes.IsAdoptingController.onPageLoad(NormalMode).url
     }
   }
 }
