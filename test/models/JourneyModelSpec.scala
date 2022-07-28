@@ -174,7 +174,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
       )
     }
 
-    "must return the cannot apply when adopting page when the user says they are adopting" in {
+    "must return the is adopting page when the user says they are adopting" in {
 
       val answers = emptyUserAnswers
         .set(IsAdoptingPage, true).success.value
@@ -182,56 +182,53 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
       val errors = JourneyModel.from(answers).left.value.toChain.toList
 
       errors must contain (
-        CannotApplyAdoptingPage
+        IsAdoptingPage
       )
     }
 
-    "must return the cannot apply page" - {
+    "must return the is cohabiting page when the user is not in a relationship or cohabiting with the mother" in {
 
-      "when the user is not in a relationship or cohabiting with the mother" in {
+      val answers = emptyUserAnswers
+        .set(IsAdoptingPage, false).success.value
+        .set(IsBiologicalFatherPage, false).success.value
+        .set(IsInQualifyingRelationshipPage, false).success.value
+        .set(IsCohabitingPage, false).success.value
 
-        val answers = emptyUserAnswers
-          .set(IsAdoptingPage, false).success.value
-          .set(IsBiologicalFatherPage, false).success.value
-          .set(IsInQualifyingRelationshipPage, false).success.value
-          .set(IsCohabitingPage, false).success.value
+      val errors = JourneyModel.from(answers).left.value.toChain.toList
 
-        val errors = JourneyModel.from(answers).left.value.toChain.toList
+      errors must contain(
+        IsCohabitingPage
+      )
+    }
 
-        errors must contain (
-          CannotApplyPage
-        )
-      }
+    "must return the will have caring responsibility page when the user is not responsible for caring for the child" in {
 
-      "when the user is not responsible for caring for the child" in {
+      val answers = emptyUserAnswers
+        .set(IsAdoptingPage, false).success.value
+        .set(IsBiologicalFatherPage, true).success.value
+        .set(WillHaveCaringResponsibilityPage, false).success.value
 
-        val answers = emptyUserAnswers
-          .set(IsAdoptingPage, false).success.value
-          .set(IsBiologicalFatherPage, true).success.value
-          .set(WillHaveCaringResponsibilityPage, false).success.value
+      val errors = JourneyModel.from(answers).left.value.toChain.toList
 
-        val errors = JourneyModel.from(answers).left.value.toChain.toList
+      errors must contain(
+        WillHaveCaringResponsibilityPage
+      )
+    }
 
-        errors must contain (
-          CannotApplyPage
-        )
-      }
+    "must return will take time to support mother page when the user is not taking time off to care for either the child or the mother" in {
 
-      "when the user is not taking time off to care for either the child or the mother" in {
+      val answers = emptyUserAnswers
+        .set(IsAdoptingPage, false).success.value
+        .set(IsBiologicalFatherPage, true).success.value
+        .set(WillHaveCaringResponsibilityPage, true).success.value
+        .set(WillTakeTimeToCareForChildPage, false).success.value
+        .set(WillTakeTimeToSupportMotherPage, false).success.value
 
-        val answers = emptyUserAnswers
-          .set(IsAdoptingPage, false).success.value
-          .set(IsBiologicalFatherPage, true).success.value
-          .set(WillHaveCaringResponsibilityPage, true).success.value
-          .set(WillTakeTimeToCareForChildPage, false).success.value
-          .set(WillTakeTimeToSupportMotherPage, false).success.value
+      val errors = JourneyModel.from(answers).left.value.toChain.toList
 
-        val errors = JourneyModel.from(answers).left.value.toChain.toList
-
-        errors must contain (
-          CannotApplyPage
-        )
-      }
+      errors must contain(
+        WillTakeTimeToSupportMotherPage
+      )
     }
   }
 

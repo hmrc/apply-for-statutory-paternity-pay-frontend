@@ -16,8 +16,9 @@
 
 package pages
 
-import models.UserAnswers
+import models.{Mode, UserAnswers}
 import play.api.libs.json.JsPath
+import play.api.mvc.Call
 
 import scala.util.Try
 
@@ -32,4 +33,6 @@ case object WantPayToStartOnBirthDatePage extends QuestionPage[Boolean] {
       case true  => userAnswers.remove(PayStartDateBabyBornPage)
       case false => super.cleanup(value, userAnswers)
     }.getOrElse(super.cleanup(value, userAnswers))
+
+  override def route(mode: Mode): Call = controllers.routes.WantPayToStartOnBirthDateController.onPageLoad(mode)
 }

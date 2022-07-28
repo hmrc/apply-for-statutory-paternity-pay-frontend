@@ -16,10 +16,9 @@
 
 package pages
 
-import models.UserAnswers
+import models.Mode
 import play.api.libs.json.JsPath
-
-import scala.util.Try
+import play.api.mvc.Call
 
 case object WillHaveCaringResponsibilityPage extends QuestionPage[Boolean] {
 
@@ -27,23 +26,5 @@ case object WillHaveCaringResponsibilityPage extends QuestionPage[Boolean] {
 
   override def toString: String = "willHaveCaringResponsibility"
 
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
-    if (value contains false) {
-      userAnswers
-        .remove(BabyDateOfBirthPage)
-        .flatMap(_.remove(BabyDueDatePage))
-        .flatMap(_.remove(BabyHasBeenBornPage))
-        .flatMap(_.remove(NamePage))
-        .flatMap(_.remove(NinoPage))
-        .flatMap(_.remove(PaternityLeaveLengthPage))
-        .flatMap(_.remove(PayStartDateBabyBornPage))
-        .flatMap(_.remove(PayStartDateBabyDuePage))
-        .flatMap(_.remove(WantPayToStartOnBirthDatePage))
-        .flatMap(_.remove(WantPayToStartOnDueDatePage))
-        .flatMap(_.remove(WillTakeTimeToCareForChildPage))
-        .flatMap(_.remove(WillTakeTimeToSupportMotherPage))
-    }
-    else {
-      super.cleanup(value, userAnswers)
-    }
+  override def route(mode: Mode): Call = controllers.routes.WillHaveCaringResponsibilityController.onPageLoad(mode)
 }

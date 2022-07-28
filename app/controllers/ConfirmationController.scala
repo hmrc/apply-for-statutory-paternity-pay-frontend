@@ -34,10 +34,11 @@ class ConfirmationController @Inject()(
                                        requireData: DataRequiredAction,
                                        sessionRepository: SessionRepository,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: ConfirmationView
+                                       view: ConfirmationView,
+                                       journeyModelFilter: JourneyModelFilter
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData andThen journeyModelFilter) {
     implicit request =>
       Ok(view())
   }

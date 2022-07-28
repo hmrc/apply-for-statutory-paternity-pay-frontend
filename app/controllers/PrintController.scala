@@ -19,7 +19,7 @@ package controllers
 import com.dmanchester.playfop.sapi.PlayFop
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import logging.Logging
-import models.JourneyModel
+import models.{JourneyModel, NormalMode}
 import org.apache.fop.apps.FOUserAgent
 import org.apache.xmlgraphics.util.MimeConstants
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -56,9 +56,9 @@ class PrintController @Inject() (
     implicit request =>
       JourneyModel.from(request.userAnswers).fold(
         pages => {
-          val message = pages.toNonEmptyList.toList.mkString(", ")
+          val message = pages.toChain.toList.mkString(", ")
           logger.warn(s"Failed to generate journey model, missing pages: $message")
-          Redirect(routes.JourneyRecoveryController.onPageLoad())
+          Redirect(pages.head.route(NormalMode))
         },
         model => {
           auditService.auditDownload(model)
