@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import com.dmanchester.playfop.sapi.PlayFop
-import models.{JourneyModel, Name, PaternityLeaveLength}
+import models.{JourneyModel, Name, NormalMode, PaternityLeaveLength}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.Mockito.{times, verify, when}
@@ -76,13 +76,13 @@ class PrintControllerSpec extends SpecBase with EitherValues with MockitoSugar {
       }
     }
 
-    "must redirect to the journey recovery controller when the user answers are incomplete" in {
+    "must redirect to the page with the first missing piece of information that is required when the user has incomplete answers" in {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
       running(application) {
         val request = FakeRequest(GET, routes.PrintController.onDownload.url)
         val result = route(application, request).value
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.IsAdoptingController.onPageLoad(NormalMode).url
       }
     }
   }
