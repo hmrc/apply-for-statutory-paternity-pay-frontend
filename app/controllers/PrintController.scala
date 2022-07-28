@@ -22,7 +22,6 @@ import logging.Logging
 import models.{JourneyModel, NormalMode}
 import org.apache.fop.apps.FOUserAgent
 import org.apache.xmlgraphics.util.MimeConstants
-import pages.QuestionPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.auditing.AuditService
@@ -59,9 +58,7 @@ class PrintController @Inject() (
         pages => {
           val message = pages.toChain.toList.mkString(", ")
           logger.warn(s"Failed to generate journey model, missing pages: $message")
-          pages.toChain.toList.collectFirst { case page: QuestionPage[_] =>
-            Redirect(page.route(NormalMode))
-          }.getOrElse(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+          Redirect(pages.head.route(NormalMode))
         },
         model => {
           auditService.auditDownload(model)

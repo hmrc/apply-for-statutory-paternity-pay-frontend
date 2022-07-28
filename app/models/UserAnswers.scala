@@ -17,7 +17,7 @@
 package models
 
 import cats.data.{EitherNec, NonEmptyChain}
-import pages.Page
+import pages.{Page, QuestionPage}
 import play.api.libs.json._
 import queries.{Derivable, Gettable, Query, Settable}
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
@@ -34,7 +34,7 @@ final case class UserAnswers(
   def get[A](page: Gettable[A])(implicit rds: Reads[A]): Option[A] =
     Reads.optionNoError(Reads.at(page.path)).reads(data).getOrElse(None)
 
-  def getEither[A](page: Page with Gettable[A])(implicit rds: Reads[A]): EitherNec[Page, A] =
+  def getEither[A](page: QuestionPage[A])(implicit rds: Reads[A]): EitherNec[QuestionPage[_], A] =
     get(page).toRight(NonEmptyChain.one(page))
 
   def get[A, B](derivable: Derivable[A, B])(implicit rds: Reads[A]): Option[B] =

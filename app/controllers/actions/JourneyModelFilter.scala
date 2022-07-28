@@ -16,9 +16,8 @@
 
 package controllers.actions
 
-import models.{JourneyModel, NormalMode}
 import models.requests.DataRequest
-import pages.QuestionPage
+import models.{JourneyModel, NormalMode}
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionFilter, Result}
 
@@ -31,10 +30,7 @@ class JourneyModelFilterImpl @Inject() ()(implicit override val executionContext
   override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] = {
     Future.successful {
       JourneyModel.from(request.userAnswers).fold(
-        _.toChain.toList.collectFirst {
-          case page: QuestionPage[_] =>
-            Redirect(page.route(NormalMode))
-        },
+        pages => Some(Redirect(pages.head.route(NormalMode))),
         _ => None
       )
     }
