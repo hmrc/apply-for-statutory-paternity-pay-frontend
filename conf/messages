@@ -272,6 +272,10 @@ isAdopting.error.required = Select yes if you or a partner are becoming adoptive
 isAdopting.change.hidden = if you or a partner are becoming adoptive or parental order parents
 
 pdf.title = Apply for Statutory Paternity Pay and/or Paternity Leave (SC3)
+pdf.application = Your application
+pdf.instructions = Instructions
+pdf.bookmark.application = Application form
+pdf.bookmark.instructions = Instructions
 pdf.boolean.true = Yes
 pdf.boolean.false = No
 pdf.name = Name

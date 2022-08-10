@@ -20,7 +20,10 @@
 
 @(model: JourneyModel)(implicit request: RequestHeader, messages: Messages)
 
-<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:fox="http://xmlgraphics.apache.org/fop/extensions" font-family="sans-serif">
+@h2 = { margin-bottom="4mm" font-weight="bold" font-size="18pt" role="H2" }
+@h3 = { margin-bottom="3mm" font-weight="bold" font-size="16pt" role="H3" }
+
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:fox="http://xmlgraphics.apache.org/fop/extensions" font-family="sans-serif" xml:lang="en">
 
     <fo:layout-master-set>
         <fo:simple-page-master master-name="main" page-height="297mm" page-width="210mm" margin="2cm">
@@ -30,23 +33,57 @@
         </fo:simple-page-master>
     </fo:layout-master-set>
 
+    <fo:bookmark-tree>
+        <fo:bookmark internal-destination="title">
+            <fo:bookmark-title>@messages("pdf.title")</fo:bookmark-title>
+            <fo:bookmark internal-destination="application">
+                <fo:bookmark-title>@messages("pdf.application")</fo:bookmark-title>
+                <fo:bookmark internal-destination="personal-details">
+                    <fo:bookmark-title>@messages("section.personalDetails")</fo:bookmark-title>
+                </fo:bookmark>
+                <fo:bookmark internal-destination="baby-details">
+                    <fo:bookmark-title>@messages("section.babyDetails")</fo:bookmark-title>
+                </fo:bookmark>
+                <fo:bookmark internal-destination="paternity-details">
+                    <fo:bookmark-title>@messages("section.paternityDetails")</fo:bookmark-title>
+                </fo:bookmark>
+                <fo:bookmark internal-destination="declaration">
+                    <fo:bookmark-title>@messages("pdf.declaration")</fo:bookmark-title>
+                </fo:bookmark>
+            </fo:bookmark>
+            <fo:bookmark internal-destination="instructions">
+                <fo:bookmark-title>@messages("pdf.instructions")</fo:bookmark-title>
+                <fo:bookmark internal-destination="what-to-do-now">
+                    <fo:bookmark-title>@messages("pdf.whatToDoNow.heading")</fo:bookmark-title>
+                </fo:bookmark>
+                <fo:bookmark internal-destination="further-information">
+                    <fo:bookmark-title>@messages("pdf.furtherInfo.heading")</fo:bookmark-title>
+                </fo:bookmark>
+                <fo:bookmark internal-destination="penalties">
+                    <fo:bookmark-title>@messages("pdf.penalties.heading")</fo:bookmark-title>
+                </fo:bookmark>
+            </fo:bookmark>
+        </fo:bookmark>
+    </fo:bookmark-tree>
+
     <fo:page-sequence master-reference="main">
 
         <!-- Header -->
         <fo:static-content flow-name="xsl-region-before">
             <fo:block>
                 <fo:external-graphic src="url(conf/resources/logo.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
-                <fo:block margin-left="4cm" margin-top="-1.25cm" text-align="right" font-size="16pt" font-weight="bold">@messages("pdf.title")</fo:block>
+                <fo:block margin-left="4cm" margin-top="-1.25cm" text-align="right" font-size="16pt" font-weight="bold" role="H1" id="title">@messages("pdf.title")</fo:block>
             </fo:block>
         </fo:static-content>
 
         <!-- Body -->
         <fo:flow flow-name="xsl-region-body">
             <fo:block-container>
+                <fo:block id="application" @h2>@messages("pdf.application")</fo:block>
 
-                <fo:block-container>
+                <fo:block-container id="personal-details">
                     <!-- Personal details -->
-                    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.personalDetails")</fo:block>
+                    <fo:block @h3>@messages("section.personalDetails")</fo:block>
 
                     <!-- Name -->
                     <fo:block-container>
@@ -70,9 +107,9 @@
 
                 </fo:block-container>
 
-                <fo:block-container margin-top="8mm">
+                <fo:block-container margin-top="8mm" id="baby-details">
                     <!-- Baby details -->
-                    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.babyDetails")</fo:block>
+                    <fo:block @h3>@messages("section.babyDetails")</fo:block>
 
                     <!-- Due date -->
                     <fo:block-container>
@@ -101,9 +138,9 @@
 
                 </fo:block-container>
 
-                <fo:block-container margin-top="8mm">
+                <fo:block-container margin-top="8mm" id="paternity-details">
                     <!-- Paternity details -->
-                    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.paternityDetails")</fo:block>
+                    <fo:block @h3>@messages("section.paternityDetails")</fo:block>
 
                     <!-- Pay start date -->
                     <fo:block-container>
@@ -129,8 +166,8 @@
 
             </fo:block-container>
 
-            <fo:block margin-top="8mm">
-                <fo:block margin-bottom="4mm" font-weight="bold" font-size="18pt">@messages("pdf.declaration")</fo:block>
+            <fo:block margin-top="8mm" id="declaration">
+                <fo:block @h3>@messages("pdf.declaration")</fo:block>
 
                 <fo:block-container>
                     <fo:block margin-bottom="4mm">@messages("pdf.declaration.declaration.1")</fo:block>
@@ -183,20 +220,21 @@
 
         <!-- Instructions -->
         <fo:flow flow-name="xsl-region-body">
-            <fo:block-container>
+            <fo:block-container id="instructions">
+                <fo:block @h2>@messages("pdf.instructions")</fo:block>
 
-                <fo:block margin-bottom="8mm">
-                    <fo:block font-weight="bold">@messages("pdf.whatToDoNow.heading")</fo:block>
+                <fo:block margin-bottom="8mm" id="what-to-do-now">
+                    <fo:block @h3>@messages("pdf.whatToDoNow.heading")</fo:block>
                     <fo:inline>@messages("pdf.whatToDoNow.p")</fo:inline>
                 </fo:block>
 
-                <fo:block margin-bottom="8mm">
-                    <fo:block font-weight="bold">@messages("pdf.furtherInfo.heading")</fo:block>
+                <fo:block margin-bottom="8mm" id="further-information">
+                    <fo:block @h3>@messages("pdf.furtherInfo.heading")</fo:block>
                     <fo:inline>@messages("pdf.furtherInfo.p")</fo:inline>
                 </fo:block>
 
-                <fo:block margin-bottom="8mm">
-                    <fo:block font-weight="bold">@messages("pdf.penalties.heading")</fo:block>
+                <fo:block margin-bottom="8mm" id="penalties">
+                    <fo:block @h3>@messages("pdf.penalties.heading")</fo:block>
                     <fo:inline>@messages("pdf.penalties.p")</fo:inline>
                 </fo:block>
 
