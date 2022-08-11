@@ -23,7 +23,7 @@
         h1WithCaption: components.h1WithCaption
 )
 
-@(form: Form[_], mode: Mode, dateHint: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, minDate: String, maxDate: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages(s"payStartDateBabyDue.title"))) {
 
@@ -45,7 +45,7 @@
                 field  = form("value"),
                 legend = LegendViewModel(messages(s"payStartDateBabyDue.heading")).withCssClass("govuk-visually-hidden")
             )
-                    .withHint(HintViewModel(messages(s"payStartDateBabyDue.hint", dateHint)))
+                    .withHint(HintViewModel(messages(s"payStartDateBabyDue.hint", minDate, maxDate)))
         )
 
         @govukButton(

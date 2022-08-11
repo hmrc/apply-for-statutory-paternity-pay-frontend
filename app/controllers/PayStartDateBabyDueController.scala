@@ -16,7 +16,7 @@
 
 package controllers
 
-import config.Formats.dateTimeHintFormat
+import config.Formats.dateTimeFormat
 import controllers.actions._
 import forms.PayStartDateBabyDueFormProvider
 import models.Mode
@@ -52,15 +52,16 @@ class PayStartDateBabyDueController @Inject()(
       getAnswer(DerivePayStartDateLimitsBabyDue) {
         payStartDateLimits =>
 
-          val hintDate = payStartDateLimits.max.format(dateTimeHintFormat)
-          val form     = formProvider(payStartDateLimits)
+          val minDate = payStartDateLimits.min.format(dateTimeFormat)
+          val maxDate = payStartDateLimits.max.format(dateTimeFormat)
+          val form    = formProvider(payStartDateLimits)
 
           val preparedForm = request.userAnswers.get(PayStartDateBabyDuePage) match {
             case None => form
             case Some(value) => form.fill(value)
           }
 
-          Ok(view(preparedForm, mode, hintDate))
+          Ok(view(preparedForm, mode, minDate, maxDate))
       }
   }
 
@@ -70,12 +71,13 @@ class PayStartDateBabyDueController @Inject()(
       getAnswerAsync(DerivePayStartDateLimitsBabyDue) {
         payStartDateLimits =>
 
-          val hintDate = payStartDateLimits.max.format(dateTimeHintFormat)
-          val form     = formProvider(payStartDateLimits)
+          val minDate = payStartDateLimits.min.format(dateTimeFormat)
+          val maxDate = payStartDateLimits.max.format(dateTimeFormat)
+          val form    = formProvider(payStartDateLimits)
 
           form.bindFromRequest().fold(
             formWithErrors =>
-              Future.successful(BadRequest(view(formWithErrors, mode, hintDate))),
+              Future.successful(BadRequest(view(formWithErrors, mode, minDate, maxDate))),
 
             value =>
               for {
