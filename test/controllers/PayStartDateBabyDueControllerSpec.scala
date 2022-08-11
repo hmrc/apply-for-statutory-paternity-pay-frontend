@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import config.Formats.dateTimeHintFormat
+import config.Formats.{dateTimeFormat, dateTimeHintFormat}
 import forms.PayStartDateBabyDueFormProvider
 import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
@@ -46,7 +46,9 @@ class PayStartDateBabyDueControllerSpec extends SpecBase with MockitoSugar {
 
   private val dateLimits = baseAnswers.get(DerivePayStartDateLimitsBabyDue).value
 
-  private val dateHint = dateLimits.max.format(dateTimeHintFormat)
+  private val minDate  = dateLimits.min.format(dateTimeFormat)
+  private val maxDate  = dateLimits.max.format(dateTimeFormat)
+  private val hintDate = dateLimits.min.format(dateTimeHintFormat)
 
   private val formProvider = new PayStartDateBabyDueFormProvider()
   private def form = formProvider(dateLimits)
@@ -80,7 +82,7 @@ class PayStartDateBabyDueControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[PayStartDateBabyDueView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, dateHint)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, minDate, maxDate, hintDate)(getRequest, messages(application)).toString
       }
     }
 
@@ -96,7 +98,7 @@ class PayStartDateBabyDueControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, getRequest).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, dateHint)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, minDate, maxDate, hintDate)(getRequest, messages(application)).toString
       }
     }
 
@@ -138,7 +140,7 @@ class PayStartDateBabyDueControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, dateHint)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, minDate, maxDate, hintDate)(request, messages(application)).toString
       }
     }
 
