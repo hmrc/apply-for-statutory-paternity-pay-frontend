@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import config.Formats.dateTimeFormat
+import config.Formats.{dateTimeFormat, dateTimeHintFormat}
 import forms.PayStartDateBabyBornFormProvider
 import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
@@ -46,8 +46,9 @@ class PayStartDateBabyBornControllerSpec extends SpecBase with MockitoSugar {
 
   private val dateLimits = baseAnswers.get(DerivePayStartDateLimitsBabyBorn).value
 
-  private val minDate = dateLimits.min.format(dateTimeFormat)
-  private val maxDate = dateLimits.max.format(dateTimeFormat)
+  private val minDate  = dateLimits.min.format(dateTimeFormat)
+  private val maxDate  = dateLimits.max.format(dateTimeFormat)
+  private val hintDate = dateLimits.min.format(dateTimeHintFormat)
 
   private val formProvider = new PayStartDateBabyBornFormProvider()
   private def form = formProvider(dateLimits)
@@ -81,7 +82,7 @@ class PayStartDateBabyBornControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[PayStartDateBabyBornView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, minDate, maxDate)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, minDate, maxDate, hintDate)(getRequest, messages(application)).toString
       }
     }
 
@@ -97,7 +98,7 @@ class PayStartDateBabyBornControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, getRequest).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, minDate, maxDate)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, minDate, maxDate, hintDate)(getRequest, messages(application)).toString
       }
     }
 
@@ -139,7 +140,7 @@ class PayStartDateBabyBornControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, minDate, maxDate)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, minDate, maxDate, hintDate)(request, messages(application)).toString
       }
     }
 
