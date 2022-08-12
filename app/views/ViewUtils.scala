@@ -30,6 +30,9 @@ object ViewUtils {
       section = section
     )
 
+  def indexTitle()(implicit messages: Messages): String =
+    s"${messages("service.name")} - ${messages("site.govuk")}"
+
   def titleNoForm(title: String, section: Option[String] = None)(implicit messages: Messages): String =
     s"${messages(title)} - ${section.fold("")(messages(_) + " - ")}${messages("service.name")} - ${messages("site.govuk")}"
 
