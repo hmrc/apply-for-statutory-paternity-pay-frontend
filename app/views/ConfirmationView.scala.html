@@ -32,8 +32,6 @@
         </h2>
     </div>
 
-    <p class="govuk-body">@messages("confirmation.guidance.p1")</p>
-
     <p class="govuk-body">
         @messages("confirmation.guidance.p2.1")
         <a href="@routes.CheckYourAnswersController.onPageLoad" class="govuk-link">@messages("confirmation.guidance.p2.link1.text")</a>
@@ -58,6 +56,8 @@
         @messages("confirmation.guidance.p6.2")
         <a href="@messages("confirmation.guidance.p6.link2.href")" class="govuk-link">@messages("confirmation.guidance.p6.link2.text")</a>.
     </p>
+
+    <p class="govuk-body">@messages("confirmation.guidance.p1")</p>
 
     <a href="@routes.PrintController.onDownload" class="govuk-button">@messages("confirmation.download")</a>
 
