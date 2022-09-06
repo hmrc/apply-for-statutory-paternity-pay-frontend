@@ -222,15 +222,15 @@ willHaveCaringResponsibility.checkYourAnswersLabel = Will you have responsibilit
 willHaveCaringResponsibility.error.required = Select yes if you will have responsibility for caring for the child
 willHaveCaringResponsibility.change.hidden = if you will have responsibility for caring for the child
 
-willTakeTimeToCareForChild.title = Will you take time off work to care for the child?
-willTakeTimeToCareForChild.heading = Will you take time off work to care for the child?
-willTakeTimeToCareForChild.checkYourAnswersLabel = Will you take time off work to care for the child?
+willTakeTimeToCareForChild.title = Will you use your Paternity Leave to care for the child?
+willTakeTimeToCareForChild.heading = Will you use your Paternity Leave to care for the child?
+willTakeTimeToCareForChild.checkYourAnswersLabel = Will you use your Paternity Leave to care for the child?
 willTakeTimeToCareForChild.error.required = Select yes if you will take time off work to care for the child
 willTakeTimeToCareForChild.change.hidden = if you will take time off work to care for the child
 
-willTakeTimeToSupportMother.title = Will you take time off work to support the child’s mother?
-willTakeTimeToSupportMother.heading = Will you take time off work to support the child’s mother?
-willTakeTimeToSupportMother.checkYourAnswersLabel = Will you take time off work to support the child’s mother?
+willTakeTimeToSupportMother.title = Will you use your Paternity Leave to support the child’s mother?
+willTakeTimeToSupportMother.heading = Will you use your Paternity Leave to support the child’s mother?
+willTakeTimeToSupportMother.checkYourAnswersLabel = Will you use your Paternity Leave to support the child’s mother?
 willTakeTimeToSupportMother.error.required = Select yes if you will take time off work to support the child’s mother
 willTakeTimeToSupportMother.change.hidden = if you will take time off work to support the child’s mother
 
