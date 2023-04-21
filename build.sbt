@@ -9,7 +9,6 @@ val silencerVersion = "1.6.0"
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin)
   .disablePlugins(JUnitXmlReportPlugin) //Required to prevent https://github.com/scalatest/scalatest/issues/1427
-  .settings(SbtDistributablesPlugin.publishingSettings: _*)
   .settings(inConfig(Test)(testSettings): _*)
   .configs(IntegrationTest)
   .settings(inConfig(IntegrationTest)(itSettings): _*)
@@ -69,10 +68,6 @@ lazy val root = (project in file("."))
   )
 
 lazy val testSettings: Seq[Def.Setting[_]] = Seq(
-  fork        := true,
-  javaOptions ++= Seq(
-    "-Dconfig.resource=test.application.conf"
-  ),
   unmanagedSourceDirectories += baseDirectory.value / "test-utils"
 )
 
@@ -83,10 +78,5 @@ lazy val itSettings = Defaults.itSettings ++ Seq(
   ),
   unmanagedResourceDirectories := Seq(
     baseDirectory.value / "it" / "resources"
-  ),
-  parallelExecution := false,
-  fork := true,
-  javaOptions ++= Seq(
-    "-Dconfig.resource=it.application.conf"
   )
 )
