@@ -40,6 +40,9 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
 
   val exitSurveyUrl: String = s"$contactHost/feedback/apply-for-statutory-paternity-pay-frontend"
 
+  val userResearchBannerEnabled: Boolean = configuration.get[Boolean]("user-research-banner.enabled")
+  val userResearchBannerUrl: String = configuration.get[String]("user-research-banner.url")
+
   val languageTranslationEnabled: Boolean =
     configuration.get[Boolean]("features.welsh-translation")
 
