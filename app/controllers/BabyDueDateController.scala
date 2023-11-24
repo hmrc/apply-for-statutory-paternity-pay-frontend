@@ -24,7 +24,7 @@ import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
 import pages.{BabyDueDatePage, BabyHasBeenBornPage}
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Lang, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -49,10 +49,12 @@ class BabyDueDateController @Inject()(
     with I18nSupport
     with AnswerExtractor {
 
-  def form = formProvider()
+  def form(implicit lang: Lang) = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      implicit val lang: Lang = request.lang(messagesApi)
+
       getAnswer(BabyHasBeenBornPage) { babyHasBeenBorn =>
 
         val dateHint = LocalDate.now(clock).plusWeeks(15).format(dateTimeHintFormat)
@@ -68,6 +70,8 @@ class BabyDueDateController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      implicit val lang: Lang = request.lang(messagesApi)
+
       getAnswerAsync(BabyHasBeenBornPage) { babyHasBeenBorn =>
 
         val dateHint = LocalDate.now(clock).plusWeeks(15).format(dateTimeHintFormat)

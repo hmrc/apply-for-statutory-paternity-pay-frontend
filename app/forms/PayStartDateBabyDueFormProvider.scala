@@ -20,20 +20,21 @@ import config.Formats.dateTimeFormat
 import forms.mappings.Mappings
 import models.PayStartDateLimits
 import play.api.data.Form
+import play.api.i18n.Lang
 
 import java.time.LocalDate
 import javax.inject.Inject
 
 class PayStartDateBabyDueFormProvider @Inject() extends Mappings {
 
-  def apply(dateLimits: PayStartDateLimits): Form[LocalDate] =
+  def apply(dateLimits: PayStartDateLimits)(implicit lang: Lang): Form[LocalDate] =
     Form(
       "value" -> localDate(
         invalidKey     = "payStartDateBabyDue.error.invalid",
         allRequiredKey = "payStartDateBabyDue.error.required.all",
         twoRequiredKey = "payStartDateBabyDue.error.required.two",
         requiredKey    = "payStartDateBabyDue.error.required"
-      ).verifying(minDate(dateLimits.min, "payStartDateBabyDue.error.belowMinimum", dateLimits.min.format(dateTimeFormat)))
-        .verifying(maxDate(dateLimits.max, "payStartDateBabyDue.error.aboveMaximum", dateLimits.max.format(dateTimeFormat)))
+      ).verifying(minDate(dateLimits.min, "payStartDateBabyDue.error.belowMinimum", dateLimits.min.format(dateTimeFormat())))
+        .verifying(maxDate(dateLimits.max, "payStartDateBabyDue.error.aboveMaximum", dateLimits.max.format(dateTimeFormat())))
     )
 }

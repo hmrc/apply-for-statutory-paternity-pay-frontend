@@ -22,7 +22,7 @@ import forms.PayStartDateBabyBornFormProvider
 import models.Mode
 import navigation.Navigator
 import pages.PayStartDateBabyBornPage
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Lang, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.DerivePayStartDateLimitsBabyBorn
 import repositories.SessionRepository
@@ -51,9 +51,10 @@ class PayStartDateBabyBornController @Inject()(
     implicit request =>
       getAnswer(DerivePayStartDateLimitsBabyBorn) {
         payStartDateLimits =>
+          implicit val lang: Lang = request.lang(messagesApi)
 
-          val minDate  = payStartDateLimits.min.format(dateTimeFormat)
-          val maxDate  = payStartDateLimits.max.format(dateTimeFormat)
+          val minDate  = payStartDateLimits.min.format(dateTimeFormat())
+          val maxDate  = payStartDateLimits.max.format(dateTimeFormat())
           val hintDate = payStartDateLimits.min.format(dateTimeHintFormat)
           val form     = formProvider(payStartDateLimits)
 
@@ -71,9 +72,10 @@ class PayStartDateBabyBornController @Inject()(
     implicit request =>
       getAnswerAsync(DerivePayStartDateLimitsBabyBorn) {
         payStartDateLimits =>
+          implicit val lang: Lang = request.lang(messagesApi)
 
-          val minDate  = payStartDateLimits.min.format(dateTimeFormat)
-          val maxDate  = payStartDateLimits.max.format(dateTimeFormat)
+          val minDate  = payStartDateLimits.min.format(dateTimeFormat())
+          val maxDate  = payStartDateLimits.max.format(dateTimeFormat())
           val hintDate = payStartDateLimits.min.format(dateTimeHintFormat)
           val form    = formProvider(payStartDateLimits)
 

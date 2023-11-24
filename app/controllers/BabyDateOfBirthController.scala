@@ -24,7 +24,7 @@ import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
 import pages.BabyDateOfBirthPage
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Lang, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -46,10 +46,11 @@ class BabyDateOfBirthController @Inject()(
                                         clock: Clock
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def form = formProvider()
+  def form(implicit lang: Lang) = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      implicit val lang: Lang = request.lang(messagesApi)
 
       val dateHint = LocalDate.now(clock).minusDays(1).format(dateTimeHintFormat)
 
@@ -63,6 +64,7 @@ class BabyDateOfBirthController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      implicit val lang: Lang = request.lang(messagesApi)
 
       val dateHint = LocalDate.now(clock).minusDays(1).format(dateTimeHintFormat)
 

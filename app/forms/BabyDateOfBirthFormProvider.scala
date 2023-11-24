@@ -17,15 +17,17 @@
 package forms
 
 import config.Formats.dateTimeFormat
+
 import java.time.{Clock, LocalDate}
 import forms.mappings.Mappings
 
 import javax.inject.Inject
 import play.api.data.Form
+import play.api.i18n.Lang
 
 class BabyDateOfBirthFormProvider @Inject()(clock: Clock) extends Mappings {
 
-  def apply(): Form[LocalDate] = {
+  def apply()(implicit lang: Lang): Form[LocalDate] = {
 
     val minimumDate = LocalDate.now(clock).minusWeeks(7)
 
@@ -36,7 +38,7 @@ class BabyDateOfBirthFormProvider @Inject()(clock: Clock) extends Mappings {
         twoRequiredKey = "babyDateOfBirth.error.required.two",
         requiredKey = "babyDateOfBirth.error.required"
       ).verifying(maxDate(LocalDate.now(clock), "babyDateOfBirth.error.future"))
-        .verifying(minDate(minimumDate, "babyDateOfBirth.error.beforeMinimum", minimumDate.format(dateTimeFormat)))
+        .verifying(minDate(minimumDate, "babyDateOfBirth.error.beforeMinimum", minimumDate.format(dateTimeFormat())))
     )
   }
 }
