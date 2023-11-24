@@ -110,7 +110,7 @@ babyHasBeenBorn.title = Has the baby been born yet?
 babyHasBeenBorn.heading = Has the baby been born yet?
 babyHasBeenBorn.checkYourAnswersLabel = Has the baby been born yet?
 babyHasBeenBorn.error.required = Select yes if the baby has been born
-babyHasBeenBorn.change.hidden = if the baby has been born yet
+babyHasBeenBorn.change.hidden = if the baby has been born
 
 cannotApply.title = You are not eligible for Statutory Paternity Pay
 cannotApply.heading = You are not eligible for Statutory Paternity Pay
