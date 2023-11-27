@@ -14,6 +14,9 @@ site.govuk = GOV.UK
 date.day = Diwrnod
 date.month = Mis
 date.year = Blwyddyn
+date.error.day = diwrnod
+date.error.month = mis
+date.error.year = blwyddyn
 
 timeout.title = Mae’r ffurflen gais ar fin cael ei hailosod
 timeout.message = Er eich diogelwch, bydd y ffurflen gais yn cael ei hailosod ymhen

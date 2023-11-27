@@ -14,6 +14,9 @@ site.govuk = GOV.UK
 date.day = Day
 date.month = Month
 date.year = Year
+date.error.day = day
+date.error.month = month
+date.error.year = year
 
 timeout.title = The application form is about to be reset
 timeout.message = For your security, the application form will be reset in

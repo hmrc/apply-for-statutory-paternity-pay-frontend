@@ -25,7 +25,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.BabyDateOfBirthPage
-import play.api.i18n.Lang
+import play.api.i18n.Messages
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
@@ -43,7 +43,7 @@ class BabyDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
   private val clock        = Clock.fixed(fixedInstant, ZoneId.systemDefault)
   private val dateHint     = today.minusDays(1).format(dateTimeHintFormat)
 
-  private implicit val lang: Lang = Lang("en")
+  private implicit val messages: Messages = stubMessages()
 
   val formProvider = new BabyDateOfBirthFormProvider(clock)
   private def form = formProvider()

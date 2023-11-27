@@ -23,11 +23,12 @@ import forms.mappings.Mappings
 
 import javax.inject.Inject
 import play.api.data.Form
-import play.api.i18n.Lang
+import play.api.i18n.{Lang, Messages}
 
 class BabyDueDateFormProvider @Inject()(clock: Clock) extends Mappings {
 
-  def apply()(implicit lang: Lang): Form[LocalDate] = {
+  def apply()(implicit messages: Messages): Form[LocalDate] = {
+    implicit val lang: Lang = messages.lang
 
     val maximumDate = LocalDate.now(clock).plusWeeks(40)
     val minimumDate = LocalDate.now(clock).minusWeeks(8)

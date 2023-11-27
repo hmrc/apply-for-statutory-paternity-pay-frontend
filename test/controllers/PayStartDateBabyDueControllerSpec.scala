@@ -25,7 +25,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{BabyDueDatePage, PayStartDateBabyDuePage}
-import play.api.i18n.Lang
+import play.api.i18n.{Lang, Messages}
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
@@ -53,6 +53,7 @@ class PayStartDateBabyDueControllerSpec extends SpecBase with MockitoSugar {
   private val maxDate  = dateLimits.max.format(dateTimeFormat)
   private val hintDate = dateLimits.min.format(dateTimeHintFormat)
 
+  private implicit val messages: Messages = stubMessages()
   private val formProvider = new PayStartDateBabyDueFormProvider()
   private def form = formProvider(dateLimits)
 
