@@ -14,6 +14,9 @@ site.govuk = GOV.UK
 date.day = Day
 date.month = Month
 date.year = Year
+date.error.day = day
+date.error.month = month
+date.error.year = year
 
 timeout.title = The application form is about to be reset
 timeout.message = For your security, the application form will be reset in
@@ -110,7 +113,7 @@ babyHasBeenBorn.title = Has the baby been born yet?
 babyHasBeenBorn.heading = Has the baby been born yet?
 babyHasBeenBorn.checkYourAnswersLabel = Has the baby been born yet?
 babyHasBeenBorn.error.required = Select yes if the baby has been born
-babyHasBeenBorn.change.hidden = if the baby has been born yet
+babyHasBeenBorn.change.hidden = if the baby has been born
 
 cannotApply.title = You are not eligible for Statutory Paternity Pay
 cannotApply.heading = You are not eligible for Statutory Paternity Pay

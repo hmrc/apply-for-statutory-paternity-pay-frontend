@@ -19,8 +19,6 @@ package controllers
 import config.Formats.dateTimeHintFormat
 import controllers.actions._
 import forms.BabyDateOfBirthFormProvider
-
-import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
 import pages.BabyDateOfBirthPage
@@ -31,6 +29,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.BabyDateOfBirthView
 
 import java.time.{Clock, LocalDate}
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class BabyDateOfBirthController @Inject()(
@@ -46,10 +45,9 @@ class BabyDateOfBirthController @Inject()(
                                         clock: Clock
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def form = formProvider()
-
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      val form = formProvider()
 
       val dateHint = LocalDate.now(clock).minusDays(1).format(dateTimeHintFormat)
 
@@ -63,6 +61,7 @@ class BabyDateOfBirthController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      val form = formProvider()
 
       val dateHint = LocalDate.now(clock).minusDays(1).format(dateTimeHintFormat)
 

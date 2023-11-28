@@ -20,6 +20,8 @@ import config.Formats.dateTimeFormat
 import forms.behaviours.DateBehaviours
 import models.PayStartDateLimits
 import play.api.data.FormError
+import play.api.i18n.{Lang, Messages}
+import play.api.test.Helpers.stubMessages
 
 import java.time.LocalDate
 
@@ -29,6 +31,8 @@ class PayStartDateBabyDueFormProviderSpec extends DateBehaviours {
   private val minDate = LocalDate.of(2000, 1, 1)
   private val maxDate = LocalDate.of(2100, 1, 1)
   private val dateLimits = PayStartDateLimits(minDate, maxDate)
+  private implicit val messages: Messages = stubMessages()
+  private implicit val lang: Lang = Lang("en")
 
   private val form = formProvider(dateLimits)
 

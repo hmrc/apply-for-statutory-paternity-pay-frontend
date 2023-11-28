@@ -23,10 +23,12 @@ import forms.mappings.Mappings
 
 import javax.inject.Inject
 import play.api.data.Form
+import play.api.i18n.{Lang, Messages}
 
 class BabyDueDateFormProvider @Inject()(clock: Clock) extends Mappings {
 
-  def apply(): Form[LocalDate] = {
+  def apply()(implicit messages: Messages): Form[LocalDate] = {
+    implicit val lang: Lang = messages.lang
 
     val maximumDate = LocalDate.now(clock).plusWeeks(40)
     val minimumDate = LocalDate.now(clock).minusWeeks(8)
@@ -37,8 +39,8 @@ class BabyDueDateFormProvider @Inject()(clock: Clock) extends Mappings {
         allRequiredKey = "babyDueDate.error.required.all",
         twoRequiredKey = "babyDueDate.error.required.two",
         requiredKey = "babyDueDate.error.required"
-      ).verifying(minDate(minimumDate, "babyDueDate.error.beforeMinimum", minimumDate.format(dateTimeFormat)))
-        .verifying(maxDate(maximumDate, "babyDueDate.error.afterMaximum", maximumDate.format(dateTimeFormat)))
+      ).verifying(minDate(minimumDate, "babyDueDate.error.beforeMinimum", minimumDate.format(dateTimeFormat())))
+        .verifying(maxDate(maximumDate, "babyDueDate.error.afterMaximum", maximumDate.format(dateTimeFormat())))
     )
   }
 }

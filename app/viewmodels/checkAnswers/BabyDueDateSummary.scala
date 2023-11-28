@@ -16,12 +16,13 @@
 
 package viewmodels.checkAnswers
 
-import java.time.format.DateTimeFormatter
+import config.Formats.dateTimeFormat
 
+import java.time.format.DateTimeFormatter
 import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.BabyDueDatePage
-import play.api.i18n.Messages
+import play.api.i18n.{Lang, Messages}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
@@ -31,12 +32,11 @@ object BabyDueDateSummary  {
   def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(BabyDueDatePage).map {
       answer =>
-
-        val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
+        implicit val lang: Lang = messages.lang
 
         SummaryListRowViewModel(
           key     = "babyDueDate.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.format(dateFormatter)),
+          value   = ValueViewModel(answer.format(dateTimeFormat())),
           actions = Seq(
             ActionItemViewModel("site.change", routes.BabyDueDateController.onPageLoad(CheckMode).url)
               .withVisuallyHiddenText(messages("babyDueDate.change.hidden"))

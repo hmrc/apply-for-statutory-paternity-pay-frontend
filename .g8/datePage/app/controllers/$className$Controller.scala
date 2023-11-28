@@ -26,10 +26,9 @@ class $className$Controller @Inject()(
                                         view: $className$View
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def form = formProvider()
-
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      val form = formProvider()
 
       val preparedForm = request.userAnswers.get($className$Page) match {
         case None => form
@@ -41,6 +40,7 @@ class $className$Controller @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      val form = formProvider()
 
       form.bindFromRequest().fold(
         formWithErrors =>

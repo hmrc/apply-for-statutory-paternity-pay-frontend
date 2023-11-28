@@ -1,11 +1,13 @@
 package forms
 
 import java.time.{LocalDate, ZoneOffset}
-
 import forms.behaviours.DateBehaviours
+import play.api.i18n.Messages
+import play.api.test.Helpers.stubMessages
 
 class $className$FormProviderSpec extends DateBehaviours {
 
+  private implicit val messages: Messages = stubMessages()
   val form = new $className$FormProvider()()
 
   ".value" - {

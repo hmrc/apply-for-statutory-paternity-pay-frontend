@@ -16,10 +16,14 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.$className$View
+import play.api.i18n.Messages
+import play.api.test.Helpers.stubMessages
 
 import scala.concurrent.Future
 
 class $className$ControllerSpec extends SpecBase with MockitoSugar {
+
+  private implicit val messages: Messages = stubMessages()
 
   val formProvider = new $className$FormProvider()
   private def form = formProvider()

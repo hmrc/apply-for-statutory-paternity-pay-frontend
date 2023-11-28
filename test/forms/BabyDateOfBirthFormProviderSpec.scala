@@ -21,6 +21,8 @@ import config.Formats.dateTimeFormat
 import java.time.{Clock, LocalDate, ZoneId, ZoneOffset}
 import forms.behaviours.DateBehaviours
 import play.api.data.FormError
+import play.api.i18n.{Lang, Messages}
+import play.api.test.Helpers.stubMessages
 
 class BabyDateOfBirthFormProviderSpec extends DateBehaviours {
 
@@ -28,6 +30,8 @@ class BabyDateOfBirthFormProviderSpec extends DateBehaviours {
   private val minimumDate  = today.minusWeeks(7)
   private val fixedInstant = today.atStartOfDay(ZoneId.systemDefault).toInstant
   private val clock        = Clock.fixed(fixedInstant, ZoneId.systemDefault)
+  private implicit val messages: Messages = stubMessages()
+  private implicit val lang: Lang = Lang("en")
 
   private val form = new BabyDateOfBirthFormProvider(clock)()
 

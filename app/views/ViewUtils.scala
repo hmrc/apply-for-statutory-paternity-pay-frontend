@@ -39,8 +39,4 @@ object ViewUtils {
   def errorPrefix(form: Form[_])(implicit messages: Messages): String = {
     if (form.hasErrors || form.hasGlobalErrors) messages("error.browser.title.prefix") else ""
   }
-
-  private val govUkDateFormatter = DateTimeFormatter.ofPattern("d MMMM y")
-
-  def govUkDateFormat(date: LocalDate): String = govUkDateFormatter.format(date)
 }

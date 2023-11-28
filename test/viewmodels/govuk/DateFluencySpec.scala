@@ -22,69 +22,132 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import play.api.data.Form
 import play.api.i18n.Messages
-import play.api.test.Helpers.{stubMessages, stubMessagesApi}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
-import viewmodels.govuk.date._
-import viewmodels.govuk.fieldset._
+import play.api.test.Helpers.stubMessages
+import viewmodels.govuk.all._
 
 import java.time.LocalDate
 
-class DateFluencySpec
-  extends AnyFreeSpec
-    with Matchers
-    with Mappings
-    with OptionValues {
+class DateFluencySpec extends AnyFreeSpec with Matchers with Mappings with OptionValues {
 
-  private val legend = LegendViewModel(Text("foo"))
+  ".apply"- {
 
-  private val testForm: Form[LocalDate] =
-    Form(
-      "value" -> localDate("invalid", "allRequired", "twoRequired", "oneRequired")
-    )
+    implicit val messages: Messages = stubMessages()
 
-  private implicit val msgs: Messages = stubMessages(stubMessagesApi())
-  private val errorClass = "govuk-input--error"
+    val fieldset = FieldsetViewModel(LegendViewModel("foo"))
 
-  ".apply" - {
+    val form : Form[LocalDate] =
+      Form(
+        "value" -> localDate(
+          invalidKey = "fieldName.error.invalid",
+          allRequiredKey = "fieldName.error.required.all",
+          twoRequiredKey = "fieldName.error.required.two",
+          requiredKey = "fieldName.error.required"
+        )
+      )
 
-    "must include error styling on the day field when there is an error on the `day` field" in {
+    val errorClass = "govuk-input--error"
 
-      val boundForm = testForm.bind(Map("value.day" -> "", "value.month" -> "1", "value.year" -> "1"))
+    "must highlight all fields when there is an error, but the error does not specify any individual day/month/year field" in {
 
-      val dateInput = DateViewModel(boundForm("value"), legend)
-      dateInput.items.find(_.id == "value.day").value.classes must include(errorClass)
-      dateInput.items.find(_.id == "value.month").value.classes must not include errorClass
-      dateInput.items.find(_.id == "value.year").value.classes must not include errorClass
+      val boundForm = form.bind(Map.empty[String, String])
+
+      val result = DateViewModel(boundForm("value"), fieldset)
+
+      result.items.forall(_.classes.contains(errorClass)) mustEqual true
     }
 
-    "must include error styling on the month field when there is an error on the `month` field" in {
+    "must highlight the day field when the error is that a day is missing" in {
 
-      val boundForm = testForm.bind(Map("value.day" -> "1", "value.month" -> "", "value.year" -> "1"))
+      val boundForm = form.bind(Map(
+        "value.month" -> "1",
+        "value.year" -> "2000"
+      ))
 
-      val dateInput = DateViewModel(boundForm("value"), legend)
-      dateInput.items.find(_.id == "value.day").value.classes must not include errorClass
-      dateInput.items.find(_.id == "value.month").value.classes must include(errorClass)
-      dateInput.items.find(_.id == "value.year").value.classes must not include errorClass
+      val result = DateViewModel(boundForm("value"), fieldset)
+
+      result.items.find(_.id == "value.day").value.classes must include(errorClass)
+      result.items.find(_.id == "value.month").value.classes must not include errorClass
+      result.items.find(_.id == "value.year").value.classes must not include errorClass
     }
 
-    "must include error styling on the year field when there is an error on the `year` field" in {
+    "must highlight the day and month fields when the error is that a day and month are both missing" in {
 
-      val boundForm = testForm.bind(Map("value.day" -> "1", "value.month" -> "1", "value.year" -> ""))
+      val boundForm = form.bind(Map(
+        "value.year" -> "2000"
+      ))
 
-      val dateInput = DateViewModel(boundForm("value"), legend)
-      dateInput.items.find(_.id == "value.day").value.classes must not include errorClass
-      dateInput.items.find(_.id == "value.month").value.classes must not include errorClass
-      dateInput.items.find(_.id == "value.year").value.classes must include(errorClass)
+      val result = DateViewModel(boundForm("value"), fieldset)
+
+      result.items.find(_.id == "value.day").value.classes must include(errorClass)
+      result.items.find(_.id == "value.month").value.classes must include(errorClass)
+      result.items.find(_.id == "value.year").value.classes must not include (errorClass)
     }
 
-    "must include error styling on all fields when there is an error with all fields" in {
+    "must highlight the day and year fields when the error is that a day and year are both missing" in {
 
-      val boundForm = testForm.bind(Map("value.day" -> "", "value.month" -> "", "value.year" -> ""))
+      val boundForm = form.bind(Map(
+        "value.month" -> "1"
+      ))
 
-      val dateInput = DateViewModel(boundForm("value"), legend)
-      dateInput.items.find(_.id == "value.day").value.classes must include(errorClass)
-      dateInput.items.find(_.id == "value.month").value.classes must include(errorClass)
-      dateInput.items.find(_.id == "value.year").value.classes must include(errorClass)
+      val result = DateViewModel(boundForm("value"), fieldset)
+
+      result.items.find(_.id == "value.day").value.classes must include(errorClass)
+      result.items.find(_.id == "value.month").value.classes must not include errorClass
+      result.items.find(_.id == "value.year").value.classes must include(errorClass)
+    }
+
+    "must highlight the month field when the error is that a month is missing" in {
+
+      val boundForm = form.bind(Map(
+        "value.day" -> "1",
+        "value.year" -> "2000"
+      ))
+
+      val result = DateViewModel(boundForm("value"), fieldset)
+
+      result.items.find(_.id == "value.day").value.classes must not include errorClass
+      result.items.find(_.id == "value.month").value.classes must include(errorClass)
+      result.items.find(_.id == "value.year").value.classes must not include errorClass
+    }
+
+    "must highlight the month and year fields when the error is that a month and year are both missing" in {
+
+      val boundForm = form.bind(Map(
+        "value.day" -> "1"
+      ))
+
+      val result = DateViewModel(boundForm("value"), fieldset)
+
+      result.items.find(_.id == "value.day").value.classes must not include errorClass
+      result.items.find(_.id == "value.month").value.classes must include(errorClass)
+      result.items.find(_.id == "value.year").value.classes must include(errorClass)
+    }
+
+    "must highlight the year field when the error is that a year is missing" in {
+
+      val boundForm = form.bind(Map(
+        "value.day" -> "1",
+        "value.month" -> "1"
+      ))
+
+      val result = DateViewModel(boundForm("value"), fieldset)
+
+      result.items.find(_.id == "value.day").value.classes must not include errorClass
+      result.items.find(_.id == "value.month").value.classes must not include errorClass
+      result.items.find(_.id == "value.year").value.classes must include(errorClass)
+    }
+
+    "must not highlight any fields when there is not an error" in {
+
+      val boundForm = form.bind(Map(
+        "value.day" -> "1",
+        "value.month" -> "1",
+        "value.year" -> "2000"
+      ))
+
+      val result = DateViewModel(boundForm("value"), fieldset)
+
+      result.items.forall(_.classes.contains(errorClass)) mustEqual false
     }
   }
 }
