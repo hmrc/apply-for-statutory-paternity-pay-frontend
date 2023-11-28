@@ -1,7 +1,5 @@
 package viewmodels.checkAnswers
 
-import java.time.format.DateTimeFormatter
-
 import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.$className$Page
@@ -15,12 +13,11 @@ object $className$Summary  {
   def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get($className$Page).map {
       answer =>
-
-        val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
+        implicit val lang: Lang = messages.lang
 
         SummaryListRowViewModel(
           key     = "$className;format="decap"$.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.format(dateFormatter)),
+          value   = ValueViewModel(answer.format(dateTimeFormat())),
           actions = Seq(
             ActionItemViewModel("site.change", routes.$className$Controller.onPageLoad(CheckMode).url)
               .withVisuallyHiddenText(messages("$className;format="decap"$.change.hidden"))
