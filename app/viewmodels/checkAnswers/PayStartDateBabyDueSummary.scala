@@ -32,7 +32,7 @@ object PayStartDateBabyDueSummary  {
     answers.get(PayStartDateBabyDuePage).map {
       answer =>
 
-        val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
+        val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy").withLocale(messages.lang.locale)
 
         SummaryListRowViewModel(
           key     = "payStartDateBabyDue.checkYourAnswersLabel",
