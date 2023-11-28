@@ -16,27 +16,25 @@
 
 package viewmodels.checkAnswers
 
-import java.time.format.DateTimeFormatter
-
 import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.BabyDateOfBirthPage
-import play.api.i18n.Messages
+import play.api.i18n.{Lang, Messages}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
+import config.Formats.dateTimeFormat
 
 object BabyDateOfBirthSummary  {
 
   def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(BabyDateOfBirthPage).map {
       answer =>
-
-        val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy").withLocale(messages.lang.toLocale)
+        implicit val lang: Lang = messages.lang
 
         SummaryListRowViewModel(
           key     = "babyDateOfBirth.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.format(dateFormatter)),
+          value   = ValueViewModel(answer.format(dateTimeFormat())),
           actions = Seq(
             ActionItemViewModel("site.change", routes.BabyDateOfBirthController.onPageLoad(CheckMode).url)
               .withVisuallyHiddenText(messages("babyDateOfBirth.change.hidden"))
