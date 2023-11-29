@@ -32,8 +32,7 @@ class FopService @Inject()(
                             fopFactory: FopFactory
                           )(implicit ec: ExecutionContext) {
 
-  private val userAgentBlock: FOUserAgent = {
-    val foUserAgent = fopFactory.newFOUserAgent()
+  private val userAgentBlock: FOUserAgent => Unit = { foUserAgent =>
     foUserAgent.setAccessibility(true)
     foUserAgent.setPdfUAEnabled(true)
     foUserAgent.setAuthor("HMRC forms service")
@@ -41,14 +40,16 @@ class FopService @Inject()(
     foUserAgent.setCreator("HMRC forms services")
     foUserAgent.setSubject("Apply for statutory paternity pay form")
     foUserAgent.setTitle("Apply for statutory paternity pay form")
-    foUserAgent
   }
 
   def render(input: String): Future[Array[Byte]] = Future {
 
     val out = new ByteArrayOutputStream()
 
-    val fop = fopFactory.newFop(MimeConstants.MIME_PDF, userAgentBlock, out)
+    val userAgent = fopFactory.newFOUserAgent()
+    userAgentBlock(userAgent)
+
+    val fop = fopFactory.newFop(MimeConstants.MIME_PDF, userAgent, out)
 
     val transformerFactory = TransformerFactory.newInstance()
     val transformer = transformerFactory.newTransformer()
