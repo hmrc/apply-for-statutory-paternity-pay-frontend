@@ -18,6 +18,7 @@ package config
 
 import com.google.inject.AbstractModule
 import controllers.actions._
+import org.apache.fop.apps.FopFactory
 
 import java.time.{Clock, ZoneOffset}
 
@@ -31,6 +32,8 @@ class Module extends AbstractModule {
 
     // For session based storage instead of cred based, change to SessionIdentifierAction
     bind(classOf[IdentifierAction]).to(classOf[SessionIdentifierAction]).asEagerSingleton()
+
+    bind(classOf[FopFactory]).toProvider(classOf[FopFactoryProvider]).asEagerSingleton()
 
     bind(classOf[Clock]).toInstance(Clock.systemDefaultZone.withZone(ZoneOffset.UTC))
   }

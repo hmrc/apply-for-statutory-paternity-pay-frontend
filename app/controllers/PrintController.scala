@@ -16,19 +16,18 @@
 
 package controllers
 
-import com.dmanchester.playfop.sapi.PlayFop
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import logging.Logging
 import models.{JourneyModel, NormalMode}
-import org.apache.fop.apps.FOUserAgent
-import org.apache.xmlgraphics.util.MimeConstants
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import services.FopService
 import services.auditing.AuditService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.xml.pdf.PdfView
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class PrintController @Inject() (
@@ -39,33 +38,24 @@ class PrintController @Inject() (
                                   val controllerComponents: MessagesControllerComponents,
                                   pdfView: PdfView,
                                   auditService: AuditService,
-                                  fop: PlayFop
-                                ) extends FrontendBaseController with I18nSupport with Logging {
+                                  fop: FopService
+                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
-  private val userAgentBlock: FOUserAgent => Unit = { foUserAgent: FOUserAgent =>
-    foUserAgent.setAccessibility(true)
-    foUserAgent.setPdfUAEnabled(true)
-    foUserAgent.setAuthor("HMRC forms service")
-    foUserAgent.setProducer("HMRC forms services")
-    foUserAgent.setCreator("HMRC forms services")
-    foUserAgent.setSubject("Apply for statutory paternity pay form")
-    foUserAgent.setTitle("Apply for statutory paternity pay form")
-  }
-
-  def onDownload: Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onDownload: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       JourneyModel.from(request.userAnswers).fold(
         pages => {
           val message = pages.toChain.toList.mkString(", ")
           logger.warn(s"Failed to generate journey model, missing pages: $message")
-          Redirect(pages.head.route(NormalMode))
+          Future.successful(Redirect(pages.head.route(NormalMode)))
         },
         model => {
           auditService.auditDownload(model)
-          val pdf = fop.processTwirlXml(pdfView(model), MimeConstants.MIME_PDF, foUserAgentBlock = userAgentBlock)
-          Ok(pdf)
-            .as("application/octet-stream")
-            .withHeaders(CONTENT_DISPOSITION -> "attachment; filename=apply-for-statutory-paternity-pay-sc3.pdf")
+          fop.render(pdfView(model).body).map { pdf =>
+            Ok(pdf)
+              .as("application/octet-stream")
+              .withHeaders(CONTENT_DISPOSITION -> "attachment; filename=apply-for-statutory-paternity-pay-sc3.pdf")
+          }
         }
       )
   }
