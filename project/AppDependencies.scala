@@ -1,34 +1,28 @@
 import sbt._
 
 object AppDependencies {
-  import play.core.PlayVersion
 
-  private val hmrcMongoVersion = "0.68.0"
+  private val bootstrapVersion = "8.4.0"
+  private val hmrcMongoVersion = "1.7.0"
+
 
   val compile = Seq(
     play.sbt.PlayImport.ws,
-    "uk.gov.hmrc"                   %% "play-frontend-hmrc"             % "7.3.0-play-28",
-    "uk.gov.hmrc"                   %% "play-conditional-form-mapping"  % "1.11.0-play-28",
-    "uk.gov.hmrc"                   %% "bootstrap-frontend-play-28"     % "7.15.0",
-    "uk.gov.hmrc.mongo"             %% "hmrc-mongo-play-28"             % hmrcMongoVersion,
-    "uk.gov.hmrc"                   %% "domain"                         % "8.1.0-play-28",
+    "uk.gov.hmrc"                   %% "play-frontend-hmrc-play-30"     % "8.2.0",
+    "uk.gov.hmrc"                   %% "bootstrap-frontend-play-30"     % bootstrapVersion,
+    "uk.gov.hmrc.mongo"             %% "hmrc-mongo-play-30"             % hmrcMongoVersion,
+    "uk.gov.hmrc"                   %% "domain-play-30"                 % "9.0.0",
     "org.typelevel"                 %% "cats-core"                      % "2.3.0",
-    "com.dmanchester"               %% "playfop"                        % "1.0"
+    "org.apache.xmlgraphics"        %  "fop"                            % "2.7"
   )
 
   val test = Seq(
-    "org.scalatest"           %% "scalatest"               % "3.2.10",
-    "org.scalatestplus"       %% "scalacheck-1-15"         % "3.2.10.0",
-    "org.scalatestplus"       %% "mockito-3-4"             % "3.2.10.0",
-    "org.scalatestplus.play"  %% "scalatestplus-play"      % "5.1.0",
-    "org.pegdown"             %  "pegdown"                 % "1.6.0",
-    "org.jsoup"               %  "jsoup"                   % "1.14.3",
-    "com.typesafe.play"       %% "play-test"               % PlayVersion.current,
-    "org.mockito"             %% "mockito-scala"           % "1.16.42",
-    "org.scalacheck"          %% "scalacheck"              % "1.15.4",
-    "uk.gov.hmrc.mongo"       %% "hmrc-mongo-test-play-28" % hmrcMongoVersion,
-    "com.vladsch.flexmark"    %  "flexmark-all"            % "0.62.2"
-  ).map(_ % "test, it")
+    "uk.gov.hmrc"             %% "bootstrap-test-play-30"  % bootstrapVersion,
+    "uk.gov.hmrc.mongo"       %% "hmrc-mongo-test-play-30" % hmrcMongoVersion,
+    "org.scalatestplus"       %% "scalacheck-1-17"         % "3.2.17.0"
+  ).map(_ % Test)
+
+  val integration: Seq[ModuleID] = Seq.empty
 
   def apply(): Seq[ModuleID] = compile ++ test
 }
