@@ -18,8 +18,7 @@ package services.auditing
 
 import models.{JourneyModel, Name, PaternityLeaveLength}
 import models.auditing.DownloadAuditEvent
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito.{times, verify}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers

@@ -15,8 +15,8 @@
  *@
 
 @import config.FrontendAppConfig
-@import views.html.helper.CSPNonce
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
+@import views.html.helper.CSPNonce
 
 @this(
     appConfig: FrontendAppConfig,
@@ -58,7 +58,7 @@
 }
 
 @additionalScripts = {
-    <script src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script>
+    <script src='@controllers.routes.Assets.versioned("javascripts/application.js")' @CSPNonce.attr></script>
 }
 
 @beforeContent = {
