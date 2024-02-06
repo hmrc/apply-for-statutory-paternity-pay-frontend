@@ -21,6 +21,30 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryReasonForRequestingPage: Arbitrary[ReasonForRequestingPage.type] =
+    Arbitrary(ReasonForRequestingPage)
+
+  implicit lazy val arbitraryIsApplyingForStatutoryAdoptionPayPage: Arbitrary[IsApplyingForStatutoryAdoptionPayPage.type] =
+    Arbitrary(IsApplyingForStatutoryAdoptionPayPage)
+
+  implicit lazy val arbitraryIsAdoptingFromAbroadPage: Arbitrary[IsAdoptingFromAbroadPage.type] =
+    Arbitrary(IsAdoptingFromAbroadPage)
+
+  implicit lazy val arbitraryDateChildWasMatchedPage: Arbitrary[DateChildWasMatchedPage.type] =
+    Arbitrary(DateChildWasMatchedPage)
+
+  implicit lazy val arbitraryCountryOfResidencePage: Arbitrary[CountryOfResidencePage.type] =
+    Arbitrary(CountryOfResidencePage)
+
+  implicit lazy val arbitraryChildPlacementDatePage: Arbitrary[ChildPlacementDatePage.type] =
+    Arbitrary(ChildPlacementDatePage)
+
+  implicit lazy val arbitraryChildHasBeenPlacedPage: Arbitrary[ChildHasBeenPlacedPage.type] =
+    Arbitrary(ChildHasBeenPlacedPage)
+
+  implicit lazy val arbitraryChildExpectedPlacementDatePage: Arbitrary[ChildExpectedPlacementDatePage.type] =
+    Arbitrary(ChildExpectedPlacementDatePage)
+
   implicit lazy val arbitraryIsAdoptingPage: Arbitrary[IsAdoptingPage.type] =
     Arbitrary(IsAdoptingPage)
 

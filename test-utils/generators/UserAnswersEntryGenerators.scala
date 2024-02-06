@@ -25,6 +25,70 @@ import uk.gov.hmrc.domain.Nino
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
 
+  implicit lazy val arbitraryReasonForRequestingUserAnswersEntry: Arbitrary[(ReasonForRequestingPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[ReasonForRequestingPage.type]
+        value <- arbitrary[ReasonForRequesting].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryIsApplyingForStatutoryAdoptionPayUserAnswersEntry: Arbitrary[(IsApplyingForStatutoryAdoptionPayPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IsApplyingForStatutoryAdoptionPayPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryIsAdoptingFromAbroadUserAnswersEntry: Arbitrary[(IsAdoptingFromAbroadPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IsAdoptingFromAbroadPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryDateChildWasMatchedUserAnswersEntry: Arbitrary[(DateChildWasMatchedPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[DateChildWasMatchedPage.type]
+        value <- arbitrary[Int].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryCountryOfResidenceUserAnswersEntry: Arbitrary[(CountryOfResidencePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[CountryOfResidencePage.type]
+        value <- arbitrary[CountryOfResidence].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryChildPlacementDateUserAnswersEntry: Arbitrary[(ChildPlacementDatePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[ChildPlacementDatePage.type]
+        value <- arbitrary[Int].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryChildHasBeenPlacedUserAnswersEntry: Arbitrary[(ChildHasBeenPlacedPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[ChildHasBeenPlacedPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryChildExpectedPlacementDateUserAnswersEntry: Arbitrary[(ChildExpectedPlacementDatePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[ChildExpectedPlacementDatePage.type]
+        value <- arbitrary[Int].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitraryIsAdoptingUserAnswersEntry: Arbitrary[(IsAdoptingPage.type, JsValue)] =
     Arbitrary {
       for {
