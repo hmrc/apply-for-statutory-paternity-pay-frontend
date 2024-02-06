@@ -296,3 +296,66 @@ pdf.furtherInfo.heading = Further information and other help
 pdf.furtherInfo.p = Depending on your circumstances you may not qualify for Statutory Paternity Pay (SPP) and/or Paternity Leave. Your employer will let you know. If this is the case you’ll get more advice and information at the time. If you’re not entitled to SPP you may be entitled to other government help. Contact any Jobcentre Plus office for further information.
 pdf.penalties.heading = Penalties
 pdf.penalties.p = Penalties may be charged where a person, either fraudulently or negligently, gives incorrect information or makes a false statement or declaration for the purpose of claiming entitlement to SPP.
+childExpectedPlacementDate.title = ChildExpectedPlacementDate
+childExpectedPlacementDate.heading = ChildExpectedPlacementDate
+childExpectedPlacementDate.hint = For example, 12 11 2007.
+childExpectedPlacementDate.checkYourAnswersLabel = ChildExpectedPlacementDate
+childExpectedPlacementDate.error.required.all = Enter the childExpectedPlacementDate
+childExpectedPlacementDate.error.required.two = The childExpectedPlacementDate must include {0} and {1}
+childExpectedPlacementDate.error.required = The childExpectedPlacementDate must include {0}
+childExpectedPlacementDate.error.invalid = Enter a real ChildExpectedPlacementDate
+childExpectedPlacementDate.change.hidden = ChildExpectedPlacementDate
+
+childHasBeenPlaced.title = childHasBeenPlaced
+childHasBeenPlaced.heading = childHasBeenPlaced
+childHasBeenPlaced.checkYourAnswersLabel = childHasBeenPlaced
+childHasBeenPlaced.error.required = Select yes if childHasBeenPlaced
+childHasBeenPlaced.change.hidden = ChildHasBeenPlaced
+
+childPlacementDate.title = ChildPlacementDate
+childPlacementDate.heading = ChildPlacementDate
+childPlacementDate.hint = For example, 12 11 2007.
+childPlacementDate.checkYourAnswersLabel = ChildPlacementDate
+childPlacementDate.error.required.all = Enter the childPlacementDate
+childPlacementDate.error.required.two = The childPlacementDate must include {0} and {1}
+childPlacementDate.error.required = The childPlacementDate must include {0}
+childPlacementDate.error.invalid = Enter a real ChildPlacementDate
+childPlacementDate.change.hidden = ChildPlacementDate
+
+countryOfResidence.title = Where do you live?
+countryOfResidence.heading = Where do you live?
+countryOfResidence.england = England
+countryOfResidence.scotland = Scotland
+countryOfResidence.checkYourAnswersLabel = Where do you live?
+countryOfResidence.error.required = Select countryOfResidence
+countryOfResidence.change.hidden = CountryOfResidence
+
+dateChildWasMatched.title = DateChildWasMatched
+dateChildWasMatched.heading = DateChildWasMatched
+dateChildWasMatched.hint = For example, 12 11 2007.
+dateChildWasMatched.checkYourAnswersLabel = DateChildWasMatched
+dateChildWasMatched.error.required.all = Enter the dateChildWasMatched
+dateChildWasMatched.error.required.two = The dateChildWasMatched must include {0} and {1}
+dateChildWasMatched.error.required = The dateChildWasMatched must include {0}
+dateChildWasMatched.error.invalid = Enter a real DateChildWasMatched
+dateChildWasMatched.change.hidden = DateChildWasMatched
+
+isAdoptingFromAbroad.title = isAdoptingFromAbroad
+isAdoptingFromAbroad.heading = isAdoptingFromAbroad
+isAdoptingFromAbroad.checkYourAnswersLabel = isAdoptingFromAbroad
+isAdoptingFromAbroad.error.required = Select yes if isAdoptingFromAbroad
+isAdoptingFromAbroad.change.hidden = IsAdoptingFromAbroad
+
+isApplyingForStatutoryAdoptionPay.title = isApplyingForStatutoryAdoptionPay
+isApplyingForStatutoryAdoptionPay.heading = isApplyingForStatutoryAdoptionPay
+isApplyingForStatutoryAdoptionPay.checkYourAnswersLabel = isApplyingForStatutoryAdoptionPay
+isApplyingForStatutoryAdoptionPay.error.required = Select yes if isApplyingForStatutoryAdoptionPay
+isApplyingForStatutoryAdoptionPay.change.hidden = IsApplyingForStatutoryAdoptionPay
+
+reasonForRequesting.title = Why are you asking for Statutory Paternity Pay and/or Paternity Leave from your employer?
+reasonForRequesting.heading = Why are you asking for Statutory Paternity Pay and/or Paternity Leave from your employer?
+reasonForRequesting.adopting = I am adopting or intending to adopt a child with my partner
+reasonForRequesting.supportingAdoption = I want to support my partner who is adopting or intends to adopt a child
+reasonForRequesting.checkYourAnswersLabel = Why are you asking for Statutory Paternity Pay and/or Paternity Leave from your employer?
+reasonForRequesting.error.required = Select reasonForRequesting
+reasonForRequesting.change.hidden = ReasonForRequesting

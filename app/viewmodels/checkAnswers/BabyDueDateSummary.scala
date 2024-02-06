@@ -18,7 +18,6 @@ package viewmodels.checkAnswers
 
 import config.Formats.dateTimeFormat
 
-import java.time.format.DateTimeFormatter
 import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.BabyDueDatePage
