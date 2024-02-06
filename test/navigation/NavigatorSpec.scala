@@ -43,10 +43,10 @@ class NavigatorSpec extends SpecBase {
 
       "must go from Is Adopting" - {
 
-        "to Cannot Apply Adopting when the answer is yes" in {
+        "to Applying for Statutory Adoption Pay and Leave when the answer is yes" in {
 
           val answers = emptyUserAnswers.set(IsAdoptingPage, true).success.value
-          navigator.nextPage(IsAdoptingPage, NormalMode, answers) mustEqual routes.CannotApplyAdoptingController.onPageLoad()
+          navigator.nextPage(IsAdoptingPage, NormalMode, answers) mustEqual routes.IsApplyingForStatutoryAdoptionPayController.onPageLoad(NormalMode)
         }
 
         "to Is Biological Father when the answer is no" in {

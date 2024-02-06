@@ -143,10 +143,10 @@ POST       /isAdoptingFromAbroad                        controllers.IsAdoptingFr
 GET        /changeIsAdoptingFromAbroad                  controllers.IsAdoptingFromAbroadController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeIsAdoptingFromAbroad                  controllers.IsAdoptingFromAbroadController.onSubmit(mode: Mode = CheckMode)
 
-GET        /isApplyingForStatutoryAdoptionPay                        controllers.IsApplyingForStatutoryAdoptionPayController.onPageLoad(mode: Mode = NormalMode)
-POST       /isApplyingForStatutoryAdoptionPay                        controllers.IsApplyingForStatutoryAdoptionPayController.onSubmit(mode: Mode = NormalMode)
-GET        /changeIsApplyingForStatutoryAdoptionPay                  controllers.IsApplyingForStatutoryAdoptionPayController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeIsApplyingForStatutoryAdoptionPay                  controllers.IsApplyingForStatutoryAdoptionPayController.onSubmit(mode: Mode = CheckMode)
+GET        /applying-for-statutory-adoption-pay-leave                       controllers.IsApplyingForStatutoryAdoptionPayController.onPageLoad(mode: Mode = NormalMode)
+POST       /applying-for-statutory-adoption-pay-leave                       controllers.IsApplyingForStatutoryAdoptionPayController.onSubmit(mode: Mode = NormalMode)
+GET        /change-applying-for-statutory-adoption-pay-leave                controllers.IsApplyingForStatutoryAdoptionPayController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-applying-for-statutory-adoption-pay-leave                controllers.IsApplyingForStatutoryAdoptionPayController.onSubmit(mode: Mode = CheckMode)
 
 GET        /reasonForRequesting                        controllers.ReasonForRequestingController.onPageLoad(mode: Mode = NormalMode)
 POST       /reasonForRequesting                        controllers.ReasonForRequestingController.onSubmit(mode: Mode = NormalMode)

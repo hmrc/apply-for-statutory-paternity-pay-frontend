@@ -50,7 +50,7 @@ class Navigator @Inject()() {
 
   private def isAdoptingRoute(answers: UserAnswers): Call =
     answers.get(IsAdoptingPage).map {
-      case true  => routes.CannotApplyAdoptingController.onPageLoad()
+      case true  => routes.IsApplyingForStatutoryAdoptionPayController.onPageLoad(NormalMode)
       case false => routes.IsBiologicalFatherController.onPageLoad(NormalMode)
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 

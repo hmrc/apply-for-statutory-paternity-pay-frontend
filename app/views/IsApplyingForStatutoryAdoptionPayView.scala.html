@@ -35,8 +35,12 @@
         @govukRadios(
             RadiosViewModel.yesNo(
                 field = form("value"),
-                legend = LegendViewModel(messages("isApplyingForStatutoryAdoptionPay.heading")).asPageHeading()
+                legend = HmrcPageHeadingLegend(
+                    content = messages("isApplyingForStatutoryAdoptionPay.heading"),
+                    caption = HmrcSectionCaption(messages("section.applicationDetails"))
+                )
             )
+            .withHint(HintViewModel(messages("isApplyingForStatutoryAdoptionPay.hint")))
         )
 
         @govukButton(

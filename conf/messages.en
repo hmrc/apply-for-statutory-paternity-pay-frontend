@@ -349,11 +349,12 @@ isAdoptingFromAbroad.checkYourAnswersLabel = isAdoptingFromAbroad
 isAdoptingFromAbroad.error.required = Select yes if isAdoptingFromAbroad
 isAdoptingFromAbroad.change.hidden = IsAdoptingFromAbroad
 
-isApplyingForStatutoryAdoptionPay.title = isApplyingForStatutoryAdoptionPay
-isApplyingForStatutoryAdoptionPay.heading = isApplyingForStatutoryAdoptionPay
-isApplyingForStatutoryAdoptionPay.checkYourAnswersLabel = isApplyingForStatutoryAdoptionPay
-isApplyingForStatutoryAdoptionPay.error.required = Select yes if isApplyingForStatutoryAdoptionPay
-isApplyingForStatutoryAdoptionPay.change.hidden = IsApplyingForStatutoryAdoptionPay
+isApplyingForStatutoryAdoptionPay.title = Are you applying for Statutory Adoption Pay and Leave?
+isApplyingForStatutoryAdoptionPay.heading = Are you applying for Statutory Adoption Pay and Leave?
+isApplyingForStatutoryAdoptionPay.hint = If you are applying for Statutory Adoption Pay and Leave you will not be eligible for Statutory Paternity Pay and Leave.
+isApplyingForStatutoryAdoptionPay.checkYourAnswersLabel = Are you applying for Statutory Adoption Pay and Leave?
+isApplyingForStatutoryAdoptionPay.error.required = Select yes if you are applying for Statutory Adoption Pay and Leave
+isApplyingForStatutoryAdoptionPay.change.hidden = if you are applying for Statutory Adoption Pay and Leave
 
 reasonForRequesting.title = Why are you asking for Statutory Paternity Pay and/or Paternity Leave from your employer?
 reasonForRequesting.heading = Why are you asking for Statutory Paternity Pay and/or Paternity Leave from your employer?
