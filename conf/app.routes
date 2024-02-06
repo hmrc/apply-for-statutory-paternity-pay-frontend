@@ -138,10 +138,10 @@ POST       /dateChildWasMatched                  controllers.DateChildWasMatched
 GET        /changeDateChildWasMatched                        controllers.DateChildWasMatchedController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeDateChildWasMatched                        controllers.DateChildWasMatchedController.onSubmit(mode: Mode = CheckMode)
 
-GET        /isAdoptingFromAbroad                        controllers.IsAdoptingFromAbroadController.onPageLoad(mode: Mode = NormalMode)
-POST       /isAdoptingFromAbroad                        controllers.IsAdoptingFromAbroadController.onSubmit(mode: Mode = NormalMode)
-GET        /changeIsAdoptingFromAbroad                  controllers.IsAdoptingFromAbroadController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeIsAdoptingFromAbroad                  controllers.IsAdoptingFromAbroadController.onSubmit(mode: Mode = CheckMode)
+GET        /adopting-child-from-abroad                        controllers.IsAdoptingFromAbroadController.onPageLoad(mode: Mode = NormalMode)
+POST       /adopting-child-from-abroad                        controllers.IsAdoptingFromAbroadController.onSubmit(mode: Mode = NormalMode)
+GET        /change-adopting-child-from-abroad                 controllers.IsAdoptingFromAbroadController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-adopting-child-from-abroad                 controllers.IsAdoptingFromAbroadController.onSubmit(mode: Mode = CheckMode)
 
 GET        /applying-for-statutory-adoption-pay-leave                       controllers.IsApplyingForStatutoryAdoptionPayController.onPageLoad(mode: Mode = NormalMode)
 POST       /applying-for-statutory-adoption-pay-leave                       controllers.IsApplyingForStatutoryAdoptionPayController.onSubmit(mode: Mode = NormalMode)

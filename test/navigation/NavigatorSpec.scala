@@ -43,7 +43,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from Is Adopting" - {
 
-        "to Applying for Statutory Adoption Pay and Leave when the answer is yes" in {
+        "to Is Applying for Statutory Adoption Pay and Leave when the answer is yes" in {
 
           val answers = emptyUserAnswers.set(IsAdoptingPage, true).success.value
           navigator.nextPage(IsAdoptingPage, NormalMode, answers) mustEqual routes.IsApplyingForStatutoryAdoptionPayController.onPageLoad(NormalMode)
@@ -53,6 +53,21 @@ class NavigatorSpec extends SpecBase {
 
           val answers = emptyUserAnswers.set(IsAdoptingPage, false).success.value
           navigator.nextPage(IsAdoptingPage, NormalMode, answers) mustEqual routes.IsBiologicalFatherController.onPageLoad(NormalMode)
+        }
+      }
+
+      "must go from Is Applying for Statutory Adoption Pay and Leave"  -{
+
+        "to Not Eligible when the answer is yes" in {
+
+          val answers = emptyUserAnswers.set(IsApplyingForStatutoryAdoptionPayPage, true).success.value
+          navigator.nextPage(IsApplyingForStatutoryAdoptionPayPage, NormalMode, answers) mustEqual routes.CannotApplyController.onPageLoad()
+        }
+
+        "to Is Adopting From Abroad when the answer is no" in {
+
+          val answers = emptyUserAnswers.set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+          navigator.nextPage(IsApplyingForStatutoryAdoptionPayPage, NormalMode, answers) mustEqual routes.IsAdoptingFromAbroadController.onPageLoad(NormalMode)
         }
       }
 

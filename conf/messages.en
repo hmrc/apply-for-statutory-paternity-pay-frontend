@@ -343,11 +343,11 @@ dateChildWasMatched.error.required = The dateChildWasMatched must include {0}
 dateChildWasMatched.error.invalid = Enter a real DateChildWasMatched
 dateChildWasMatched.change.hidden = DateChildWasMatched
 
-isAdoptingFromAbroad.title = isAdoptingFromAbroad
-isAdoptingFromAbroad.heading = isAdoptingFromAbroad
-isAdoptingFromAbroad.checkYourAnswersLabel = isAdoptingFromAbroad
-isAdoptingFromAbroad.error.required = Select yes if isAdoptingFromAbroad
-isAdoptingFromAbroad.change.hidden = IsAdoptingFromAbroad
+isAdoptingFromAbroad.title = Are you or your partner adopting a child from abroad?
+isAdoptingFromAbroad.heading = Are you or your partner adopting a child from abroad?
+isAdoptingFromAbroad.checkYourAnswersLabel = Are you or your partner adopting a child from abroad?
+isAdoptingFromAbroad.error.required = Select yes if you or your partner are adopting a child from abroad
+isAdoptingFromAbroad.change.hidden = if you or your partner are adopting a child from abroad
 
 isApplyingForStatutoryAdoptionPay.title = Are you applying for Statutory Adoption Pay and Leave?
 isApplyingForStatutoryAdoptionPay.heading = Are you applying for Statutory Adoption Pay and Leave?
