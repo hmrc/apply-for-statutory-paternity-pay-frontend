@@ -78,6 +78,7 @@ unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
 thisSectionIs = This section is
+section.applicationDetails = Application details
 section.relationship = Relationship with child
 section.personalDetails = Personal details
 section.babyDetails = Baby’s details
@@ -326,9 +327,11 @@ countryOfResidence.title = Where do you live?
 countryOfResidence.heading = Where do you live?
 countryOfResidence.england = England
 countryOfResidence.scotland = Scotland
+countryOfResidence.wales = Wales
+countryOfResidence.northernIreland = Northern Ireland
 countryOfResidence.checkYourAnswersLabel = Where do you live?
-countryOfResidence.error.required = Select countryOfResidence
-countryOfResidence.change.hidden = CountryOfResidence
+countryOfResidence.error.required = Select where you live
+countryOfResidence.change.hidden = where you live
 
 dateChildWasMatched.title = DateChildWasMatched
 dateChildWasMatched.heading = DateChildWasMatched

@@ -27,6 +27,7 @@ import models._
 class Navigator @Inject()() {
 
   private val normalRoutes: Page => UserAnswers => Call = {
+    case CountryOfResidencePage           => _ => routes.IsAdoptingController.onPageLoad(NormalMode)
     case IsAdoptingPage                   => isAdoptingRoute
     case IsBiologicalFatherPage           => isBiologicalFatherRoute
     case IsInQualifyingRelationshipPage   => isInQualifyingRelationshipRoute

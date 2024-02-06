@@ -36,6 +36,11 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(UnknownPage, NormalMode, UserAnswers("id")) mustBe routes.IndexController.onPageLoad
       }
 
+      "must go from Country of Residence to Is Adopting" in {
+
+        navigator.nextPage(CountryOfResidencePage, NormalMode, emptyUserAnswers) mustEqual routes.IsAdoptingController.onPageLoad(NormalMode)
+      }
+
       "must go from Is Adopting" - {
 
         "to Cannot Apply Adopting when the answer is yes" in {

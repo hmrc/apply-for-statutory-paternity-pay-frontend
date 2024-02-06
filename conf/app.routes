@@ -128,10 +128,10 @@ POST       /childPlacementDate                  controllers.ChildPlacementDateCo
 GET        /changeChildPlacementDate                        controllers.ChildPlacementDateController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeChildPlacementDate                        controllers.ChildPlacementDateController.onSubmit(mode: Mode = CheckMode)
 
-GET        /countryOfResidence                        controllers.CountryOfResidenceController.onPageLoad(mode: Mode = NormalMode)
-POST       /countryOfResidence                        controllers.CountryOfResidenceController.onSubmit(mode: Mode = NormalMode)
-GET        /changeCountryOfResidence                  controllers.CountryOfResidenceController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeCountryOfResidence                  controllers.CountryOfResidenceController.onSubmit(mode: Mode = CheckMode)
+GET        /where-you-live                            controllers.CountryOfResidenceController.onPageLoad(mode: Mode = NormalMode)
+POST       /where-you-live                            controllers.CountryOfResidenceController.onSubmit(mode: Mode = NormalMode)
+GET        /change-where-you-live                     controllers.CountryOfResidenceController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-where-you-live                     controllers.CountryOfResidenceController.onSubmit(mode: Mode = CheckMode)
 
 GET        /dateChildWasMatched                  controllers.DateChildWasMatchedController.onPageLoad(mode: Mode = NormalMode)
 POST       /dateChildWasMatched                  controllers.DateChildWasMatchedController.onSubmit(mode: Mode = NormalMode)
