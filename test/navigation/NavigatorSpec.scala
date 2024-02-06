@@ -71,6 +71,16 @@ class NavigatorSpec extends SpecBase {
         }
       }
 
+      "must go from Is Adopting From Abroad to Reason For Requesting" in {
+
+        navigator.nextPage(IsAdoptingFromAbroadPage, NormalMode, emptyUserAnswers) mustEqual routes.ReasonForRequestingController.onPageLoad(NormalMode)
+      }
+
+      "must go from Reason For Requesting to In In Qualifying Relationship" in {
+
+        navigator.nextPage(ReasonForRequestingPage, NormalMode, emptyUserAnswers) mustEqual routes.IsInQualifyingRelationshipController.onPageLoad(NormalMode)
+      }
+
       "must go from Is Biological Father" - {
 
         "to Will Have Caring Responsibility when the answer is yes" in {

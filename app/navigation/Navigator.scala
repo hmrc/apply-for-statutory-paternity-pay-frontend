@@ -30,6 +30,8 @@ class Navigator @Inject()() {
     case CountryOfResidencePage                => _ => routes.IsAdoptingController.onPageLoad(NormalMode)
     case IsAdoptingPage                        => isAdoptingRoute
     case IsApplyingForStatutoryAdoptionPayPage => isApplyingForStatutoryAdoptionPayPageRoute
+    case IsAdoptingFromAbroadPage              => _ => routes.ReasonForRequestingController.onPageLoad(NormalMode)
+    case ReasonForRequestingPage               => _ => routes.IsInQualifyingRelationshipController.onPageLoad(NormalMode)
     case IsBiologicalFatherPage                => isBiologicalFatherRoute
     case IsInQualifyingRelationshipPage        => isInQualifyingRelationshipRoute
     case IsCohabitingPage                      => isCohabitingRoute

@@ -25,13 +25,31 @@ sealed trait ReasonForRequesting
 object ReasonForRequesting extends Enumerable.Implicits {
 
   case object Adopting extends WithName("adopting") with ReasonForRequesting
-  case object Supportingadoption extends WithName("supportingAdoption") with ReasonForRequesting
+  case object SupportingAdoption extends WithName("supportingAdoption") with ReasonForRequesting
+  case object ParentalOrder extends WithName("parentalOrder") with ReasonForRequesting
 
   val values: Seq[ReasonForRequesting] = Seq(
-    Adopting, Supportingadoption
+    Adopting, SupportingAdoption, ParentalOrder
   )
 
-  def options(implicit messages: Messages): Seq[RadioItem] = values.zipWithIndex.map {
+  def options(adoptingFromAbroad: Boolean)(implicit messages: Messages): Seq[RadioItem] =
+    if (adoptingFromAbroad) adoptingAbroadOptions else notAdoptingAbroadOptions
+
+  private def adoptingAbroadOptions(implicit messages: Messages): Seq[RadioItem] =
+    Seq(
+      RadioItem(
+        content = Text(messages(s"reasonForRequesting.${Adopting.toString}")),
+        value   = Some(Adopting.toString),
+        id      = Some(s"value_0")
+      ),
+      RadioItem(
+        content = Text(messages(s"reasonForRequesting.${SupportingAdoption.toString}")),
+        value   = Some(SupportingAdoption.toString),
+        id      = Some(s"value_1")
+      )
+    )
+
+  private def notAdoptingAbroadOptions(implicit messages: Messages): Seq[RadioItem] = values.zipWithIndex.map {
     case (value, index) =>
       RadioItem(
         content = Text(messages(s"reasonForRequesting.${value.toString}")),

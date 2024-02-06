@@ -18,10 +18,11 @@ package controllers
 
 import controllers.actions._
 import forms.ReasonForRequestingFormProvider
+
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.ReasonForRequestingPage
+import pages.{IsAdoptingFromAbroadPage, ReasonForRequestingPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -40,33 +41,40 @@ class ReasonForRequestingController @Inject()(
                                        formProvider: ReasonForRequestingFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: ReasonForRequestingView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                     )(implicit ec: ExecutionContext)
+  extends FrontendBaseController
+    with I18nSupport
+    with AnswerExtractor {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      getAnswer(IsAdoptingFromAbroadPage) { adoptingFromAbroad =>
 
-      val preparedForm = request.userAnswers.get(ReasonForRequestingPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
+        val preparedForm = request.userAnswers.get(ReasonForRequestingPage) match {
+          case None => form
+          case Some(value) => form.fill(value)
+        }
+
+        Ok(view(preparedForm, mode, adoptingFromAbroad))
       }
-
-      Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      getAnswerAsync(IsAdoptingFromAbroadPage) { adoptingFromAbroad =>
 
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+        form.bindFromRequest().fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, mode, adoptingFromAbroad))),
 
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ReasonForRequestingPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ReasonForRequestingPage, mode, updatedAnswers))
-      )
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ReasonForRequestingPage, value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(ReasonForRequestingPage, mode, updatedAnswers))
+        )
+      }
   }
 }

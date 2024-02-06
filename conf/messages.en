@@ -358,8 +358,10 @@ isApplyingForStatutoryAdoptionPay.change.hidden = if you are applying for Statut
 
 reasonForRequesting.title = Why are you asking for Statutory Paternity Pay and/or Paternity Leave from your employer?
 reasonForRequesting.heading = Why are you asking for Statutory Paternity Pay and/or Paternity Leave from your employer?
+reasonForRequesting.hint = Select one option.
 reasonForRequesting.adopting = I am adopting or intending to adopt a child with my partner
-reasonForRequesting.supportingAdoption = I want to support my partner who is adopting or intends to adopt a child
+reasonForRequesting.supportingAdoption = I want to support my partner who is adopting or intending to adopt a child on their own
+reasonForRequesting.parentalOrder = I am a parental order parent
 reasonForRequesting.checkYourAnswersLabel = Why are you asking for Statutory Paternity Pay and/or Paternity Leave from your employer?
-reasonForRequesting.error.required = Select reasonForRequesting
-reasonForRequesting.change.hidden = ReasonForRequesting
+reasonForRequesting.error.required = Select why you are asking for Statutory Paternity Pay and/or Paternity Leave from your employer
+reasonForRequesting.change.hidden = why you are asking for Statutory Paternity Pay and/or Paternity Leave from your employer
