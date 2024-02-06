@@ -268,12 +268,12 @@ cannotApplyAdopting.guidance.p4.link.href = https://www.gov.uk/paternity-pay-lea
 cannotApplyAdopting.guidance.p5 = If you think you have made a mistake you can
 cannotApplyAdopting.guidance.p5.link.text = start the application form again
 
-isAdopting.title = Are you or a partner becoming adoptive or parental order parents?
-isAdopting.heading = Are you or a partner becoming adoptive or parental order parents?
+isAdopting.title = Are you or your partner adopting a child or becoming parental order parents?
+isAdopting.heading = Are you or your partner adopting a child or becoming parental order parents?
 isAdopting.hint = A parental order is when a person who is part of a couple has a child through a surrogacy arrangement.
-isAdopting.checkYourAnswersLabel = Are you or a partner becoming adoptive or parental order parents?
-isAdopting.error.required = Select yes if you or a partner are becoming adoptive or parental order parents
-isAdopting.change.hidden = if you or a partner are becoming adoptive or parental order parents
+isAdopting.checkYourAnswersLabel = Are you or your partner adopting a child or becoming parental order parents?
+isAdopting.error.required = Select yes if you or your partner are adopting a child or becoming parental order parents
+isAdopting.change.hidden = if you or your partner are adopting a child or becoming parental order parents
 
 pdf.title = Apply for Statutory Paternity Pay and/or Paternity Leave (SC3)
 pdf.boolean.true = Yes
