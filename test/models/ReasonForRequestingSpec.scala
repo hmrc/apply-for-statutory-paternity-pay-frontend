@@ -30,29 +30,29 @@ class ReasonForRequestingSpec extends AnyFreeSpec with Matchers with ScalaCheckP
 
     "must deserialise valid values" in {
 
-      val gen = Gen.oneOf(ReasonForRequesting.values.toSeq)
+      val gen = Gen.oneOf(RelationshipToChild.values.toSeq)
 
       forAll(gen) {
         reasonForRequesting =>
 
-          JsString(reasonForRequesting.toString).validate[ReasonForRequesting].asOpt.value mustEqual reasonForRequesting
+          JsString(reasonForRequesting.toString).validate[RelationshipToChild].asOpt.value mustEqual reasonForRequesting
       }
     }
 
     "must fail to deserialise invalid values" in {
 
-      val gen = arbitrary[String] suchThat (!ReasonForRequesting.values.map(_.toString).contains(_))
+      val gen = arbitrary[String] suchThat (!RelationshipToChild.values.map(_.toString).contains(_))
 
       forAll(gen) {
         invalidValue =>
 
-          JsString(invalidValue).validate[ReasonForRequesting] mustEqual JsError("error.invalid")
+          JsString(invalidValue).validate[RelationshipToChild] mustEqual JsError("error.invalid")
       }
     }
 
     "must serialise" in {
 
-      val gen = Gen.oneOf(ReasonForRequesting.values.toSeq)
+      val gen = Gen.oneOf(RelationshipToChild.values.toSeq)
 
       forAll(gen) {
         reasonForRequesting =>

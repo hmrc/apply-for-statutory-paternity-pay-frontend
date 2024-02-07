@@ -20,16 +20,17 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
-sealed trait ReasonForRequesting
+sealed trait RelationshipToChild
 
-object ReasonForRequesting extends Enumerable.Implicits {
+object RelationshipToChild extends Enumerable.Implicits {
 
-  case object Adopting extends WithName("adopting") with ReasonForRequesting
-  case object SupportingAdoption extends WithName("supportingAdoption") with ReasonForRequesting
-  case object ParentalOrder extends WithName("parentalOrder") with ReasonForRequesting
+  case object BirthChild extends WithName("birthChild") with RelationshipToChild
+  case object Adopting extends WithName("adopting") with RelationshipToChild
+  case object SupportingAdoption extends WithName("supportingAdoption") with RelationshipToChild
+  case object ParentalOrder extends WithName("parentalOrder") with RelationshipToChild
 
-  val values: Seq[ReasonForRequesting] = Seq(
-    Adopting, SupportingAdoption, ParentalOrder
+  val values: Seq[RelationshipToChild] = Seq(
+    BirthChild, Adopting, SupportingAdoption, ParentalOrder
   )
 
   def options(adoptingFromAbroad: Boolean)(implicit messages: Messages): Seq[RadioItem] =
@@ -49,15 +50,25 @@ object ReasonForRequesting extends Enumerable.Implicits {
       )
     )
 
-  private def notAdoptingAbroadOptions(implicit messages: Messages): Seq[RadioItem] = values.zipWithIndex.map {
-    case (value, index) =>
+  private def notAdoptingAbroadOptions(implicit messages: Messages): Seq[RadioItem] =
+    Seq(
       RadioItem(
-        content = Text(messages(s"reasonForRequesting.${value.toString}")),
-        value   = Some(value.toString),
-        id      = Some(s"value_$index")
+        content = Text(messages(s"reasonForRequesting.${Adopting.toString}")),
+        value   = Some(Adopting.toString),
+        id      = Some(s"value_0")
+      ),
+      RadioItem(
+        content = Text(messages(s"reasonForRequesting.${SupportingAdoption.toString}")),
+        value   = Some(SupportingAdoption.toString),
+        id      = Some(s"value_1")
+      ),
+      RadioItem(
+        content = Text(messages(s"reasonForRequesting.${ParentalOrder.toString}")),
+        value   = Some(ParentalOrder.toString),
+        id      = Some(s"value_2")
       )
-  }
+    )
 
-  implicit val enumerable: Enumerable[ReasonForRequesting] =
+  implicit val enumerable: Enumerable[RelationshipToChild] =
     Enumerable(values.map(v => v.toString -> v): _*)
 }

@@ -16,17 +16,17 @@
 
 package pages
 
-import models.ReasonForRequesting
+import models.RelationshipToChild
 import pages.behaviours.PageBehaviours
 
 class ReasonForRequestingSpec extends PageBehaviours {
 
   "ReasonForRequestingPage" - {
 
-    beRetrievable[ReasonForRequesting](ReasonForRequestingPage)
+    beRetrievable[RelationshipToChild](ReasonForRequestingPage)
 
-    beSettable[ReasonForRequesting](ReasonForRequestingPage)
+    beSettable[RelationshipToChild](ReasonForRequestingPage)
 
-    beRemovable[ReasonForRequesting](ReasonForRequestingPage)
+    beRemovable[RelationshipToChild](ReasonForRequestingPage)
   }
 }

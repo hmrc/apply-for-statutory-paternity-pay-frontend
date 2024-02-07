@@ -40,33 +40,42 @@ class IsInQualifyingRelationshipController @Inject()(
                                          formProvider: IsInQualifyingRelationshipFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: IsInQualifyingRelationshipView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
-  val form = formProvider()
+                                 )(implicit ec: ExecutionContext)
+  extends FrontendBaseController
+    with I18nSupport
+    with AnswerExtractor {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      getRelationshipToChild { relationship =>
 
-      val preparedForm = request.userAnswers.get(IsInQualifyingRelationshipPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
+        val form = formProvider(relationship)
+
+        val preparedForm = request.userAnswers.get(IsInQualifyingRelationshipPage) match {
+          case None => form
+          case Some(value) => form.fill(value)
+        }
+
+        Ok(view(preparedForm, mode, relationship))
       }
-
-      Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      getRelationshipToChildAsync { relationship =>
 
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+        val form = formProvider(relationship)
 
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(IsInQualifyingRelationshipPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(IsInQualifyingRelationshipPage, mode, updatedAnswers))
-      )
+        form.bindFromRequest().fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, mode, relationship))),
+
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(IsInQualifyingRelationshipPage, value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(IsInQualifyingRelationshipPage, mode, updatedAnswers))
+        )
+      }
   }
 }

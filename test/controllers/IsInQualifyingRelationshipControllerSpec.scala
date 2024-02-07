@@ -18,12 +18,13 @@ package controllers
 
 import base.SpecBase
 import forms.IsInQualifyingRelationshipFormProvider
+import models.RelationshipToChild.BirthChild
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.IsInQualifyingRelationshipPage
+import pages.{IsAdoptingPage, IsInQualifyingRelationshipPage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -35,18 +36,19 @@ import scala.concurrent.Future
 
 class IsInQualifyingRelationshipControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  private def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new IsInQualifyingRelationshipFormProvider()
-  val form = formProvider()
+  private val baseAnswers = emptyUserAnswers.set(IsAdoptingPage, false).success.value
+  private val formProvider = new IsInQualifyingRelationshipFormProvider()
+  private val form = formProvider(BirthChild)
 
-  lazy val isInQualifyingRelationshipRoute = routes.IsInQualifyingRelationshipController.onPageLoad(NormalMode).url
+  private lazy val isInQualifyingRelationshipRoute = routes.IsInQualifyingRelationshipController.onPageLoad(NormalMode).url
 
   "IsInQualifyingRelationship Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
 
       running(application) {
         val request = FakeRequest(GET, isInQualifyingRelationshipRoute)
@@ -56,13 +58,13 @@ class IsInQualifyingRelationshipControllerSpec extends SpecBase with MockitoSuga
         val view = application.injector.instanceOf[IsInQualifyingRelationshipView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, BirthChild)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IsInQualifyingRelationshipPage, true).success.value
+      val userAnswers = baseAnswers.set(IsInQualifyingRelationshipPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -74,7 +76,7 @@ class IsInQualifyingRelationshipControllerSpec extends SpecBase with MockitoSuga
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode, BirthChild)(request, messages(application)).toString
       }
     }
 
@@ -85,7 +87,7 @@ class IsInQualifyingRelationshipControllerSpec extends SpecBase with MockitoSuga
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(baseAnswers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -106,7 +108,7 @@ class IsInQualifyingRelationshipControllerSpec extends SpecBase with MockitoSuga
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
 
       running(application) {
         val request =
@@ -120,7 +122,7 @@ class IsInQualifyingRelationshipControllerSpec extends SpecBase with MockitoSuga
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, BirthChild)(request, messages(application)).toString
       }
     }
 

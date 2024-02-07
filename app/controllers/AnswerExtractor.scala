@@ -16,7 +16,9 @@
 
 package controllers
 
+import models.RelationshipToChild
 import models.requests.DataRequest
+import pages.{IsAdoptingPage, ReasonForRequestingPage}
 import play.api.libs.json.Reads
 import play.api.mvc.{AnyContent, Result}
 import play.api.mvc.Results.Redirect
@@ -57,4 +59,30 @@ trait AnswerExtractor {
       .get(query)
       .map(block(_))
       .getOrElse(Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad())))
+
+  def getRelationshipToChild(block: RelationshipToChild => Result)(implicit request: DataRequest[AnyContent]): Result =
+    request.userAnswers
+      .get(IsAdoptingPage).map {
+        case true =>
+          request.userAnswers
+            .get(ReasonForRequestingPage)
+            .map(block(_))
+            .getOrElse(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+
+        case false =>
+          block(RelationshipToChild.BirthChild)
+      }.getOrElse(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+
+  def getRelationshipToChildAsync(block: RelationshipToChild => Future[Result])(implicit request: DataRequest[AnyContent]): Future[Result] =
+    request.userAnswers
+      .get(IsAdoptingPage).map {
+        case true =>
+          request.userAnswers
+            .get(ReasonForRequestingPage)
+            .map(block(_))
+            .getOrElse(Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad())))
+
+        case false =>
+          block(RelationshipToChild.BirthChild)
+      }.getOrElse(Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad())))
 }

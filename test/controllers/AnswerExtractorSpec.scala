@@ -17,10 +17,13 @@
 package controllers
 
 import base.SpecBase
-import models.{Mode, UserAnswers}
+import models.RelationshipToChild._
+import models.{Mode, RelationshipToChild, UserAnswers}
 import models.requests.DataRequest
-import pages.QuestionPage
-import play.api.libs.json.{JsPath, Json}
+import org.scalacheck.Gen
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import pages.{IsAdoptingPage, QuestionPage, ReasonForRequestingPage}
+import play.api.libs.json.{JsPath, JsString, Json}
 import play.api.mvc.Results.{Ok, Redirect}
 import play.api.mvc.{AnyContent, Call, Result}
 import play.api.test.FakeRequest
@@ -29,7 +32,7 @@ import queries.Gettable
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class AnswerExtractorSpec extends SpecBase {
+class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
   private object TestPage extends QuestionPage[Int] {
     override def path: JsPath = JsPath \ "test"
@@ -51,6 +54,18 @@ class AnswerExtractorSpec extends SpecBase {
       getAnswerAsync(query) {
         answer =>
           Future.successful(Ok(Json.toJson(answer)))
+      }
+
+    def getRelationship(implicit request: DataRequest[AnyContent]): Result =
+      getRelationshipToChild {
+        relationship =>
+          Ok(Json.toJson(relationship))
+      }
+
+    def getRelationshipAsync(implicit request: DataRequest[AnyContent]): Future[Result] =
+      getRelationshipToChildAsync {
+        relationship =>
+          Future.successful(Ok(Json.toJson(relationship)))
       }
   }
 
@@ -95,6 +110,106 @@ class AnswerExtractorSpec extends SpecBase {
       val controller = new TestController()
 
       controller.getAsync(TestPage).futureValue mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad())
+    }
+  }
+
+  "getRelationshipToChild" - {
+
+    "must pass BirthChild to the provided block when the answer to IsAdopting is false" in {
+
+      val answers = emptyUserAnswers.set(IsAdoptingPage, false).success.value
+      implicit val request = buildRequest(answers)
+
+      val controller = new TestController()
+
+      controller.getRelationship mustEqual Ok(JsString(BirthChild.toString))
+    }
+
+    "must pass the ReasonForRequesting to the provided block when IsAdopting is true" in {
+
+      forAll(Gen.oneOf(RelationshipToChild.values)) {
+        reason =>
+
+          val answers =
+            emptyUserAnswers
+              .set(IsAdoptingPage, true).success.value
+              .set(ReasonForRequestingPage, reason).success.value
+
+          implicit val request = buildRequest(answers)
+
+          val controller = new TestController()
+
+          controller.getRelationship mustEqual Ok(JsString(reason.toString))
+      }
+    }
+
+    "must redirect to journey recovery when IsAdopting has not been answered" in {
+
+      implicit val request = buildRequest(emptyUserAnswers)
+
+      val controller = new TestController()
+
+      controller.getRelationship mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad())
+    }
+
+    "must redirect to journey recovery when IsAdopting is true and Reason has not been answered" in {
+
+      val answers = emptyUserAnswers.set(IsAdoptingPage, true).success.value
+      implicit val request = buildRequest(answers)
+
+      val controller = new TestController()
+
+      controller.getRelationship mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad())
+    }
+  }
+
+  "getRelationshipToChildAsync" - {
+
+    "must pass BirthChild to the provided block when the answer to IsAdopting is false" in {
+
+      val answers = emptyUserAnswers.set(IsAdoptingPage, false).success.value
+      implicit val request = buildRequest(answers)
+
+      val controller = new TestController()
+
+      controller.getRelationshipAsync.futureValue mustEqual Ok(JsString(BirthChild.toString))
+    }
+
+    "must pass the ReasonForRequesting to the provided block when IsAdopting is true" in {
+
+      forAll(Gen.oneOf(RelationshipToChild.values)) {
+        reason =>
+
+          val answers =
+            emptyUserAnswers
+              .set(IsAdoptingPage, true).success.value
+              .set(ReasonForRequestingPage, reason).success.value
+
+          implicit val request = buildRequest(answers)
+
+          val controller = new TestController()
+
+          controller.getRelationshipAsync.futureValue mustEqual Ok(JsString(reason.toString))
+      }
+    }
+
+    "must redirect to journey recovery when IsAdopting has not been answered" in {
+
+      implicit val request = buildRequest(emptyUserAnswers)
+
+      val controller = new TestController()
+
+      controller.getRelationshipAsync.futureValue mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad())
+    }
+
+    "must redirect to journey recovery when IsAdopting is true and Reason has not been answered" in {
+
+      val answers = emptyUserAnswers.set(IsAdoptingPage, true).success.value
+      implicit val request = buildRequest(answers)
+
+      val controller = new TestController()
+
+      controller.getRelationshipAsync.futureValue mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad())
     }
   }
 }

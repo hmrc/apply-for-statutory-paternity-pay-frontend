@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.ReasonForRequestingFormProvider
-import models.{NormalMode, ReasonForRequesting, UserAnswers}
+import models.{NormalMode, RelationshipToChild, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -64,7 +64,7 @@ class ReasonForRequestingControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = baseAnswers.set(ReasonForRequestingPage, ReasonForRequesting.values.head).success.value
+      val userAnswers = baseAnswers.set(ReasonForRequestingPage, RelationshipToChild.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -76,7 +76,7 @@ class ReasonForRequestingControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(ReasonForRequesting.values.head), NormalMode, adoptingFromAbroad)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(RelationshipToChild.values.head), NormalMode, adoptingFromAbroad)(request, messages(application)).toString
       }
     }
 
@@ -97,7 +97,7 @@ class ReasonForRequestingControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, reasonForRequestingRoute)
-            .withFormUrlEncodedBody(("value", ReasonForRequesting.values.head.toString))
+            .withFormUrlEncodedBody(("value", RelationshipToChild.values.head.toString))
 
         val result = route(application, request).value
 
@@ -147,7 +147,7 @@ class ReasonForRequestingControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, reasonForRequestingRoute)
-            .withFormUrlEncodedBody(("value", ReasonForRequesting.values.head.toString))
+            .withFormUrlEncodedBody(("value", RelationshipToChild.values.head.toString))
 
         val result = route(application, request).value
 

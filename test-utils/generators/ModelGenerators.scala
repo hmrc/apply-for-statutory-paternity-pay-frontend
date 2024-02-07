@@ -23,9 +23,9 @@ import uk.gov.hmrc.domain.Nino
 
 trait ModelGenerators {
 
-  implicit lazy val arbitraryReasonForRequesting: Arbitrary[ReasonForRequesting] =
+  implicit lazy val arbitraryReasonForRequesting: Arbitrary[RelationshipToChild] =
     Arbitrary {
-      Gen.oneOf(ReasonForRequesting.values.toSeq)
+      Gen.oneOf(RelationshipToChild.values.toSeq)
     }
 
   implicit lazy val arbitraryCountryOfResidence: Arbitrary[CountryOfResidence] =
