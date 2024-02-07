@@ -40,33 +40,44 @@ class IsCohabitingController @Inject()(
                                          formProvider: IsCohabitingFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: IsCohabitingView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                 )(implicit ec: ExecutionContext)
+  extends FrontendBaseController
+    with I18nSupport
+    with AnswerExtractor {
 
-  val form = formProvider()
+
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      getRelationshipToChild { relationship =>
 
-      val preparedForm = request.userAnswers.get(IsCohabitingPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
+        val form = formProvider(relationship)
+
+        val preparedForm = request.userAnswers.get(IsCohabitingPage) match {
+          case None => form
+          case Some(value) => form.fill(value)
+        }
+
+        Ok(view(preparedForm, mode, relationship))
       }
-
-      Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      getRelationshipToChildAsync { relationship =>
 
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+        val form = formProvider(relationship)
 
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(IsCohabitingPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(IsCohabitingPage, mode, updatedAnswers))
-      )
+        form.bindFromRequest().fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, mode, relationship))),
+
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(IsCohabitingPage, value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(IsCohabitingPage, mode, updatedAnswers))
+        )
+      }
   }
 }

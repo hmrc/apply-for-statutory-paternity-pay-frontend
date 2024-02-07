@@ -18,12 +18,13 @@ package controllers
 
 import base.SpecBase
 import forms.IsCohabitingFormProvider
+import models.RelationshipToChild.BirthChild
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.IsCohabitingPage
+import pages.{IsAdoptingPage, IsCohabitingPage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -35,18 +36,20 @@ import scala.concurrent.Future
 
 class IsCohabitingControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  private def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new IsCohabitingFormProvider()
-  val form = formProvider()
+  private val relationship = BirthChild
+  private val baseAnswers = emptyUserAnswers.set(IsAdoptingPage, false).success.value
+  private val formProvider = new IsCohabitingFormProvider()
+  private val form = formProvider(relationship)
 
-  lazy val isCohabitingRoute = routes.IsCohabitingController.onPageLoad(NormalMode).url
+  private lazy val isCohabitingRoute = routes.IsCohabitingController.onPageLoad(NormalMode).url
 
   "IsCohabiting Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
 
       running(application) {
         val request = FakeRequest(GET, isCohabitingRoute)
@@ -56,13 +59,13 @@ class IsCohabitingControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[IsCohabitingView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, relationship)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IsCohabitingPage, true).success.value
+      val userAnswers = baseAnswers.set(IsCohabitingPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -74,7 +77,7 @@ class IsCohabitingControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode, relationship)(request, messages(application)).toString
       }
     }
 
@@ -85,7 +88,7 @@ class IsCohabitingControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(baseAnswers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -106,7 +109,7 @@ class IsCohabitingControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
 
       running(application) {
         val request =
@@ -120,7 +123,7 @@ class IsCohabitingControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, relationship)(request, messages(application)).toString
       }
     }
 
