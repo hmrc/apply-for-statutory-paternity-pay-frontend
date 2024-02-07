@@ -46,15 +46,15 @@ POST       /are-you-the-biological-father                           controllers.
 GET        /change-if-you-are-the-biological-father                     controllers.IsBiologicalFatherController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-if-you-are-the-biological-father                     controllers.IsBiologicalFatherController.onSubmit(mode: Mode = CheckMode)
 
-GET        /are-you-living-with-the-mother                      controllers.IsCohabitingController.onPageLoad(mode: Mode = NormalMode)
-POST       /are-you-living-with-the-mother                      controllers.IsCohabitingController.onSubmit(mode: Mode = NormalMode)
-GET        /change-if-you-are-living-with-the-mother                controllers.IsCohabitingController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-if-you-are-living-with-the-mother                controllers.IsCohabitingController.onSubmit(mode: Mode = CheckMode)
+GET        /are-you-living-with-partner                      controllers.IsCohabitingController.onPageLoad(mode: Mode = NormalMode)
+POST       /are-you-living-with-partner                      controllers.IsCohabitingController.onSubmit(mode: Mode = NormalMode)
+GET        /change-if-you-are-living-with-partner                controllers.IsCohabitingController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-if-you-are-living-with-partner                controllers.IsCohabitingController.onSubmit(mode: Mode = CheckMode)
 
-GET        /in-marriage-or-civil-partnership-with-the-mother              controllers.IsInQualifyingRelationshipController.onPageLoad(mode: Mode = NormalMode)
-POST       /in-marriage-or-civil-partnership-with-the-mother              controllers.IsInQualifyingRelationshipController.onSubmit(mode: Mode = NormalMode)
-GET        /change-if-in-marriage-or-civil-partnership-with-the-mother        controllers.IsInQualifyingRelationshipController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-if-in-marriage-or-civil-partnership-with-the-mother        controllers.IsInQualifyingRelationshipController.onSubmit(mode: Mode = CheckMode)
+GET        /in-marriage-or-civil-partnership                  controllers.IsInQualifyingRelationshipController.onPageLoad(mode: Mode = NormalMode)
+POST       /in-marriage-or-civil-partnership                  controllers.IsInQualifyingRelationshipController.onSubmit(mode: Mode = NormalMode)
+GET        /change-if-in-marriage-or-civil-partnership        controllers.IsInQualifyingRelationshipController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-if-in-marriage-or-civil-partnership        controllers.IsInQualifyingRelationshipController.onSubmit(mode: Mode = CheckMode)
 
 GET        /what-is-your-name                   controllers.NameController.onPageLoad(mode: Mode = NormalMode)
 POST       /what-is-your-name                   controllers.NameController.onSubmit(mode: Mode = NormalMode)
@@ -91,10 +91,10 @@ POST       /take-time-off-to-care-for-child                    controllers.WillT
 GET        /change-take-time-off-to-care-for-child              controllers.WillTakeTimeToCareForChildController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-take-time-off-to-care-for-child              controllers.WillTakeTimeToCareForChildController.onSubmit(mode: Mode = CheckMode)
 
-GET        /take-time-off-to-support-the-mother                controllers.WillTakeTimeToSupportMotherController.onPageLoad(mode: Mode = NormalMode)
-POST       /take-time-off-to-support-the-mother                controllers.WillTakeTimeToSupportMotherController.onSubmit(mode: Mode = NormalMode)
-GET        /change-take-time-off-to-support-the-mother          controllers.WillTakeTimeToSupportMotherController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-take-time-off-to-support-the-mother          controllers.WillTakeTimeToSupportMotherController.onSubmit(mode: Mode = CheckMode)
+GET        /take-time-off-to-support-partner                controllers.WillTakeTimeToSupportMotherController.onPageLoad(mode: Mode = NormalMode)
+POST       /take-time-off-to-support-partner                controllers.WillTakeTimeToSupportMotherController.onSubmit(mode: Mode = NormalMode)
+GET        /change-take-time-off-to-support-partner          controllers.WillTakeTimeToSupportMotherController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-take-time-off-to-support-partner          controllers.WillTakeTimeToSupportMotherController.onSubmit(mode: Mode = CheckMode)
 
 GET        /what-is-your-national-insurance-number                          controllers.NinoController.onPageLoad(mode: Mode = NormalMode)
 POST       /what-is-your-national-insurance-number                          controllers.NinoController.onSubmit(mode: Mode = NormalMode)
