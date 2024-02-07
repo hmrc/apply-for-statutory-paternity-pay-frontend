@@ -263,11 +263,11 @@ willTakeTimeToCareForChild.checkYourAnswersLabel = Will you use your Paternity L
 willTakeTimeToCareForChild.error.required = Select yes if you will take time off work to care for the child
 willTakeTimeToCareForChild.change.hidden = if you will take time off work to care for the child
 
-willTakeTimeToSupportMother.title = Will you use your Paternity Leave to support the child’s mother?
-willTakeTimeToSupportMother.heading = Will you use your Paternity Leave to support the child’s mother?
-willTakeTimeToSupportMother.checkYourAnswersLabel = Will you use your Paternity Leave to support the child’s mother?
-willTakeTimeToSupportMother.error.required = Select yes if you will take time off work to support the child’s mother
-willTakeTimeToSupportMother.change.hidden = if you will take time off work to support the child’s mother
+willTakeTimeToSupportMother.title = Will you use your Paternity Leave to support your partner in caring for the child?
+willTakeTimeToSupportMother.heading = Will you use your Paternity Leave to support your partner in caring for the child?
+willTakeTimeToSupportMother.checkYourAnswersLabel = Will you use your Paternity Leave to support your partner in caring for the child?
+willTakeTimeToSupportMother.error.required = Select yes if you will take time off work to support your partner in caring for the child
+willTakeTimeToSupportMother.change.hidden = if you will take time off work to support your partner in caring for the child
 
 wantPayToStartOnDueDate.title = Would you like your Statutory Paternity Pay and/or Paternity Leave to start on the day the baby is due?
 wantPayToStartOnDueDate.heading = Would you like your Statutory Paternity Pay and/or Paternity Leave to start on the day the baby is due?
