@@ -24,7 +24,7 @@
 
 @(form: Form[_], mode: Mode, relationship: RelationshipToChild)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("isInQualifyingRelationship.title"))) {
+@layout(pageTitle = title(form, messages(s"isInQualifyingRelationship.${relationship.toString}.title"))) {
 
     @formHelper(action = routes.IsInQualifyingRelationshipController.onSubmit(mode), 'autoComplete -> "off") {
 

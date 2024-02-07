@@ -235,11 +235,11 @@ wantPayToStartOnBirthDate.checkYourAnswersLabel = Would you like your Statutory 
 wantPayToStartOnBirthDate.error.required = Select yes if you would like your Statutory Paternity Pay and/or Paternity Leave to start on the day the baby was born
 wantPayToStartOnBirthDate.change.hidden = if you would like your Statutory Paternity Pay and/or Paternity Leave to start on the day the baby was born
 
-willHaveCaringResponsibility.title = Will you have responsibility for caring for the child?
-willHaveCaringResponsibility.heading = Will you have responsibility for caring for the child?
-willHaveCaringResponsibility.checkYourAnswersLabel = Will you have responsibility for caring for the child?
-willHaveCaringResponsibility.error.required = Select yes if you will have responsibility for caring for the child
-willHaveCaringResponsibility.change.hidden = if you will have responsibility for caring for the child
+willHaveCaringResponsibility.title = Will you be responsible for caring for the child?
+willHaveCaringResponsibility.heading = Will you be responsible for caring for the child?
+willHaveCaringResponsibility.checkYourAnswersLabel = Will you be responsible for caring for the child?
+willHaveCaringResponsibility.error.required = Select yes if you will be responsible for caring for the child
+willHaveCaringResponsibility.change.hidden = if you will be responsible for caring for the child
 
 willTakeTimeToCareForChild.title = Will you use your Paternity Leave to care for the child?
 willTakeTimeToCareForChild.heading = Will you use your Paternity Leave to care for the child?
