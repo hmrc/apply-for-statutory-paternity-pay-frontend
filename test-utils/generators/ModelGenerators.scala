@@ -23,6 +23,11 @@ import uk.gov.hmrc.domain.Nino
 
 trait ModelGenerators {
 
+  implicit lazy val arbitraryPaternityLeaveLengthPostApril24: Arbitrary[PaternityLeaveLengthPostApril24] =
+    Arbitrary {
+      Gen.oneOf(PaternityLeaveLengthPostApril24.values.toSeq)
+    }
+
   implicit lazy val arbitraryReasonForRequesting: Arbitrary[ReasonForRequesting] =
     Arbitrary {
       Gen.oneOf(ReasonForRequesting.values.toSeq)

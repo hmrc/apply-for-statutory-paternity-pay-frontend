@@ -25,6 +25,14 @@ import uk.gov.hmrc.domain.Nino
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
 
+  implicit lazy val arbitraryPaternityLeaveLengthPostApril24UserAnswersEntry: Arbitrary[(PaternityLeaveLengthPostApril24Page.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[PaternityLeaveLengthPostApril24Page.type]
+        value <- arbitrary[PaternityLeaveLengthPostApril24].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitraryReasonForRequestingUserAnswersEntry: Arbitrary[(ReasonForRequestingPage.type, JsValue)] =
     Arbitrary {
       for {

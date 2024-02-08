@@ -359,3 +359,11 @@ reasonForRequesting.supportingAdoption = I want to support my partner who is ado
 reasonForRequesting.checkYourAnswersLabel = Why are you asking for Statutory Paternity Pay and/or Paternity Leave from your employer?
 reasonForRequesting.error.required = Select reasonForRequesting
 reasonForRequesting.change.hidden = ReasonForRequesting
+
+paternityLeaveLengthPostApril24.title = paternityLeaveLengthPostApril24
+paternityLeaveLengthPostApril24.heading = paternityLeaveLengthPostApril24
+paternityLeaveLengthPostApril24.oneweek = 1 week
+paternityLeaveLengthPostApril24.twoweek = 2 weeks
+paternityLeaveLengthPostApril24.checkYourAnswersLabel = paternityLeaveLengthPostApril24
+paternityLeaveLengthPostApril24.error.required = Select paternityLeaveLengthPostApril24
+paternityLeaveLengthPostApril24.change.hidden = PaternityLeaveLengthPostApril24

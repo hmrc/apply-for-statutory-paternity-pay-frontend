@@ -152,3 +152,8 @@ GET        /reasonForRequesting                        controllers.ReasonForRequ
 POST       /reasonForRequesting                        controllers.ReasonForRequestingController.onSubmit(mode: Mode = NormalMode)
 GET        /changeReasonForRequesting                  controllers.ReasonForRequestingController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeReasonForRequesting                  controllers.ReasonForRequestingController.onSubmit(mode: Mode = CheckMode)
+
+GET        /paternityLeaveLengthPostApril24                        controllers.PaternityLeaveLengthPostApril24Controller.onPageLoad(mode: Mode = NormalMode)
+POST       /paternityLeaveLengthPostApril24                        controllers.PaternityLeaveLengthPostApril24Controller.onSubmit(mode: Mode = NormalMode)
+GET        /changePaternityLeaveLengthPostApril24                  controllers.PaternityLeaveLengthPostApril24Controller.onPageLoad(mode: Mode = CheckMode)
+POST       /changePaternityLeaveLengthPostApril24                  controllers.PaternityLeaveLengthPostApril24Controller.onSubmit(mode: Mode = CheckMode)

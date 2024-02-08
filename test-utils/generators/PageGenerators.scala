@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryPaternityLeaveLengthPostApril24Page: Arbitrary[PaternityLeaveLengthPostApril24Page.type] =
+    Arbitrary(PaternityLeaveLengthPostApril24Page)
+
   implicit lazy val arbitraryReasonForRequestingPage: Arbitrary[ReasonForRequestingPage.type] =
     Arbitrary(ReasonForRequestingPage)
 
