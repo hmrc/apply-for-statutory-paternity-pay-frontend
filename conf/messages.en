@@ -116,11 +116,11 @@ babyHasBeenBorn.checkYourAnswersLabel = Has the baby been born yet?
 babyHasBeenBorn.error.required = Select yes if the baby has been born
 babyHasBeenBorn.change.hidden = if the baby has been born
 
-cannotApply.title = You are not eligible for Statutory Paternity Pay
-cannotApply.heading = You are not eligible for Statutory Paternity Pay
-cannotApply.guidance.p1 = Based on your answers you are not eligible for Statutory Paternity Pay (SPP).
-cannotApply.guidance.p2.1 = You can find out more about SPP and your eligibility on the
-cannotApply.guidance.p2.link.text = Paternity and pay guidance page
+cannotApply.title = You are not eligible for Statutory Paternity Pay and Statutory Paternity Leave
+cannotApply.heading = You are not eligible for Statutory Paternity Pay and Statutory Paternity Leave
+cannotApply.guidance.p1 = Based on your answers you are not eligible for Statutory Paternity Pay (SPP) and Statutory Paternity Leave.
+cannotApply.guidance.p2.1 = You can find out more about your
+cannotApply.guidance.p2.link.text = eligibility for paternity pay and leave (opens in new tab)
 cannotApply.guidance.p2.link.href = https://www.gov.uk/paternity-pay-leave
 cannotApply.guidance.p2.2 = You can also contact your employer for more information.
 cannotApply.guidance.p3 = If you think you have made a mistake you can
