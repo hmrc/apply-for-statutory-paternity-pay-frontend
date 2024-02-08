@@ -1,9 +1,29 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
+
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
     govukRadios: GovukRadios,
-    govukButton: GovukButton
+    govukButton: GovukButton,
+    h1WithCaption: components.h1WithCaption
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -16,10 +36,32 @@
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
         }
 
+        @h1WithCaption(
+            content = messages("paternityLeaveLengthPostApril24.heading"),
+            caption = messages("section.paternityDetails")
+        )
+
+        <p class="govuk-body">@messages("paternityLeaveLengthPostApril24.p1")</p>
+
+        <p class="govuk-body">@messages("paternityLeaveLengthPostApril24.p2")</p>
+
+        <p class="govuk-body">@messages("paternityLeaveLengthPostApril24.p3")</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("paternityLeaveLengthPostApril24.bullet.1")</li>
+            <li>@messages("paternityLeaveLengthPostApril24.bullet.2")</li>
+            <li>@messages("paternityLeaveLengthPostApril24.bullet.3")</li>
+        </ul>
+
+        <p class="govuk-body">@messages("paternityLeaveLengthPostApril24.p4")</p>
+
         @govukRadios(
             RadiosViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages("paternityLeaveLengthPostApril24.heading")).asPageHeading(),
+                legend = Legend(
+                    content = messages("paternityLeaveLengthPostApril24.legend"),
+                    classes = "govuk-fieldset__legend--m"
+                ),
                 items  = PaternityLeaveLengthPostApril24.options
             )
         )
