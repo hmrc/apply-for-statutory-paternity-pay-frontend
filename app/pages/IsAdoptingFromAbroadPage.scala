@@ -17,9 +17,11 @@
 package pages
 
 import controllers.routes
-import models.Mode
+import models.{Mode, RelationshipToChild, UserAnswers}
 import play.api.libs.json.JsPath
 import play.api.mvc.Call
+
+import scala.util.Try
 
 case object IsAdoptingFromAbroadPage extends QuestionPage[Boolean] {
 
@@ -28,4 +30,18 @@ case object IsAdoptingFromAbroadPage extends QuestionPage[Boolean] {
   override def toString: String = "isAdoptingFromAbroad"
 
   override def route(mode: Mode): Call = routes.IsAdoptingFromAbroadController.onPageLoad(mode)
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
+    value.map {
+      case true =>
+        if (userAnswers.get(ReasonForRequestingPage).contains(RelationshipToChild.ParentalOrder)) {
+          val answersToRemove = allQuestionPages - CountryOfResidencePage - IsAdoptingPage - IsApplyingForStatutoryAdoptionPayPage - IsAdoptingFromAbroadPage
+          removeRedundantAnswers(userAnswers, answersToRemove)
+        } else {
+          super.cleanup(value, userAnswers)
+        }
+
+      case false =>
+        super.cleanup(value, userAnswers)
+    }.getOrElse(super.cleanup(value, userAnswers))
 }

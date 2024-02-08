@@ -16,7 +16,13 @@
 
 package pages
 
+import models.{CountryOfResidence, Name, PaternityLeaveLength, RelationshipToChild}
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.Gen
 import pages.behaviours.PageBehaviours
+import uk.gov.hmrc.domain.Nino
+
+import java.time.LocalDate
 
 class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
 
@@ -27,5 +33,145 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
     beSettable[Boolean](IsAdoptingFromAbroadPage)
 
     beRemovable[Boolean](IsAdoptingFromAbroadPage)
+  }
+
+  private def fullAnswersAdopting =
+    emptyUserAnswers
+      .set(IsAdoptingPage, true).success.value
+      .set(BabyDateOfBirthPage, LocalDate.now).success.value
+      .set(BabyDueDatePage, LocalDate.now).success.value
+      .set(BabyHasBeenBornPage, true).success.value
+      .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
+      .set(ChildHasBeenPlacedPage, true).success.value
+      .set(ChildPlacementDatePage, LocalDate.now).success.value
+      .set(CountryOfResidencePage, CountryOfResidence.England).success.value
+      .set(DateChildWasMatchedPage, LocalDate.now).success.value
+      .set(IsAdoptingFromAbroadPage, true).success.value
+      .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+      .set(IsCohabitingPage, true).success.value
+      .set(IsInQualifyingRelationshipPage, false).success.value
+      .set(NamePage, Name("first", "last")).success.value
+      .set(NinoPage, arbitrary[Nino].sample.value).success.value
+      .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
+      .set(PayStartDateBabyBornPage, LocalDate.now).success.value
+      .set(PayStartDateBabyDuePage, LocalDate.now).success.value
+      .set(ReasonForRequestingPage, Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value).success.value
+      .set(WantPayToStartOnBirthDatePage, false).success.value
+      .set(WantPayToStartOnDueDatePage, false).success.value
+      .set(WillHaveCaringResponsibilityPage, true).success.value
+      .set(WillTakeTimeToCareForChildPage, true).success.value
+      .set(WillTakeTimeToSupportMotherPage, true).success.value
+
+  private def fullAnswersParentalOrder =
+    emptyUserAnswers
+      .set(IsAdoptingPage, true).success.value
+      .set(BabyDateOfBirthPage, LocalDate.now).success.value
+      .set(BabyDueDatePage, LocalDate.now).success.value
+      .set(BabyHasBeenBornPage, true).success.value
+      .set(CountryOfResidencePage, CountryOfResidence.England).success.value
+      .set(IsAdoptingFromAbroadPage, true).success.value
+      .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+      .set(IsCohabitingPage, true).success.value
+      .set(IsInQualifyingRelationshipPage, false).success.value
+      .set(NamePage, Name("first", "last")).success.value
+      .set(NinoPage, arbitrary[Nino].sample.value).success.value
+      .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
+      .set(PayStartDateBabyBornPage, LocalDate.now).success.value
+      .set(PayStartDateBabyDuePage, LocalDate.now).success.value
+      .set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
+      .set(WantPayToStartOnBirthDatePage, false).success.value
+      .set(WantPayToStartOnDueDatePage, false).success.value
+      .set(WillHaveCaringResponsibilityPage, true).success.value
+      .set(WillTakeTimeToCareForChildPage, true).success.value
+      .set(WillTakeTimeToSupportMotherPage, true).success.value
+
+  "must remove redundant answers when the answer is true and Reason for Requesting is Parental Order" in {
+
+    val result = fullAnswersParentalOrder.set(IsAdoptingFromAbroadPage, true).success.value
+
+    result.get(IsAdoptingFromAbroadPage).value mustEqual true
+    result.get(CountryOfResidencePage) mustBe defined
+    result.get(IsAdoptingPage) mustBe defined
+    result.get(IsApplyingForStatutoryAdoptionPayPage) mustBe defined
+
+    result.get(BabyDateOfBirthPage) must not be defined
+    result.get(BabyDueDatePage) must not be defined
+    result.get(BabyHasBeenBornPage) must not be defined
+    result.get(ChildExpectedPlacementDatePage) must not be defined
+    result.get(ChildHasBeenPlacedPage) must not be defined
+    result.get(ChildPlacementDatePage) must not be defined
+    result.get(DateChildWasMatchedPage) must not be defined
+    result.get(IsCohabitingPage) must not be defined
+    result.get(IsInQualifyingRelationshipPage) must not be defined
+    result.get(NamePage) must not be defined
+    result.get(NinoPage) must not be defined
+    result.get(PaternityLeaveLengthPage) must not be defined
+    result.get(PayStartDateBabyBornPage) must not be defined
+    result.get(PayStartDateBabyDuePage) must not be defined
+    result.get(ReasonForRequestingPage) must not be defined
+    result.get(WantPayToStartOnBirthDatePage) must not be defined
+    result.get(WantPayToStartOnDueDatePage) must not be defined
+    result.get(WillHaveCaringResponsibilityPage) must not be defined
+    result.get(WillTakeTimeToCareForChildPage) must not be defined
+    result.get(WillTakeTimeToSupportMotherPage) must not be defined
+  }
+
+  "must not remove any answers" - {
+
+    "when the answer is false" - {
+      
+      val result = fullAnswersParentalOrder.set(IsAdoptingFromAbroadPage, false).success.value
+
+      result.get(IsAdoptingFromAbroadPage).value mustEqual false
+      result.get(CountryOfResidencePage) mustBe defined
+      result.get(IsAdoptingPage) mustBe defined
+      result.get(IsApplyingForStatutoryAdoptionPayPage) mustBe defined
+      result.get(BabyDateOfBirthPage) mustBe defined
+      result.get(BabyDueDatePage) mustBe defined
+      result.get(BabyHasBeenBornPage) mustBe defined
+      result.get(IsCohabitingPage) mustBe defined
+      result.get(IsInQualifyingRelationshipPage) mustBe defined
+      result.get(NamePage) mustBe defined
+      result.get(NinoPage) mustBe defined
+      result.get(PaternityLeaveLengthPage) mustBe defined
+      result.get(PayStartDateBabyBornPage) mustBe defined
+      result.get(PayStartDateBabyDuePage) mustBe defined
+      result.get(ReasonForRequestingPage) mustBe defined
+      result.get(WantPayToStartOnBirthDatePage) mustBe defined
+      result.get(WantPayToStartOnDueDatePage) mustBe defined
+      result.get(WillHaveCaringResponsibilityPage) mustBe defined
+      result.get(WillTakeTimeToCareForChildPage) mustBe defined
+      result.get(WillTakeTimeToSupportMotherPage) mustBe defined
+    }
+
+    "when the answer is true and Reason for Requesting is Adopting or Supporting Adoption" in {
+
+      val result = fullAnswersAdopting.set(IsAdoptingFromAbroadPage, true).success.value
+
+      result.get(IsAdoptingFromAbroadPage).value mustEqual true
+      result.get(CountryOfResidencePage) mustBe defined
+      result.get(IsAdoptingPage) mustBe defined
+      result.get(IsApplyingForStatutoryAdoptionPayPage) mustBe defined
+      result.get(BabyDateOfBirthPage) mustBe defined
+      result.get(BabyDueDatePage) mustBe defined
+      result.get(BabyHasBeenBornPage) mustBe defined
+      result.get(ChildExpectedPlacementDatePage) mustBe defined
+      result.get(ChildHasBeenPlacedPage) mustBe defined
+      result.get(ChildPlacementDatePage) mustBe defined
+      result.get(DateChildWasMatchedPage) mustBe defined
+      result.get(IsCohabitingPage) mustBe defined
+      result.get(IsInQualifyingRelationshipPage) mustBe defined
+      result.get(NamePage) mustBe defined
+      result.get(NinoPage) mustBe defined
+      result.get(PaternityLeaveLengthPage) mustBe defined
+      result.get(PayStartDateBabyBornPage) mustBe defined
+      result.get(PayStartDateBabyDuePage) mustBe defined
+      result.get(ReasonForRequestingPage) mustBe defined
+      result.get(WantPayToStartOnBirthDatePage) mustBe defined
+      result.get(WantPayToStartOnDueDatePage) mustBe defined
+      result.get(WillHaveCaringResponsibilityPage) mustBe defined
+      result.get(WillTakeTimeToCareForChildPage) mustBe defined
+      result.get(WillTakeTimeToSupportMotherPage) mustBe defined
+    }
   }
 }
