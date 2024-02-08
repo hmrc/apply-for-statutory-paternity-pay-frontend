@@ -16,10 +16,12 @@
 
 package services.auditing
 
-import models.{JourneyModel, Name, PaternityLeaveLength}
+import generators.ModelGenerators
+import models.{CountryOfResidence, JourneyModel, Name, PaternityLeaveLength}
 import models.auditing.DownloadAuditEvent
 import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito.{times, verify}
+import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar
@@ -31,8 +33,9 @@ import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
+class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar with ModelGenerators {
 
+  val nino = arbitrary[Nino].sample.get
   val mockAuditConnector: AuditConnector = mock[AuditConnector]
   val configuration: Configuration = Configuration(
     "auditing.downloadEventName" -> "downloadAuditEvent"
@@ -47,8 +50,8 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
       val dueDate = LocalDate.now.minusDays(1)
 
       val model: JourneyModel = JourneyModel(
-        eligibility = JourneyModel.Eligibility(
-          becomingAdoptiveParents = false,
+        countryOfResidence = CountryOfResidence.England,
+        eligibility = JourneyModel.BirthChildEligibility(
           biologicalFather = true,
           inRelationshipWithMother = None,
           livingWithMother = None,
@@ -57,7 +60,7 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
           timeOffToSupportMother = None
         ),
         name = Name("foo", "bar"),
-        nino = Nino("AA123456A"),
+        nino = nino,
         hasTheBabyBeenBorn = true,
         dueDate = dueDate,
         birthDetails = JourneyModel.BirthDetails.AlreadyBorn(
@@ -69,8 +72,8 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
       )
 
       val expected: DownloadAuditEvent = DownloadAuditEvent(
-        eligibility = DownloadAuditEvent.Eligibility(
-          becomingAdoptiveParents = false,
+        countryOfResidence = CountryOfResidence.England,
+        eligibility = DownloadAuditEvent.BirthChildEligibility(
           biologicalFather = true,
           inRelationshipWithMother = None,
           livingWithMother = None,
@@ -79,7 +82,7 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
           timeOffToSupportMother = None
         ),
         name = Name("foo", "bar"),
-        nino = Nino("AA123456A"),
+        nino = nino,
         hasTheBabyBeenBorn = true,
         dueDate = dueDate,
         birthDetails = DownloadAuditEvent.BirthDetails.AlreadyBorn(

@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import generators.Generators
-import models.{Name, PaternityLeaveLength}
+import models.{CountryOfResidence, Name, PaternityLeaveLength}
 import org.scalacheck.Arbitrary.arbitrary
 import pages._
 import play.api.i18n.Messages
@@ -39,6 +39,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
 
       val answers =
         emptyUserAnswers
+          .set(CountryOfResidencePage, CountryOfResidence.England).success.value
           .set(BabyDateOfBirthPage, LocalDate.now).success.value
           .set(BabyDueDatePage, LocalDate.now).success.value
           .set(BabyHasBeenBornPage, true).success.value

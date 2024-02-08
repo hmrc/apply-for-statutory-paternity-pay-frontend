@@ -17,12 +17,12 @@
 package controllers
 
 import base.SpecBase
-import models.{JourneyModel, Name, NormalMode, PaternityLeaveLength}
+import models.{CountryOfResidence, JourneyModel, Name, NormalMode, PaternityLeaveLength}
 import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatest.EitherValues
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{BabyDateOfBirthPage, BabyDueDatePage, BabyHasBeenBornPage, IsAdoptingPage, IsBiologicalFatherPage, NamePage, NinoPage, PaternityLeaveLengthPage, WantPayToStartOnBirthDatePage, WillHaveCaringResponsibilityPage, WillTakeTimeToCareForChildPage}
+import pages.{BabyDateOfBirthPage, BabyDueDatePage, BabyHasBeenBornPage, CountryOfResidencePage, IsAdoptingPage, IsBiologicalFatherPage, NamePage, NinoPage, PaternityLeaveLengthPage, WantPayToStartOnBirthDatePage, WillHaveCaringResponsibilityPage, WillTakeTimeToCareForChildPage}
 import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.test.FakeRequest
@@ -40,6 +40,7 @@ class PrintControllerSpec extends SpecBase with EitherValues with MockitoSugar {
   val dueDate = LocalDate.now.minusDays(2)
 
   val answers = emptyUserAnswers
+    .set(CountryOfResidencePage, CountryOfResidence.England).success.value
     .set(IsAdoptingPage, false).success.value
     .set(IsBiologicalFatherPage, true).success.value
     .set(WillHaveCaringResponsibilityPage, true).success.value
@@ -82,7 +83,7 @@ class PrintControllerSpec extends SpecBase with EitherValues with MockitoSugar {
         val request = FakeRequest(GET, routes.PrintController.onDownload.url)
         val result = route(application, request).value
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.IsAdoptingController.onPageLoad(NormalMode).url
+        redirectLocation(result).value mustEqual routes.CountryOfResidenceController.onPageLoad(NormalMode).url
       }
     }
   }

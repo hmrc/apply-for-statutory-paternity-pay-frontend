@@ -16,7 +16,9 @@
 
 package models
 
+import generators.ModelGenerators
 import models.JourneyModel.BirthDetails
+import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{EitherValues, OptionValues, TryValues}
@@ -25,8 +27,10 @@ import uk.gov.hmrc.domain.Nino
 
 import java.time.LocalDate
 
-class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with TryValues with EitherValues {
+class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with TryValues with EitherValues with ModelGenerators {
 
+  private val nino = arbitrary[Nino].sample.value
+  
   ".from" - {
 
     val emptyUserAnswers = UserAnswers("id")
@@ -37,12 +41,13 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
       val birthDate = LocalDate.now.minusDays(1)
 
       val answers = emptyUserAnswers
+        .set(CountryOfResidencePage, CountryOfResidence.England).success.value
         .set(IsAdoptingPage, false).success.value
         .set(IsBiologicalFatherPage, true).success.value
         .set(WillHaveCaringResponsibilityPage, true).success.value
         .set(WillTakeTimeToCareForChildPage, true).success.value
         .set(NamePage, Name("foo", "bar")).success.value
-        .set(NinoPage, Nino("AA123456A")).success.value
+        .set(NinoPage, nino).success.value
         .set(BabyHasBeenBornPage, true).success.value
         .set(BabyDateOfBirthPage, birthDate).success.value
         .set(WantPayToStartOnBirthDatePage, true).success.value
@@ -50,8 +55,8 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
 
       val expected = JourneyModel(
-        eligibility = JourneyModel.Eligibility(
-          becomingAdoptiveParents = false,
+        countryOfResidence = CountryOfResidence.England,
+        eligibility = JourneyModel.BirthChildEligibility(
           biologicalFather = true,
           inRelationshipWithMother = None,
           livingWithMother = None,
@@ -60,7 +65,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
           timeOffToSupportMother = None
         ),
         name = Name("foo", "bar"),
-        nino = Nino("AA123456A"),
+        nino = nino,
         hasTheBabyBeenBorn = true,
         dueDate = dueDate,
         birthDetails = JourneyModel.BirthDetails.AlreadyBorn(
@@ -100,31 +105,36 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
       val babyDueDate = LocalDate.now.plusDays(1)
 
       val answers = emptyUserAnswers
-        .set(IsAdoptingPage, false).success.value
-        .set(IsBiologicalFatherPage, false).success.value
+        .set(CountryOfResidencePage, CountryOfResidence.England).success.value
+        .set(IsAdoptingPage, true).success.value
+        .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+        .set(IsAdoptingFromAbroadPage, false).success.value
+        .set(ReasonForRequestingPage, RelationshipToChild.Adopting).success.value
         .set(IsInQualifyingRelationshipPage, true).success.value
         .set(WillHaveCaringResponsibilityPage, true).success.value
         .set(WillTakeTimeToCareForChildPage, false).success.value
         .set(WillTakeTimeToSupportMotherPage, true).success.value
         .set(NamePage, Name("foo", "bar")).success.value
-        .set(NinoPage, Nino("AA123456A")).success.value
+        .set(NinoPage, nino).success.value
         .set(BabyHasBeenBornPage, false).success.value
         .set(BabyDueDatePage, babyDueDate).success.value
         .set(WantPayToStartOnDueDatePage, true).success.value
         .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
 
       val expected = JourneyModel(
-        eligibility = JourneyModel.Eligibility(
-          becomingAdoptiveParents = false,
-          biologicalFather = false,
-          inRelationshipWithMother = Some(true),
-          livingWithMother = None,
+        countryOfResidence = CountryOfResidence.England,
+        eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+          applyingForStatutoryAdoptionPay = false,
+          adoptingFromAbroad = false,
+          reasonForRequesting = RelationshipToChild.Adopting,
+          inQualifyingRelationship = true,
+          livingWithPartner = None,
           responsibilityForChild = true,
           timeOffToCareForChild = false,
-          timeOffToSupportMother = Some(true)
+          timeOffToSupportPartner = Some(true)
         ),
         name = Name("foo", "bar"),
-        nino = Nino("AA123456A"),
+        nino = nino,
         hasTheBabyBeenBorn = false,
         dueDate = babyDueDate,
         birthDetails = JourneyModel.BirthDetails.Due(
@@ -162,10 +172,8 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
       val errors = JourneyModel.from(emptyUserAnswers).left.value.toChain.toList
 
       errors must contain only(
+        CountryOfResidencePage,
         IsAdoptingPage,
-        IsBiologicalFatherPage,
-        WillHaveCaringResponsibilityPage,
-        WillTakeTimeToCareForChildPage,
         NamePage,
         NinoPage,
         BabyDueDatePage,
@@ -174,15 +182,31 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
       )
     }
 
-    "must return the is adopting page when the user says they are adopting" in {
+    "must return the Applying for Statutory Adoption Pay page when the user is applying for SAP" in {
 
       val answers = emptyUserAnswers
         .set(IsAdoptingPage, true).success.value
+        .set(IsApplyingForStatutoryAdoptionPayPage, true).success.value
 
       val errors = JourneyModel.from(answers).left.value.toChain.toList
 
-      errors must contain (
-        IsAdoptingPage
+      errors must contain (IsApplyingForStatutoryAdoptionPayPage)
+    }
+
+    "must return the is cohabiting page when the user is adopting or parental order and is not in a relationship or cohabiting with the mother" in {
+
+      val answers = emptyUserAnswers
+        .set(IsAdoptingPage, true).success.value
+        .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+        .set(IsAdoptingFromAbroadPage, false).success.value
+        .set(ReasonForRequestingPage, RelationshipToChild.Adopting).success.value
+        .set(IsInQualifyingRelationshipPage, false).success.value
+        .set(IsCohabitingPage, false).success.value
+
+      val errors = JourneyModel.from(answers).left.value.toChain.toList
+
+      errors must contain(
+        IsCohabitingPage
       )
     }
 
@@ -240,8 +264,8 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
       val startDate = LocalDate.of(2001, 2, 1)
 
       val model = JourneyModel(
-        eligibility = JourneyModel.Eligibility(
-          becomingAdoptiveParents = false,
+        countryOfResidence = CountryOfResidence.England,
+        eligibility = JourneyModel.BirthChildEligibility(
           biologicalFather = false,
           inRelationshipWithMother = Some(true),
           livingWithMother = None,
@@ -250,7 +274,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
           timeOffToSupportMother = Some(true)
         ),
         name = Name("foo", "bar"),
-        nino = Nino("AA123456A"),
+        nino = nino,
         hasTheBabyBeenBorn = false,
         dueDate = dueDate,
         birthDetails = JourneyModel.BirthDetails.Due(
@@ -288,8 +312,8 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
       val startDate = LocalDate.of(2001, 2, 1)
 
       val model = JourneyModel(
-        eligibility = JourneyModel.Eligibility(
-          becomingAdoptiveParents = false,
+        countryOfResidence = CountryOfResidence.England,
+        eligibility = JourneyModel.BirthChildEligibility(
           biologicalFather = true,
           inRelationshipWithMother = None,
           livingWithMother = None,
@@ -298,7 +322,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
           timeOffToSupportMother = None
         ),
         name = Name("foo", "bar"),
-        nino = Nino("AA123456A"),
+        nino = nino,
         hasTheBabyBeenBorn = true,
         dueDate = dueDate,
         birthDetails = JourneyModel.BirthDetails.AlreadyBorn(
