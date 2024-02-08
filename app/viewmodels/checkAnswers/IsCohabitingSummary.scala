@@ -17,8 +17,8 @@
 package viewmodels.checkAnswers
 
 import controllers.routes
-import models.{CheckMode, UserAnswers}
-import pages.IsCohabitingPage
+import models.{CheckMode, RelationshipToChild, UserAnswers}
+import pages.{IsAdoptingPage, IsCohabitingPage, ReasonForRequestingPage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
@@ -26,19 +26,28 @@ import viewmodels.implicits._
 
 object IsCohabitingSummary  {
 
-  def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(IsCohabitingPage).map {
-      answer =>
+  def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
 
-        val value = if (answer) "site.yes" else "site.no"
+    val relationshipToChild = answers.get(IsAdoptingPage).flatMap {
+      case true => answers.get(ReasonForRequestingPage)
+      case false => Some(RelationshipToChild.BirthChild)
+    }
+
+    for {
+      relationship <- relationshipToChild
+      cohabiting <- answers.get(IsCohabitingPage)
+    } yield {
+
+        val value = if (cohabiting) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
-          key     = "isCohabiting.checkYourAnswersLabel",
-          value   = ValueViewModel(value),
+          key = s"isCohabiting.${relationship.toString}.checkYourAnswersLabel",
+          value = ValueViewModel(value),
           actions = Seq(
             ActionItemViewModel("site.change", routes.IsCohabitingController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("isCohabiting.change.hidden"))
+              .withVisuallyHiddenText(messages(s"isCohabiting.${relationship.toString}.change.hidden"))
           )
         )
     }
+  }
 }

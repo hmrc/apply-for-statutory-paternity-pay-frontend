@@ -19,11 +19,14 @@
         govukSummaryList: GovukSummaryList
 )
 
-@(relationshipDetails: SummaryList, personalDetails: SummaryList, babyDetails: SummaryList, paternityDetails: SummaryList)(implicit request: Request[_], messages: Messages)
+@(applicationDetails: SummaryList, relationshipDetails: SummaryList, personalDetails: SummaryList, babyDetails: SummaryList, paternityDetails: SummaryList)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
 
         <h1 class="govuk-heading-xl">@messages("checkYourAnswers.heading")</h1>
+
+        <h2 class="govuk-heading-m">@messages("section.applicationDetails")</h2>
+        @govukSummaryList(applicationDetails)
 
         <h2 class="govuk-heading-m">@messages("section.relationship")</h2>
         @govukSummaryList(relationshipDetails)

@@ -180,7 +180,7 @@ isCohabiting.parentalOrder.change.hidden = if you live with the other parental o
 
 isInQualifyingRelationship.birthChild.title = Are you in a marriage or civil partnership with the child’s mother?
 isInQualifyingRelationship.birthChild.heading = Are you in a marriage or civil partnership with the child’s mother?
-isInQualifyingRelationship.brithChild.checkYourAnswersLabel = Are you in a marriage or civil partnership with the child’s mother?
+isInQualifyingRelationship.birthChild.checkYourAnswersLabel = Are you in a marriage or civil partnership with the child’s mother?
 isInQualifyingRelationship.birthChild.error.required = Select yes if you are in a marriage or civil partnership with the child’s mother
 isInQualifyingRelationship.birthChild.change.hidden = if you are in a marriage or civil partnership with the child’s mother
 isInQualifyingRelationship.adopting.title = Are you in a marriage or civil partnership with the other person adopting or intending to adopt the child?

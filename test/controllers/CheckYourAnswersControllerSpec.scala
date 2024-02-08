@@ -68,9 +68,15 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
         
         implicit val msgs: Messages = messages(application)
 
+        val applicationDetails = SummaryListViewModel(
+          rows = Seq(
+            CountryOfResidenceSummary.row(answers),
+            IsAdoptingSummary.row(answers)
+          ).flatten
+        )
+
         val relationshipDetails = SummaryListViewModel(
           rows = Seq(
-            IsAdoptingSummary.row(answers),
             IsBiologicalFatherSummary.row(answers),
             IsInQualifyingRelationshipSummary.row(answers),
             IsCohabitingSummary.row(answers),
@@ -106,7 +112,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
         )
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(relationshipDetails, personalDetails, babyDetails, paternityDetails)(request, implicitly).toString
+        contentAsString(result) mustEqual view(applicationDetails, relationshipDetails, personalDetails, babyDetails, paternityDetails)(request, implicitly).toString
       }
     }
 
