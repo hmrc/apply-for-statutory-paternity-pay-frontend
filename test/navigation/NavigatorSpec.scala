@@ -278,16 +278,78 @@ class NavigatorSpec extends SpecBase {
 
       "must go from Is Adopting" - {
 
-        "to Cannot Apply Adopting when the answer is yes" in {
+        "to Is Applying for SAP when the answer is yes and that question has not been answered" in {
 
           val answers = emptyUserAnswers.set(IsAdoptingPage, true).success.value
-          navigator.nextPage(IsAdoptingPage, CheckMode, answers) mustEqual routes.CannotApplyAdoptingController.onPageLoad()
+          navigator.nextPage(IsAdoptingPage, CheckMode, answers) mustEqual routes.IsApplyingForStatutoryAdoptionPayController.onPageLoad(CheckMode)
         }
 
-        "to Check Answers when the answer is no" in {
+        "to Check Your Answers when the answer is yes and Is Applying for SAP has been answered" in {
+
+          val answers =
+            emptyUserAnswers
+              .set(IsAdoptingPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+
+          navigator.nextPage(IsAdoptingPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+        }
+
+        "to Check Answers when the answer is no and Is Biological Father has been answered" in {
+
+          val answers =
+            emptyUserAnswers
+              .set(IsAdoptingPage, false).success.value
+              .set(IsBiologicalFatherPage, true).success.value
+
+          navigator.nextPage(IsAdoptingPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+        }
+
+        "to Is Biological Father when the answer is no and that question has not been answered" in {
 
           val answers = emptyUserAnswers.set(IsAdoptingPage, false).success.value
-          navigator.nextPage(IsAdoptingPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(IsAdoptingPage, CheckMode, answers) mustEqual routes.IsBiologicalFatherController.onPageLoad(CheckMode)
+        }
+      }
+
+      "must go from Is Applying for SAP" - {
+
+        "to Cannot Apply if the answer is yes" in {
+
+          val answers = emptyUserAnswers.set(IsApplyingForStatutoryAdoptionPayPage, true).success.value
+          navigator.nextPage(IsApplyingForStatutoryAdoptionPayPage, CheckMode, answers) mustEqual routes.CannotApplyController.onPageLoad
+        }
+
+        "to Check Your Answers if the answer is no" in {
+
+          val answers = emptyUserAnswers.set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+          navigator.nextPage(IsApplyingForStatutoryAdoptionPayPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+        }
+      }
+      "must go from Is Adopting From Abroad" - {
+
+        "to CYA when Reason for Requesting has been answered" in {
+
+          val answers = emptyUserAnswers.set(ReasonForRequestingPage, RelationshipToChild.Adopting).success.value
+          navigator.nextPage(IsAdoptingFromAbroadPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+        }
+
+        "to Reason for Requesting in Normal Mode when that question has not been answered" in {
+
+          navigator.nextPage(IsAdoptingFromAbroadPage, CheckMode, emptyUserAnswers) mustEqual routes.ReasonForRequestingController.onPageLoad(NormalMode)
+        }
+      }
+
+      "must go from Reason for Requesting" - {
+
+        "to CYA is Is in Qualifying Relationship has been answered" in {
+
+          val answers = emptyUserAnswers.set(IsInQualifyingRelationshipPage, true).success.value
+          navigator.nextPage(ReasonForRequestingPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+        }
+
+        "to Is In Qualifying Relationship if that question had not been answered" in {
+
+          navigator.nextPage(ReasonForRequestingPage, CheckMode, emptyUserAnswers) mustEqual routes.IsInQualifyingRelationshipController.onPageLoad(CheckMode)
         }
       }
 
