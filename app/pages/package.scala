@@ -61,7 +61,7 @@ package object pages {
     WantPayToStartOnDueDatePage,
     WillHaveCaringResponsibilityPage,
     WillTakeTimeToCareForChildPage,
-    WillTakeTimeToSupportMotherPage
+    WillTakeTimeToSupportPartnerPage
   )
 
   def removeRedundantAnswers(userAnswers: UserAnswers, answersToRemove: Set[QuestionPage[_]]): Try[UserAnswers] =

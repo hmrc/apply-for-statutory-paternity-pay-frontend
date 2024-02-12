@@ -58,7 +58,7 @@ class ConfirmationControllerSpec extends SpecBase with MockitoSugar with ModelGe
           .set(WantPayToStartOnDueDatePage, true).success.value
           .set(WillHaveCaringResponsibilityPage, true).success.value
           .set(WillTakeTimeToCareForChildPage, true).success.value
-          .set(WillTakeTimeToSupportMotherPage, true).success.value
+          .set(WillTakeTimeToSupportPartnerPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 

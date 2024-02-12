@@ -55,7 +55,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
           .set(WantPayToStartOnDueDatePage, true).success.value
           .set(WillHaveCaringResponsibilityPage, true).success.value
           .set(WillTakeTimeToCareForChildPage, true).success.value
-          .set(WillTakeTimeToSupportMotherPage, true).success.value
+          .set(WillTakeTimeToSupportPartnerPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
@@ -82,7 +82,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
             IsCohabitingSummary.row(answers),
             WillHaveCaringResponsibilitySummary.row(answers),
             WillTakeTimeToCareForChildSummary.row(answers),
-            WillTakeTimeToSupportMotherSummary.row(answers)
+            WillTakeTimeToSupportPartnerSummary.row(answers)
           ).flatten
         )
 

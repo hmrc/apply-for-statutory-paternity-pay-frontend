@@ -55,7 +55,7 @@ class CheckYourAnswersController @Inject()(
           IsCohabitingSummary.row(request.userAnswers),
           WillHaveCaringResponsibilitySummary.row(request.userAnswers),
           WillTakeTimeToCareForChildSummary.row(request.userAnswers),
-          WillTakeTimeToSupportMotherSummary.row(request.userAnswers)
+          WillTakeTimeToSupportPartnerSummary.row(request.userAnswers)
         ).flatten
       )
 

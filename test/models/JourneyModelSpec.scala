@@ -62,7 +62,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
           livingWithMother = None,
           responsibilityForChild = true,
           timeOffToCareForChild = true,
-          timeOffToSupportMother = None
+          timeOffToSupportPartner = None
         ),
         name = Name("foo", "bar"),
         nino = nino,
@@ -113,7 +113,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         .set(IsInQualifyingRelationshipPage, true).success.value
         .set(WillHaveCaringResponsibilityPage, true).success.value
         .set(WillTakeTimeToCareForChildPage, false).success.value
-        .set(WillTakeTimeToSupportMotherPage, true).success.value
+        .set(WillTakeTimeToSupportPartnerPage, true).success.value
         .set(NamePage, Name("foo", "bar")).success.value
         .set(NinoPage, nino).success.value
         .set(BabyHasBeenBornPage, false).success.value
@@ -246,12 +246,12 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         .set(IsBiologicalFatherPage, true).success.value
         .set(WillHaveCaringResponsibilityPage, true).success.value
         .set(WillTakeTimeToCareForChildPage, false).success.value
-        .set(WillTakeTimeToSupportMotherPage, false).success.value
+        .set(WillTakeTimeToSupportPartnerPage, false).success.value
 
       val errors = JourneyModel.from(answers).left.value.toChain.toList
 
       errors must contain(
-        WillTakeTimeToSupportMotherPage
+        WillTakeTimeToSupportPartnerPage
       )
     }
   }
@@ -271,7 +271,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
           livingWithMother = None,
           responsibilityForChild = true,
           timeOffToCareForChild = false,
-          timeOffToSupportMother = Some(true)
+          timeOffToSupportPartner = Some(true)
         ),
         name = Name("foo", "bar"),
         nino = nino,
@@ -319,7 +319,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
           livingWithMother = None,
           responsibilityForChild = true,
           timeOffToCareForChild = true,
-          timeOffToSupportMother = None
+          timeOffToSupportPartner = None
         ),
         name = Name("foo", "bar"),
         nino = nino,

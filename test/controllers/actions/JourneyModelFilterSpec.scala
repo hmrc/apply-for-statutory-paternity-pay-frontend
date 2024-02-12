@@ -62,7 +62,7 @@ class JourneyModelFilterSpec extends SpecBase with ScalaFutures with ModelGenera
           .set(WantPayToStartOnDueDatePage, true).success.value
           .set(WillHaveCaringResponsibilityPage, true).success.value
           .set(WillTakeTimeToCareForChildPage, true).success.value
-          .set(WillTakeTimeToSupportMotherPage, true).success.value
+          .set(WillTakeTimeToSupportPartnerPage, true).success.value
 
       val completedDataRequest = DataRequest[AnyContent](FakeRequest(), "id", answers)
       val result = filter.invokeBlock[AnyContent](completedDataRequest, _ => Future.successful(Ok))

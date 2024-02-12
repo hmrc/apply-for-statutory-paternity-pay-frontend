@@ -216,11 +216,11 @@ willTakeTimeToCareForChild.checkYourAnswersLabel = A fyddwch yn defnyddio’ch A
 willTakeTimeToCareForChild.error.required = Dewiswch ‘Iawn’ os byddwch yn cymryd seibiant o’r gwaith er mwyn gofalu am y plentyn
 willTakeTimeToCareForChild.change.hidden = os byddwch yn cymryd seibiant o’r gwaith er mwyn gofalu am y plentyn
 
-willTakeTimeToSupportMother.title = A fyddwch yn defnyddio’ch Absenoldeb Tadolaeth i roi cymorth i fam y plentyn?
-willTakeTimeToSupportMother.heading = A fyddwch yn defnyddio’ch Absenoldeb Tadolaeth i roi cymorth i fam y plentyn?
-willTakeTimeToSupportMother.checkYourAnswersLabel = A fyddwch yn defnyddio’ch Absenoldeb Tadolaeth i roi cymorth i fam y plentyn?
-willTakeTimeToSupportMother.error.required = Dewiswch ‘Iawn’ os byddwch yn cymryd seibiant o’r gwaith er mwyn rhoi cymorth i fam y plentyn
-willTakeTimeToSupportMother.change.hidden = os byddwch yn cymryd seibiant o’r gwaith er mwyn rhoi cymorth i fam y plentyn
+willTakeTimeToSupportPartner.title = A fyddwch yn defnyddio’ch Absenoldeb Tadolaeth i roi cymorth i fam y plentyn?
+willTakeTimeToSupportPartner.heading = A fyddwch yn defnyddio’ch Absenoldeb Tadolaeth i roi cymorth i fam y plentyn?
+willTakeTimeToSupportPartner.checkYourAnswersLabel = A fyddwch yn defnyddio’ch Absenoldeb Tadolaeth i roi cymorth i fam y plentyn?
+willTakeTimeToSupportPartner.error.required = Dewiswch ‘Iawn’ os byddwch yn cymryd seibiant o’r gwaith er mwyn rhoi cymorth i fam y plentyn
+willTakeTimeToSupportPartner.change.hidden = os byddwch yn cymryd seibiant o’r gwaith er mwyn rhoi cymorth i fam y plentyn
 
 wantPayToStartOnDueDate.title = A hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau ar ddyddiad disgwyl y baban?
 wantPayToStartOnDueDate.heading = A hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau ar ddyddiad disgwyl y baban?

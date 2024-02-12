@@ -52,7 +52,7 @@ class IsAdoptingPageSpec extends PageBehaviours {
         .set(WantPayToStartOnDueDatePage, false).success.value
         .set(WillHaveCaringResponsibilityPage, true).success.value
         .set(WillTakeTimeToCareForChildPage, true).success.value
-        .set(WillTakeTimeToSupportMotherPage, true).success.value
+        .set(WillTakeTimeToSupportPartnerPage, true).success.value
 
     def fullAnswersAdopting =
       emptyUserAnswers
@@ -79,7 +79,7 @@ class IsAdoptingPageSpec extends PageBehaviours {
         .set(WantPayToStartOnDueDatePage, false).success.value
         .set(WillHaveCaringResponsibilityPage, true).success.value
         .set(WillTakeTimeToCareForChildPage, true).success.value
-        .set(WillTakeTimeToSupportMotherPage, true).success.value
+        .set(WillTakeTimeToSupportPartnerPage, true).success.value
 
     "must remove all answers except this and Country of Residence" - {
 
@@ -113,7 +113,7 @@ class IsAdoptingPageSpec extends PageBehaviours {
         result.get(WantPayToStartOnDueDatePage) must not be defined
         result.get(WillHaveCaringResponsibilityPage) must not be defined
         result.get(WillTakeTimeToCareForChildPage) must not be defined
-        result.get(WillTakeTimeToSupportMotherPage) must not be defined
+        result.get(WillTakeTimeToSupportPartnerPage) must not be defined
       }
 
       "when the answer changes from false to true" in {
@@ -147,7 +147,7 @@ class IsAdoptingPageSpec extends PageBehaviours {
         result.get(WantPayToStartOnDueDatePage) must not be defined
         result.get(WillHaveCaringResponsibilityPage) must not be defined
         result.get(WillTakeTimeToCareForChildPage) must not be defined
-        result.get(WillTakeTimeToSupportMotherPage) must not be defined
+        result.get(WillTakeTimeToSupportPartnerPage) must not be defined
       }
     }
 
@@ -181,7 +181,7 @@ class IsAdoptingPageSpec extends PageBehaviours {
       result.get(WantPayToStartOnDueDatePage) mustBe defined
       result.get(WillHaveCaringResponsibilityPage) mustBe defined
       result.get(WillTakeTimeToCareForChildPage) mustBe defined
-      result.get(WillTakeTimeToSupportMotherPage) mustBe defined
+      result.get(WillTakeTimeToSupportPartnerPage) mustBe defined
     }
 
     "must not remove any answers when the answer does not change from false" in {
@@ -208,7 +208,7 @@ class IsAdoptingPageSpec extends PageBehaviours {
       result.get(WantPayToStartOnDueDatePage) mustBe defined
       result.get(WillHaveCaringResponsibilityPage) mustBe defined
       result.get(WillTakeTimeToCareForChildPage) mustBe defined
-      result.get(WillTakeTimeToSupportMotherPage) mustBe defined
+      result.get(WillTakeTimeToSupportPartnerPage) mustBe defined
     }
   }
 }

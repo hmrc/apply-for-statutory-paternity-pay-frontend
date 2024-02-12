@@ -46,7 +46,7 @@ object DownloadAuditEvent {
                                           livingWithMother: Option[Boolean],
                                           responsibilityForChild: Boolean,
                                           timeOffToCareForChild: Boolean,
-                                          timeOffToSupportMother: Option[Boolean]
+                                          timeOffToSupportPartner: Option[Boolean]
                                         ) extends Eligibility
 
   object BirthChildEligibility {
@@ -124,7 +124,7 @@ object DownloadAuditEvent {
           livingWithMother = e.livingWithMother,
           responsibilityForChild = e.responsibilityForChild,
           timeOffToCareForChild = e.timeOffToCareForChild,
-          timeOffToSupportMother = e.timeOffToSupportMother
+          timeOffToSupportPartner = e.timeOffToSupportPartner
         )
 
       case e: models.JourneyModel.AdoptionParentalOrderEligibility =>

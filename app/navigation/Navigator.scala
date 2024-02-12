@@ -37,7 +37,7 @@ class Navigator @Inject()() {
     case IsCohabitingPage                      => isCohabitingRoute
     case WillHaveCaringResponsibilityPage      => willHaveCaringResponsibilityRoute
     case WillTakeTimeToCareForChildPage        => willTakeTimeToCareForChildRoute
-    case WillTakeTimeToSupportMotherPage       => willTakeTimeToSupportMotherRoute
+    case WillTakeTimeToSupportPartnerPage       => willTakeTimeToSupportPartnerRoute
     case NamePage                              => _ => routes.NinoController.onPageLoad(NormalMode)
     case NinoPage                              => _ => routes.BabyHasBeenBornController.onPageLoad(NormalMode)
     case BabyHasBeenBornPage                   => babyHasBeenBornRoute
@@ -90,11 +90,11 @@ class Navigator @Inject()() {
   private def willTakeTimeToCareForChildRoute(answers: UserAnswers): Call =
     answers.get(WillTakeTimeToCareForChildPage).map {
       case true  => routes.NameController.onPageLoad(NormalMode)
-      case false => routes.WillTakeTimeToSupportMotherController.onPageLoad(NormalMode)
+      case false => routes.WillTakeTimeToSupportPartnerController.onPageLoad(NormalMode)
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
-  private def willTakeTimeToSupportMotherRoute(answers: UserAnswers): Call =
-    answers.get(WillTakeTimeToSupportMotherPage).map {
+  private def willTakeTimeToSupportPartnerRoute(answers: UserAnswers): Call =
+    answers.get(WillTakeTimeToSupportPartnerPage).map {
       case true  => routes.NameController.onPageLoad(NormalMode)
       case false => routes.CannotApplyController.onPageLoad()
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
@@ -133,7 +133,7 @@ class Navigator @Inject()() {
     case IsCohabitingPage                      => isCohabitingCheckRoute
     case WillHaveCaringResponsibilityPage      => willHaveCaringResponsibilityCheckRoute
     case WillTakeTimeToCareForChildPage        => willTakeTimeToCareForChildCheckRoute
-    case WillTakeTimeToSupportMotherPage       => willTakeTimeToSupportMotherCheckRoute
+    case WillTakeTimeToSupportPartnerPage       => willTakeTimeToSupportPartnerCheckRoute
     case BabyHasBeenBornPage                   => babyHasBeenBornCheckRoute
     case BabyDateOfBirthPage                   => babyDateOfBirthCheckRoute
     case BabyDueDatePage                       => babyDueDateCheckRoute
@@ -198,13 +198,13 @@ class Navigator @Inject()() {
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   private def willTakeTimeToCareForChildCheckRoute(answers: UserAnswers): Call =
-    (answers.get(WillTakeTimeToCareForChildPage), answers.get(WillTakeTimeToSupportMotherPage)) match {
-      case (Some(false), None) => routes.WillTakeTimeToSupportMotherController.onPageLoad(CheckMode)
+    (answers.get(WillTakeTimeToCareForChildPage), answers.get(WillTakeTimeToSupportPartnerPage)) match {
+      case (Some(false), None) => routes.WillTakeTimeToSupportPartnerController.onPageLoad(CheckMode)
       case _                   => routes.CheckYourAnswersController.onPageLoad
     }
 
-  private def willTakeTimeToSupportMotherCheckRoute(answers: UserAnswers): Call =
-    answers.get(WillTakeTimeToSupportMotherPage).map {
+  private def willTakeTimeToSupportPartnerCheckRoute(answers: UserAnswers): Call =
+    answers.get(WillTakeTimeToSupportPartnerPage).map {
       case true  => routes.CheckYourAnswersController.onPageLoad
       case false => routes.CannotApplyController.onPageLoad()
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())

@@ -60,7 +60,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
       .set(WantPayToStartOnDueDatePage, false).success.value
       .set(WillHaveCaringResponsibilityPage, true).success.value
       .set(WillTakeTimeToCareForChildPage, true).success.value
-      .set(WillTakeTimeToSupportMotherPage, true).success.value
+      .set(WillTakeTimeToSupportPartnerPage, true).success.value
 
   private def fullAnswersParentalOrder =
     emptyUserAnswers
@@ -83,7 +83,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
       .set(WantPayToStartOnDueDatePage, false).success.value
       .set(WillHaveCaringResponsibilityPage, true).success.value
       .set(WillTakeTimeToCareForChildPage, true).success.value
-      .set(WillTakeTimeToSupportMotherPage, true).success.value
+      .set(WillTakeTimeToSupportPartnerPage, true).success.value
 
   "must remove redundant answers when the answer is true and Reason for Requesting is Parental Order" in {
 
@@ -113,7 +113,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
     result.get(WantPayToStartOnDueDatePage) must not be defined
     result.get(WillHaveCaringResponsibilityPage) must not be defined
     result.get(WillTakeTimeToCareForChildPage) must not be defined
-    result.get(WillTakeTimeToSupportMotherPage) must not be defined
+    result.get(WillTakeTimeToSupportPartnerPage) must not be defined
   }
 
   "must not remove any answers" - {
@@ -141,7 +141,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
       result.get(WantPayToStartOnDueDatePage) mustBe defined
       result.get(WillHaveCaringResponsibilityPage) mustBe defined
       result.get(WillTakeTimeToCareForChildPage) mustBe defined
-      result.get(WillTakeTimeToSupportMotherPage) mustBe defined
+      result.get(WillTakeTimeToSupportPartnerPage) mustBe defined
     }
 
     "when the answer is true and Reason for Requesting is Adopting or Supporting Adoption" in {
@@ -171,7 +171,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
       result.get(WantPayToStartOnDueDatePage) mustBe defined
       result.get(WillHaveCaringResponsibilityPage) mustBe defined
       result.get(WillTakeTimeToCareForChildPage) mustBe defined
-      result.get(WillTakeTimeToSupportMotherPage) mustBe defined
+      result.get(WillTakeTimeToSupportPartnerPage) mustBe defined
     }
   }
 }

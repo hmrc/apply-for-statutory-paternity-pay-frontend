@@ -57,7 +57,7 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar with 
           livingWithMother = None,
           responsibilityForChild = true,
           timeOffToCareForChild = true,
-          timeOffToSupportMother = None
+          timeOffToSupportPartner = None
         ),
         name = Name("foo", "bar"),
         nino = nino,
@@ -79,7 +79,7 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar with 
           livingWithMother = None,
           responsibilityForChild = true,
           timeOffToCareForChild = true,
-          timeOffToSupportMother = None
+          timeOffToSupportPartner = None
         ),
         name = Name("foo", "bar"),
         nino = nino,

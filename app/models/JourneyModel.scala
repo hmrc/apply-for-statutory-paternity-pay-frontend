@@ -54,7 +54,7 @@ object JourneyModel {
                                           livingWithMother: Option[Boolean],
                                           responsibilityForChild: Boolean,
                                           timeOffToCareForChild: Boolean,
-                                          timeOffToSupportMother: Option[Boolean]
+                                          timeOffToSupportPartner: Option[Boolean]
                                         ) extends Eligibility
 
   final case class AdoptionParentalOrderEligibility(
@@ -160,9 +160,9 @@ object JourneyModel {
 
   private def getTimeEligibility(answers: UserAnswers): EitherNec[QuestionPage[_], (Boolean, Option[Boolean])] =
     answers.getEither(WillTakeTimeToCareForChildPage).flatMap {
-      case false => answers.getEither(WillTakeTimeToSupportMotherPage).flatMap {
+      case false => answers.getEither(WillTakeTimeToSupportPartnerPage).flatMap {
         case true => Right((false, Some(true)))
-        case false => WillTakeTimeToSupportMotherPage.leftNec
+        case false => WillTakeTimeToSupportPartnerPage.leftNec
       }
       case true => Right((true, None))
     }

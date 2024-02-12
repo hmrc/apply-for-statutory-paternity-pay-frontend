@@ -152,7 +152,7 @@ class NavigatorSpec extends SpecBase {
         "to Will Take Time to Support Mother when the answer is no" in {
 
           val answers = emptyUserAnswers.set(WillTakeTimeToCareForChildPage, false).success.value
-          navigator.nextPage(WillTakeTimeToCareForChildPage, NormalMode, answers) mustEqual routes.WillTakeTimeToSupportMotherController.onPageLoad(NormalMode)
+          navigator.nextPage(WillTakeTimeToCareForChildPage, NormalMode, answers) mustEqual routes.WillTakeTimeToSupportPartnerController.onPageLoad(NormalMode)
         }
       }
 
@@ -160,14 +160,14 @@ class NavigatorSpec extends SpecBase {
 
         "to Name when the answer is yes" in {
 
-          val answers = emptyUserAnswers.set(WillTakeTimeToSupportMotherPage, true).success.value
-          navigator.nextPage(WillTakeTimeToSupportMotherPage, NormalMode, answers) mustEqual routes.NameController.onPageLoad(NormalMode)
+          val answers = emptyUserAnswers.set(WillTakeTimeToSupportPartnerPage, true).success.value
+          navigator.nextPage(WillTakeTimeToSupportPartnerPage, NormalMode, answers) mustEqual routes.NameController.onPageLoad(NormalMode)
         }
 
         "to Cannot Apply when the answer is no" in {
 
-          val answers = emptyUserAnswers.set(WillTakeTimeToSupportMotherPage, false).success.value
-          navigator.nextPage(WillTakeTimeToSupportMotherPage, NormalMode, answers) mustEqual routes.CannotApplyController.onPageLoad()
+          val answers = emptyUserAnswers.set(WillTakeTimeToSupportPartnerPage, false).success.value
+          navigator.nextPage(WillTakeTimeToSupportPartnerPage, NormalMode, answers) mustEqual routes.CannotApplyController.onPageLoad()
         }
       }
 
@@ -463,7 +463,7 @@ class NavigatorSpec extends SpecBase {
             val answers =
               emptyUserAnswers
                 .set(WillTakeTimeToCareForChildPage, false).success.value
-                .set(WillTakeTimeToSupportMotherPage, true).success.value
+                .set(WillTakeTimeToSupportPartnerPage, true).success.value
 
             navigator.nextPage(WillTakeTimeToCareForChildPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
           }
@@ -471,7 +471,7 @@ class NavigatorSpec extends SpecBase {
           "to Will Take Time to Support Mother when that question has not been answered" in {
 
             val answers = emptyUserAnswers.set(WillTakeTimeToCareForChildPage, false).success.value
-            navigator.nextPage(WillTakeTimeToCareForChildPage, CheckMode, answers) mustEqual routes.WillTakeTimeToSupportMotherController.onPageLoad(CheckMode)
+            navigator.nextPage(WillTakeTimeToCareForChildPage, CheckMode, answers) mustEqual routes.WillTakeTimeToSupportPartnerController.onPageLoad(CheckMode)
           }
         }
       }
@@ -480,14 +480,14 @@ class NavigatorSpec extends SpecBase {
 
         "to Check Answers when the answer is yes" in {
 
-          val answers = emptyUserAnswers.set(WillTakeTimeToSupportMotherPage, true).success.value
-          navigator.nextPage(WillTakeTimeToSupportMotherPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          val answers = emptyUserAnswers.set(WillTakeTimeToSupportPartnerPage, true).success.value
+          navigator.nextPage(WillTakeTimeToSupportPartnerPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
         }
 
         "to Cannot Apply when the answer is no" in {
 
-          val answers = emptyUserAnswers.set(WillTakeTimeToSupportMotherPage, false).success.value
-          navigator.nextPage(WillTakeTimeToSupportMotherPage, CheckMode, answers) mustEqual routes.CannotApplyController.onPageLoad()
+          val answers = emptyUserAnswers.set(WillTakeTimeToSupportPartnerPage, false).success.value
+          navigator.nextPage(WillTakeTimeToSupportPartnerPage, CheckMode, answers) mustEqual routes.CannotApplyController.onPageLoad()
         }
       }
 

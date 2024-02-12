@@ -17,29 +17,29 @@
 package controllers
 
 import controllers.actions._
-import forms.WillTakeTimeToSupportMotherFormProvider
+import forms.WillTakeTimeToSupportPartnerFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.WillTakeTimeToSupportMotherPage
+import pages.WillTakeTimeToSupportPartnerPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.WillTakeTimeToSupportMotherView
+import views.html.WillTakeTimeToSupportPartnerView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WillTakeTimeToSupportMotherController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: WillTakeTimeToSupportMotherFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: WillTakeTimeToSupportMotherView
+class WillTakeTimeToSupportPartnerController @Inject()(
+                                                        override val messagesApi: MessagesApi,
+                                                        sessionRepository: SessionRepository,
+                                                        navigator: Navigator,
+                                                        identify: IdentifierAction,
+                                                        getData: DataRetrievalAction,
+                                                        requireData: DataRequiredAction,
+                                                        formProvider: WillTakeTimeToSupportPartnerFormProvider,
+                                                        val controllerComponents: MessagesControllerComponents,
+                                                        view: WillTakeTimeToSupportPartnerView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -47,7 +47,7 @@ class WillTakeTimeToSupportMotherController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(WillTakeTimeToSupportMotherPage) match {
+      val preparedForm = request.userAnswers.get(WillTakeTimeToSupportPartnerPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -64,9 +64,9 @@ class WillTakeTimeToSupportMotherController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(WillTakeTimeToSupportMotherPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(WillTakeTimeToSupportPartnerPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(WillTakeTimeToSupportMotherPage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(WillTakeTimeToSupportPartnerPage, mode, updatedAnswers))
       )
   }
 }
