@@ -148,7 +148,7 @@ POST       /applying-for-statutory-adoption-pay-leave                       cont
 GET        /change-applying-for-statutory-adoption-pay-leave                controllers.IsApplyingForStatutoryAdoptionPayController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-applying-for-statutory-adoption-pay-leave                controllers.IsApplyingForStatutoryAdoptionPayController.onSubmit(mode: Mode = CheckMode)
 
-GET        /reasonForRequesting                        controllers.ReasonForRequestingController.onPageLoad(mode: Mode = NormalMode)
-POST       /reasonForRequesting                        controllers.ReasonForRequestingController.onSubmit(mode: Mode = NormalMode)
-GET        /changeReasonForRequesting                  controllers.ReasonForRequestingController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeReasonForRequesting                  controllers.ReasonForRequestingController.onSubmit(mode: Mode = CheckMode)
+GET        /why-asking-for-paternity-pay-leave                      controllers.ReasonForRequestingController.onPageLoad(mode: Mode = NormalMode)
+POST       /why-asking-for-paternity-pay-leave                      controllers.ReasonForRequestingController.onSubmit(mode: Mode = NormalMode)
+GET        /change-why-asking-for-paternity-pay-leave               controllers.ReasonForRequestingController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-why-asking-for-paternity-pay-leave               controllers.ReasonForRequestingController.onSubmit(mode: Mode = CheckMode)
