@@ -35,7 +35,7 @@ case object IsAdoptingFromAbroadPage extends QuestionPage[Boolean] {
     value.map {
       case true =>
         if (userAnswers.get(ReasonForRequestingPage).contains(RelationshipToChild.ParentalOrder)) {
-          val answersToRemove = allQuestionPages - CountryOfResidencePage - IsAdoptingPage - IsApplyingForStatutoryAdoptionPayPage - this
+          val answersToRemove = allQuestionPages - CountryOfResidencePage - IsAdoptingOrParentalOrderPage - IsApplyingForStatutoryAdoptionPayPage - this
           removeRedundantAnswers(userAnswers, answersToRemove)
         } else {
           super.cleanup(value, userAnswers)

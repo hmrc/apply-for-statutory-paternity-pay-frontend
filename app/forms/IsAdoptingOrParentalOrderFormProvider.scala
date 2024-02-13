@@ -14,6 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-case object CannotApplyAdoptingPage extends Page
+import javax.inject.Inject
+
+import forms.mappings.Mappings
+import play.api.data.Form
+
+class IsAdoptingOrParentalOrderFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("isAdoptingOrParentalOrder.error.required")
+    )
+}

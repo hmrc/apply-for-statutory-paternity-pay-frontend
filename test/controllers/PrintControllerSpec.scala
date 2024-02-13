@@ -22,7 +22,7 @@ import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatest.EitherValues
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{BabyDateOfBirthPage, BabyDueDatePage, BabyHasBeenBornPage, CountryOfResidencePage, IsAdoptingPage, IsBiologicalFatherPage, NamePage, NinoPage, PaternityLeaveLengthPage, WantPayToStartOnBirthDatePage, WillHaveCaringResponsibilityPage, WillTakeTimeToCareForChildPage}
+import pages.{BabyDateOfBirthPage, BabyDueDatePage, BabyHasBeenBornPage, CountryOfResidencePage, IsAdoptingOrParentalOrderPage, IsBiologicalFatherPage, NamePage, NinoPage, PaternityLeaveLengthPage, WantPayToStartOnBirthDatePage, WillHaveCaringResponsibilityPage, WillTakeTimeToCareForChildPage}
 import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.test.FakeRequest
@@ -41,7 +41,7 @@ class PrintControllerSpec extends SpecBase with EitherValues with MockitoSugar {
 
   val answers = emptyUserAnswers
     .set(CountryOfResidencePage, CountryOfResidence.England).success.value
-    .set(IsAdoptingPage, false).success.value
+    .set(IsAdoptingOrParentalOrderPage, false).success.value
     .set(IsBiologicalFatherPage, true).success.value
     .set(WillHaveCaringResponsibilityPage, true).success.value
     .set(WillTakeTimeToCareForChildPage, true).success.value

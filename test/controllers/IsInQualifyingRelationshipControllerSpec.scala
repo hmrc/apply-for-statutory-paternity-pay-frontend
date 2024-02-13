@@ -24,7 +24,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{IsAdoptingPage, IsInQualifyingRelationshipPage}
+import pages.{IsAdoptingOrParentalOrderPage, IsInQualifyingRelationshipPage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -38,7 +38,7 @@ class IsInQualifyingRelationshipControllerSpec extends SpecBase with MockitoSuga
 
   private def onwardRoute = Call("GET", "/foo")
 
-  private val baseAnswers = emptyUserAnswers.set(IsAdoptingPage, false).success.value
+  private val baseAnswers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
   private val formProvider = new IsInQualifyingRelationshipFormProvider()
   private val form = formProvider(BirthChild)
 

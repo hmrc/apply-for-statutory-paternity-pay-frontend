@@ -284,27 +284,12 @@ nino.error.invalid = Enter your National Insurance number in the correct format
 nino.error.length = Enter your National Insurance number in the correct format
 nino.change.hidden = your National Insurance number
 
-cannotApplyAdopting.title = You must use a different form to claim Statutory Paternity Pay
-cannotApplyAdopting.heading = You must use a different form to claim Statutory Paternity Pay
-cannotApplyAdopting.guidance.p1 = Based on your answers you must use a different form to apply for Statutory Paternity Pay (SPP).
-cannotApplyAdopting.guidance.p2 = If you are becoming an adoptive or parental order parent you can use
-cannotApplyAdopting.guidance.p2.link.text = form SC4 to apply for SPP and Leave
-cannotApplyAdopting.guidance.p2.link.href = https://www.gov.uk/government/publications/ordinary-statutory-paternity-pay-and-leave-becoming-an-adoptive-parent-sc4
-cannotApplyAdopting.guidance.p3 = If you are adopting a child from abroad you can use
-cannotApplyAdopting.guidance.p3.link.text = form SC5 to apply for SPP and Leave
-cannotApplyAdopting.guidance.p3.link.href = https://www.gov.uk/government/publications/ordinary-statutory-paternity-pay-and-leave-adopting-a-child-from-abroad-sc5
-cannotApplyAdopting.guidance.p4 = You can find out more about SPP and your eligibility on the
-cannotApplyAdopting.guidance.p4.link.text = Paternity pay and leave guidance page
-cannotApplyAdopting.guidance.p4.link.href = https://www.gov.uk/paternity-pay-leave
-cannotApplyAdopting.guidance.p5 = If you think you have made a mistake you can
-cannotApplyAdopting.guidance.p5.link.text = start the application form again
-
-isAdopting.title = Are you or your partner adopting a child or becoming parental order parents?
-isAdopting.heading = Are you or your partner adopting a child or becoming parental order parents?
-isAdopting.hint = A parental order is when a person who is part of a couple has a child through a surrogacy arrangement.
-isAdopting.checkYourAnswersLabel = Are you or your partner adopting a child or becoming parental order parents?
-isAdopting.error.required = Select yes if you or your partner are adopting a child or becoming parental order parents
-isAdopting.change.hidden = if you or your partner are adopting a child or becoming parental order parents
+isAdoptingOrParentalOrder.title = Are you or your partner adopting a child or becoming parental order parents?
+isAdoptingOrParentalOrder.heading = Are you or your partner adopting a child or becoming parental order parents?
+isAdoptingOrParentalOrder.hint = A parental order is when a person who is part of a couple has a child through a surrogacy arrangement.
+isAdoptingOrParentalOrder.checkYourAnswersLabel = Are you or your partner adopting a child or becoming parental order parents?
+isAdoptingOrParentalOrder.error.required = Select yes if you or your partner are adopting a child or becoming parental order parents
+isAdoptingOrParentalOrder.change.hidden = if you or your partner are adopting a child or becoming parental order parents
 
 pdf.title = Apply for Statutory Paternity Pay and/or Paternity Leave (SC3)
 pdf.boolean.true = Yes

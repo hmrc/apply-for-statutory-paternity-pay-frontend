@@ -18,7 +18,7 @@ package viewmodels.checkAnswers
 
 import controllers.routes
 import models.{CheckMode, RelationshipToChild, UserAnswers}
-import pages.{IsAdoptingPage, IsCohabitingPage, ReasonForRequestingPage}
+import pages.{IsAdoptingOrParentalOrderPage, IsCohabitingPage, ReasonForRequestingPage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
@@ -28,7 +28,7 @@ object IsCohabitingSummary  {
 
   def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
 
-    val relationshipToChild = answers.get(IsAdoptingPage).flatMap {
+    val relationshipToChild = answers.get(IsAdoptingOrParentalOrderPage).flatMap {
       case true => answers.get(ReasonForRequestingPage)
       case false => Some(RelationshipToChild.BirthChild)
     }

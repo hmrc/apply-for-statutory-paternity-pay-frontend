@@ -46,7 +46,7 @@ class ConfirmationControllerSpec extends SpecBase with MockitoSugar with ModelGe
           .set(BabyDateOfBirthPage, LocalDate.now).success.value
           .set(BabyDueDatePage, LocalDate.now).success.value
           .set(BabyHasBeenBornPage, true).success.value
-          .set(IsAdoptingPage, false).success.value
+          .set(IsAdoptingOrParentalOrderPage, false).success.value
           .set(IsBiologicalFatherPage, true).success.value
           .set(IsCohabitingPage, true).success.value
           .set(IsInQualifyingRelationshipPage, true).success.value

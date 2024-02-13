@@ -24,7 +24,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{IsAdoptingPage, IsCohabitingPage}
+import pages.{IsAdoptingOrParentalOrderPage, IsCohabitingPage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -39,7 +39,7 @@ class IsCohabitingControllerSpec extends SpecBase with MockitoSugar {
   private def onwardRoute = Call("GET", "/foo")
 
   private val relationship = BirthChild
-  private val baseAnswers = emptyUserAnswers.set(IsAdoptingPage, false).success.value
+  private val baseAnswers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
   private val formProvider = new IsCohabitingFormProvider()
   private val form = formProvider(relationship)
 

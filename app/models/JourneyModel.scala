@@ -100,7 +100,7 @@ object JourneyModel {
     }
 
   private def getEligibility(answers: UserAnswers): EitherNec[QuestionPage[_], Eligibility] =
-    answers.getEither(IsAdoptingPage).flatMap {
+    answers.getEither(IsAdoptingOrParentalOrderPage).flatMap {
       case true => getAdoptionParentalOrderEligibility(answers)
       case false => getBirthChildEligibility(answers)
     }

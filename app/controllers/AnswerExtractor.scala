@@ -18,7 +18,7 @@ package controllers
 
 import models.RelationshipToChild
 import models.requests.DataRequest
-import pages.{IsAdoptingPage, ReasonForRequestingPage}
+import pages.{IsAdoptingOrParentalOrderPage, ReasonForRequestingPage}
 import play.api.libs.json.Reads
 import play.api.mvc.{AnyContent, Result}
 import play.api.mvc.Results.Redirect
@@ -62,7 +62,7 @@ trait AnswerExtractor {
 
   def getRelationshipToChild(block: RelationshipToChild => Result)(implicit request: DataRequest[AnyContent]): Result =
     request.userAnswers
-      .get(IsAdoptingPage).map {
+      .get(IsAdoptingOrParentalOrderPage).map {
         case true =>
           request.userAnswers
             .get(ReasonForRequestingPage)
@@ -75,7 +75,7 @@ trait AnswerExtractor {
 
   def getRelationshipToChildAsync(block: RelationshipToChild => Future[Result])(implicit request: DataRequest[AnyContent]): Future[Result] =
     request.userAnswers
-      .get(IsAdoptingPage).map {
+      .get(IsAdoptingOrParentalOrderPage).map {
         case true =>
           request.userAnswers
             .get(ReasonForRequestingPage)

@@ -18,26 +18,26 @@ package viewmodels.checkAnswers
 
 import controllers.routes
 import models.{CheckMode, UserAnswers}
-import pages.IsAdoptingPage
+import pages.IsAdoptingOrParentalOrderPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object IsAdoptingSummary  {
+object IsAdoptingOrParentalOrderSummary  {
 
   def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(IsAdoptingPage).map {
+    answers.get(IsAdoptingOrParentalOrderPage).map {
       answer =>
 
         val value = if (answer) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
-          key     = "isAdopting.checkYourAnswersLabel",
+          key     = "isAdoptingOrParentalOrder.checkYourAnswersLabel",
           value   = ValueViewModel(value),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.IsAdoptingController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("isAdopting.change.hidden"))
+            ActionItemViewModel("site.change", routes.IsAdoptingOrParentalOrderController.onPageLoad(CheckMode).url)
+              .withVisuallyHiddenText(messages("isAdoptingOrParentalOrder.change.hidden"))
           )
         )
     }

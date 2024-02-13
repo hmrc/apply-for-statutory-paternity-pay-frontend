@@ -23,19 +23,19 @@ import uk.gov.hmrc.domain.Nino
 
 import java.time.LocalDate
 
-class IsAdoptingPageSpec extends PageBehaviours {
+class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
 
   "IsAdoptingPage" - {
 
-    beRetrievable[Boolean](IsAdoptingPage)
+    beRetrievable[Boolean](IsAdoptingOrParentalOrderPage)
 
-    beSettable[Boolean](IsAdoptingPage)
+    beSettable[Boolean](IsAdoptingOrParentalOrderPage)
 
-    beRemovable[Boolean](IsAdoptingPage)
+    beRemovable[Boolean](IsAdoptingOrParentalOrderPage)
 
     def fullAnswersNotAdopting =
       emptyUserAnswers
-        .set(IsAdoptingPage, false).success.value
+        .set(IsAdoptingOrParentalOrderPage, false).success.value
         .set(BabyDateOfBirthPage, LocalDate.now).success.value
         .set(BabyDueDatePage, LocalDate.now).success.value
         .set(BabyHasBeenBornPage, true).success.value
@@ -56,7 +56,7 @@ class IsAdoptingPageSpec extends PageBehaviours {
 
     def fullAnswersAdopting =
       emptyUserAnswers
-        .set(IsAdoptingPage, true).success.value
+        .set(IsAdoptingOrParentalOrderPage, true).success.value
         .set(BabyDateOfBirthPage, LocalDate.now).success.value
         .set(BabyDueDatePage, LocalDate.now).success.value
         .set(BabyHasBeenBornPage, true).success.value
@@ -87,9 +87,9 @@ class IsAdoptingPageSpec extends PageBehaviours {
 
         val answers = fullAnswersAdopting
 
-        val result = answers.set(IsAdoptingPage, false).success.value
+        val result = answers.set(IsAdoptingOrParentalOrderPage, false).success.value
 
-        result.get(IsAdoptingPage).value mustEqual false
+        result.get(IsAdoptingOrParentalOrderPage).value mustEqual false
         result.get(CountryOfResidencePage) mustBe defined
 
         result.get(BabyDateOfBirthPage) must not be defined
@@ -120,9 +120,9 @@ class IsAdoptingPageSpec extends PageBehaviours {
 
         val answers = fullAnswersNotAdopting
 
-        val result = answers.set(IsAdoptingPage, true).success.value
+        val result = answers.set(IsAdoptingOrParentalOrderPage, true).success.value
 
-        result.get(IsAdoptingPage).value mustEqual true
+        result.get(IsAdoptingOrParentalOrderPage).value mustEqual true
         result.get(CountryOfResidencePage) mustBe defined
 
         result.get(BabyDateOfBirthPage) must not be defined
@@ -155,9 +155,9 @@ class IsAdoptingPageSpec extends PageBehaviours {
 
       val answers = fullAnswersAdopting
 
-      val result = answers.set(IsAdoptingPage, true).success.value
+      val result = answers.set(IsAdoptingOrParentalOrderPage, true).success.value
 
-      result.get(IsAdoptingPage) mustBe defined
+      result.get(IsAdoptingOrParentalOrderPage) mustBe defined
       result.get(CountryOfResidencePage) mustBe defined
 
       result.get(BabyDateOfBirthPage) mustBe defined
@@ -188,9 +188,9 @@ class IsAdoptingPageSpec extends PageBehaviours {
 
       val answers = fullAnswersNotAdopting
 
-      val result = answers.set(IsAdoptingPage, false).success.value
+      val result = answers.set(IsAdoptingOrParentalOrderPage, false).success.value
 
-      result.get(IsAdoptingPage) mustBe defined
+      result.get(IsAdoptingOrParentalOrderPage) mustBe defined
       result.get(CountryOfResidencePage) mustBe defined
 
       result.get(BabyDateOfBirthPage) mustBe defined

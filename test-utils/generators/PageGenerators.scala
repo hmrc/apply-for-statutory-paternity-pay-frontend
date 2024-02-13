@@ -45,8 +45,8 @@ trait PageGenerators {
   implicit lazy val arbitraryChildExpectedPlacementDatePage: Arbitrary[ChildExpectedPlacementDatePage.type] =
     Arbitrary(ChildExpectedPlacementDatePage)
 
-  implicit lazy val arbitraryIsAdoptingPage: Arbitrary[IsAdoptingPage.type] =
-    Arbitrary(IsAdoptingPage)
+  implicit lazy val arbitraryIsAdoptingPage: Arbitrary[IsAdoptingOrParentalOrderPage.type] =
+    Arbitrary(IsAdoptingOrParentalOrderPage)
 
   implicit lazy val arbitraryNinoPage: Arbitrary[NinoPage.type] =
     Arbitrary(NinoPage)

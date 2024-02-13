@@ -27,8 +27,8 @@ import models._
 class Navigator @Inject()() {
 
   private val normalRoutes: Page => UserAnswers => Call = {
-    case CountryOfResidencePage                => _ => routes.IsAdoptingController.onPageLoad(NormalMode)
-    case IsAdoptingPage                        => isAdoptingRoute
+    case CountryOfResidencePage                => _ => routes.IsAdoptingOrParentalOrderController.onPageLoad(NormalMode)
+    case IsAdoptingOrParentalOrderPage         => isAdoptingOrParentalOrderRoute
     case IsApplyingForStatutoryAdoptionPayPage => isApplyingForStatutoryAdoptionPayRoute
     case IsAdoptingFromAbroadPage              => _ => routes.ReasonForRequestingController.onPageLoad(NormalMode)
     case ReasonForRequestingPage               => _ => routes.IsInQualifyingRelationshipController.onPageLoad(NormalMode)
@@ -51,8 +51,8 @@ class Navigator @Inject()() {
     case _                                     => _ => routes.IndexController.onPageLoad
   }
 
-  private def isAdoptingRoute(answers: UserAnswers): Call =
-    answers.get(IsAdoptingPage).map {
+  private def isAdoptingOrParentalOrderRoute(answers: UserAnswers): Call =
+    answers.get(IsAdoptingOrParentalOrderPage).map {
       case true  => routes.IsApplyingForStatutoryAdoptionPayController.onPageLoad(NormalMode)
       case false => routes.IsBiologicalFatherController.onPageLoad(NormalMode)
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
@@ -124,7 +124,7 @@ class Navigator @Inject()() {
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   private val checkRouteMap: Page => UserAnswers => Call = {
-    case IsAdoptingPage                        => isAdoptingCheckRoute
+    case IsAdoptingOrParentalOrderPage         => isAdoptingOrParentalOrderCheckRoute
     case IsApplyingForStatutoryAdoptionPayPage => isApplyingForStatutoryAdoptionPayCheckRoute
     case IsAdoptingFromAbroadPage              => isAdoptingFromAbroadCheckRoute
     case ReasonForRequestingPage               => reasonForRequestingCheckRoute
@@ -142,8 +142,8 @@ class Navigator @Inject()() {
     case _                                     => _ => routes.CheckYourAnswersController.onPageLoad
   }
 
-  private def isAdoptingCheckRoute(answers: UserAnswers): Call =
-    answers.get(IsAdoptingPage).map {
+  private def isAdoptingOrParentalOrderCheckRoute(answers: UserAnswers): Call =
+    answers.get(IsAdoptingOrParentalOrderPage).map {
       case true  =>
         if (answers.isDefined(IsApplyingForStatutoryAdoptionPayPage)) {
           routes.CheckYourAnswersController.onPageLoad

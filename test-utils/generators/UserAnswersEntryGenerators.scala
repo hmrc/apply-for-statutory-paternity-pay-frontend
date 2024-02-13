@@ -89,10 +89,10 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryIsAdoptingUserAnswersEntry: Arbitrary[(IsAdoptingPage.type, JsValue)] =
+  implicit lazy val arbitraryIsAdoptingUserAnswersEntry: Arbitrary[(IsAdoptingOrParentalOrderPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[IsAdoptingPage.type]
+        page  <- arbitrary[IsAdoptingOrParentalOrderPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }

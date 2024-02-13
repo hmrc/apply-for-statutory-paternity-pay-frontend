@@ -42,7 +42,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
 
       val answers = emptyUserAnswers
         .set(CountryOfResidencePage, CountryOfResidence.England).success.value
-        .set(IsAdoptingPage, false).success.value
+        .set(IsAdoptingOrParentalOrderPage, false).success.value
         .set(IsBiologicalFatherPage, true).success.value
         .set(WillHaveCaringResponsibilityPage, true).success.value
         .set(WillTakeTimeToCareForChildPage, true).success.value
@@ -106,7 +106,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
 
       val answers = emptyUserAnswers
         .set(CountryOfResidencePage, CountryOfResidence.England).success.value
-        .set(IsAdoptingPage, true).success.value
+        .set(IsAdoptingOrParentalOrderPage, true).success.value
         .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
         .set(IsAdoptingFromAbroadPage, false).success.value
         .set(ReasonForRequestingPage, RelationshipToChild.Adopting).success.value
@@ -173,7 +173,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
 
       errors must contain only(
         CountryOfResidencePage,
-        IsAdoptingPage,
+        IsAdoptingOrParentalOrderPage,
         NamePage,
         NinoPage,
         BabyDueDatePage,
@@ -185,7 +185,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
     "must return the Applying for Statutory Adoption Pay page when the user is applying for SAP" in {
 
       val answers = emptyUserAnswers
-        .set(IsAdoptingPage, true).success.value
+        .set(IsAdoptingOrParentalOrderPage, true).success.value
         .set(IsApplyingForStatutoryAdoptionPayPage, true).success.value
 
       val errors = JourneyModel.from(answers).left.value.toChain.toList
@@ -196,7 +196,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
     "must return the is cohabiting page when the user is adopting or parental order and is not in a relationship or cohabiting with the mother" in {
 
       val answers = emptyUserAnswers
-        .set(IsAdoptingPage, true).success.value
+        .set(IsAdoptingOrParentalOrderPage, true).success.value
         .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
         .set(IsAdoptingFromAbroadPage, false).success.value
         .set(ReasonForRequestingPage, RelationshipToChild.Adopting).success.value
@@ -213,7 +213,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
     "must return the is cohabiting page when the user is not in a relationship or cohabiting with the mother" in {
 
       val answers = emptyUserAnswers
-        .set(IsAdoptingPage, false).success.value
+        .set(IsAdoptingOrParentalOrderPage, false).success.value
         .set(IsBiologicalFatherPage, false).success.value
         .set(IsInQualifyingRelationshipPage, false).success.value
         .set(IsCohabitingPage, false).success.value
@@ -228,7 +228,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
     "must return the will have caring responsibility page when the user is not responsible for caring for the child" in {
 
       val answers = emptyUserAnswers
-        .set(IsAdoptingPage, false).success.value
+        .set(IsAdoptingOrParentalOrderPage, false).success.value
         .set(IsBiologicalFatherPage, true).success.value
         .set(WillHaveCaringResponsibilityPage, false).success.value
 
@@ -242,7 +242,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
     "must return will take time to support mother page when the user is not taking time off to care for either the child or the mother" in {
 
       val answers = emptyUserAnswers
-        .set(IsAdoptingPage, false).success.value
+        .set(IsAdoptingOrParentalOrderPage, false).success.value
         .set(IsBiologicalFatherPage, true).success.value
         .set(WillHaveCaringResponsibilityPage, true).success.value
         .set(WillTakeTimeToCareForChildPage, false).success.value

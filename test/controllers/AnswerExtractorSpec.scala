@@ -22,7 +22,7 @@ import models.{Mode, RelationshipToChild, UserAnswers}
 import models.requests.DataRequest
 import org.scalacheck.Gen
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import pages.{IsAdoptingPage, QuestionPage, ReasonForRequestingPage}
+import pages.{IsAdoptingOrParentalOrderPage, QuestionPage, ReasonForRequestingPage}
 import play.api.libs.json.{JsPath, JsString, Json}
 import play.api.mvc.Results.{Ok, Redirect}
 import play.api.mvc.{AnyContent, Call, Result}
@@ -117,7 +117,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
     "must pass BirthChild to the provided block when the answer to IsAdopting is false" in {
 
-      val answers = emptyUserAnswers.set(IsAdoptingPage, false).success.value
+      val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
       implicit val request = buildRequest(answers)
 
       val controller = new TestController()
@@ -132,7 +132,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
           val answers =
             emptyUserAnswers
-              .set(IsAdoptingPage, true).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
               .set(ReasonForRequestingPage, reason).success.value
 
           implicit val request = buildRequest(answers)
@@ -154,7 +154,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
     "must redirect to journey recovery when IsAdopting is true and Reason has not been answered" in {
 
-      val answers = emptyUserAnswers.set(IsAdoptingPage, true).success.value
+      val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, true).success.value
       implicit val request = buildRequest(answers)
 
       val controller = new TestController()
@@ -167,7 +167,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
     "must pass BirthChild to the provided block when the answer to IsAdopting is false" in {
 
-      val answers = emptyUserAnswers.set(IsAdoptingPage, false).success.value
+      val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
       implicit val request = buildRequest(answers)
 
       val controller = new TestController()
@@ -182,7 +182,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
           val answers =
             emptyUserAnswers
-              .set(IsAdoptingPage, true).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
               .set(ReasonForRequestingPage, reason).success.value
 
           implicit val request = buildRequest(answers)
@@ -204,7 +204,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
     "must redirect to journey recovery when IsAdopting is true and Reason has not been answered" in {
 
-      val answers = emptyUserAnswers.set(IsAdoptingPage, true).success.value
+      val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, true).success.value
       implicit val request = buildRequest(answers)
 
       val controller = new TestController()

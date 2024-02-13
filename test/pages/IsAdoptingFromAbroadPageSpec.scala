@@ -37,7 +37,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
 
   private def fullAnswersAdopting =
     emptyUserAnswers
-      .set(IsAdoptingPage, true).success.value
+      .set(IsAdoptingOrParentalOrderPage, true).success.value
       .set(BabyDateOfBirthPage, LocalDate.now).success.value
       .set(BabyDueDatePage, LocalDate.now).success.value
       .set(BabyHasBeenBornPage, true).success.value
@@ -64,7 +64,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
 
   private def fullAnswersParentalOrder =
     emptyUserAnswers
-      .set(IsAdoptingPage, true).success.value
+      .set(IsAdoptingOrParentalOrderPage, true).success.value
       .set(BabyDateOfBirthPage, LocalDate.now).success.value
       .set(BabyDueDatePage, LocalDate.now).success.value
       .set(BabyHasBeenBornPage, true).success.value
@@ -91,7 +91,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
 
     result.get(IsAdoptingFromAbroadPage).value mustEqual true
     result.get(CountryOfResidencePage) mustBe defined
-    result.get(IsAdoptingPage) mustBe defined
+    result.get(IsAdoptingOrParentalOrderPage) mustBe defined
     result.get(IsApplyingForStatutoryAdoptionPayPage) mustBe defined
 
     result.get(BabyDateOfBirthPage) must not be defined
@@ -124,7 +124,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
 
       result.get(IsAdoptingFromAbroadPage).value mustEqual false
       result.get(CountryOfResidencePage) mustBe defined
-      result.get(IsAdoptingPage) mustBe defined
+      result.get(IsAdoptingOrParentalOrderPage) mustBe defined
       result.get(IsApplyingForStatutoryAdoptionPayPage) mustBe defined
       result.get(BabyDateOfBirthPage) mustBe defined
       result.get(BabyDueDatePage) mustBe defined
@@ -150,7 +150,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
 
       result.get(IsAdoptingFromAbroadPage).value mustEqual true
       result.get(CountryOfResidencePage) mustBe defined
-      result.get(IsAdoptingPage) mustBe defined
+      result.get(IsAdoptingOrParentalOrderPage) mustBe defined
       result.get(IsApplyingForStatutoryAdoptionPayPage) mustBe defined
       result.get(BabyDateOfBirthPage) mustBe defined
       result.get(BabyDueDatePage) mustBe defined
