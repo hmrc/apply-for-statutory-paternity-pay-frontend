@@ -36,12 +36,12 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(UnknownPage, NormalMode, UserAnswers("id")) mustBe routes.IndexController.onPageLoad
       }
 
-      "must go from Country of Residence to Is Adopting" in {
+      "must go from Country of Residence to Is Adopting Or Parental Order" in {
 
         navigator.nextPage(CountryOfResidencePage, NormalMode, emptyUserAnswers) mustEqual routes.IsAdoptingOrParentalOrderController.onPageLoad(NormalMode)
       }
 
-      "must go from Is Adopting" - {
+      "must go from Is Adopting Or Parental Order" - {
 
         "to Is Applying for Statutory Adoption Pay and Leave when the answer is yes" in {
 
@@ -76,7 +76,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(IsAdoptingFromAbroadPage, NormalMode, emptyUserAnswers) mustEqual routes.ReasonForRequestingController.onPageLoad(NormalMode)
       }
 
-      "must go from Reason For Requesting to In In Qualifying Relationship" in {
+      "must go from Reason For Requesting to Is In Qualifying Relationship" in {
 
         navigator.nextPage(ReasonForRequestingPage, NormalMode, emptyUserAnswers) mustEqual routes.IsInQualifyingRelationshipController.onPageLoad(NormalMode)
       }
@@ -276,7 +276,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(UnknownPage, CheckMode, UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad
       }
 
-      "must go from Is Adopting" - {
+      "must go from Is Adopting Or Parental Order" - {
 
         "to Is Applying for SAP when the answer is yes and that question has not been answered" in {
 
