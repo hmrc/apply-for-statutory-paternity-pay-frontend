@@ -70,7 +70,7 @@ class ConfirmationControllerSpec extends SpecBase with MockitoSugar with ModelGe
         val view = application.injector.instanceOf[ConfirmationView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(request, messages(application)).toString
+        contentAsString(result) mustEqual view(preApril24OrNorthernIreland = false)(request, messages(application)).toString
       }
     }
 

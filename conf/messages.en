@@ -133,20 +133,23 @@ confirmation.guidance.p2.1 = If you notice a mistake before sending the form you
 confirmation.guidance.p2.link1.text = change your answers
 confirmation.guidance.p2.2 = or
 confirmation.guidance.p2.link2.text = start the application form again
+confirmation.guidance.downloadYourCompletedForm = Download your completed form
+confirmation.guidance.downloadYourCompletedForm.link.text = You must download and save a copy of your form, then send it to your employer (opens in new tab).
+confirmation.guidance.downloadYourCompletedForm.p1.postApril24 = If you have not provided leave dates in this form or you want to change your leave dates, you must give your employer 28 days notice before the start of each of your leave weeks. You and your employer may find it helpful for you to submit a new Statutory Paternity form with your new dates.
+confirmation.guidance.downloadYourCompletedForm.p1.preApril24OrNorthernIreland = If you want to change your leave dates you must give your employer 28 days notice of the new date. You and your employer may find it helpful for you to submit a new Statutory Paternity form with your new dates.
 confirmation.guidance.whatHappensNext = What happens next
-confirmation.guidance.p3 = Your employer will use this information to assess your eligibility for Statutory Paternity Pay (SPP) and/or Paternity Leave. If your request is approved, you will receive your SPP from your employer.
-confirmation.guidance.p4 = If you are not eligible, your employer must tell you within 28 days if you do not qualify and why using form SPP1. If you are not entitled to SPP you may be entitled to other government help. Contact any Jobcentre Plus office for further information.
-confirmation.guidance.p5.1 = If you disagree with your employer’s decision you can contact the
-confirmation.guidance.p5.link1.text = Statutory Payments Dispute Team
-confirmation.guidance.p5.link1.href = https://www.gov.uk/government/organisations/hm-revenue-customs/contact/statutory-payment-dispute-team
-confirmation.guidance.p5.2 = You must do this within 6 months of the day you were notified of your employer’s decision.
-confirmation.guidance.p6.1 = For disagreement on Paternity Leave, contact the
-confirmation.guidance.p6.link1.text = Advisory Conciliation and Arbitration Service (Acas)
-confirmation.guidance.p6.link1.href = https://www.gov.uk/government/organisations/acas#:~:text=The%20Advisory%2C%20Conciliation%20and%20Arbitration,solve%20problems%20and%20improve%20performance.
-confirmation.guidance.p6.2 = In Northern Ireland, contact the
-confirmation.guidance.p6.link2.text = Labour Relations Agency
-confirmation.guidance.p6.link2.href = https://www.gov.uk/government/organisations/labour-relations-agency
-confirmation.download = Download form
+confirmation.guidance.whatHappensNext.p1 = Your employer will use this information to assess your eligibility for Statutory Paternity Pay (SPP) and/or Paternity Leave. If your request is approved, you will receive your SPP from your employer.
+confirmation.guidance.whatHappensNext.p2 = If you are not eligible, your employer must tell you within 28 days if you do not qualify and why using form SPP1. If you are not entitled to SPP, you may be entitled to other government help. Contact any Jobcentre Plus office for further information.
+confirmation.guidance.whatHappensNext.p3.1 = If you disagree with your employer’s decision you can contact the
+confirmation.guidance.whatHappensNext.p3.link1.text = Statutory Payments Dispute Team
+confirmation.guidance.whatHappensNext.p3.link1.href = https://www.gov.uk/government/organisations/hm-revenue-customs/contact/statutory-payment-dispute-team
+confirmation.guidance.whatHappensNext.p3.2 = You must do this within 6 months of the day you were notified of your employer’s decision.
+confirmation.guidance.whatHappensNext.p4.1 = For disagreement on Paternity Leave, contact the
+confirmation.guidance.whatHappensNext.p4.link1.text = Advisory Conciliation and Arbitration Service (Acas)
+confirmation.guidance.whatHappensNext.p4.link1.href = https://www.gov.uk/government/organisations/acas#:~:text=The%20Advisory%2C%20Conciliation%20and%20Arbitration,solve%20problems%20and%20improve%20performance.
+confirmation.guidance.whatHappensNext.p4.2 = In Northern Ireland, contact the
+confirmation.guidance.whatHappensNext.p4.link2.text = Labour Relations Agency
+confirmation.guidance.whatHappensNext.p4.link2.href = https://www.gov.uk/government/organisations/labour-relations-agency
 confirmation.survey.link.text = What did you think of this service?
 confirmation.survey.guidance = (takes 30 seconds)
 

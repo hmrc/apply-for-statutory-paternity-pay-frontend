@@ -40,7 +40,7 @@ class ConfirmationController @Inject()(
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData andThen journeyModelFilter) {
     implicit request =>
-      Ok(view())
+      Ok(view(preApril24OrNorthernIreland = false))
   }
 
   def startAgain(): Action[AnyContent] = identify.async {
