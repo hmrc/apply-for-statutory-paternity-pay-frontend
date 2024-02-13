@@ -20,11 +20,11 @@ import models.Mode
 import play.api.libs.json.JsPath
 import play.api.mvc.Call
 
-case object WillTakeTimeToSupportMotherPage extends QuestionPage[Boolean] {
+case object WillTakeTimeToSupportPartnerPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "willTakeTimeToSupportMother"
+  override def toString: String = "willTakeTimeToSupportPartner"
 
-  override def route(mode: Mode): Call = controllers.routes.WillTakeTimeToSupportMotherController.onPageLoad(mode)
+  override def route(mode: Mode): Call = controllers.routes.WillTakeTimeToSupportPartnerController.onPageLoad(mode)
 }

@@ -16,7 +16,12 @@
 
 package pages
 
+import models.{CountryOfResidence, Name, PaternityLeaveLength, RelationshipToChild}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
+import uk.gov.hmrc.domain.Nino
+
+import java.time.LocalDate
 
 class IsAdoptingPageSpec extends PageBehaviours {
 
@@ -27,5 +32,183 @@ class IsAdoptingPageSpec extends PageBehaviours {
     beSettable[Boolean](IsAdoptingPage)
 
     beRemovable[Boolean](IsAdoptingPage)
+
+    def fullAnswersNotAdopting =
+      emptyUserAnswers
+        .set(IsAdoptingPage, false).success.value
+        .set(BabyDateOfBirthPage, LocalDate.now).success.value
+        .set(BabyDueDatePage, LocalDate.now).success.value
+        .set(BabyHasBeenBornPage, true).success.value
+        .set(CountryOfResidencePage, CountryOfResidence.England).success.value
+        .set(IsBiologicalFatherPage, false).success.value
+        .set(IsCohabitingPage, true).success.value
+        .set(IsInQualifyingRelationshipPage, false).success.value
+        .set(NamePage, Name("first", "last")).success.value
+        .set(NinoPage, arbitrary[Nino].sample.value).success.value
+        .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
+        .set(PayStartDateBabyBornPage, LocalDate.now).success.value
+        .set(PayStartDateBabyDuePage, LocalDate.now).success.value
+        .set(WantPayToStartOnBirthDatePage, false).success.value
+        .set(WantPayToStartOnDueDatePage, false).success.value
+        .set(WillHaveCaringResponsibilityPage, true).success.value
+        .set(WillTakeTimeToCareForChildPage, true).success.value
+        .set(WillTakeTimeToSupportPartnerPage, true).success.value
+
+    def fullAnswersAdopting =
+      emptyUserAnswers
+        .set(IsAdoptingPage, true).success.value
+        .set(BabyDateOfBirthPage, LocalDate.now).success.value
+        .set(BabyDueDatePage, LocalDate.now).success.value
+        .set(BabyHasBeenBornPage, true).success.value
+        .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
+        .set(ChildHasBeenPlacedPage, true).success.value
+        .set(ChildPlacementDatePage, LocalDate.now).success.value
+        .set(CountryOfResidencePage, CountryOfResidence.England).success.value
+        .set(DateChildWasMatchedPage, LocalDate.now).success.value
+        .set(IsAdoptingFromAbroadPage, true).success.value
+        .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+        .set(IsCohabitingPage, true).success.value
+        .set(IsInQualifyingRelationshipPage, false).success.value
+        .set(NamePage, Name("first", "last")).success.value
+        .set(NinoPage, arbitrary[Nino].sample.value).success.value
+        .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
+        .set(PayStartDateBabyBornPage, LocalDate.now).success.value
+        .set(PayStartDateBabyDuePage, LocalDate.now).success.value
+        .set(ReasonForRequestingPage, RelationshipToChild.Adopting).success.value
+        .set(WantPayToStartOnBirthDatePage, false).success.value
+        .set(WantPayToStartOnDueDatePage, false).success.value
+        .set(WillHaveCaringResponsibilityPage, true).success.value
+        .set(WillTakeTimeToCareForChildPage, true).success.value
+        .set(WillTakeTimeToSupportPartnerPage, true).success.value
+
+    "must remove all answers except this and Country of Residence" - {
+
+      "when the answer changes from true to false" in {
+
+        val answers = fullAnswersAdopting
+
+        val result = answers.set(IsAdoptingPage, false).success.value
+
+        result.get(IsAdoptingPage).value mustEqual false
+        result.get(CountryOfResidencePage) mustBe defined
+
+        result.get(BabyDateOfBirthPage) must not be defined
+        result.get(BabyDueDatePage) must not be defined
+        result.get(BabyHasBeenBornPage) must not be defined
+        result.get(ChildExpectedPlacementDatePage) must not be defined
+        result.get(ChildHasBeenPlacedPage) must not be defined
+        result.get(ChildPlacementDatePage) must not be defined
+        result.get(DateChildWasMatchedPage) must not be defined
+        result.get(IsAdoptingFromAbroadPage) must not be defined
+        result.get(IsApplyingForStatutoryAdoptionPayPage) must not be defined
+        result.get(IsCohabitingPage) must not be defined
+        result.get(IsInQualifyingRelationshipPage) must not be defined
+        result.get(NamePage) must not be defined
+        result.get(NinoPage) must not be defined
+        result.get(PaternityLeaveLengthPage) must not be defined
+        result.get(PayStartDateBabyBornPage) must not be defined
+        result.get(PayStartDateBabyDuePage) must not be defined
+        result.get(ReasonForRequestingPage) must not be defined
+        result.get(WantPayToStartOnBirthDatePage) must not be defined
+        result.get(WantPayToStartOnDueDatePage) must not be defined
+        result.get(WillHaveCaringResponsibilityPage) must not be defined
+        result.get(WillTakeTimeToCareForChildPage) must not be defined
+        result.get(WillTakeTimeToSupportPartnerPage) must not be defined
+      }
+
+      "when the answer changes from false to true" in {
+
+        val answers = fullAnswersNotAdopting
+
+        val result = answers.set(IsAdoptingPage, true).success.value
+
+        result.get(IsAdoptingPage).value mustEqual true
+        result.get(CountryOfResidencePage) mustBe defined
+
+        result.get(BabyDateOfBirthPage) must not be defined
+        result.get(BabyDueDatePage) must not be defined
+        result.get(BabyHasBeenBornPage) must not be defined
+        result.get(ChildExpectedPlacementDatePage) must not be defined
+        result.get(ChildHasBeenPlacedPage) must not be defined
+        result.get(ChildPlacementDatePage) must not be defined
+        result.get(DateChildWasMatchedPage) must not be defined
+        result.get(IsAdoptingFromAbroadPage) must not be defined
+        result.get(IsApplyingForStatutoryAdoptionPayPage) must not be defined
+        result.get(IsBiologicalFatherPage) must not be defined
+        result.get(IsCohabitingPage) must not be defined
+        result.get(IsInQualifyingRelationshipPage) must not be defined
+        result.get(NamePage) must not be defined
+        result.get(NinoPage) must not be defined
+        result.get(PaternityLeaveLengthPage) must not be defined
+        result.get(PayStartDateBabyBornPage) must not be defined
+        result.get(PayStartDateBabyDuePage) must not be defined
+        result.get(ReasonForRequestingPage) must not be defined
+        result.get(WantPayToStartOnBirthDatePage) must not be defined
+        result.get(WantPayToStartOnDueDatePage) must not be defined
+        result.get(WillHaveCaringResponsibilityPage) must not be defined
+        result.get(WillTakeTimeToCareForChildPage) must not be defined
+        result.get(WillTakeTimeToSupportPartnerPage) must not be defined
+      }
+    }
+
+    "must not remove any answers when the answer does not change from true" in {
+
+      val answers = fullAnswersAdopting
+
+      val result = answers.set(IsAdoptingPage, true).success.value
+
+      result.get(IsAdoptingPage) mustBe defined
+      result.get(CountryOfResidencePage) mustBe defined
+
+      result.get(BabyDateOfBirthPage) mustBe defined
+      result.get(BabyDueDatePage) mustBe defined
+      result.get(BabyHasBeenBornPage) mustBe defined
+      result.get(ChildExpectedPlacementDatePage) mustBe defined
+      result.get(ChildHasBeenPlacedPage) mustBe defined
+      result.get(ChildPlacementDatePage) mustBe defined
+      result.get(DateChildWasMatchedPage) mustBe defined
+      result.get(IsAdoptingFromAbroadPage) mustBe defined
+      result.get(IsApplyingForStatutoryAdoptionPayPage) mustBe defined
+      result.get(IsCohabitingPage) mustBe defined
+      result.get(IsInQualifyingRelationshipPage) mustBe defined
+      result.get(NamePage) mustBe defined
+      result.get(NinoPage) mustBe defined
+      result.get(PaternityLeaveLengthPage) mustBe defined
+      result.get(PayStartDateBabyBornPage) mustBe defined
+      result.get(PayStartDateBabyDuePage) mustBe defined
+      result.get(ReasonForRequestingPage) mustBe defined
+      result.get(WantPayToStartOnBirthDatePage) mustBe defined
+      result.get(WantPayToStartOnDueDatePage) mustBe defined
+      result.get(WillHaveCaringResponsibilityPage) mustBe defined
+      result.get(WillTakeTimeToCareForChildPage) mustBe defined
+      result.get(WillTakeTimeToSupportPartnerPage) mustBe defined
+    }
+
+    "must not remove any answers when the answer does not change from false" in {
+
+      val answers = fullAnswersNotAdopting
+
+      val result = answers.set(IsAdoptingPage, false).success.value
+
+      result.get(IsAdoptingPage) mustBe defined
+      result.get(CountryOfResidencePage) mustBe defined
+
+      result.get(BabyDateOfBirthPage) mustBe defined
+      result.get(BabyDueDatePage) mustBe defined
+      result.get(BabyHasBeenBornPage) mustBe defined
+      result.get(IsBiologicalFatherPage) mustBe defined
+      result.get(IsCohabitingPage) mustBe defined
+      result.get(IsInQualifyingRelationshipPage) mustBe defined
+      result.get(NamePage) mustBe defined
+      result.get(NinoPage) mustBe defined
+      result.get(PaternityLeaveLengthPage) mustBe defined
+      result.get(PayStartDateBabyBornPage) mustBe defined
+      result.get(PayStartDateBabyDuePage) mustBe defined
+      result.get(WantPayToStartOnBirthDatePage) mustBe defined
+      result.get(WantPayToStartOnDueDatePage) mustBe defined
+      result.get(WillHaveCaringResponsibilityPage) mustBe defined
+      result.get(WillTakeTimeToCareForChildPage) mustBe defined
+      result.get(WillTakeTimeToSupportPartnerPage) mustBe defined
+    }
   }
 }

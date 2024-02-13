@@ -17,14 +17,14 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
+import models.RelationshipToChild
 import play.api.data.Form
 
 class IsCohabitingFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(relationship: RelationshipToChild): Form[Boolean] =
     Form(
-      "value" -> boolean("isCohabiting.error.required")
+      "value" -> boolean(s"isCohabiting.${relationship.toString}.error.required")
     )
 }

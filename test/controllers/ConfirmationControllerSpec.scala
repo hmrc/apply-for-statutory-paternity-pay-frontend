@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import generators.ModelGenerators
-import models.{Name, PaternityLeaveLength}
+import models.{CountryOfResidence, Name, PaternityLeaveLength}
 import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
@@ -42,6 +42,7 @@ class ConfirmationControllerSpec extends SpecBase with MockitoSugar with ModelGe
 
       val answers =
         emptyUserAnswers
+          .set(CountryOfResidencePage, CountryOfResidence.England).success.value
           .set(BabyDateOfBirthPage, LocalDate.now).success.value
           .set(BabyDueDatePage, LocalDate.now).success.value
           .set(BabyHasBeenBornPage, true).success.value
@@ -57,7 +58,7 @@ class ConfirmationControllerSpec extends SpecBase with MockitoSugar with ModelGe
           .set(WantPayToStartOnDueDatePage, true).success.value
           .set(WillHaveCaringResponsibilityPage, true).success.value
           .set(WillTakeTimeToCareForChildPage, true).success.value
-          .set(WillTakeTimeToSupportMotherPage, true).success.value
+          .set(WillTakeTimeToSupportPartnerPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 

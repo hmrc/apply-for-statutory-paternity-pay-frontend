@@ -29,7 +29,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
     Arbitrary {
       for {
         page  <- arbitrary[ReasonForRequestingPage.type]
-        value <- arbitrary[ReasonForRequesting].map(Json.toJson(_))
+        value <- arbitrary[RelationshipToChild].map(Json.toJson(_))
       } yield (page, value)
     }
 
@@ -113,10 +113,10 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryWillTakeTimeToSupportMotherUserAnswersEntry: Arbitrary[(WillTakeTimeToSupportMotherPage.type, JsValue)] =
+  implicit lazy val arbitraryWillTakeTimeToSupportPartnerUserAnswersEntry: Arbitrary[(WillTakeTimeToSupportPartnerPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[WillTakeTimeToSupportMotherPage.type]
+        page  <- arbitrary[WillTakeTimeToSupportPartnerPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }

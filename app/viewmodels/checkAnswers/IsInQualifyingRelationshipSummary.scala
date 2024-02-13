@@ -17,28 +17,36 @@
 package viewmodels.checkAnswers
 
 import controllers.routes
-import models.{CheckMode, UserAnswers}
-import pages.IsInQualifyingRelationshipPage
+import models.{CheckMode, RelationshipToChild, UserAnswers}
+import pages.{IsAdoptingPage, IsInQualifyingRelationshipPage, ReasonForRequestingPage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object IsInQualifyingRelationshipSummary  {
+object IsInQualifyingRelationshipSummary {
 
-  def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(IsInQualifyingRelationshipPage).map {
-      answer =>
-
-        val value = if (answer) "site.yes" else "site.no"
-
-        SummaryListRowViewModel(
-          key     = "isInQualifyingRelationship.checkYourAnswersLabel",
-          value   = ValueViewModel(value),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.IsInQualifyingRelationshipController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("isInQualifyingRelationship.change.hidden"))
-          )
-        )
+  def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+    val relationshipToChild = answers.get(IsAdoptingPage).flatMap {
+      case true => answers.get(ReasonForRequestingPage)
+      case false => Some(RelationshipToChild.BirthChild)
     }
+
+    for {
+      relationship <- relationshipToChild
+      inQualifyingRelationship <- answers.get(IsInQualifyingRelationshipPage)
+    } yield {
+
+      val value = if (inQualifyingRelationship) "site.yes" else "site.no"
+
+      SummaryListRowViewModel(
+        key = s"isInQualifyingRelationship.${relationship.toString}.checkYourAnswersLabel",
+        value = ValueViewModel(value),
+        actions = Seq(
+          ActionItemViewModel("site.change", routes.IsInQualifyingRelationshipController.onPageLoad(CheckMode).url)
+            .withVisuallyHiddenText(messages(s"isInQualifyingRelationship.${relationship.toString}.change.hidden"))
+        )
+      )
+    }
+  }
 }

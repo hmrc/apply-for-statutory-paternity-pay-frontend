@@ -16,9 +16,11 @@
 
 package pages
 
-import models.Mode
+import models.{Mode, UserAnswers}
 import play.api.libs.json.JsPath
 import play.api.mvc.Call
+
+import scala.util.Try
 
 case object IsInQualifyingRelationshipPage extends QuestionPage[Boolean] {
 
@@ -27,4 +29,10 @@ case object IsInQualifyingRelationshipPage extends QuestionPage[Boolean] {
   override def toString: String = "isInQualifyingRelationship"
 
   override def route(mode: Mode): Call = controllers.routes.IsInQualifyingRelationshipController.onPageLoad(mode)
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
+    value.map {
+      case true => userAnswers.remove(IsCohabitingPage)
+      case false => super.cleanup(value, userAnswers)
+    }.getOrElse(super.cleanup(value, userAnswers))
 }

@@ -18,14 +18,14 @@ package pages
 
 import pages.behaviours.PageBehaviours
 
-class WillTakeTimeToSupportMotherPageSpec extends PageBehaviours {
+class WillTakeTimeToSupportPartnerPageSpec extends PageBehaviours {
 
-  "WillTakeTimeToSupportMotherPage" - {
+  "WillTakeTimeToSupportPartnerPage" - {
 
-    beRetrievable[Boolean](WillTakeTimeToSupportMotherPage)
+    beRetrievable[Boolean](WillTakeTimeToSupportPartnerPage)
 
-    beSettable[Boolean](WillTakeTimeToSupportMotherPage)
+    beSettable[Boolean](WillTakeTimeToSupportPartnerPage)
 
-    beRemovable[Boolean](WillTakeTimeToSupportMotherPage)
+    beRemovable[Boolean](WillTakeTimeToSupportPartnerPage)
   }
 }

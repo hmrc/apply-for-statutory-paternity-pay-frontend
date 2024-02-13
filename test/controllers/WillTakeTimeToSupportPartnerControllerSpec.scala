@@ -17,43 +17,43 @@
 package controllers
 
 import base.SpecBase
-import forms.WillTakeTimeToSupportMotherFormProvider
+import forms.WillTakeTimeToSupportPartnerFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.WillTakeTimeToSupportMotherPage
+import pages.WillTakeTimeToSupportPartnerPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.WillTakeTimeToSupportMotherView
+import views.html.WillTakeTimeToSupportPartnerView
 
 import scala.concurrent.Future
 
-class WillTakeTimeToSupportMotherControllerSpec extends SpecBase with MockitoSugar {
+class WillTakeTimeToSupportPartnerControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new WillTakeTimeToSupportMotherFormProvider()
+  val formProvider = new WillTakeTimeToSupportPartnerFormProvider()
   val form = formProvider()
 
-  lazy val willTakeTimeToSupportMotherRoute = routes.WillTakeTimeToSupportMotherController.onPageLoad(NormalMode).url
+  lazy val willTakeTimeToSupportPartnerRoute = routes.WillTakeTimeToSupportPartnerController.onPageLoad(NormalMode).url
 
-  "WillTakeTimeToSupportMother Controller" - {
+  "WillTakeTimeToSupportPartner Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, willTakeTimeToSupportMotherRoute)
+        val request = FakeRequest(GET, willTakeTimeToSupportPartnerRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[WillTakeTimeToSupportMotherView]
+        val view = application.injector.instanceOf[WillTakeTimeToSupportPartnerView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
@@ -62,14 +62,14 @@ class WillTakeTimeToSupportMotherControllerSpec extends SpecBase with MockitoSug
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(WillTakeTimeToSupportMotherPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(WillTakeTimeToSupportPartnerPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, willTakeTimeToSupportMotherRoute)
+        val request = FakeRequest(GET, willTakeTimeToSupportPartnerRoute)
 
-        val view = application.injector.instanceOf[WillTakeTimeToSupportMotherView]
+        val view = application.injector.instanceOf[WillTakeTimeToSupportPartnerView]
 
         val result = route(application, request).value
 
@@ -94,7 +94,7 @@ class WillTakeTimeToSupportMotherControllerSpec extends SpecBase with MockitoSug
 
       running(application) {
         val request =
-          FakeRequest(POST, willTakeTimeToSupportMotherRoute)
+          FakeRequest(POST, willTakeTimeToSupportPartnerRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
@@ -110,12 +110,12 @@ class WillTakeTimeToSupportMotherControllerSpec extends SpecBase with MockitoSug
 
       running(application) {
         val request =
-          FakeRequest(POST, willTakeTimeToSupportMotherRoute)
+          FakeRequest(POST, willTakeTimeToSupportPartnerRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[WillTakeTimeToSupportMotherView]
+        val view = application.injector.instanceOf[WillTakeTimeToSupportPartnerView]
 
         val result = route(application, request).value
 
@@ -129,7 +129,7 @@ class WillTakeTimeToSupportMotherControllerSpec extends SpecBase with MockitoSug
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, willTakeTimeToSupportMotherRoute)
+        val request = FakeRequest(GET, willTakeTimeToSupportPartnerRoute)
 
         val result = route(application, request).value
 
@@ -144,7 +144,7 @@ class WillTakeTimeToSupportMotherControllerSpec extends SpecBase with MockitoSug
 
       running(application) {
         val request =
-          FakeRequest(POST, willTakeTimeToSupportMotherRoute)
+          FakeRequest(POST, willTakeTimeToSupportPartnerRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value

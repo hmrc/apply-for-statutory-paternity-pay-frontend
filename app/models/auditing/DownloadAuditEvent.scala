@@ -17,13 +17,14 @@
 package models.auditing
 
 import models.auditing.DownloadAuditEvent.{BirthDetails, Eligibility}
-import models.{JourneyModel, Name, PaternityLeaveLength}
+import models.{CountryOfResidence, JourneyModel, Name, PaternityLeaveLength, RelationshipToChild}
 import play.api.libs.json.{Json, Writes}
 import uk.gov.hmrc.domain.Nino
 
 import java.time.LocalDate
 
 final case class DownloadAuditEvent(
+                                     countryOfResidence: CountryOfResidence,
                                      eligibility: Eligibility,
                                      name: Name,
                                      nino: Nino,
@@ -37,19 +38,41 @@ final case class DownloadAuditEvent(
 }
 
 object DownloadAuditEvent {
+  sealed trait Eligibility
 
-  final case class Eligibility(
-                                becomingAdoptiveParents: Boolean,
-                                biologicalFather: Boolean,
-                                inRelationshipWithMother: Option[Boolean],
-                                livingWithMother: Option[Boolean],
-                                responsibilityForChild: Boolean,
-                                timeOffToCareForChild: Boolean,
-                                timeOffToSupportMother: Option[Boolean]
-                              )
+  final case class BirthChildEligibility(
+                                          biologicalFather: Boolean,
+                                          inRelationshipWithMother: Option[Boolean],
+                                          livingWithMother: Option[Boolean],
+                                          responsibilityForChild: Boolean,
+                                          timeOffToCareForChild: Boolean,
+                                          timeOffToSupportPartner: Option[Boolean]
+                                        ) extends Eligibility
+
+  object BirthChildEligibility {
+    implicit lazy val writes: Writes[BirthChildEligibility] = Json.writes[BirthChildEligibility]
+  }
+
+  final case class AdoptionParentalOrderEligibility(
+                                                     applyingForStatutoryAdoptionPay: Boolean,
+                                                     adoptingFromAbroad: Boolean,
+                                                     reasonForRequesting: RelationshipToChild,
+                                                     inQualifyingRelationship: Boolean,
+                                                     livingWithPartner: Option[Boolean],
+                                                     responsibilityForChild: Boolean,
+                                                     timeOffToCareForChild: Boolean,
+                                                     timeOffToSupportPartner: Option[Boolean]
+                                                   ) extends Eligibility
+
+  object AdoptionParentalOrderEligibility {
+    implicit lazy val writes: Writes[AdoptionParentalOrderEligibility] = Json.writes[AdoptionParentalOrderEligibility]
+  }
 
   object Eligibility {
-    implicit lazy val writes: Writes[Eligibility] = Json.writes[Eligibility]
+    implicit lazy val writes: Writes[Eligibility] = Writes[Eligibility] {
+      case x: BirthChildEligibility => Json.toJson(x)(BirthChildEligibility.writes)
+      case x: AdoptionParentalOrderEligibility => Json.toJson(x)(AdoptionParentalOrderEligibility.writes)
+    }
   }
 
   sealed abstract class BirthDetails
@@ -81,15 +104,8 @@ object DownloadAuditEvent {
 
   def from(model: JourneyModel): DownloadAuditEvent =
     DownloadAuditEvent(
-      eligibility = Eligibility(
-        becomingAdoptiveParents = model.eligibility.becomingAdoptiveParents,
-        biologicalFather = model.eligibility.biologicalFather,
-        inRelationshipWithMother = model.eligibility.inRelationshipWithMother,
-        livingWithMother = model.eligibility.livingWithMother,
-        responsibilityForChild = model.eligibility.responsibilityForChild,
-        timeOffToCareForChild = model.eligibility.timeOffToCareForChild,
-        timeOffToSupportMother = model.eligibility.timeOffToSupportMother
-      ),
+      countryOfResidence = model.countryOfResidence,
+      eligibility = getEligibility(model),
       name = model.name,
       nino = model.nino,
       dueDate = model.dueDate,
@@ -98,6 +114,31 @@ object DownloadAuditEvent {
       payStartDate = model.payStartDate,
       howLongWillYouBeOnLeave = model.howLongWillYouBeOnLeave
     )
+
+  private def getEligibility(model: JourneyModel): Eligibility =
+    model.eligibility match {
+      case e: models.JourneyModel.BirthChildEligibility =>
+        BirthChildEligibility(
+          biologicalFather = e.biologicalFather,
+          inRelationshipWithMother = e.inRelationshipWithMother,
+          livingWithMother = e.livingWithMother,
+          responsibilityForChild = e.responsibilityForChild,
+          timeOffToCareForChild = e.timeOffToCareForChild,
+          timeOffToSupportPartner = e.timeOffToSupportPartner
+        )
+
+      case e: models.JourneyModel.AdoptionParentalOrderEligibility =>
+        AdoptionParentalOrderEligibility(
+          applyingForStatutoryAdoptionPay = e.applyingForStatutoryAdoptionPay,
+          adoptingFromAbroad = e.adoptingFromAbroad,
+          reasonForRequesting = e.reasonForRequesting,
+          inQualifyingRelationship = e.inQualifyingRelationship,
+          livingWithPartner = e.livingWithPartner,
+          responsibilityForChild = e.responsibilityForChild,
+          timeOffToCareForChild = e.timeOffToCareForChild,
+          timeOffToSupportPartner = e.timeOffToSupportPartner
+        )
+    }
 
   implicit lazy val writes: Writes[DownloadAuditEvent] = Json.writes[DownloadAuditEvent]
 }

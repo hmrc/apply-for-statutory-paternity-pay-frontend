@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import generators.Generators
-import models.{Name, PaternityLeaveLength}
+import models.{CountryOfResidence, Name, PaternityLeaveLength}
 import org.scalacheck.Arbitrary.arbitrary
 import pages._
 import play.api.i18n.Messages
@@ -39,6 +39,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
 
       val answers =
         emptyUserAnswers
+          .set(CountryOfResidencePage, CountryOfResidence.England).success.value
           .set(BabyDateOfBirthPage, LocalDate.now).success.value
           .set(BabyDueDatePage, LocalDate.now).success.value
           .set(BabyHasBeenBornPage, true).success.value
@@ -54,7 +55,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
           .set(WantPayToStartOnDueDatePage, true).success.value
           .set(WillHaveCaringResponsibilityPage, true).success.value
           .set(WillTakeTimeToCareForChildPage, true).success.value
-          .set(WillTakeTimeToSupportMotherPage, true).success.value
+          .set(WillTakeTimeToSupportPartnerPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
@@ -67,15 +68,21 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
         
         implicit val msgs: Messages = messages(application)
 
+        val applicationDetails = SummaryListViewModel(
+          rows = Seq(
+            CountryOfResidenceSummary.row(answers),
+            IsAdoptingSummary.row(answers)
+          ).flatten
+        )
+
         val relationshipDetails = SummaryListViewModel(
           rows = Seq(
-            IsAdoptingSummary.row(answers),
             IsBiologicalFatherSummary.row(answers),
             IsInQualifyingRelationshipSummary.row(answers),
             IsCohabitingSummary.row(answers),
             WillHaveCaringResponsibilitySummary.row(answers),
             WillTakeTimeToCareForChildSummary.row(answers),
-            WillTakeTimeToSupportMotherSummary.row(answers)
+            WillTakeTimeToSupportPartnerSummary.row(answers)
           ).flatten
         )
 
@@ -105,7 +112,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
         )
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(relationshipDetails, personalDetails, babyDetails, paternityDetails)(request, implicitly).toString
+        contentAsString(result) mustEqual view(applicationDetails, relationshipDetails, personalDetails, babyDetails, paternityDetails)(request, implicitly).toString
       }
     }
 

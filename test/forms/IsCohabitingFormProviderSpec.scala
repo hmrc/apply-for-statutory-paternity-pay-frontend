@@ -17,14 +17,18 @@
 package forms
 
 import forms.behaviours.BooleanFieldBehaviours
+import models.RelationshipToChild
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.data.FormError
 
-class IsCohabitingFormProviderSpec extends BooleanFieldBehaviours {
+class IsCohabitingFormProviderSpec extends BooleanFieldBehaviours with ScalaCheckPropertyChecks {
 
-  val requiredKey = "isCohabiting.error.required"
+  val relationship = arbitrary[RelationshipToChild].sample.value
+  val requiredKey = s"isCohabiting.${relationship.toString}.error.required"
   val invalidKey = "error.boolean"
 
-  val form = new IsCohabitingFormProvider()()
+  val form = new IsCohabitingFormProvider()(relationship)
 
   ".value" - {
 

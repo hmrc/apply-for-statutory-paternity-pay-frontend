@@ -17,11 +17,11 @@
 package pages
 
 import controllers.routes
-import models.{Mode, ReasonForRequesting}
+import models.{Mode, RelationshipToChild}
 import play.api.libs.json.JsPath
 import play.api.mvc.Call
 
-case object ReasonForRequestingPage extends QuestionPage[ReasonForRequesting] {
+case object ReasonForRequestingPage extends QuestionPage[RelationshipToChild] {
 
   override def path: JsPath = JsPath \ toString
 

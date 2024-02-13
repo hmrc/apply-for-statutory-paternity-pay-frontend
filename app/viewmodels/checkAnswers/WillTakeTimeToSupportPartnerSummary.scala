@@ -18,26 +18,26 @@ package viewmodels.checkAnswers
 
 import controllers.routes
 import models.{CheckMode, UserAnswers}
-import pages.WillTakeTimeToSupportMotherPage
+import pages.WillTakeTimeToSupportPartnerPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object WillTakeTimeToSupportMotherSummary  {
+object WillTakeTimeToSupportPartnerSummary  {
 
   def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(WillTakeTimeToSupportMotherPage).map {
+    answers.get(WillTakeTimeToSupportPartnerPage).map {
       answer =>
 
         val value = if (answer) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
-          key     = "willTakeTimeToSupportMother.checkYourAnswersLabel",
+          key     = "willTakeTimeToSupportPartner.checkYourAnswersLabel",
           value   = ValueViewModel(value),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.WillTakeTimeToSupportMotherController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("willTakeTimeToSupportMother.change.hidden"))
+            ActionItemViewModel("site.change", routes.WillTakeTimeToSupportPartnerController.onPageLoad(CheckMode).url)
+              .withVisuallyHiddenText(messages("willTakeTimeToSupportPartner.change.hidden"))
           )
         )
     }

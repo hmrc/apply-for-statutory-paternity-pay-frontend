@@ -27,30 +27,40 @@ import models._
 class Navigator @Inject()() {
 
   private val normalRoutes: Page => UserAnswers => Call = {
-    case IsAdoptingPage                   => isAdoptingRoute
-    case IsBiologicalFatherPage           => isBiologicalFatherRoute
-    case IsInQualifyingRelationshipPage   => isInQualifyingRelationshipRoute
-    case IsCohabitingPage                 => isCohabitingRoute
-    case WillHaveCaringResponsibilityPage => willHaveCaringResponsibilityRoute
-    case WillTakeTimeToCareForChildPage   => willTakeTimeToCareForChildRoute
-    case WillTakeTimeToSupportMotherPage  => willTakeTimeToSupportMotherRoute
-    case NamePage                         => _ => routes.NinoController.onPageLoad(NormalMode)
-    case NinoPage                         => _ => routes.BabyHasBeenBornController.onPageLoad(NormalMode)
-    case BabyHasBeenBornPage              => babyHasBeenBornRoute
-    case BabyDateOfBirthPage              => _ => routes.WantPayToStartOnBirthDateController.onPageLoad(NormalMode)
-    case BabyDueDatePage                  => babyDueDateRoute
-    case WantPayToStartOnBirthDatePage    => wantPayToStartOnBirthDateRoute
-    case WantPayToStartOnDueDatePage      => wantPayToStartOnDueDateRoute
-    case PayStartDateBabyBornPage         => _ => routes.BabyDueDateController.onPageLoad(NormalMode)
-    case PayStartDateBabyDuePage          => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
-    case PaternityLeaveLengthPage         => _ => routes.CheckYourAnswersController.onPageLoad
-    case _                                => _ => routes.IndexController.onPageLoad
+    case CountryOfResidencePage                => _ => routes.IsAdoptingController.onPageLoad(NormalMode)
+    case IsAdoptingPage                        => isAdoptingRoute
+    case IsApplyingForStatutoryAdoptionPayPage => isApplyingForStatutoryAdoptionPayRoute
+    case IsAdoptingFromAbroadPage              => _ => routes.ReasonForRequestingController.onPageLoad(NormalMode)
+    case ReasonForRequestingPage               => _ => routes.IsInQualifyingRelationshipController.onPageLoad(NormalMode)
+    case IsBiologicalFatherPage                => isBiologicalFatherRoute
+    case IsInQualifyingRelationshipPage        => isInQualifyingRelationshipRoute
+    case IsCohabitingPage                      => isCohabitingRoute
+    case WillHaveCaringResponsibilityPage      => willHaveCaringResponsibilityRoute
+    case WillTakeTimeToCareForChildPage        => willTakeTimeToCareForChildRoute
+    case WillTakeTimeToSupportPartnerPage       => willTakeTimeToSupportPartnerRoute
+    case NamePage                              => _ => routes.NinoController.onPageLoad(NormalMode)
+    case NinoPage                              => _ => routes.BabyHasBeenBornController.onPageLoad(NormalMode)
+    case BabyHasBeenBornPage                   => babyHasBeenBornRoute
+    case BabyDateOfBirthPage                   => _ => routes.WantPayToStartOnBirthDateController.onPageLoad(NormalMode)
+    case BabyDueDatePage                       => babyDueDateRoute
+    case WantPayToStartOnBirthDatePage         => wantPayToStartOnBirthDateRoute
+    case WantPayToStartOnDueDatePage           => wantPayToStartOnDueDateRoute
+    case PayStartDateBabyBornPage              => _ => routes.BabyDueDateController.onPageLoad(NormalMode)
+    case PayStartDateBabyDuePage               => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+    case PaternityLeaveLengthPage              => _ => routes.CheckYourAnswersController.onPageLoad
+    case _                                     => _ => routes.IndexController.onPageLoad
   }
 
   private def isAdoptingRoute(answers: UserAnswers): Call =
     answers.get(IsAdoptingPage).map {
-      case true  => routes.CannotApplyAdoptingController.onPageLoad()
+      case true  => routes.IsApplyingForStatutoryAdoptionPayController.onPageLoad(NormalMode)
       case false => routes.IsBiologicalFatherController.onPageLoad(NormalMode)
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def isApplyingForStatutoryAdoptionPayRoute(answers: UserAnswers): Call =
+    answers.get(IsApplyingForStatutoryAdoptionPayPage).map {
+      case true  => routes.CannotApplyController.onPageLoad()
+      case false => routes.IsAdoptingFromAbroadController.onPageLoad(NormalMode)
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   private def isBiologicalFatherRoute(answers: UserAnswers): Call =
@@ -80,11 +90,11 @@ class Navigator @Inject()() {
   private def willTakeTimeToCareForChildRoute(answers: UserAnswers): Call =
     answers.get(WillTakeTimeToCareForChildPage).map {
       case true  => routes.NameController.onPageLoad(NormalMode)
-      case false => routes.WillTakeTimeToSupportMotherController.onPageLoad(NormalMode)
+      case false => routes.WillTakeTimeToSupportPartnerController.onPageLoad(NormalMode)
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
-  private def willTakeTimeToSupportMotherRoute(answers: UserAnswers): Call =
-    answers.get(WillTakeTimeToSupportMotherPage).map {
+  private def willTakeTimeToSupportPartnerRoute(answers: UserAnswers): Call =
+    answers.get(WillTakeTimeToSupportPartnerPage).map {
       case true  => routes.NameController.onPageLoad(NormalMode)
       case false => routes.CannotApplyController.onPageLoad()
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
@@ -114,26 +124,54 @@ class Navigator @Inject()() {
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   private val checkRouteMap: Page => UserAnswers => Call = {
-    case IsAdoptingPage                   => isAdoptingCheckRoute
-    case IsBiologicalFatherPage           => isBiologicalFatherCheckRoute
-    case IsInQualifyingRelationshipPage   => isInQualifyingRelationshipCheckRoute
-    case IsCohabitingPage                 => isCohabitingCheckRoute
-    case WillHaveCaringResponsibilityPage => willHaveCaringResponsibilityCheckRoute
-    case WillTakeTimeToCareForChildPage   => willTakeTimeToCareForChildCheckRoute
-    case WillTakeTimeToSupportMotherPage  => willTakeTimeToSupportMotherCheckRoute
-    case BabyHasBeenBornPage              => babyHasBeenBornCheckRoute
-    case BabyDateOfBirthPage              => babyDateOfBirthCheckRoute
-    case BabyDueDatePage                  => babyDueDateCheckRoute
-    case WantPayToStartOnDueDatePage      => wantPayToStartOnDueDateCheckRoute
-    case WantPayToStartOnBirthDatePage    => wantPayToStartOnBirthDateCheckRoute
-    case _                                => _ => routes.CheckYourAnswersController.onPageLoad
+    case IsAdoptingPage                        => isAdoptingCheckRoute
+    case IsApplyingForStatutoryAdoptionPayPage => isApplyingForStatutoryAdoptionPayCheckRoute
+    case IsAdoptingFromAbroadPage              => isAdoptingFromAbroadCheckRoute
+    case ReasonForRequestingPage               => reasonForRequestingCheckRoute
+    case IsBiologicalFatherPage                => isBiologicalFatherCheckRoute
+    case IsInQualifyingRelationshipPage        => isInQualifyingRelationshipCheckRoute
+    case IsCohabitingPage                      => isCohabitingCheckRoute
+    case WillHaveCaringResponsibilityPage      => willHaveCaringResponsibilityCheckRoute
+    case WillTakeTimeToCareForChildPage        => willTakeTimeToCareForChildCheckRoute
+    case WillTakeTimeToSupportPartnerPage       => willTakeTimeToSupportPartnerCheckRoute
+    case BabyHasBeenBornPage                   => babyHasBeenBornCheckRoute
+    case BabyDateOfBirthPage                   => babyDateOfBirthCheckRoute
+    case BabyDueDatePage                       => babyDueDateCheckRoute
+    case WantPayToStartOnDueDatePage           => wantPayToStartOnDueDateCheckRoute
+    case WantPayToStartOnBirthDatePage         => wantPayToStartOnBirthDateCheckRoute
+    case _                                     => _ => routes.CheckYourAnswersController.onPageLoad
   }
 
   private def isAdoptingCheckRoute(answers: UserAnswers): Call =
     answers.get(IsAdoptingPage).map {
-      case true  => routes.CannotApplyAdoptingController.onPageLoad()
+      case true  =>
+        if (answers.isDefined(IsApplyingForStatutoryAdoptionPayPage)) {
+          routes.CheckYourAnswersController.onPageLoad
+        } else {
+          routes.IsApplyingForStatutoryAdoptionPayController.onPageLoad(CheckMode)
+        }
+
+      case false =>
+        if (answers.isDefined(IsBiologicalFatherPage)) {
+          routes.CheckYourAnswersController.onPageLoad
+        } else {
+          routes.IsBiologicalFatherController.onPageLoad(CheckMode)
+        }
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def isApplyingForStatutoryAdoptionPayCheckRoute(answers: UserAnswers): Call =
+    answers.get(IsApplyingForStatutoryAdoptionPayPage).map {
+      case true  => routes.CannotApplyController.onPageLoad()
       case false => routes.CheckYourAnswersController.onPageLoad
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def isAdoptingFromAbroadCheckRoute(answers: UserAnswers): Call =
+    if (answers.isDefined(ReasonForRequestingPage)) routes.CheckYourAnswersController.onPageLoad
+    else                                            routes.ReasonForRequestingController.onPageLoad(NormalMode)
+
+  private def reasonForRequestingCheckRoute(answers: UserAnswers): Call =
+    if (answers.isDefined(IsInQualifyingRelationshipPage)) routes.CheckYourAnswersController.onPageLoad
+    else                                                   routes.IsInQualifyingRelationshipController.onPageLoad(CheckMode)
 
   private def isBiologicalFatherCheckRoute(answers: UserAnswers): Call =
     (answers.get(IsBiologicalFatherPage), answers.get(IsInQualifyingRelationshipPage)) match {
@@ -160,13 +198,13 @@ class Navigator @Inject()() {
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   private def willTakeTimeToCareForChildCheckRoute(answers: UserAnswers): Call =
-    (answers.get(WillTakeTimeToCareForChildPage), answers.get(WillTakeTimeToSupportMotherPage)) match {
-      case (Some(false), None) => routes.WillTakeTimeToSupportMotherController.onPageLoad(CheckMode)
+    (answers.get(WillTakeTimeToCareForChildPage), answers.get(WillTakeTimeToSupportPartnerPage)) match {
+      case (Some(false), None) => routes.WillTakeTimeToSupportPartnerController.onPageLoad(CheckMode)
       case _                   => routes.CheckYourAnswersController.onPageLoad
     }
 
-  private def willTakeTimeToSupportMotherCheckRoute(answers: UserAnswers): Call =
-    answers.get(WillTakeTimeToSupportMotherPage).map {
+  private def willTakeTimeToSupportPartnerCheckRoute(answers: UserAnswers): Call =
+    answers.get(WillTakeTimeToSupportPartnerPage).map {
       case true  => routes.CheckYourAnswersController.onPageLoad
       case false => routes.CannotApplyController.onPageLoad()
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())

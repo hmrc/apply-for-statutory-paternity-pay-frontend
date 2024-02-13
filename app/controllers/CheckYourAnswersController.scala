@@ -38,15 +38,24 @@ class CheckYourAnswersController @Inject()(
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData andThen journeyModelFilter) {
     implicit request =>
 
+      val applicationDetails = SummaryListViewModel(
+        rows = Seq(
+          CountryOfResidenceSummary.row(request.userAnswers),
+          IsAdoptingSummary.row(request.userAnswers),
+          IsApplyingForStatutoryAdoptionPaySummary.row(request.userAnswers),
+          IsAdoptingFromAbroadSummary.row(request.userAnswers),
+          ReasonForRequestingSummary.row(request.userAnswers),
+        ).flatten
+      )
+
       val relationshipDetails = SummaryListViewModel(
         rows = Seq(
-          IsAdoptingSummary.row(request.userAnswers),
           IsBiologicalFatherSummary.row(request.userAnswers),
           IsInQualifyingRelationshipSummary.row(request.userAnswers),
           IsCohabitingSummary.row(request.userAnswers),
           WillHaveCaringResponsibilitySummary.row(request.userAnswers),
           WillTakeTimeToCareForChildSummary.row(request.userAnswers),
-          WillTakeTimeToSupportMotherSummary.row(request.userAnswers)
+          WillTakeTimeToSupportPartnerSummary.row(request.userAnswers)
         ).flatten
       )
 
@@ -76,6 +85,6 @@ class CheckYourAnswersController @Inject()(
         ).flatten
       )
 
-      Ok(view(relationshipDetails, personalDetails, babyDetails, paternityDetails))
+      Ok(view(applicationDetails, relationshipDetails, personalDetails, babyDetails, paternityDetails))
   }
 }

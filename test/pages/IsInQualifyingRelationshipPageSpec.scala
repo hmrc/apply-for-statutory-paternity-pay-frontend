@@ -28,4 +28,28 @@ class IsInQualifyingRelationshipPageSpec extends PageBehaviours {
 
     beRemovable[Boolean](IsInQualifyingRelationshipPage)
   }
+
+  "must remove Is Cohabiting when the answer is true" in {
+
+    val answers =
+      emptyUserAnswers
+        .set(IsInQualifyingRelationshipPage, false).success.value
+        .set(IsCohabitingPage, true).success.value
+
+    val result = answers.set(IsInQualifyingRelationshipPage, true).success.value
+
+    result.get(IsCohabitingPage) must not be defined
+  }
+
+  "must not remove Is Cohabiting when the answer is false" in {
+
+    val answers =
+      emptyUserAnswers
+        .set(IsInQualifyingRelationshipPage, true).success.value
+        .set(IsCohabitingPage, true).success.value
+
+    val result = answers.set(IsInQualifyingRelationshipPage, false).success.value
+
+    result.get(IsCohabitingPage) mustBe defined
+  }
 }

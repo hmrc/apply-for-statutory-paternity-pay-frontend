@@ -19,7 +19,7 @@ package controllers.actions
 import base.SpecBase
 import generators.ModelGenerators
 import models.requests.DataRequest
-import models.{Name, NormalMode, PaternityLeaveLength}
+import models.{CountryOfResidence, Name, NormalMode, PaternityLeaveLength}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.concurrent.ScalaFutures
 import pages._
@@ -46,6 +46,7 @@ class JourneyModelFilterSpec extends SpecBase with ScalaFutures with ModelGenera
 
       val answers =
         emptyUserAnswers
+          .set(CountryOfResidencePage, CountryOfResidence.England).success.value
           .set(BabyDateOfBirthPage, LocalDate.now).success.value
           .set(BabyDueDatePage, LocalDate.now).success.value
           .set(BabyHasBeenBornPage, true).success.value
@@ -61,7 +62,7 @@ class JourneyModelFilterSpec extends SpecBase with ScalaFutures with ModelGenera
           .set(WantPayToStartOnDueDatePage, true).success.value
           .set(WillHaveCaringResponsibilityPage, true).success.value
           .set(WillTakeTimeToCareForChildPage, true).success.value
-          .set(WillTakeTimeToSupportMotherPage, true).success.value
+          .set(WillTakeTimeToSupportPartnerPage, true).success.value
 
       val completedDataRequest = DataRequest[AnyContent](FakeRequest(), "id", answers)
       val result = filter.invokeBlock[AnyContent](completedDataRequest, _ => Future.successful(Ok))
@@ -73,7 +74,7 @@ class JourneyModelFilterSpec extends SpecBase with ScalaFutures with ModelGenera
       val completedDataRequest = DataRequest[AnyContent](FakeRequest(), "id", emptyUserAnswers)
       val result = filter.invokeBlock[AnyContent](completedDataRequest, _ => Future.successful(Ok))
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual controllers.routes.IsAdoptingController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustEqual controllers.routes.CountryOfResidenceController.onPageLoad(NormalMode).url
     }
   }
 }

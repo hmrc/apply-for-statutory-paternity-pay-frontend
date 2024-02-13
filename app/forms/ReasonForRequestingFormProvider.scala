@@ -20,12 +20,12 @@ import javax.inject.Inject
 
 import forms.mappings.Mappings
 import play.api.data.Form
-import models.ReasonForRequesting
+import models.RelationshipToChild
 
 class ReasonForRequestingFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[ReasonForRequesting] =
+  def apply(): Form[RelationshipToChild] =
     Form(
-      "value" -> enumerable[ReasonForRequesting]("reasonForRequesting.error.required")
+      "value" -> enumerable[RelationshipToChild]("reasonForRequesting.error.required")
     )
 }

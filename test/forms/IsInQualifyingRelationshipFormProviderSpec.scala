@@ -17,14 +17,19 @@
 package forms
 
 import forms.behaviours.BooleanFieldBehaviours
+import models.RelationshipToChild
+import models.RelationshipToChild.BirthChild
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.data.FormError
 
-class IsInQualifyingRelationshipFormProviderSpec extends BooleanFieldBehaviours {
+class IsInQualifyingRelationshipFormProviderSpec extends BooleanFieldBehaviours with ScalaCheckPropertyChecks {
 
-  val requiredKey = "isInQualifyingRelationship.error.required"
+  val relationship = arbitrary[RelationshipToChild].sample.value
+  val requiredKey = s"isInQualifyingRelationship.${relationship.toString}.error.required"
   val invalidKey = "error.boolean"
 
-  val form = new IsInQualifyingRelationshipFormProvider()()
+  val form = new IsInQualifyingRelationshipFormProvider()(relationship)
 
   ".value" - {
 

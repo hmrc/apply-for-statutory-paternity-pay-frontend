@@ -17,7 +17,7 @@
 package forms
 
 import forms.behaviours.OptionFieldBehaviours
-import models.ReasonForRequesting
+import models.RelationshipToChild
 import play.api.data.FormError
 
 class ReasonForRequestingFormProviderSpec extends OptionFieldBehaviours {
@@ -29,10 +29,10 @@ class ReasonForRequestingFormProviderSpec extends OptionFieldBehaviours {
     val fieldName = "value"
     val requiredKey = "reasonForRequesting.error.required"
 
-    behave like optionsField[ReasonForRequesting](
+    behave like optionsField[RelationshipToChild](
       form,
       fieldName,
-      validValues  = ReasonForRequesting.values,
+      validValues  = RelationshipToChild.values,
       invalidError = FormError(fieldName, "error.invalid")
     )
 

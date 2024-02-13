@@ -25,6 +25,7 @@ import uk.gov.hmrc.domain.Nino
 import java.time.LocalDate
 
 final case class JourneyModel(
+                               countryOfResidence: CountryOfResidence,
                                eligibility: Eligibility,
                                name: Name,
                                nino: Nino,
@@ -45,15 +46,27 @@ final case class JourneyModel(
 
 object JourneyModel {
 
-  final case class Eligibility(
-                                becomingAdoptiveParents: Boolean,
-                                biologicalFather: Boolean,
-                                inRelationshipWithMother: Option[Boolean],
-                                livingWithMother: Option[Boolean],
-                                responsibilityForChild: Boolean,
-                                timeOffToCareForChild: Boolean,
-                                timeOffToSupportMother: Option[Boolean]
-                              )
+  sealed trait Eligibility
+
+  final case class BirthChildEligibility(
+                                          biologicalFather: Boolean,
+                                          inRelationshipWithMother: Option[Boolean],
+                                          livingWithMother: Option[Boolean],
+                                          responsibilityForChild: Boolean,
+                                          timeOffToCareForChild: Boolean,
+                                          timeOffToSupportPartner: Option[Boolean]
+                                        ) extends Eligibility
+
+  final case class AdoptionParentalOrderEligibility(
+                                                     applyingForStatutoryAdoptionPay: Boolean,
+                                                     adoptingFromAbroad: Boolean,
+                                                     reasonForRequesting: RelationshipToChild,
+                                                     inQualifyingRelationship: Boolean,
+                                                     livingWithPartner: Option[Boolean],
+                                                     responsibilityForChild: Boolean,
+                                                     timeOffToCareForChild: Boolean,
+                                                     timeOffToSupportPartner: Option[Boolean]
+                                                   ) extends Eligibility
 
   sealed abstract class BirthDetails
 
@@ -71,6 +84,7 @@ object JourneyModel {
 
   def from(answers: UserAnswers): EitherNec[QuestionPage[_], JourneyModel] =
     (
+      answers.getEither(CountryOfResidencePage),
       getEligibility(answers),
       answers.getEither(NamePage),
       answers.getEither(NinoPage),
@@ -81,27 +95,52 @@ object JourneyModel {
         payStartDate <- getPayStartDate(answers, alreadyBorn)
       } yield (alreadyBorn, birthDetails, payStartDate),
       answers.getEither(PaternityLeaveLengthPage),
-    ).parMapN { case (eligibility, name, nino, dueDate, (alreadyBorn, birthDetails, payStartDate), paternityLeaveLength) =>
-      JourneyModel(eligibility, name, nino, alreadyBorn, dueDate, birthDetails, payStartDate, paternityLeaveLength)
+    ).parMapN { case (country, eligibility, name, nino, dueDate, (alreadyBorn, birthDetails, payStartDate), paternityLeaveLength) =>
+      JourneyModel(country, eligibility, name, nino, alreadyBorn, dueDate, birthDetails, payStartDate, paternityLeaveLength)
     }
 
   private def getEligibility(answers: UserAnswers): EitherNec[QuestionPage[_], Eligibility] =
-    (
-      getIsAdopting(answers),
-      getRelationshipEligibility(answers),
-      getWillHaveCaringResponsibility(answers),
-      getTimeEligibility(answers)
-    ).parMapN { case (isAdopting, (isBiologicalFather, isInQualifyingRelationship, isCohabiting), caringResponsibility, (careForChild, supportMother)) =>
-      Eligibility(isAdopting, isBiologicalFather, isInQualifyingRelationship, isCohabiting, caringResponsibility, careForChild, supportMother)
+    answers.getEither(IsAdoptingPage).flatMap {
+      case true => getAdoptionParentalOrderEligibility(answers)
+      case false => getBirthChildEligibility(answers)
     }
 
-  private def getIsAdopting(answers: UserAnswers): EitherNec[QuestionPage[_], Boolean] =
-    answers.getEither(IsAdoptingPage).flatMap {
-      case true => IsAdoptingPage.leftNec
+  private def getBirthChildEligibility(answers: UserAnswers): EitherNec[QuestionPage[_], BirthChildEligibility] =
+    (
+      getBirthChildRelationshipEligibility(answers),
+      getWillHaveCaringResponsibility(answers),
+      getTimeEligibility(answers)
+    ).parMapN { case ((isBiologicalFather, isInQualifyingRelationship, isCohabiting), caringResponsibility, (careForChild, supportMother)) =>
+      BirthChildEligibility(isBiologicalFather, isInQualifyingRelationship, isCohabiting, caringResponsibility, careForChild, supportMother)
+    }
+
+  private def getAdoptionParentalOrderEligibility(answers: UserAnswers): EitherNec[QuestionPage[_], AdoptionParentalOrderEligibility] = (
+    getApplyingForStatutoryAdoptionPay(answers),
+    answers.getEither(IsAdoptingFromAbroadPage),
+    answers.getEither(ReasonForRequestingPage),
+    getAdoptionRelationshipEligibility(answers),
+    getWillHaveCaringResponsibility(answers),
+    getTimeEligibility(answers)
+  ).parMapN { case (applyingForStatutoryAdoptionPay, adoptingFromAbroad, reasonForRequesting, (inQualifyingRelationship, cohabiting), caringResponsibility, (careForChild, supportPartner)) =>
+    AdoptionParentalOrderEligibility(applyingForStatutoryAdoptionPay, adoptingFromAbroad, reasonForRequesting, inQualifyingRelationship, cohabiting, caringResponsibility, careForChild, supportPartner)
+  }
+
+  private def getApplyingForStatutoryAdoptionPay(answers: UserAnswers): EitherNec[QuestionPage[_], Boolean] =
+    answers.getEither(IsApplyingForStatutoryAdoptionPayPage).flatMap {
+      case true => IsApplyingForStatutoryAdoptionPayPage.leftNec
       case false => Right(false)
     }
 
-  private def getRelationshipEligibility(answers: UserAnswers): EitherNec[QuestionPage[_], (Boolean, Option[Boolean], Option[Boolean])] =
+  private def getAdoptionRelationshipEligibility(answers: UserAnswers): EitherNec[QuestionPage[_], (Boolean, Option[Boolean])] =
+    answers.getEither(IsInQualifyingRelationshipPage).flatMap {
+      case true => Right(true, None)
+      case false => answers.getEither(IsCohabitingPage).flatMap {
+        case true => Right(false, Some(true))
+        case false => IsCohabitingPage.leftNec
+      }
+    }
+
+  private def getBirthChildRelationshipEligibility(answers: UserAnswers): EitherNec[QuestionPage[_], (Boolean, Option[Boolean], Option[Boolean])] =
     answers.getEither(IsBiologicalFatherPage).flatMap {
       case false => answers.getEither(IsInQualifyingRelationshipPage).flatMap {
         case false => answers.getEither(IsCohabitingPage).flatMap {
@@ -121,9 +160,9 @@ object JourneyModel {
 
   private def getTimeEligibility(answers: UserAnswers): EitherNec[QuestionPage[_], (Boolean, Option[Boolean])] =
     answers.getEither(WillTakeTimeToCareForChildPage).flatMap {
-      case false => answers.getEither(WillTakeTimeToSupportMotherPage).flatMap {
+      case false => answers.getEither(WillTakeTimeToSupportPartnerPage).flatMap {
         case true => Right((false, Some(true)))
-        case false => WillTakeTimeToSupportMotherPage.leftNec
+        case false => WillTakeTimeToSupportPartnerPage.leftNec
       }
       case true => Right((true, None))
     }

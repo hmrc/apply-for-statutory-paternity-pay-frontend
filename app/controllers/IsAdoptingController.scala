@@ -18,9 +18,7 @@ package controllers
 
 import controllers.actions._
 import forms.IsAdoptingFormProvider
-
-import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.Navigator
 import pages.IsAdoptingPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -29,6 +27,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.IsAdoptingView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class IsAdoptingController @Inject()(
@@ -37,6 +36,7 @@ class IsAdoptingController @Inject()(
                                          navigator: Navigator,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
+                                         requireData: DataRequiredAction,
                                          formProvider: IsAdoptingFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: IsAdoptingView
@@ -44,10 +44,10 @@ class IsAdoptingController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(IsAdoptingPage) match {
+      val preparedForm = request.userAnswers.get(IsAdoptingPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -55,7 +55,7 @@ class IsAdoptingController @Inject()(
       Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -64,7 +64,7 @@ class IsAdoptingController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.getOrElse(UserAnswers(request.userId)).set(IsAdoptingPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(IsAdoptingPage, value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(IsAdoptingPage, mode, updatedAnswers))
       )

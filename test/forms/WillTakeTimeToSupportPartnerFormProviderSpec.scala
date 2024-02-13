@@ -16,15 +16,30 @@
 
 package forms
 
-import javax.inject.Inject
+import forms.behaviours.BooleanFieldBehaviours
+import play.api.data.FormError
 
-import forms.mappings.Mappings
-import play.api.data.Form
+class WillTakeTimeToSupportPartnerFormProviderSpec extends BooleanFieldBehaviours {
 
-class WillTakeTimeToSupportMotherFormProvider @Inject() extends Mappings {
+  val requiredKey = "willTakeTimeToSupportPartner.error.required"
+  val invalidKey = "error.boolean"
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("willTakeTimeToSupportMother.error.required")
+  val form = new WillTakeTimeToSupportPartnerFormProvider()()
+
+  ".value" - {
+
+    val fieldName = "value"
+
+    behave like booleanField(
+      form,
+      fieldName,
+      invalidError = FormError(fieldName, invalidKey)
     )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
 }
