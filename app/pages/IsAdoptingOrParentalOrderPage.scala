@@ -22,13 +22,13 @@ import play.api.mvc.Call
 
 import scala.util.Try
 
-case object IsAdoptingPage extends QuestionPage[Boolean] {
+case object IsAdoptingOrParentalOrderPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "isAdopting"
+  override def toString: String = "isAdoptingOrParentalOrder"
 
-  override def route(mode: Mode): Call = controllers.routes.IsAdoptingController.onPageLoad(mode)
+  override def route(mode: Mode): Call = controllers.routes.IsAdoptingOrParentalOrderController.onPageLoad(mode)
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     value.map {
@@ -48,5 +48,5 @@ case object IsAdoptingPage extends QuestionPage[Boolean] {
 
     }.getOrElse(super.cleanup(value, userAnswers))
 
-  private val answersToRemoveWhenAnswerChanges = allQuestionPages - CountryOfResidencePage - IsAdoptingPage
+  private val answersToRemoveWhenAnswerChanges = allQuestionPages - CountryOfResidencePage - IsAdoptingOrParentalOrderPage
 }

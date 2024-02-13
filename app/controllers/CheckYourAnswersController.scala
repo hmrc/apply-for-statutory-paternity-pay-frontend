@@ -41,7 +41,7 @@ class CheckYourAnswersController @Inject()(
       val applicationDetails = SummaryListViewModel(
         rows = Seq(
           CountryOfResidenceSummary.row(request.userAnswers),
-          IsAdoptingSummary.row(request.userAnswers),
+          IsAdoptingOrParentalOrderSummary.row(request.userAnswers),
           IsApplyingForStatutoryAdoptionPaySummary.row(request.userAnswers),
           IsAdoptingFromAbroadSummary.row(request.userAnswers),
           ReasonForRequestingSummary.row(request.userAnswers),

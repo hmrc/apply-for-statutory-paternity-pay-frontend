@@ -237,12 +237,12 @@ nino.error.invalid = Nodwch eich rhif Yswiriant Gwladol yn y fformat cywir
 nino.error.length = Nodwch eich rhif Yswiriant Gwladol yn y fformat cywir
 nino.change.hidden = eich rhif Yswiriant Gwladol
 
-isAdopting.title = A ydych chi, neu bartner, yn dod yn rhiant o ganlyniad i fabwysiadu plentyn neu orchymyn rhiant?
-isAdopting.heading = A ydych chi, neu bartner, yn dod yn rhiant o ganlyniad i fabwysiadu plentyn neu orchymyn rhiant?
-isAdopting.hint = Mae gorchymyn rhiant yn golygu bod person sy’n rhan o gwpl yn cael plentyn o dan drefniant mam fenthyg.
-isAdopting.checkYourAnswersLabel = A ydych chi, neu bartner, yn dod yn rhiant o ganlyniad i fabwysiadu plentyn neu orchymyn rhiant?
-isAdopting.error.required = Dewiswch ‘Iawn’ os ydych chi, neu bartner, yn dod yn rhiant o ganlyniad i fabwysiadu plentyn neu orchymyn rhiant
-isAdopting.change.hidden = os ydych chi, neu bartner, yn dod yn rhiant o ganlyniad i fabwysiadu plentyn neu orchymyn rhiant
+isAdoptingOrParentalOrder.title = A ydych chi, neu bartner, yn dod yn rhiant o ganlyniad i fabwysiadu plentyn neu orchymyn rhiant?
+isAdoptingOrParentalOrder.heading = A ydych chi, neu bartner, yn dod yn rhiant o ganlyniad i fabwysiadu plentyn neu orchymyn rhiant?
+isAdoptingOrParentalOrder.hint = Mae gorchymyn rhiant yn golygu bod person sy’n rhan o gwpl yn cael plentyn o dan drefniant mam fenthyg.
+isAdoptingOrParentalOrder.checkYourAnswersLabel = A ydych chi, neu bartner, yn dod yn rhiant o ganlyniad i fabwysiadu plentyn neu orchymyn rhiant?
+isAdoptingOrParentalOrder.error.required = Dewiswch ‘Iawn’ os ydych chi, neu bartner, yn dod yn rhiant o ganlyniad i fabwysiadu plentyn neu orchymyn rhiant
+isAdoptingOrParentalOrder.change.hidden = os ydych chi, neu bartner, yn dod yn rhiant o ganlyniad i fabwysiadu plentyn neu orchymyn rhiant
 
 pdf.title = Gwneud cais am Dâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth (SC3)
 pdf.name = Enw

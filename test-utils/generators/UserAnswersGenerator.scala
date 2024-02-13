@@ -35,7 +35,7 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(ChildPlacementDatePage.type, JsValue)] ::
     arbitrary[(ChildHasBeenPlacedPage.type, JsValue)] ::
     arbitrary[(ChildExpectedPlacementDatePage.type, JsValue)] ::
-    arbitrary[(IsAdoptingPage.type, JsValue)] ::
+    arbitrary[(IsAdoptingOrParentalOrderPage.type, JsValue)] ::
     arbitrary[(NinoPage.type, JsValue)] ::
     arbitrary[(WantPayToStartOnDueDatePage.type, JsValue)] ::
     arbitrary[(WillTakeTimeToSupportPartnerPage.type, JsValue)] ::

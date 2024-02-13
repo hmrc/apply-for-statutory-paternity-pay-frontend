@@ -21,10 +21,10 @@ import javax.inject.Inject
 import forms.mappings.Mappings
 import play.api.data.Form
 
-class IsAdoptingFormProvider @Inject() extends Mappings {
+class IsAdoptingOrParentalOrderFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(
-      "value" -> boolean("isAdopting.error.required")
+      "value" -> boolean("isAdoptingOrParentalOrder.error.required")
     )
 }

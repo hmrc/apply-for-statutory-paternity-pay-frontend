@@ -106,10 +106,10 @@ POST       /want-pay-to-start-on-due-date                        controllers.Wan
 GET        /change-if-want-pay-to-start-on-due-date                     controllers.WantPayToStartOnDueDateController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-if-want-pay-to-start-on-due-date                     controllers.WantPayToStartOnDueDateController.onSubmit(mode: Mode = CheckMode)
 
-GET        /becoming-adoptive-or-parental-order-parents             controllers.IsAdoptingController.onPageLoad(mode: Mode = NormalMode)
-POST       /becoming-adoptive-or-parental-order-parents             controllers.IsAdoptingController.onSubmit(mode: Mode = NormalMode)
-GET        /change-if-becoming-adoptive-or-parental-order-parents   controllers.IsAdoptingController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-if-becoming-adoptive-or-parental-order-parents   controllers.IsAdoptingController.onSubmit(mode: Mode = CheckMode)
+GET        /becoming-adoptive-or-parental-order-parents             controllers.IsAdoptingOrParentalOrderController.onPageLoad(mode: Mode = NormalMode)
+POST       /becoming-adoptive-or-parental-order-parents             controllers.IsAdoptingOrParentalOrderController.onSubmit(mode: Mode = NormalMode)
+GET        /change-if-becoming-adoptive-or-parental-order-parents   controllers.IsAdoptingOrParentalOrderController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-if-becoming-adoptive-or-parental-order-parents   controllers.IsAdoptingOrParentalOrderController.onSubmit(mode: Mode = CheckMode)
 
 GET        /childExpectedPlacementDate                  controllers.ChildExpectedPlacementDateController.onPageLoad(mode: Mode = NormalMode)
 POST       /childExpectedPlacementDate                  controllers.ChildExpectedPlacementDateController.onSubmit(mode: Mode = NormalMode)

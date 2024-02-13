@@ -19,12 +19,12 @@ package forms
 import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class IsAdoptingFormProviderSpec extends BooleanFieldBehaviours {
+class IsAdoptingOrParentalOrderFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "isAdopting.error.required"
+  val requiredKey = "isAdoptingOrParentalOrder.error.required"
   val invalidKey = "error.boolean"
 
-  val form = new IsAdoptingFormProvider()()
+  val form = new IsAdoptingOrParentalOrderFormProvider()()
 
   ".value" - {
 

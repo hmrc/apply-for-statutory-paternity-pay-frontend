@@ -46,7 +46,7 @@ package object pages {
     CountryOfResidencePage,
     DateChildWasMatchedPage,
     IsAdoptingFromAbroadPage,
-    IsAdoptingPage,
+    IsAdoptingOrParentalOrderPage,
     IsApplyingForStatutoryAdoptionPayPage,
     IsBiologicalFatherPage,
     IsCohabitingPage,

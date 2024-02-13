@@ -24,9 +24,9 @@
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("isAdopting.title"))) {
+@layout(pageTitle = title(form, messages("isAdoptingOrParentalOrder.title"))) {
 
-    @formHelper(action = routes.IsAdoptingController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.IsAdoptingOrParentalOrderController.onSubmit(mode), 'autoComplete -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -36,10 +36,10 @@
             RadiosViewModel.yesNo(
                 field = form("value"),
                 legend = HmrcPageHeadingLegend(
-                    content = messages("isAdopting.heading"),
+                    content = messages("isAdoptingOrParentalOrder.heading"),
                     caption = HmrcSectionCaption(messages("section.applicationDetails"))
                 )
-            ).withHint(HintViewModel(messages("isAdopting.hint")))
+            ).withHint(HintViewModel(messages("isAdoptingOrParentalOrder.hint")))
         )
 
         @govukButton(

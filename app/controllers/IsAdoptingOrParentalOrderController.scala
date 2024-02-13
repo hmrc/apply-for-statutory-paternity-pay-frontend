@@ -17,37 +17,37 @@
 package controllers
 
 import controllers.actions._
-import forms.IsAdoptingFormProvider
+import forms.IsAdoptingOrParentalOrderFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.IsAdoptingPage
+import pages.IsAdoptingOrParentalOrderPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.IsAdoptingView
+import views.html.IsAdoptingOrParentalOrderView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class IsAdoptingController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: IsAdoptingFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: IsAdoptingView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class IsAdoptingOrParentalOrderController @Inject()(
+                                                     override val messagesApi: MessagesApi,
+                                                     sessionRepository: SessionRepository,
+                                                     navigator: Navigator,
+                                                     identify: IdentifierAction,
+                                                     getData: DataRetrievalAction,
+                                                     requireData: DataRequiredAction,
+                                                     formProvider: IsAdoptingOrParentalOrderFormProvider,
+                                                     val controllerComponents: MessagesControllerComponents,
+                                                     view: IsAdoptingOrParentalOrderView
+                                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(IsAdoptingPage) match {
+      val preparedForm = request.userAnswers.get(IsAdoptingOrParentalOrderPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -64,9 +64,9 @@ class IsAdoptingController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(IsAdoptingPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(IsAdoptingOrParentalOrderPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(IsAdoptingPage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(IsAdoptingOrParentalOrderPage, mode, updatedAnswers))
       )
   }
 }

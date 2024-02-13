@@ -284,12 +284,12 @@ nino.error.invalid = Enter your National Insurance number in the correct format
 nino.error.length = Enter your National Insurance number in the correct format
 nino.change.hidden = your National Insurance number
 
-isAdopting.title = Are you or your partner adopting a child or becoming parental order parents?
-isAdopting.heading = Are you or your partner adopting a child or becoming parental order parents?
-isAdopting.hint = A parental order is when a person who is part of a couple has a child through a surrogacy arrangement.
-isAdopting.checkYourAnswersLabel = Are you or your partner adopting a child or becoming parental order parents?
-isAdopting.error.required = Select yes if you or your partner are adopting a child or becoming parental order parents
-isAdopting.change.hidden = if you or your partner are adopting a child or becoming parental order parents
+isAdoptingOrParentalOrder.title = Are you or your partner adopting a child or becoming parental order parents?
+isAdoptingOrParentalOrder.heading = Are you or your partner adopting a child or becoming parental order parents?
+isAdoptingOrParentalOrder.hint = A parental order is when a person who is part of a couple has a child through a surrogacy arrangement.
+isAdoptingOrParentalOrder.checkYourAnswersLabel = Are you or your partner adopting a child or becoming parental order parents?
+isAdoptingOrParentalOrder.error.required = Select yes if you or your partner are adopting a child or becoming parental order parents
+isAdoptingOrParentalOrder.change.hidden = if you or your partner are adopting a child or becoming parental order parents
 
 pdf.title = Apply for Statutory Paternity Pay and/or Paternity Leave (SC3)
 pdf.boolean.true = Yes

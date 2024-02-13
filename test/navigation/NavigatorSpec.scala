@@ -38,21 +38,21 @@ class NavigatorSpec extends SpecBase {
 
       "must go from Country of Residence to Is Adopting" in {
 
-        navigator.nextPage(CountryOfResidencePage, NormalMode, emptyUserAnswers) mustEqual routes.IsAdoptingController.onPageLoad(NormalMode)
+        navigator.nextPage(CountryOfResidencePage, NormalMode, emptyUserAnswers) mustEqual routes.IsAdoptingOrParentalOrderController.onPageLoad(NormalMode)
       }
 
       "must go from Is Adopting" - {
 
         "to Is Applying for Statutory Adoption Pay and Leave when the answer is yes" in {
 
-          val answers = emptyUserAnswers.set(IsAdoptingPage, true).success.value
-          navigator.nextPage(IsAdoptingPage, NormalMode, answers) mustEqual routes.IsApplyingForStatutoryAdoptionPayController.onPageLoad(NormalMode)
+          val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, true).success.value
+          navigator.nextPage(IsAdoptingOrParentalOrderPage, NormalMode, answers) mustEqual routes.IsApplyingForStatutoryAdoptionPayController.onPageLoad(NormalMode)
         }
 
         "to Is Biological Father when the answer is no" in {
 
-          val answers = emptyUserAnswers.set(IsAdoptingPage, false).success.value
-          navigator.nextPage(IsAdoptingPage, NormalMode, answers) mustEqual routes.IsBiologicalFatherController.onPageLoad(NormalMode)
+          val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
+          navigator.nextPage(IsAdoptingOrParentalOrderPage, NormalMode, answers) mustEqual routes.IsBiologicalFatherController.onPageLoad(NormalMode)
         }
       }
 
@@ -280,34 +280,34 @@ class NavigatorSpec extends SpecBase {
 
         "to Is Applying for SAP when the answer is yes and that question has not been answered" in {
 
-          val answers = emptyUserAnswers.set(IsAdoptingPage, true).success.value
-          navigator.nextPage(IsAdoptingPage, CheckMode, answers) mustEqual routes.IsApplyingForStatutoryAdoptionPayController.onPageLoad(CheckMode)
+          val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, true).success.value
+          navigator.nextPage(IsAdoptingOrParentalOrderPage, CheckMode, answers) mustEqual routes.IsApplyingForStatutoryAdoptionPayController.onPageLoad(CheckMode)
         }
 
         "to Check Your Answers when the answer is yes and Is Applying for SAP has been answered" in {
 
           val answers =
             emptyUserAnswers
-              .set(IsAdoptingPage, true).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
               .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
 
-          navigator.nextPage(IsAdoptingPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(IsAdoptingOrParentalOrderPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
         }
 
         "to Check Answers when the answer is no and Is Biological Father has been answered" in {
 
           val answers =
             emptyUserAnswers
-              .set(IsAdoptingPage, false).success.value
+              .set(IsAdoptingOrParentalOrderPage, false).success.value
               .set(IsBiologicalFatherPage, true).success.value
 
-          navigator.nextPage(IsAdoptingPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(IsAdoptingOrParentalOrderPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
         }
 
         "to Is Biological Father when the answer is no and that question has not been answered" in {
 
-          val answers = emptyUserAnswers.set(IsAdoptingPage, false).success.value
-          navigator.nextPage(IsAdoptingPage, CheckMode, answers) mustEqual routes.IsBiologicalFatherController.onPageLoad(CheckMode)
+          val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
+          navigator.nextPage(IsAdoptingOrParentalOrderPage, CheckMode, answers) mustEqual routes.IsBiologicalFatherController.onPageLoad(CheckMode)
         }
       }
 
