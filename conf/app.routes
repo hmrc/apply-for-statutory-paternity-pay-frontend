@@ -106,8 +106,6 @@ POST       /want-pay-to-start-on-due-date                        controllers.Wan
 GET        /change-if-want-pay-to-start-on-due-date                     controllers.WantPayToStartOnDueDateController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-if-want-pay-to-start-on-due-date                     controllers.WantPayToStartOnDueDateController.onSubmit(mode: Mode = CheckMode)
 
-GET        /use-different-form                                      controllers.CannotApplyAdoptingController.onPageLoad()
-
 GET        /becoming-adoptive-or-parental-order-parents             controllers.IsAdoptingController.onPageLoad(mode: Mode = NormalMode)
 POST       /becoming-adoptive-or-parental-order-parents             controllers.IsAdoptingController.onSubmit(mode: Mode = NormalMode)
 GET        /change-if-becoming-adoptive-or-parental-order-parents   controllers.IsAdoptingController.onPageLoad(mode: Mode = CheckMode)

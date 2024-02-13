@@ -237,21 +237,6 @@ nino.error.invalid = Nodwch eich rhif Yswiriant Gwladol yn y fformat cywir
 nino.error.length = Nodwch eich rhif Yswiriant Gwladol yn y fformat cywir
 nino.change.hidden = eich rhif Yswiriant Gwladol
 
-cannotApplyAdopting.title = Mae’n rhaid i chi ddefnyddio ffurflen wahanol i hawlio Tâl Tadolaeth Statudol
-cannotApplyAdopting.heading = Mae’n rhaid i chi ddefnyddio ffurflen wahanol i hawlio Tâl Tadolaeth Statudol
-cannotApplyAdopting.guidance.p1 = Ar sail eich atebion, mae’n rhaid i chi ddefnyddio ffurflen wahanol i wneud cais am Dâl Tadolaeth Statudol (SPP).
-cannotApplyAdopting.guidance.p2 = Os ydych yn dod yn rhiant o ganlyniad i fabwysiadu plentyn neu orchymyn rhiant, gallwch ddefnyddio
-cannotApplyAdopting.guidance.p2.link.text = ffurflen SC4 i wneud cais am SPP ac Absenoldeb Tadolaeth
-cannotApplyAdopting.guidance.p2.link.href = https://www.gov.uk/government/publications/ordinary-statutory-paternity-pay-and-leave-becoming-an-adoptive-parent-sc4.cy
-cannotApplyAdopting.guidance.p3 = Os ydych yn mabwysiadu plentyn o dramor, gallwch ddefnyddio
-cannotApplyAdopting.guidance.p3.link.text = ffurflen SC5 i wneud cais am SPP ac Absenoldeb Tadolaeth
-cannotApplyAdopting.guidance.p3.link.href = https://www.gov.uk/government/publications/ordinary-statutory-paternity-pay-and-leave-adopting-a-child-from-abroad-sc5.cy
-cannotApplyAdopting.guidance.p4 = Gallwch gael rhagor o wybodaeth am SPP a’ch cymhwystra ar
-cannotApplyAdopting.guidance.p4.link.text = dudalen arweiniad Tâl ac Absenoldeb Tadolaeth
-cannotApplyAdopting.guidance.p4.link.href = https://www.gov.uk/tal-absenoldeb-tadolaeth
-cannotApplyAdopting.guidance.p5 = Os ydych yn credu eich bod wedi gwneud camgymeriad, gallwch
-cannotApplyAdopting.guidance.p5.link.text = ddechrau’r ffurflen gais eto
-
 isAdopting.title = A ydych chi, neu bartner, yn dod yn rhiant o ganlyniad i fabwysiadu plentyn neu orchymyn rhiant?
 isAdopting.heading = A ydych chi, neu bartner, yn dod yn rhiant o ganlyniad i fabwysiadu plentyn neu orchymyn rhiant?
 isAdopting.hint = Mae gorchymyn rhiant yn golygu bod person sy’n rhan o gwpl yn cael plentyn o dan drefniant mam fenthyg.
