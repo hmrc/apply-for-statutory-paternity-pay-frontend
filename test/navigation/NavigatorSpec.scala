@@ -181,9 +181,64 @@ class NavigatorSpec extends SpecBase {
 
       "must go from Nino" - {
 
-        "to Baby Has Been Born" in {
+        "to Baby Has Been Born when the user is not adopting or a parental order parent" in {
 
-          navigator.nextPage(NinoPage, NormalMode, emptyUserAnswers) mustEqual routes.BabyHasBeenBornController.onPageLoad(NormalMode)
+          val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
+          navigator.nextPage(NinoPage, NormalMode, answers) mustEqual routes.BabyHasBeenBornController.onPageLoad(NormalMode)
+        }
+
+        "to Baby Has Been Born when the user is a parental order parent" in {
+
+          val answers =
+            emptyUserAnswers
+              .set(IsAdoptingOrParentalOrderPage, false).success.value
+              .set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
+
+          navigator.nextPage(NinoPage, NormalMode, answers) mustEqual routes.BabyHasBeenBornController.onPageLoad(NormalMode)
+        }
+
+        "to Date Child Was Matched when the user is adopting, but not from abroad" in {
+
+          val answers =
+            emptyUserAnswers
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsAdoptingFromAbroadPage, false).success.value
+              .set(ReasonForRequestingPage, RelationshipToChild.Adopting).success.value
+
+          navigator.nextPage(NinoPage, NormalMode, answers) mustEqual routes.DateChildWasMatchedController.onPageLoad(NormalMode)
+        }
+
+        "to Date Child Was Matched when the user is supporting adoption, but not from abroad" in {
+
+          val answers =
+            emptyUserAnswers
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsAdoptingFromAbroadPage, false).success.value
+              .set(ReasonForRequestingPage, RelationshipToChild.SupportingAdoption).success.value
+
+          navigator.nextPage(NinoPage, NormalMode, answers) mustEqual routes.DateChildWasMatchedController.onPageLoad(NormalMode)
+        }
+
+        "to Date of Adoption Notification when the user is adopting from abroad" in {
+
+          val answers =
+            emptyUserAnswers
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsAdoptingFromAbroadPage, true).success.value
+              .set(ReasonForRequestingPage, RelationshipToChild.Adopting).success.value
+
+          navigator.nextPage(NinoPage, NormalMode, answers) mustEqual routes.DateOfAdoptionNotificationController.onPageLoad(NormalMode)
+        }
+
+        "to Date of Adoption Notification when the user is supporting adoption from abroad" in {
+
+          val answers =
+            emptyUserAnswers
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsAdoptingFromAbroadPage, true).success.value
+              .set(ReasonForRequestingPage, RelationshipToChild.SupportingAdoption).success.value
+
+          navigator.nextPage(NinoPage, NormalMode, answers) mustEqual routes.DateOfAdoptionNotificationController.onPageLoad(NormalMode)
         }
       }
 
@@ -221,6 +276,28 @@ class NavigatorSpec extends SpecBase {
           navigator.nextPage(BabyDueDatePage, NormalMode, answers) mustEqual routes.PayStartDateBabyBornController.onPageLoad(NormalMode)
         }
       }
+
+      "must go from Date Child Was Matched to Child Has Been Placed" in {
+
+        navigator.nextPage(DateChildWasMatchedPage, NormalMode, emptyUserAnswers) mustEqual routes.ChildHasBeenPlacedController.onPageLoad(NormalMode)
+      }
+
+      "must go from Child Has Been Placed" - {
+
+        "to Child Placement Date when the answer is yes" in {
+
+          val answers = emptyUserAnswers.set(ChildHasBeenPlacedPage, true).success.value
+          navigator.nextPage(ChildHasBeenPlacedPage, NormalMode, answers) mustEqual routes.ChildPlacementDateController.onPageLoad(NormalMode)
+        }
+
+        "to Child Expected Placement Date when the answer is no" in {
+
+          val answers = emptyUserAnswers.set(ChildHasBeenPlacedPage, false).success.value
+          navigator.nextPage(ChildHasBeenPlacedPage, NormalMode, answers) mustEqual routes.ChildExpectedPlacementDateController.onPageLoad(NormalMode)
+        }
+      }
+
+      "must go from Child Placement Date to Pay"
 
       "must go from Pay Start Date Baby Born to Paternity Leave Length" in {
 
