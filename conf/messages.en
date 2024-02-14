@@ -245,12 +245,6 @@ payStartDateBabyDue.error.belowMinimum = The date must be on or after {0}
 payStartDateBabyDue.error.aboveMaximum = The date must be on or before {0}
 payStartDateBabyDue.change.hidden = the date you would like your Statutory Paternity Pay and/or Paternity Leave to start
 
-wantPayToStartOnBirthDate.title = Would you like your Statutory Paternity Pay and/or Paternity Leave to start on the day the baby was born?
-wantPayToStartOnBirthDate.heading = Would you like your Statutory Paternity Pay and/or Paternity Leave to start on the day the baby was born?
-wantPayToStartOnBirthDate.checkYourAnswersLabel = Would you like your Statutory Paternity Pay and/or Paternity Leave to start on the day the baby was born?
-wantPayToStartOnBirthDate.error.required = Select yes if you would like your Statutory Paternity Pay and/or Paternity Leave to start on the day the baby was born
-wantPayToStartOnBirthDate.change.hidden = if you would like your Statutory Paternity Pay and/or Paternity Leave to start on the day the baby was born
-
 willHaveCaringResponsibility.title = Will you have responsibility for caring for the child?
 willHaveCaringResponsibility.heading = Will you have responsibility for caring for the child?
 willHaveCaringResponsibility.checkYourAnswersLabel = Will you have responsibility for caring for the child?
@@ -268,12 +262,6 @@ willTakeTimeToSupportPartner.heading = Will you use your Paternity Leave to supp
 willTakeTimeToSupportPartner.checkYourAnswersLabel = Will you use your Paternity Leave to support your partner in caring for the child?
 willTakeTimeToSupportPartner.error.required = Select yes if you will take time off work to support your partner in caring for the child
 willTakeTimeToSupportPartner.change.hidden = if you will take time off work to support your partner in caring for the child
-
-wantPayToStartOnDueDate.title = Would you like your Statutory Paternity Pay and/or Paternity Leave to start on the day the baby is due?
-wantPayToStartOnDueDate.heading = Would you like your Statutory Paternity Pay and/or Paternity Leave to start on the day the baby is due?
-wantPayToStartOnDueDate.checkYourAnswersLabel = Would you like your Statutory Paternity Pay and/or Paternity Leave to start on the day the baby is due?
-wantPayToStartOnDueDate.error.required = Select yes if you would like your Statutory Paternity Pay and/or Paternity Leave to start on the day the baby is due
-wantPayToStartOnDueDate.change.hidden = if you would like your Statutory Paternity Pay and/or Paternity Leave to start on the day the baby is due
 
 nino.title = What is your National Insurance number?
 nino.heading = What is your National Insurance number?

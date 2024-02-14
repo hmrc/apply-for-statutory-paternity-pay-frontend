@@ -76,11 +76,6 @@ POST       /pay-start-date-baby-due                           controllers.PaySta
 GET        /change-pay-start-date-baby-due                        controllers.PayStartDateBabyDueController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-pay-start-date-baby-due                        controllers.PayStartDateBabyDueController.onSubmit(mode: Mode = CheckMode)
 
-GET        /want-pay-to-start-on-birth-date                      controllers.WantPayToStartOnBirthDateController.onPageLoad(mode: Mode = NormalMode)
-POST       /want-pay-to-start-on-birth-date                      controllers.WantPayToStartOnBirthDateController.onSubmit(mode: Mode = NormalMode)
-GET        /change-if-want-pay-to-start-on-birth-date                   controllers.WantPayToStartOnBirthDateController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-if-want-pay-to-start-on-birth-date                   controllers.WantPayToStartOnBirthDateController.onSubmit(mode: Mode = CheckMode)
-
 GET        /will-you-have-responsibility-for-caring                     controllers.WillHaveCaringResponsibilityController.onPageLoad(mode: Mode = NormalMode)
 POST       /will-you-have-responsibility-for-caring                     controllers.WillHaveCaringResponsibilityController.onSubmit(mode: Mode = NormalMode)
 GET        /change-if-you-will-have-responsibility-for-caring               controllers.WillHaveCaringResponsibilityController.onPageLoad(mode: Mode = CheckMode)
@@ -100,11 +95,6 @@ GET        /what-is-your-national-insurance-number                          cont
 POST       /what-is-your-national-insurance-number                          controllers.NinoController.onSubmit(mode: Mode = NormalMode)
 GET        /change-your-national-insurance-number                           controllers.NinoController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-your-national-insurance-number                           controllers.NinoController.onSubmit(mode: Mode = CheckMode)
-
-GET        /want-pay-to-start-on-due-date                        controllers.WantPayToStartOnDueDateController.onPageLoad(mode: Mode = NormalMode)
-POST       /want-pay-to-start-on-due-date                        controllers.WantPayToStartOnDueDateController.onSubmit(mode: Mode = NormalMode)
-GET        /change-if-want-pay-to-start-on-due-date                     controllers.WantPayToStartOnDueDateController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-if-want-pay-to-start-on-due-date                     controllers.WantPayToStartOnDueDateController.onSubmit(mode: Mode = CheckMode)
 
 GET        /becoming-adoptive-or-parental-order-parents             controllers.IsAdoptingOrParentalOrderController.onPageLoad(mode: Mode = NormalMode)
 POST       /becoming-adoptive-or-parental-order-parents             controllers.IsAdoptingOrParentalOrderController.onSubmit(mode: Mode = NormalMode)

@@ -17,12 +17,14 @@
 package controllers
 
 import base.SpecBase
+import generators.ModelGenerators
 import models.{CountryOfResidence, JourneyModel, Name, NormalMode, PaternityLeaveLength}
 import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito.{times, verify, when}
+import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.EitherValues
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{BabyDateOfBirthPage, BabyDueDatePage, BabyHasBeenBornPage, CountryOfResidencePage, IsAdoptingOrParentalOrderPage, IsBiologicalFatherPage, NamePage, NinoPage, PaternityLeaveLengthPage, WantPayToStartOnBirthDatePage, WillHaveCaringResponsibilityPage, WillTakeTimeToCareForChildPage}
+import pages.{BabyDateOfBirthPage, BabyDueDatePage, BabyHasBeenBornPage, CountryOfResidencePage, IsAdoptingOrParentalOrderPage, IsBiologicalFatherPage, NamePage, NinoPage, PaternityLeaveLengthPage, PayStartDateBabyBornPage, WillHaveCaringResponsibilityPage, WillTakeTimeToCareForChildPage}
 import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.test.FakeRequest
@@ -34,10 +36,11 @@ import uk.gov.hmrc.domain.Nino
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class PrintControllerSpec extends SpecBase with EitherValues with MockitoSugar {
+class PrintControllerSpec extends SpecBase with EitherValues with MockitoSugar with ModelGenerators {
 
   val birthDate = LocalDate.now.minusDays(1)
   val dueDate = LocalDate.now.minusDays(2)
+  val nino = arbitrary[Nino].sample.value
 
   val answers = emptyUserAnswers
     .set(CountryOfResidencePage, CountryOfResidence.England).success.value
@@ -46,14 +49,14 @@ class PrintControllerSpec extends SpecBase with EitherValues with MockitoSugar {
     .set(WillHaveCaringResponsibilityPage, true).success.value
     .set(WillTakeTimeToCareForChildPage, true).success.value
     .set(NamePage, Name("foo", "bar")).success.value
-    .set(NinoPage, Nino("AA123456A")).success.value
+    .set(NinoPage, nino).success.value
     .set(BabyHasBeenBornPage, true).success.value
     .set(BabyDueDatePage, dueDate).success.value
     .set(BabyDateOfBirthPage, birthDate).success.value
-    .set(WantPayToStartOnBirthDatePage, true).success.value
+    .set(PayStartDateBabyBornPage, LocalDate.now).success.value
     .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
 
-  val model = JourneyModel.from(answers).right.value
+  val model = JourneyModel.from(answers).value
 
   "print form" - {
 

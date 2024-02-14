@@ -18,7 +18,7 @@ package models
 
 import cats.data.EitherNec
 import cats.implicits._
-import models.JourneyModel.{BirthDetails, Eligibility}
+import models.JourneyModel.Eligibility
 import pages._
 import uk.gov.hmrc.domain.Nino
 
@@ -31,18 +31,10 @@ final case class JourneyModel(
                                nino: Nino,
                                hasTheBabyBeenBorn: Boolean,
                                dueDate: LocalDate,
-                               birthDetails: BirthDetails,
-                               payStartDate: Option[LocalDate],
+                               birthDate: Option[LocalDate],
+                               payStartDate: LocalDate,
                                howLongWillYouBeOnLeave: PaternityLeaveLength
-                             ) {
-
-  def resolvedStartDate: LocalDate =
-    birthDetails match {
-      case BirthDetails.AlreadyBorn(birthDate, true) => birthDate
-      case BirthDetails.Due(true)                    => dueDate
-      case _                                         => payStartDate.getOrElse(throw new IllegalStateException("Invalid data given"))
-    }
-}
+                             )
 
 object JourneyModel {
 
@@ -68,35 +60,19 @@ object JourneyModel {
                                                      timeOffToSupportPartner: Option[Boolean]
                                                    ) extends Eligibility
 
-  sealed abstract class BirthDetails
-
-  object BirthDetails {
-
-    final case class AlreadyBorn(
-                                  birthDate: LocalDate,
-                                  payShouldStartFromBirthDay: Boolean
-                                ) extends BirthDetails
-
-    final case class Due(
-                          payShouldStartFromDueDate: Boolean
-                        ) extends BirthDetails
-  }
-
   def from(answers: UserAnswers): EitherNec[QuestionPage[_], JourneyModel] =
     (
       answers.getEither(CountryOfResidencePage),
       getEligibility(answers),
       answers.getEither(NamePage),
       answers.getEither(NinoPage),
+      answers.getEither(BabyHasBeenBornPage),
       answers.getEither(BabyDueDatePage),
-      for {
-        alreadyBorn  <- answers.getEither(BabyHasBeenBornPage)
-        birthDetails <- getBirthDetails(answers, alreadyBorn)
-        payStartDate <- getPayStartDate(answers, alreadyBorn)
-      } yield (alreadyBorn, birthDetails, payStartDate),
-      answers.getEither(PaternityLeaveLengthPage),
-    ).parMapN { case (country, eligibility, name, nino, dueDate, (alreadyBorn, birthDetails, payStartDate), paternityLeaveLength) =>
-      JourneyModel(country, eligibility, name, nino, alreadyBorn, dueDate, birthDetails, payStartDate, paternityLeaveLength)
+      getBirthDate(answers),
+      getPayStartDate(answers),
+      answers.getEither(PaternityLeaveLengthPage)
+    ).parMapN { case (country, eligibility, name, nino, alreadyBorn, dueDate, birthDate, payStartDate, paternityLeaveLength) =>
+      JourneyModel(country, eligibility, name, nino, alreadyBorn, dueDate, birthDate, payStartDate, paternityLeaveLength)
     }
 
   private def getEligibility(answers: UserAnswers): EitherNec[QuestionPage[_], Eligibility] =
@@ -167,32 +143,15 @@ object JourneyModel {
       case true => Right((true, None))
     }
 
-  private def getBirthDetails(answers: UserAnswers, alreadyBorn: Boolean): EitherNec[QuestionPage[_], BirthDetails] =
-    if (alreadyBorn) getAlreadyBornBirthDetails(answers) else getDueBirthDetails(answers)
-
-  private def getAlreadyBornBirthDetails(answers: UserAnswers): EitherNec[QuestionPage[_], BirthDetails.AlreadyBorn] =
-    (
-      answers.getEither(BabyDateOfBirthPage),
-      answers.getEither(WantPayToStartOnBirthDatePage)
-    ).parMapN { case (dateOfBirth, payShouldStartFromBirthDate) =>
-      BirthDetails.AlreadyBorn(dateOfBirth, payShouldStartFromBirthDate)
+  private def getPayStartDate(answers: UserAnswers): EitherNec[QuestionPage[_], LocalDate] =
+    answers.getEither(BabyHasBeenBornPage).flatMap {
+      case true => answers.getEither(PayStartDateBabyBornPage)
+      case false => answers.getEither(PayStartDateBabyDuePage)
     }
 
-  private def getDueBirthDetails(answers: UserAnswers): EitherNec[QuestionPage[_], BirthDetails.Due] =
-      answers.getEither(WantPayToStartOnDueDatePage).map(BirthDetails.Due)
-
-  private def getPayStartDate(answers: UserAnswers, alreadyBorn: Boolean): EitherNec[QuestionPage[_], Option[LocalDate]] =
-    if (alreadyBorn) getPayStartDateBorn(answers) else getPayStartDateDue(answers)
-
-  private def getPayStartDateBorn(answers: UserAnswers): EitherNec[QuestionPage[_], Option[LocalDate]] =
-    answers.getEither(WantPayToStartOnBirthDatePage).flatMap {
-      case true  => Right(None)
-      case false => answers.getEither(PayStartDateBabyBornPage).map(Some(_))
-    }
-
-  private def getPayStartDateDue(answers: UserAnswers): EitherNec[QuestionPage[_], Option[LocalDate]] =
-    answers.getEither(WantPayToStartOnDueDatePage).flatMap {
-      case true  => Right(None)
-      case false => answers.getEither(PayStartDateBabyDuePage).map(Some(_))
+  private def getBirthDate(answers: UserAnswers): EitherNec[QuestionPage[_], Option[LocalDate]] =
+    answers.getEither(BabyHasBeenBornPage).flatMap {
+      case true => answers.getEither(BabyDateOfBirthPage).map(Some(_))
+      case false => Right(None)
     }
 }

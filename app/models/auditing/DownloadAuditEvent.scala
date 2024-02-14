@@ -16,7 +16,7 @@
 
 package models.auditing
 
-import models.auditing.DownloadAuditEvent.{BirthDetails, Eligibility}
+import models.auditing.DownloadAuditEvent.Eligibility
 import models.{CountryOfResidence, JourneyModel, Name, PaternityLeaveLength, RelationshipToChild}
 import play.api.libs.json.{Json, Writes}
 import uk.gov.hmrc.domain.Nino
@@ -30,8 +30,8 @@ final case class DownloadAuditEvent(
                                      nino: Nino,
                                      hasTheBabyBeenBorn: Boolean,
                                      dueDate: LocalDate,
-                                     birthDetails: BirthDetails,
-                                     payStartDate: Option[LocalDate],
+                                     birthDate: Option[LocalDate],
+                                     payStartDate: LocalDate,
                                      howLongWillYouBeOnLeave: PaternityLeaveLength
                                    ) {
 
@@ -75,33 +75,6 @@ object DownloadAuditEvent {
     }
   }
 
-  sealed abstract class BirthDetails
-
-  object BirthDetails {
-
-    final case class AlreadyBorn(
-                                  birthDate: LocalDate,
-                                  payShouldStartFromBirthDay: Boolean
-                                ) extends BirthDetails
-
-    final case class Due(
-                          payShouldStartFromDueDate: Boolean
-                        ) extends BirthDetails
-
-    private[auditing] def from(model: JourneyModel.BirthDetails): BirthDetails =
-      model match {
-        case JourneyModel.BirthDetails.AlreadyBorn(birthDate, payShouldStartFromBirthDay) =>
-          AlreadyBorn(birthDate, payShouldStartFromBirthDay)
-        case JourneyModel.BirthDetails.Due(payShouldStartFromDueDate) =>
-          Due(payShouldStartFromDueDate)
-      }
-
-    implicit lazy val writes: Writes[BirthDetails] = Writes {
-      case ab: AlreadyBorn => Json.toJson(ab)(Json.writes)
-      case d: Due => Json.toJson(d)(Json.writes)
-    }
-  }
-
   def from(model: JourneyModel): DownloadAuditEvent =
     DownloadAuditEvent(
       countryOfResidence = model.countryOfResidence,
@@ -110,7 +83,7 @@ object DownloadAuditEvent {
       nino = model.nino,
       dueDate = model.dueDate,
       hasTheBabyBeenBorn = model.hasTheBabyBeenBorn,
-      birthDetails = BirthDetails.from(model.birthDetails),
+      birthDate = model.birthDate,
       payStartDate = model.payStartDate,
       howLongWillYouBeOnLeave = model.howLongWillYouBeOnLeave
     )

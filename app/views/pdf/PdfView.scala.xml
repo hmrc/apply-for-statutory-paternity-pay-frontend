@@ -94,21 +94,16 @@
                         </fo:block-container>
                     </fo:block-container>
 
-                    @model.birthDetails match {
-                        case JourneyModel.BirthDetails.AlreadyBorn(birthDate, _) => {
-                            <!-- Birth date -->
-                            <fo:block-container>
-                                <fo:block-container margin-bottom="3mm">
-                                    <fo:block>
-                                        <fo:inline font-weight="bold">@messages("pdf.birthDate"): </fo:inline>
-                                        <fo:inline>@dateTimeFormat(birthDate)</fo:inline>
-                                    </fo:block>
-                                </fo:block-container>
+                    @model.birthDate.map { birthDate =>
+                        <fo:block-container>
+                            <fo:block-container margin-bottom="3mm">
+                                <fo:block>
+                                    <fo:inline font-weight="bold">@messages("pdf.birthDate"): </fo:inline>
+                                    <fo:inline>@dateTimeFormat(birthDate)</fo:inline>
+                                </fo:block>
                             </fo:block-container>
-                        }
-                        case _ => {}
+                        </fo:block-container>
                     }
-
                 </fo:block-container>
 
                 <fo:block-container margin-top="8mm">
@@ -120,7 +115,7 @@
                         <fo:block-container margin-bottom="3mm">
                             <fo:block>
                                 <fo:inline font-weight="bold">@messages("pdf.payStartDate"): </fo:inline>
-                                <fo:inline>@dateTimeFormat(model.resolvedStartDate)</fo:inline>
+                                <fo:inline>@dateTimeFormat(model.payStartDate)</fo:inline>
                             </fo:block>
                         </fo:block-container>
                     </fo:block-container>

@@ -56,8 +56,6 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
       .set(PayStartDateBabyBornPage, LocalDate.now).success.value
       .set(PayStartDateBabyDuePage, LocalDate.now).success.value
       .set(ReasonForRequestingPage, Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value).success.value
-      .set(WantPayToStartOnBirthDatePage, false).success.value
-      .set(WantPayToStartOnDueDatePage, false).success.value
       .set(WillHaveCaringResponsibilityPage, true).success.value
       .set(WillTakeTimeToCareForChildPage, true).success.value
       .set(WillTakeTimeToSupportPartnerPage, true).success.value
@@ -79,8 +77,6 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
       .set(PayStartDateBabyBornPage, LocalDate.now).success.value
       .set(PayStartDateBabyDuePage, LocalDate.now).success.value
       .set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
-      .set(WantPayToStartOnBirthDatePage, false).success.value
-      .set(WantPayToStartOnDueDatePage, false).success.value
       .set(WillHaveCaringResponsibilityPage, true).success.value
       .set(WillTakeTimeToCareForChildPage, true).success.value
       .set(WillTakeTimeToSupportPartnerPage, true).success.value
@@ -109,8 +105,6 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
     result.get(PayStartDateBabyBornPage) must not be defined
     result.get(PayStartDateBabyDuePage) must not be defined
     result.get(ReasonForRequestingPage) must not be defined
-    result.get(WantPayToStartOnBirthDatePage) must not be defined
-    result.get(WantPayToStartOnDueDatePage) must not be defined
     result.get(WillHaveCaringResponsibilityPage) must not be defined
     result.get(WillTakeTimeToCareForChildPage) must not be defined
     result.get(WillTakeTimeToSupportPartnerPage) must not be defined
@@ -137,8 +131,6 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
       result.get(PayStartDateBabyBornPage) mustBe defined
       result.get(PayStartDateBabyDuePage) mustBe defined
       result.get(ReasonForRequestingPage) mustBe defined
-      result.get(WantPayToStartOnBirthDatePage) mustBe defined
-      result.get(WantPayToStartOnDueDatePage) mustBe defined
       result.get(WillHaveCaringResponsibilityPage) mustBe defined
       result.get(WillTakeTimeToCareForChildPage) mustBe defined
       result.get(WillTakeTimeToSupportPartnerPage) mustBe defined
@@ -167,8 +159,6 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
       result.get(PayStartDateBabyBornPage) mustBe defined
       result.get(PayStartDateBabyDuePage) mustBe defined
       result.get(ReasonForRequestingPage) mustBe defined
-      result.get(WantPayToStartOnBirthDatePage) mustBe defined
-      result.get(WantPayToStartOnDueDatePage) mustBe defined
       result.get(WillHaveCaringResponsibilityPage) mustBe defined
       result.get(WillTakeTimeToCareForChildPage) mustBe defined
       result.get(WillTakeTimeToSupportPartnerPage) mustBe defined

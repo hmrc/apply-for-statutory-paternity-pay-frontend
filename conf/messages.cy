@@ -198,12 +198,6 @@ payStartDateBabyDue.error.belowMinimum = Mae’n rhaid i’r dyddiad fod ar neu 
 payStartDateBabyDue.error.aboveMaximum = Mae’n rhaid i’r dyddiad fod ar neu cyn {0}
 payStartDateBabyDue.change.hidden = y dyddiad yr hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau
 
-wantPayToStartOnBirthDate.title = A hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau ar ddyddiad geni’r baban?
-wantPayToStartOnBirthDate.heading = A hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau ar ddyddiad geni’r baban?
-wantPayToStartOnBirthDate.checkYourAnswersLabel = A hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau ar ddyddiad geni’r baban?
-wantPayToStartOnBirthDate.error.required = Dewiswch ‘Iawn’ os hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau ar ddyddiad geni’r baban
-wantPayToStartOnBirthDate.change.hidden = os hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau ar ddyddiad geni’r baban
-
 willHaveCaringResponsibility.title = A fydd gennych gyfrifoldeb am ofalu am y plentyn?
 willHaveCaringResponsibility.heading = A fydd gennych gyfrifoldeb am ofalu am y plentyn?
 willHaveCaringResponsibility.checkYourAnswersLabel = A fydd gennych gyfrifoldeb am ofalu am y plentyn?
@@ -221,12 +215,6 @@ willTakeTimeToSupportPartner.heading = A fyddwch yn defnyddio’ch Absenoldeb Ta
 willTakeTimeToSupportPartner.checkYourAnswersLabel = A fyddwch yn defnyddio’ch Absenoldeb Tadolaeth i roi cymorth i fam y plentyn?
 willTakeTimeToSupportPartner.error.required = Dewiswch ‘Iawn’ os byddwch yn cymryd seibiant o’r gwaith er mwyn rhoi cymorth i fam y plentyn
 willTakeTimeToSupportPartner.change.hidden = os byddwch yn cymryd seibiant o’r gwaith er mwyn rhoi cymorth i fam y plentyn
-
-wantPayToStartOnDueDate.title = A hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau ar ddyddiad disgwyl y baban?
-wantPayToStartOnDueDate.heading = A hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau ar ddyddiad disgwyl y baban?
-wantPayToStartOnDueDate.checkYourAnswersLabel = A hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau ar ddyddiad disgwyl y baban?
-wantPayToStartOnDueDate.error.required = Dewiswch ‘Iawn’ os hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau ar ddyddiad disgwyl y baban
-wantPayToStartOnDueDate.change.hidden = os hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau ar ddyddiad disgwyl y baban
 
 nino.title = Beth yw’ch rhif Yswiriant Gwladol?
 nino.heading = Beth yw’ch rhif Yswiriant Gwladol?

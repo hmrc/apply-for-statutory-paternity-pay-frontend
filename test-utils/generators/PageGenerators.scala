@@ -63,9 +63,6 @@ trait PageGenerators {
   implicit lazy val arbitraryNinoPage: Arbitrary[NinoPage.type] =
     Arbitrary(NinoPage)
 
-  implicit lazy val arbitraryWantPayToStartOnDueDatePage: Arbitrary[WantPayToStartOnDueDatePage.type] =
-    Arbitrary(WantPayToStartOnDueDatePage)
-
   implicit lazy val arbitraryWillTakeTimeToSupportPartnerPage: Arbitrary[WillTakeTimeToSupportPartnerPage.type] =
     Arbitrary(WillTakeTimeToSupportPartnerPage)
 
@@ -74,9 +71,6 @@ trait PageGenerators {
 
   implicit lazy val arbitraryWillHaveCaringResponsibilityPage: Arbitrary[WillHaveCaringResponsibilityPage.type] =
     Arbitrary(WillHaveCaringResponsibilityPage)
-
-  implicit lazy val arbitraryWantPayToStartOnBirthDatePage: Arbitrary[WantPayToStartOnBirthDatePage.type] =
-    Arbitrary(WantPayToStartOnBirthDatePage)
 
   implicit lazy val arbitraryPayStartDateBabyBornPage: Arbitrary[PayStartDateBabyBornPage.type] =
     Arbitrary(PayStartDateBabyBornPage)

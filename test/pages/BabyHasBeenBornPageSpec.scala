@@ -32,51 +32,43 @@ class BabyHasBeenBornPageSpec extends PageBehaviours {
 
     "when the answer is yes" - {
 
-      "must remove Baby Due Date, Want Pay to Start On Due Date and Pay Start Date Baby Due" in {
+      "must remove Pay Start Date Baby Due" in {
 
         val answers =
           emptyUserAnswers
             .set(BabyDateOfBirthPage, LocalDate.now).success.value
             .set(BabyDueDatePage, LocalDate.now).success.value
-            .set(WantPayToStartOnDueDatePage, true).success.value
-            .set(WantPayToStartOnBirthDatePage, true).success.value
             .set(PayStartDateBabyBornPage, LocalDate.now).success.value
             .set(PayStartDateBabyDuePage, LocalDate.now).success.value
 
         val result = answers.set(BabyHasBeenBornPage, true).success.value
 
-        result.get(BabyDueDatePage)               must be(defined)
-        result.get(BabyDateOfBirthPage)           must be(defined)
-        result.get(WantPayToStartOnBirthDatePage) must be(defined)
-        result.get(PayStartDateBabyBornPage)      must be(defined)
+        result.get(BabyDueDatePage)          must be(defined)
+        result.get(BabyDateOfBirthPage)      must be(defined)
+        result.get(PayStartDateBabyBornPage) must be(defined)
 
-        result.get(WantPayToStartOnDueDatePage) must not be defined
-        result.get(PayStartDateBabyDuePage)     must not be defined
+        result.get(PayStartDateBabyDuePage)  must not be defined
       }
     }
 
     "when the answer is no" - {
 
-      "must remove Baby Date of Birth, Want Pay to Start On Birth Date and Pay Start Date Baby Born" in {
+      "must remove Baby Date of Birth and Pay Start Date Baby Born" in {
 
         val answers =
           emptyUserAnswers
             .set(BabyDateOfBirthPage, LocalDate.now).success.value
             .set(BabyDueDatePage, LocalDate.now).success.value
-            .set(WantPayToStartOnDueDatePage, true).success.value
-            .set(WantPayToStartOnBirthDatePage, true).success.value
             .set(PayStartDateBabyBornPage, LocalDate.now).success.value
             .set(PayStartDateBabyDuePage, LocalDate.now).success.value
 
         val result = answers.set(BabyHasBeenBornPage, false).success.value
 
-        result.get(BabyDueDatePage)             must be(defined)
-        result.get(WantPayToStartOnDueDatePage) must be(defined)
-        result.get(PayStartDateBabyDuePage)     must be(defined)
+        result.get(BabyDueDatePage)          must be(defined)
+        result.get(PayStartDateBabyDuePage)  must be(defined)
 
-        result.get(BabyDateOfBirthPage)           must not be defined
-        result.get(WantPayToStartOnBirthDatePage) must not be defined
-        result.get(PayStartDateBabyBornPage)      must not be defined
+        result.get(BabyDateOfBirthPage)      must not be defined
+        result.get(PayStartDateBabyBornPage) must not be defined
       }
     }
   }
