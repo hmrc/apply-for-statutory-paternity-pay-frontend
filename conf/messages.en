@@ -381,3 +381,39 @@ reasonForRequesting.parentalOrder = I am a parental order parent
 reasonForRequesting.checkYourAnswersLabel = Why are you asking for Statutory Paternity Pay and/or Paternity Leave from your employer?
 reasonForRequesting.error.required = Select why you are asking for Statutory Paternity Pay and/or Paternity Leave from your employer
 reasonForRequesting.change.hidden = why you are asking for Statutory Paternity Pay and/or Paternity Leave from your employer
+
+childHasEnteredUk.title = childHasEnteredUk
+childHasEnteredUk.heading = childHasEnteredUk
+childHasEnteredUk.checkYourAnswersLabel = childHasEnteredUk
+childHasEnteredUk.error.required = Select yes if childHasEnteredUk
+childHasEnteredUk.change.hidden = ChildHasEnteredUk
+
+dateChildEnteredUk.title = DateChildEnteredUk
+dateChildEnteredUk.heading = DateChildEnteredUk
+dateChildEnteredUk.hint = For example, 12 11 2007.
+dateChildEnteredUk.checkYourAnswersLabel = DateChildEnteredUk
+dateChildEnteredUk.error.required.all = Enter the dateChildEnteredUk
+dateChildEnteredUk.error.required.two = The dateChildEnteredUk must include {0} and {1}
+dateChildEnteredUk.error.required = The dateChildEnteredUk must include {0}
+dateChildEnteredUk.error.invalid = Enter a real DateChildEnteredUk
+dateChildEnteredUk.change.hidden = DateChildEnteredUk
+
+dateChildExpectedToEnterUk.title = DateChildExpectedToEnterUk
+dateChildExpectedToEnterUk.heading = DateChildExpectedToEnterUk
+dateChildExpectedToEnterUk.hint = For example, 12 11 2007.
+dateChildExpectedToEnterUk.checkYourAnswersLabel = DateChildExpectedToEnterUk
+dateChildExpectedToEnterUk.error.required.all = Enter the dateChildExpectedToEnterUk
+dateChildExpectedToEnterUk.error.required.two = The dateChildExpectedToEnterUk must include {0} and {1}
+dateChildExpectedToEnterUk.error.required = The dateChildExpectedToEnterUk must include {0}
+dateChildExpectedToEnterUk.error.invalid = Enter a real DateChildExpectedToEnterUk
+dateChildExpectedToEnterUk.change.hidden = DateChildExpectedToEnterUk
+
+dateOfAdoptionNotification.title = DateOfAdoptionNotification
+dateOfAdoptionNotification.heading = DateOfAdoptionNotification
+dateOfAdoptionNotification.hint = For example, 12 11 2007.
+dateOfAdoptionNotification.checkYourAnswersLabel = DateOfAdoptionNotification
+dateOfAdoptionNotification.error.required.all = Enter the dateOfAdoptionNotification
+dateOfAdoptionNotification.error.required.two = The dateOfAdoptionNotification must include {0} and {1}
+dateOfAdoptionNotification.error.required = The dateOfAdoptionNotification must include {0}
+dateOfAdoptionNotification.error.invalid = Enter a real DateOfAdoptionNotification
+dateOfAdoptionNotification.change.hidden = DateOfAdoptionNotification

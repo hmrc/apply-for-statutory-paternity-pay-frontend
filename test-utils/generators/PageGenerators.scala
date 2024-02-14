@@ -21,6 +21,18 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryDateOfAdoptionNotificationPage: Arbitrary[DateOfAdoptionNotificationPage.type] =
+    Arbitrary(DateOfAdoptionNotificationPage)
+
+  implicit lazy val arbitraryDateChildExpectedToEnterUkPage: Arbitrary[DateChildExpectedToEnterUkPage.type] =
+    Arbitrary(DateChildExpectedToEnterUkPage)
+
+  implicit lazy val arbitraryDateChildEnteredUkPage: Arbitrary[DateChildEnteredUkPage.type] =
+    Arbitrary(DateChildEnteredUkPage)
+
+  implicit lazy val arbitraryChildHasEnteredUkPage: Arbitrary[ChildHasEnteredUkPage.type] =
+    Arbitrary(ChildHasEnteredUkPage)
+
   implicit lazy val arbitraryReasonForRequestingPage: Arbitrary[ReasonForRequestingPage.type] =
     Arbitrary(ReasonForRequestingPage)
 
