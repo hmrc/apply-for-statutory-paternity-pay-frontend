@@ -63,11 +63,8 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar with 
         nino = nino,
         hasTheBabyBeenBorn = true,
         dueDate = dueDate,
-        birthDetails = JourneyModel.BirthDetails.AlreadyBorn(
-          birthDate = birthDate,
-          payShouldStartFromBirthDay = true
-        ),
-        payStartDate = None,
+        birthDate = Some(birthDate),
+        payStartDate = LocalDate.now,
         howLongWillYouBeOnLeave = PaternityLeaveLength.Oneweek
       )
 
@@ -85,11 +82,8 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar with 
         nino = nino,
         hasTheBabyBeenBorn = true,
         dueDate = dueDate,
-        birthDetails = DownloadAuditEvent.BirthDetails.AlreadyBorn(
-          birthDate = birthDate,
-          payShouldStartFromBirthDay = true,
-        ),
-        payStartDate = None,
+        birthDate = Some(birthDate),
+        payStartDate = LocalDate.now,
         howLongWillYouBeOnLeave = PaternityLeaveLength.Oneweek
       )
 

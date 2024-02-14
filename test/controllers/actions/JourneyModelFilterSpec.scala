@@ -58,8 +58,6 @@ class JourneyModelFilterSpec extends SpecBase with ScalaFutures with ModelGenera
           .set(NinoPage, arbitrary[Nino].sample.value).success.value
           .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
           .set(PayStartDateBabyBornPage, LocalDate.now).success.value
-          .set(WantPayToStartOnBirthDatePage, true).success.value
-          .set(WantPayToStartOnDueDatePage, true).success.value
           .set(WillHaveCaringResponsibilityPage, true).success.value
           .set(WillTakeTimeToCareForChildPage, true).success.value
           .set(WillTakeTimeToSupportPartnerPage, true).success.value

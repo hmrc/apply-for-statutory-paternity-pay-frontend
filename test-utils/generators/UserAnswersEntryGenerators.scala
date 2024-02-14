@@ -137,14 +137,6 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryWantPayToStartOnDueDateUserAnswersEntry: Arbitrary[(WantPayToStartOnDueDatePage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[WantPayToStartOnDueDatePage.type]
-        value <- arbitrary[Boolean].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
   implicit lazy val arbitraryWillTakeTimeToSupportPartnerUserAnswersEntry: Arbitrary[(WillTakeTimeToSupportPartnerPage.type, JsValue)] =
     Arbitrary {
       for {
@@ -165,14 +157,6 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
     Arbitrary {
       for {
         page  <- arbitrary[WillHaveCaringResponsibilityPage.type]
-        value <- arbitrary[Boolean].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryWantPayToStartOnBirthDateUserAnswersEntry: Arbitrary[(WantPayToStartOnBirthDatePage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[WantPayToStartOnBirthDatePage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }

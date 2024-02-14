@@ -57,8 +57,6 @@ package object pages {
     PayStartDateBabyBornPage,
     PayStartDateBabyDuePage,
     ReasonForRequestingPage,
-    WantPayToStartOnBirthDatePage,
-    WantPayToStartOnDueDatePage,
     WillHaveCaringResponsibilityPage,
     WillTakeTimeToCareForChildPage,
     WillTakeTimeToSupportPartnerPage
