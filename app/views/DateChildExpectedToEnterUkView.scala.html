@@ -19,7 +19,8 @@
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
     govukDateInput: GovukDateInput,
-    govukButton: GovukButton
+    govukButton: GovukButton,
+    h1WithCaption: components.h1WithCaption
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -32,10 +33,15 @@
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))
         }
 
+        @h1WithCaption(
+            content = messages("dateChildExpectedToEnterUk.heading"),
+            caption = messages("section.relationship")
+        )
+
         @govukDateInput(
             DateViewModel(
-                field  = form("value"),
-                legend = LegendViewModel(messages("dateChildExpectedToEnterUk.heading")).asPageHeading()
+                field = form("value"),
+                legend = LegendViewModel(messages("dateChildExpectedToEnterUk.heading")).withCssClass("govuk-visually-hidden")
             )
             .withHint(HintViewModel(messages("dateChildExpectedToEnterUk.hint")))
         )
