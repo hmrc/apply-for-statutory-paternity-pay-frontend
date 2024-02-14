@@ -1,0 +1,46 @@
+@*
+* Copyright 2022 HM Revenue & Customs
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*@
+
+@this()
+
+@(model: JourneyModel)(implicit request: RequestHeader, messages: Messages)
+
+
+<fo:block-container>
+    <!-- Personal details -->
+    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.personalDetails")</fo:block>
+
+    <!-- Name -->
+    <fo:block-container>
+        <fo:block-container margin-bottom="3mm">
+            <fo:block>
+                <fo:inline font-weight="bold">@messages("pdf.name"): </fo:inline>
+                <fo:inline>@model.name.firstName @model.name.lastName</fo:inline>
+            </fo:block>
+        </fo:block-container>
+    </fo:block-container>
+
+    <!-- NINO -->
+    <fo:block>
+        <fo:block-container margin-bottom="3mm">
+            <fo:block>
+                <fo:inline font-weight="bold">@messages("pdf.nino"): </fo:inline>
+                <fo:inline>@model.nino.value</fo:inline>
+            </fo:block>
+        </fo:block-container>
+    </fo:block>
+
+</fo:block-container>

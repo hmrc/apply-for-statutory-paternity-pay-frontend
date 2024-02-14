@@ -17,8 +17,20 @@
 @import java.time.LocalDate
 @import java.time.format.DateTimeFormatter
 @import config.Formats
+@import views.xml.pdf.section._
+@import views.xml.pdf.section.declaration._
+@import views.xml.pdf.section.childDetails._
+@import views.xml.pdf.section.paternityDetails._
 
-@this()
+@this(
+    layout: Layout,
+    header: views.xml.pdf.section.Header,
+    personalDetails: views.xml.pdf.section.PersonalDetails,
+    birthDeclaration: BirthDeclaration,
+    birthChild: BirthChild,
+    preApril24PaternityDetails: PreApril24PaternityDetails,
+    instructionPage: InstructionPage
+)
 
 @(model: JourneyModel)(implicit request: RequestHeader, messages: Messages)
 
@@ -28,190 +40,29 @@
 
 <fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:fox="http://xmlgraphics.apache.org/fop/extensions" font-family="sans-serif">
 
-    <fo:layout-master-set>
-        <fo:simple-page-master master-name="main" page-height="297mm" page-width="210mm" margin="2cm">
-            <fo:region-body region-name="xsl-region-body" margin-top="3cm"/>
-            <fo:region-before region-name="xsl-region-before"/>
-            <fo:region-after region-name="xsl-region-after"/>
-        </fo:simple-page-master>
-    </fo:layout-master-set>
+    @layout()
 
     <fo:page-sequence master-reference="main">
 
-        <!-- Header -->
-        <fo:static-content flow-name="xsl-region-before">
-            <fo:block>
-                @if(messages.lang.locale.getLanguage == "cy") {
-                    <fo:external-graphic content-width="3.5cm" src="url(conf/resources/logo_cy.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
-                } else {
-                    <fo:external-graphic content-width="3.5cm" src="url(conf/resources/logo.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
-                }
-                <fo:block margin-left="4cm" margin-top="-1.25cm" text-align="right" font-size="16pt" font-weight="bold">@messages("pdf.title")</fo:block>
-            </fo:block>
-        </fo:static-content>
+        @header()
 
         <!-- Body -->
         <fo:flow flow-name="xsl-region-body">
             <fo:block-container>
 
-                <fo:block-container>
-                    <!-- Personal details -->
-                    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.personalDetails")</fo:block>
+                @personalDetails(model)
 
-                    <!-- Name -->
-                    <fo:block-container>
-                        <fo:block-container margin-bottom="3mm">
-                            <fo:block>
-                                <fo:inline font-weight="bold">@messages("pdf.name"): </fo:inline>
-                                <fo:inline>@model.name.firstName @model.name.lastName</fo:inline>
-                            </fo:block>
-                        </fo:block-container>
-                    </fo:block-container>
+                @birthChild(model)
 
-                    <!-- NINO -->
-                    <fo:block>
-                        <fo:block-container margin-bottom="3mm">
-                            <fo:block>
-                                <fo:inline font-weight="bold">@messages("pdf.nino"): </fo:inline>
-                                <fo:inline>@model.nino.value</fo:inline>
-                            </fo:block>
-                        </fo:block-container>
-                    </fo:block>
-
-                </fo:block-container>
-
-                <fo:block-container margin-top="8mm">
-                    <!-- Baby details -->
-                    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.babyDetails")</fo:block>
-
-                    <!-- Due date -->
-                    <fo:block-container>
-                        <fo:block-container margin-bottom="3mm">
-                            <fo:block>
-                                <fo:inline font-weight="bold">@messages("pdf.dueDate"): </fo:inline>
-                                <fo:inline>@dateTimeFormat(model.dueDate)</fo:inline>
-                            </fo:block>
-                        </fo:block-container>
-                    </fo:block-container>
-
-                    @model.birthDate.map { birthDate =>
-                        <fo:block-container>
-                            <fo:block-container margin-bottom="3mm">
-                                <fo:block>
-                                    <fo:inline font-weight="bold">@messages("pdf.birthDate"): </fo:inline>
-                                    <fo:inline>@dateTimeFormat(birthDate)</fo:inline>
-                                </fo:block>
-                            </fo:block-container>
-                        </fo:block-container>
-                    }
-                </fo:block-container>
-
-                <fo:block-container margin-top="8mm">
-                    <!-- Paternity details -->
-                    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.paternityDetails")</fo:block>
-
-                    <!-- Pay start date -->
-                    <fo:block-container>
-                        <fo:block-container margin-bottom="3mm">
-                            <fo:block>
-                                <fo:inline font-weight="bold">@messages("pdf.payStartDate"): </fo:inline>
-                                <fo:inline>@dateTimeFormat(model.payStartDate)</fo:inline>
-                            </fo:block>
-                        </fo:block-container>
-                    </fo:block-container>
-
-                    <!-- Paternity length -->
-                    <fo:block-container>
-                        <fo:block-container margin-bottom="3mm">
-                            <fo:block>
-                                <fo:inline font-weight="bold">@messages("pdf.paternityLength"): </fo:inline>
-                                <fo:inline>@messages(s"paternityLeaveLength.${model.howLongWillYouBeOnLeave}")</fo:inline>
-                            </fo:block>
-                        </fo:block-container>
-                    </fo:block-container>
-
-                </fo:block-container>
+                @preApril24PaternityDetails(model)
 
             </fo:block-container>
 
-            <fo:block margin-top="8mm">
-                <fo:block margin-bottom="4mm" font-weight="bold" font-size="18pt">@messages("pdf.declaration")</fo:block>
-
-                <fo:block-container>
-                    <fo:block margin-bottom="4mm">@messages("pdf.declaration.declaration.1")</fo:block>
-                    <fo:block margin-bottom="4mm">@messages("pdf.declaration.declaration.2")</fo:block>
-                    <fo:block margin-bottom="4mm">@messages("pdf.declaration.declaration.3")</fo:block>
-                    <fo:block margin-bottom="4mm">@messages("pdf.declaration.declaration.4")</fo:block>
-                </fo:block-container>
-
-                <fo:block font-weight="bold" margin-bottom="1mm">@messages("pdf.declaration.signature")</fo:block>
-
-                <fo:block margin-right="6cm" padding-top="1.5cm" margin-bottom="4mm" border="0.5mm solid black"> </fo:block>
-
-                <fo:block font-weight="bold" margin-bottom="1mm">@messages("pdf.declaration.date")</fo:block>
-
-                <fo:block margin-top="2mm">
-                    <fo:inline>@messages("date.day")</fo:inline>
-                    <fo:inline padding-left="2.5cm">@messages("date.month")</fo:inline>
-                    <fo:inline padding-left="2.2cm">@messages("date.year")</fo:inline>
-                </fo:block>
-
-                <fo:block margin-top="0.9cm">
-                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">D</fo:inline>
-                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">D</fo:inline>
-                    <fo:inline padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">/</fo:inline>
-
-                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">M</fo:inline>
-                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">M</fo:inline>
-                    <fo:inline padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">/</fo:inline>
-
-                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
-                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
-                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
-                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
-                </fo:block>
-
-            </fo:block>
+            @birthDeclaration(model)
         </fo:flow>
 
     </fo:page-sequence>
 
-    <fo:page-sequence master-reference="main">
-
-        <!-- Header -->
-        <fo:static-content flow-name="xsl-region-before">
-            <fo:block>
-                @if(messages.lang.locale.getLanguage == "cy") {
-                    <fo:external-graphic content-width="3.5cm" src="url(conf/resources/logo_cy.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
-                } else {
-                    <fo:external-graphic content-width="3.5cm" src="url(conf/resources/logo.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
-                }
-                <fo:block margin-left="4cm" margin-top="-1.25cm" text-align="right" font-size="16pt" font-weight="bold">@messages("pdf.title")</fo:block>
-            </fo:block>
-        </fo:static-content>
-
-        <!-- Instructions -->
-        <fo:flow flow-name="xsl-region-body">
-            <fo:block-container>
-
-                <fo:block margin-bottom="8mm">
-                    <fo:block font-weight="bold">@messages("pdf.whatToDoNow.heading")</fo:block>
-                    <fo:inline>@messages("pdf.whatToDoNow.p")</fo:inline>
-                </fo:block>
-
-                <fo:block margin-bottom="8mm">
-                    <fo:block font-weight="bold">@messages("pdf.furtherInfo.heading")</fo:block>
-                    <fo:inline>@messages("pdf.furtherInfo.p")</fo:inline>
-                </fo:block>
-
-                <fo:block margin-bottom="8mm">
-                    <fo:block font-weight="bold">@messages("pdf.penalties.heading")</fo:block>
-                    <fo:inline>@messages("pdf.penalties.p")</fo:inline>
-                </fo:block>
-
-            </fo:block-container>
-        </fo:flow>
-
-    </fo:page-sequence>
+    @instructionPage()
 
 </fo:root>
