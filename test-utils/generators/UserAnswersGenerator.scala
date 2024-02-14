@@ -27,6 +27,10 @@ trait UserAnswersGenerator extends TryValues {
   self: Generators =>
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
+    arbitrary[(DateOfAdoptionNotificationPage.type, JsValue)] ::
+    arbitrary[(DateChildExpectedToEnterUkPage.type, JsValue)] ::
+    arbitrary[(DateChildEnteredUkPage.type, JsValue)] ::
+    arbitrary[(ChildHasEnteredUkPage.type, JsValue)] ::
     arbitrary[(ReasonForRequestingPage.type, JsValue)] ::
     arbitrary[(IsApplyingForStatutoryAdoptionPayPage.type, JsValue)] ::
     arbitrary[(IsAdoptingFromAbroadPage.type, JsValue)] ::

@@ -25,6 +25,38 @@ import uk.gov.hmrc.domain.Nino
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
 
+  implicit lazy val arbitraryDateOfAdoptionNotificationUserAnswersEntry: Arbitrary[(DateOfAdoptionNotificationPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[DateOfAdoptionNotificationPage.type]
+        value <- arbitrary[Int].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryDateChildExpectedToEnterUkUserAnswersEntry: Arbitrary[(DateChildExpectedToEnterUkPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[DateChildExpectedToEnterUkPage.type]
+        value <- arbitrary[Int].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryDateChildEnteredUkUserAnswersEntry: Arbitrary[(DateChildEnteredUkPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[DateChildEnteredUkPage.type]
+        value <- arbitrary[Int].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryChildHasEnteredUkUserAnswersEntry: Arbitrary[(ChildHasEnteredUkPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[ChildHasEnteredUkPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitraryReasonForRequestingUserAnswersEntry: Arbitrary[(ReasonForRequestingPage.type, JsValue)] =
     Arbitrary {
       for {

@@ -150,3 +150,23 @@ GET        /why-asking-for-paternity-pay-leave                      controllers.
 POST       /why-asking-for-paternity-pay-leave                      controllers.ReasonForRequestingController.onSubmit(mode: Mode = NormalMode)
 GET        /change-why-asking-for-paternity-pay-leave               controllers.ReasonForRequestingController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-why-asking-for-paternity-pay-leave               controllers.ReasonForRequestingController.onSubmit(mode: Mode = CheckMode)
+
+GET        /childHasEnteredUk                        controllers.ChildHasEnteredUkController.onPageLoad(mode: Mode = NormalMode)
+POST       /childHasEnteredUk                        controllers.ChildHasEnteredUkController.onSubmit(mode: Mode = NormalMode)
+GET        /changeChildHasEnteredUk                  controllers.ChildHasEnteredUkController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeChildHasEnteredUk                  controllers.ChildHasEnteredUkController.onSubmit(mode: Mode = CheckMode)
+
+GET        /dateChildEnteredUk                  controllers.DateChildEnteredUkController.onPageLoad(mode: Mode = NormalMode)
+POST       /dateChildEnteredUk                  controllers.DateChildEnteredUkController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDateChildEnteredUk                        controllers.DateChildEnteredUkController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDateChildEnteredUk                        controllers.DateChildEnteredUkController.onSubmit(mode: Mode = CheckMode)
+
+GET        /dateChildExpectedToEnterUk                  controllers.DateChildExpectedToEnterUkController.onPageLoad(mode: Mode = NormalMode)
+POST       /dateChildExpectedToEnterUk                  controllers.DateChildExpectedToEnterUkController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDateChildExpectedToEnterUk                        controllers.DateChildExpectedToEnterUkController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDateChildExpectedToEnterUk                        controllers.DateChildExpectedToEnterUkController.onSubmit(mode: Mode = CheckMode)
+
+GET        /dateOfAdoptionNotification                  controllers.DateOfAdoptionNotificationController.onPageLoad(mode: Mode = NormalMode)
+POST       /dateOfAdoptionNotification                  controllers.DateOfAdoptionNotificationController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDateOfAdoptionNotification                        controllers.DateOfAdoptionNotificationController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDateOfAdoptionNotification                        controllers.DateOfAdoptionNotificationController.onSubmit(mode: Mode = CheckMode)
