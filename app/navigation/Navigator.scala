@@ -42,10 +42,18 @@ class Navigator @Inject()() {
     case NinoPage                              => ninoRoute
     case BabyHasBeenBornPage                   => babyHasBeenBornRoute
     case BabyDateOfBirthPage                   => _ => routes.BabyDueDateController.onPageLoad(NormalMode)
-    case BabyDueDatePage                       => babyDueDateRoute
-    case PayStartDateBabyBornPage              => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
-    case PayStartDateBabyDuePage               => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
-    case PaternityLeaveLengthPage              => _ => routes.CheckYourAnswersController.onPageLoad
+    case BabyDueDatePage                       => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+    case DateChildWasMatchedPage               => _ => routes.ChildHasBeenPlacedController.onPageLoad(NormalMode)
+    case ChildHasBeenPlacedPage                => childHasBeenPlacedRoute
+    case ChildPlacementDatePage                => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+    case ChildExpectedPlacementDatePage        => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+    case DateOfAdoptionNotificationPage        => _ => routes.ChildHasEnteredUkController.onPageLoad(NormalMode)
+    case ChildHasEnteredUkPage                 => childHasEnteredUkRoute
+    case DateChildEnteredUkPage                => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+    case DateChildExpectedToEnterUkPage        => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+    case PayStartDateBabyBornPage              => _ => routes.CheckYourAnswersController.onPageLoad
+    case PayStartDateBabyDuePage               => _ => routes.CheckYourAnswersController.onPageLoad
+    case PaternityLeaveLengthPage              => paternityLeaveLengthRoute
     case _                                     => _ => routes.IndexController.onPageLoad
   }
 
@@ -120,7 +128,19 @@ class Navigator @Inject()() {
       case false => routes.BabyDueDateController.onPageLoad(NormalMode)
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
-  private def babyDueDateRoute(answers: UserAnswers): Call =
+  private def childHasBeenPlacedRoute(answers: UserAnswers): Call =
+    answers.get(ChildHasBeenPlacedPage).map {
+      case true  => routes.ChildPlacementDateController.onPageLoad(NormalMode)
+      case false => routes.ChildExpectedPlacementDateController.onPageLoad(NormalMode)
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def childHasEnteredUkRoute(answers: UserAnswers): Call =
+    answers.get(ChildHasEnteredUkPage).map {
+      case true  => routes.DateChildEnteredUkController.onPageLoad(NormalMode)
+      case false => routes.DateChildExpectedToEnterUkController.onPageLoad(NormalMode)
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def paternityLeaveLengthRoute(answers: UserAnswers): Call =
     answers.get(BabyHasBeenBornPage).map {
       case true  => routes.PayStartDateBabyBornController.onPageLoad(NormalMode)
       case false => routes.PayStartDateBabyDueController.onPageLoad(NormalMode)
