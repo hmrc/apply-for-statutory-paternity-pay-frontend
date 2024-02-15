@@ -39,13 +39,21 @@ class Navigator @Inject()() {
     case WillTakeTimeToCareForChildPage        => willTakeTimeToCareForChildRoute
     case WillTakeTimeToSupportPartnerPage       => willTakeTimeToSupportPartnerRoute
     case NamePage                              => _ => routes.NinoController.onPageLoad(NormalMode)
-    case NinoPage                              => _ => routes.BabyHasBeenBornController.onPageLoad(NormalMode)
+    case NinoPage                              => ninoRoute
     case BabyHasBeenBornPage                   => babyHasBeenBornRoute
     case BabyDateOfBirthPage                   => _ => routes.BabyDueDateController.onPageLoad(NormalMode)
-    case BabyDueDatePage                       => babyDueDateRoute
-    case PayStartDateBabyBornPage              => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
-    case PayStartDateBabyDuePage               => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
-    case PaternityLeaveLengthPage              => _ => routes.CheckYourAnswersController.onPageLoad
+    case BabyDueDatePage                       => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+    case DateChildWasMatchedPage               => _ => routes.ChildHasBeenPlacedController.onPageLoad(NormalMode)
+    case ChildHasBeenPlacedPage                => childHasBeenPlacedRoute
+    case ChildPlacementDatePage                => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+    case ChildExpectedPlacementDatePage        => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+    case DateOfAdoptionNotificationPage        => _ => routes.ChildHasEnteredUkController.onPageLoad(NormalMode)
+    case ChildHasEnteredUkPage                 => childHasEnteredUkRoute
+    case DateChildEnteredUkPage                => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+    case DateChildExpectedToEnterUkPage        => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+    case PayStartDateBabyBornPage              => _ => routes.CheckYourAnswersController.onPageLoad
+    case PayStartDateBabyDuePage               => _ => routes.CheckYourAnswersController.onPageLoad
+    case PaternityLeaveLengthPage              => paternityLeaveLengthRoute
     case _                                     => _ => routes.IndexController.onPageLoad
   }
 
@@ -97,13 +105,42 @@ class Navigator @Inject()() {
       case false => routes.CannotApplyController.onPageLoad()
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
+  private def ninoRoute(answers: UserAnswers): Call =
+    answers.get(IsAdoptingOrParentalOrderPage).map {
+      case true =>
+        answers.get(ReasonForRequestingPage).map {
+          case RelationshipToChild.Adopting | RelationshipToChild.SupportingAdoption =>
+            answers.get(IsAdoptingFromAbroadPage).map {
+              case true => routes.DateOfAdoptionNotificationController.onPageLoad(NormalMode)
+              case false => routes.DateChildWasMatchedController.onPageLoad(NormalMode)
+            }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+          case _ =>
+            routes.BabyHasBeenBornController.onPageLoad(NormalMode)
+        }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+      case false =>
+        routes.BabyHasBeenBornController.onPageLoad(NormalMode)
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
   private def babyHasBeenBornRoute(answers: UserAnswers): Call =
     answers.get(BabyHasBeenBornPage).map {
       case true  => routes.BabyDateOfBirthController.onPageLoad(NormalMode)
       case false => routes.BabyDueDateController.onPageLoad(NormalMode)
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
-  private def babyDueDateRoute(answers: UserAnswers): Call =
+  private def childHasBeenPlacedRoute(answers: UserAnswers): Call =
+    answers.get(ChildHasBeenPlacedPage).map {
+      case true  => routes.ChildPlacementDateController.onPageLoad(NormalMode)
+      case false => routes.ChildExpectedPlacementDateController.onPageLoad(NormalMode)
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def childHasEnteredUkRoute(answers: UserAnswers): Call =
+    answers.get(ChildHasEnteredUkPage).map {
+      case true  => routes.DateChildEnteredUkController.onPageLoad(NormalMode)
+      case false => routes.DateChildExpectedToEnterUkController.onPageLoad(NormalMode)
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def paternityLeaveLengthRoute(answers: UserAnswers): Call =
     answers.get(BabyHasBeenBornPage).map {
       case true  => routes.PayStartDateBabyBornController.onPageLoad(NormalMode)
       case false => routes.PayStartDateBabyDueController.onPageLoad(NormalMode)
@@ -120,7 +157,10 @@ class Navigator @Inject()() {
     case WillHaveCaringResponsibilityPage      => willHaveCaringResponsibilityCheckRoute
     case WillTakeTimeToCareForChildPage        => willTakeTimeToCareForChildCheckRoute
     case WillTakeTimeToSupportPartnerPage      => willTakeTimeToSupportPartnerCheckRoute
+    case NinoPage                              => ninoCheckRoute
     case BabyHasBeenBornPage                   => babyHasBeenBornCheckRoute
+    case ChildHasBeenPlacedPage                => childHasBeenPlacedCheckRoute
+    case ChildHasEnteredUkPage                 => childHasEnteredUkCheckRoute
     case _                                     => _ => routes.CheckYourAnswersController.onPageLoad
   }
 
@@ -191,6 +231,37 @@ class Navigator @Inject()() {
       case false => routes.CannotApplyController.onPageLoad()
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
+  private def ninoCheckRoute(answers: UserAnswers): Call =
+    answers.get(IsAdoptingOrParentalOrderPage).map {
+      case true =>
+        answers.get(ReasonForRequestingPage).map {
+          case RelationshipToChild.ParentalOrder =>
+            answers.get(BabyHasBeenBornPage)
+              .map(_ => routes.CheckYourAnswersController.onPageLoad)
+              .getOrElse(routes.BabyHasBeenBornController.onPageLoad(CheckMode))
+
+          case RelationshipToChild.Adopting | RelationshipToChild.SupportingAdoption =>
+            answers.get(IsAdoptingFromAbroadPage).map {
+              case true =>
+                answers.get(DateOfAdoptionNotificationPage)
+                  .map(_ => routes.CheckYourAnswersController.onPageLoad)
+                  .getOrElse(routes.DateOfAdoptionNotificationController.onPageLoad(CheckMode))
+
+              case false =>
+                answers.get(DateChildWasMatchedPage)
+                .map(_ => routes.CheckYourAnswersController.onPageLoad)
+                .getOrElse(routes.DateChildWasMatchedController.onPageLoad(CheckMode))
+            }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+          case _ =>
+            routes.CheckYourAnswersController.onPageLoad
+        }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+      case false =>
+        answers.get(BabyHasBeenBornPage)
+        .map(_ => routes.CheckYourAnswersController.onPageLoad)
+        .getOrElse(routes.BabyHasBeenBornController.onPageLoad(CheckMode))
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
   private def babyHasBeenBornCheckRoute(answers: UserAnswers): Call =
     answers.get(BabyHasBeenBornPage).map {
       case true =>
@@ -199,6 +270,30 @@ class Navigator @Inject()() {
           .getOrElse(routes.BabyDateOfBirthController.onPageLoad(CheckMode))
       case false =>
         routes.CheckYourAnswersController.onPageLoad
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def childHasBeenPlacedCheckRoute(answers: UserAnswers): Call =
+    answers.get(ChildHasBeenPlacedPage).map {
+      case true =>
+        answers.get(ChildPlacementDatePage)
+          .map(_ => routes.CheckYourAnswersController.onPageLoad)
+          .getOrElse(routes.ChildPlacementDateController.onPageLoad(CheckMode))
+      case false =>
+        answers.get(ChildExpectedPlacementDatePage)
+          .map(_ => routes.CheckYourAnswersController.onPageLoad)
+          .getOrElse(routes.ChildExpectedPlacementDateController.onPageLoad(CheckMode))
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def childHasEnteredUkCheckRoute(answers: UserAnswers): Call =
+    answers.get(ChildHasEnteredUkPage).map {
+      case true =>
+        answers.get(DateChildEnteredUkPage)
+          .map(_ => routes.CheckYourAnswersController.onPageLoad)
+          .getOrElse(routes.DateChildEnteredUkController.onPageLoad(CheckMode))
+      case false =>
+        answers.get(DateChildExpectedToEnterUkPage)
+          .map(_ => routes.CheckYourAnswersController.onPageLoad)
+          .getOrElse(routes.DateChildExpectedToEnterUkController.onPageLoad(CheckMode))
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = mode match {

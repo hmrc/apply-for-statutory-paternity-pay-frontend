@@ -18,6 +18,8 @@ package pages
 
 import pages.behaviours.PageBehaviours
 
+import java.time.LocalDate
+
 class ChildHasBeenPlacedPageSpec extends PageBehaviours {
 
   "ChildHasBeenPlacedPage" - {
@@ -27,5 +29,33 @@ class ChildHasBeenPlacedPageSpec extends PageBehaviours {
     beSettable[Boolean](ChildHasBeenPlacedPage)
 
     beRemovable[Boolean](ChildHasBeenPlacedPage)
+
+    "must remove Child Expected Placement Date when the answer is yes" in {
+
+      val answers =
+        emptyUserAnswers
+          .set(ChildHasBeenPlacedPage, false).success.value
+          .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
+          .set(ChildPlacementDatePage, LocalDate.now).success.value
+
+      val result = answers.set(ChildHasBeenPlacedPage, true).success.value
+
+      result.get(ChildExpectedPlacementDatePage) must not be defined
+      result.get(ChildPlacementDatePage) mustBe defined
+    }
+
+    "must remove Child Placement Date when the answer is no" in {
+
+      val answers =
+        emptyUserAnswers
+          .set(ChildHasBeenPlacedPage, true).success.value
+          .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
+          .set(ChildPlacementDatePage, LocalDate.now).success.value
+
+      val result = answers.set(ChildHasBeenPlacedPage, false).success.value
+
+      result.get(ChildPlacementDatePage) must not be defined
+      result.get(ChildExpectedPlacementDatePage) mustBe defined
+    }
   }
 }

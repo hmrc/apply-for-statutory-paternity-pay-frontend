@@ -17,9 +17,11 @@
 package pages
 
 import controllers.routes
-import models.Mode
+import models.{Mode, UserAnswers}
 import play.api.libs.json.JsPath
 import play.api.mvc.Call
+
+import scala.util.Try
 
 case object ChildHasBeenPlacedPage extends QuestionPage[Boolean] {
 
@@ -28,4 +30,10 @@ case object ChildHasBeenPlacedPage extends QuestionPage[Boolean] {
   override def toString: String = "childHasBeenPlaced"
 
   override def route(mode: Mode): Call = routes.ChildHasBeenPlacedController.onPageLoad(mode)
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
+    value.map {
+      case true  => userAnswers.remove(ChildExpectedPlacementDatePage)
+      case false => userAnswers.remove(ChildPlacementDatePage)
+    }.getOrElse(super.cleanup(value, userAnswers))
 }

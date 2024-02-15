@@ -18,6 +18,8 @@ package pages
 
 import pages.behaviours.PageBehaviours
 
+import java.time.LocalDate
+
 class ChildHasEnteredUkPageSpec extends PageBehaviours {
 
   "ChildHasEnteredUkPage" - {
@@ -27,5 +29,33 @@ class ChildHasEnteredUkPageSpec extends PageBehaviours {
     beSettable[Boolean](ChildHasEnteredUkPage)
 
     beRemovable[Boolean](ChildHasEnteredUkPage)
+
+    "must remove Date Child Expected to Enter UK when the answer is yes" in {
+
+      val answers =
+        emptyUserAnswers
+          .set(ChildHasEnteredUkPage, false).success.value
+          .set(DateChildEnteredUkPage, LocalDate.now).success.value
+          .set(DateChildExpectedToEnterUkPage, LocalDate.now).success.value
+
+      val result = answers.set(ChildHasEnteredUkPage, true).success.value
+
+      result.get(DateChildExpectedToEnterUkPage) must not be defined
+      result.get(DateChildEnteredUkPage) mustBe defined
+    }
+
+    "must remove Date Child Entered UK when the answer is no" in {
+
+      val answers =
+        emptyUserAnswers
+          .set(ChildHasEnteredUkPage, true).success.value
+          .set(DateChildEnteredUkPage, LocalDate.now).success.value
+          .set(DateChildExpectedToEnterUkPage, LocalDate.now).success.value
+
+      val result = answers.set(ChildHasEnteredUkPage, false).success.value
+
+      result.get(DateChildEnteredUkPage) must not be defined
+      result.get(DateChildExpectedToEnterUkPage) mustBe defined
+    }
   }
 }

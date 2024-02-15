@@ -25,7 +25,7 @@ import java.time.LocalDate
 
 class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
 
-  "IsAdoptingPage" - {
+  "IsAdoptingOrParentalOrderPage" - {
 
     beRetrievable[Boolean](IsAdoptingOrParentalOrderPage)
 
@@ -55,11 +55,12 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
     def fullAnswersAdopting =
       emptyUserAnswers
         .set(IsAdoptingOrParentalOrderPage, true).success.value
+        .set(ReasonForRequestingPage, RelationshipToChild.Adopting).success.value
         .set(BabyDateOfBirthPage, LocalDate.now).success.value
         .set(BabyDueDatePage, LocalDate.now).success.value
         .set(BabyHasBeenBornPage, true).success.value
-        .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
         .set(ChildHasBeenPlacedPage, true).success.value
+        .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
         .set(ChildPlacementDatePage, LocalDate.now).success.value
         .set(CountryOfResidencePage, CountryOfResidence.England).success.value
         .set(DateChildWasMatchedPage, LocalDate.now).success.value
@@ -72,7 +73,6 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
         .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
         .set(PayStartDateBabyBornPage, LocalDate.now).success.value
         .set(PayStartDateBabyDuePage, LocalDate.now).success.value
-        .set(ReasonForRequestingPage, RelationshipToChild.Adopting).success.value
         .set(WillHaveCaringResponsibilityPage, true).success.value
         .set(WillTakeTimeToCareForChildPage, true).success.value
         .set(WillTakeTimeToSupportPartnerPage, true).success.value

@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import models.UserAnswers
+import models.{Name, UserAnswers}
+import uk.gov.hmrc.domain.Nino
 
 import scala.util.{Success, Try}
 
@@ -36,31 +37,58 @@ import scala.util.{Success, Try}
 
 package object pages {
 
-  val allQuestionPages: Set[QuestionPage[_]] = Set(
-    BabyDateOfBirthPage,
-    BabyDueDatePage,
-    BabyHasBeenBornPage,
-    ChildExpectedPlacementDatePage,
-    ChildHasBeenPlacedPage,
-    ChildPlacementDatePage,
-    CountryOfResidencePage,
-    DateChildWasMatchedPage,
-    IsAdoptingFromAbroadPage,
+  val filterQuestions: Set[QuestionPage[_]] = Set(
     IsAdoptingOrParentalOrderPage,
     IsApplyingForStatutoryAdoptionPayPage,
-    IsBiologicalFatherPage,
-    IsCohabitingPage,
-    IsInQualifyingRelationshipPage,
-    NamePage,
-    NinoPage,
-    PaternityLeaveLengthPage,
-    PayStartDateBabyBornPage,
-    PayStartDateBabyDuePage,
+    IsAdoptingFromAbroadPage,
     ReasonForRequestingPage,
+    IsBiologicalFatherPage,
+    IsInQualifyingRelationshipPage,
+    IsCohabitingPage,
     WillHaveCaringResponsibilityPage,
     WillTakeTimeToCareForChildPage,
     WillTakeTimeToSupportPartnerPage
   )
+
+  val applicantQuestions: Set[QuestionPage[_]] = Set(
+    NamePage,
+    NinoPage,
+  )
+
+  val birthChildPaternityOrderDateQuestions: Set[QuestionPage[_]] = Set(
+    BabyHasBeenBornPage,
+    BabyDateOfBirthPage,
+    BabyDueDatePage,
+  )
+
+  val adoptingAbroadDateQuestions: Set[QuestionPage[_]] = Set(
+    DateOfAdoptionNotificationPage,
+    ChildHasEnteredUkPage,
+    DateChildEnteredUkPage,
+    DateChildExpectedToEnterUkPage
+  )
+
+  val adoptingUkDateQuestions: Set[QuestionPage[_]] = Set(
+    DateChildWasMatchedPage,
+    ChildHasBeenPlacedPage,
+    ChildExpectedPlacementDatePage,
+    ChildPlacementDatePage,
+  )
+
+  val paternityPages: Set[QuestionPage[_]] = Set(
+    PaternityLeaveLengthPage,
+    PayStartDateBabyDuePage,
+    PayStartDateBabyBornPage
+  )
+
+  val allQuestionPages: Set[QuestionPage[_]] =
+    Set(CountryOfResidencePage) ++
+      filterQuestions ++
+      applicantQuestions ++
+      birthChildPaternityOrderDateQuestions ++
+      adoptingAbroadDateQuestions ++
+      adoptingUkDateQuestions ++
+      paternityPages
 
   def removeRedundantAnswers(userAnswers: UserAnswers, answersToRemove: Set[QuestionPage[_]]): Try[UserAnswers] =
     answersToRemove
