@@ -26,5 +26,8 @@
         <fo:external-graphic content-width="3.5cm" src="url(conf/resources/logo.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
         }
         <fo:block margin-left="4cm" margin-top="-1.25cm" text-align="right" font-size="16pt" font-weight="bold">@messages("pdf.title")</fo:block>
+<!--        <fo:block margin-left="4cm" margin-top="-1.25cm" text-align="right" font-size="16pt" font-weight="bold">@messages("pdf.adoption.title")</fo:block> -->
+<!--        <fo:block margin-left="4cm" margin-top="-1.25cm" text-align="right" font-size="16pt" font-weight="bold">@messages("pdf.adoptionFromAbroad.title")</fo:block> -->
+<!--        <fo:block margin-left="4cm" margin-top="-1.25cm" text-align="right" font-size="16pt" font-weight="bold">@messages("pdf.parentalOrder.title")</fo:block> -->
     </fo:block>
 </fo:static-content>

@@ -27,8 +27,13 @@
     header: views.xml.pdf.section.Header,
     personalDetails: views.xml.pdf.section.PersonalDetails,
     birthDeclaration: BirthDeclaration,
+    adoptionDeclaration: AdoptionDeclaration,
+    parentalOrderDeclaration: ParentalOrderDeclaration,
     birthChild: BirthChild,
+    adoptedChild: AdoptedChild,
+    adoptedFromAbroadChild: AdoptedFromAbroadChild,
     preApril24PaternityDetails: PreApril24PaternityDetails,
+    postApril24PaternityDetails: PostApril24PaternityDetails,
     instructionPage: InstructionPage
 )
 
@@ -53,12 +58,17 @@
                 @personalDetails(model)
 
                 @birthChild(model)
+<!--                @@adoptedChild(model)-->
+<!--                @@adoptedFromAbroadChild(model)-->
 
                 @preApril24PaternityDetails(model)
+<!--                @@postApril24PaternityDetails(model)-->
 
             </fo:block-container>
 
             @birthDeclaration(model)
+<!--            @@adoptionDeclaration(model)-->
+<!--            @@parentalOrderDeclaration(model)-->
         </fo:flow>
 
     </fo:page-sequence>
