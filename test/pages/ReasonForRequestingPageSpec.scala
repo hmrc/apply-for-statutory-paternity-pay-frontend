@@ -16,10 +16,13 @@
 
 package pages
 
-import models.RelationshipToChild
+import models.{PaternityLeaveLength, RelationshipToChild}
+import org.scalacheck.Gen
 import pages.behaviours.PageBehaviours
 
-class ReasonForRequestingSpec extends PageBehaviours {
+import java.time.LocalDate
+
+class ReasonForRequestingPageSpec extends PageBehaviours {
 
   "ReasonForRequestingPage" - {
 
@@ -28,5 +31,125 @@ class ReasonForRequestingSpec extends PageBehaviours {
     beSettable[RelationshipToChild](ReasonForRequestingPage)
 
     beRemovable[RelationshipToChild](ReasonForRequestingPage)
+
+    "must remove adoption and paternity details when set to parental order" in {
+
+      val answers =
+        emptyUserAnswers
+          .set(BabyHasBeenBornPage, true).success.value
+          .set(BabyDueDatePage, LocalDate.now).success.value
+          .set(BabyDateOfBirthPage, LocalDate.now).success.value
+          .set(DateOfAdoptionNotificationPage, LocalDate.now).success.value
+          .set(ChildHasEnteredUkPage, true).success.value
+          .set(DateChildEnteredUkPage, LocalDate.now).success.value
+          .set(DateChildExpectedToEnterUkPage, LocalDate.now).success.value
+          .set(DateChildWasMatchedPage, LocalDate.now).success.value
+          .set(ChildHasBeenPlacedPage, true).success.value
+          .set(ChildPlacementDatePage, LocalDate.now).success.value
+          .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
+          .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
+          .set(PayStartDateBabyBornPage, LocalDate.now).success.value
+          .set(PayStartDateBabyDuePage, LocalDate.now).success.value
+
+      val result = answers.set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
+
+      result.get(BabyHasBeenBornPage) mustBe defined
+      result.get(BabyDueDatePage) mustBe defined
+      result.get(BabyDateOfBirthPage) mustBe defined
+
+      result.get(DateOfAdoptionNotificationPage) must not be defined
+      result.get(ChildHasEnteredUkPage) must not be defined
+      result.get(DateChildEnteredUkPage) must not be defined
+      result.get(DateChildExpectedToEnterUkPage) must not be defined
+      result.get(DateChildWasMatchedPage) must not be defined
+      result.get(ChildHasBeenPlacedPage) must not be defined
+      result.get(ChildPlacementDatePage) must not be defined
+      result.get(ChildExpectedPlacementDatePage) must not be defined
+      result.get(PaternityLeaveLengthPage) must not be defined
+      result.get(PayStartDateBabyBornPage) must not be defined
+      result.get(PayStartDateBabyDuePage) must not be defined
+    }
+
+    "must remove birth child / parental order, adopting from abroad, and paternity details when set to adopting or supporting adoption in the UK" in {
+
+      val newReason = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+
+      val answers =
+        emptyUserAnswers
+          .set(IsAdoptingFromAbroadPage, false).success.value
+          .set(BabyHasBeenBornPage, true).success.value
+          .set(BabyDueDatePage, LocalDate.now).success.value
+          .set(BabyDateOfBirthPage, LocalDate.now).success.value
+          .set(DateOfAdoptionNotificationPage, LocalDate.now).success.value
+          .set(ChildHasEnteredUkPage, true).success.value
+          .set(DateChildEnteredUkPage, LocalDate.now).success.value
+          .set(DateChildExpectedToEnterUkPage, LocalDate.now).success.value
+          .set(DateChildWasMatchedPage, LocalDate.now).success.value
+          .set(ChildHasBeenPlacedPage, true).success.value
+          .set(ChildPlacementDatePage, LocalDate.now).success.value
+          .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
+          .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
+          .set(PayStartDateBabyBornPage, LocalDate.now).success.value
+          .set(PayStartDateBabyDuePage, LocalDate.now).success.value
+
+      val result = answers.set(ReasonForRequestingPage, newReason).success.value
+
+      result.get(DateChildWasMatchedPage) mustBe defined
+      result.get(ChildHasBeenPlacedPage) mustBe defined
+      result.get(ChildPlacementDatePage) mustBe defined
+      result.get(ChildExpectedPlacementDatePage) mustBe defined
+
+      result.get(BabyHasBeenBornPage) must not be defined
+      result.get(BabyDueDatePage) must not be defined
+      result.get(BabyDateOfBirthPage) must not be defined
+      result.get(DateOfAdoptionNotificationPage) must not be defined
+      result.get(ChildHasEnteredUkPage) must not be defined
+      result.get(DateChildEnteredUkPage) must not be defined
+      result.get(DateChildExpectedToEnterUkPage) must not be defined
+      result.get(PaternityLeaveLengthPage) must not be defined
+      result.get(PayStartDateBabyBornPage) must not be defined
+      result.get(PayStartDateBabyDuePage) must not be defined
+    }
+
+    "must remove birth child / parental order, adopting from UK, and paternity details when set to adopting / supporting adoption from abroad" in {
+
+      val newReason = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+
+      val answers =
+        emptyUserAnswers
+          .set(IsAdoptingFromAbroadPage, true).success.value
+          .set(BabyHasBeenBornPage, true).success.value
+          .set(BabyDueDatePage, LocalDate.now).success.value
+          .set(BabyDateOfBirthPage, LocalDate.now).success.value
+          .set(DateOfAdoptionNotificationPage, LocalDate.now).success.value
+          .set(ChildHasEnteredUkPage, true).success.value
+          .set(DateChildEnteredUkPage, LocalDate.now).success.value
+          .set(DateChildExpectedToEnterUkPage, LocalDate.now).success.value
+          .set(DateChildWasMatchedPage, LocalDate.now).success.value
+          .set(ChildHasBeenPlacedPage, true).success.value
+          .set(ChildPlacementDatePage, LocalDate.now).success.value
+          .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
+          .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
+          .set(PayStartDateBabyBornPage, LocalDate.now).success.value
+          .set(PayStartDateBabyDuePage, LocalDate.now).success.value
+
+      val result = answers.set(ReasonForRequestingPage, newReason).success.value
+
+      result.get(DateOfAdoptionNotificationPage) mustBe defined
+      result.get(ChildHasEnteredUkPage) mustBe defined
+      result.get(DateChildEnteredUkPage) mustBe defined
+      result.get(DateChildExpectedToEnterUkPage) mustBe defined
+
+      result.get(BabyHasBeenBornPage) must not be defined
+      result.get(BabyDueDatePage) must not be defined
+      result.get(BabyDateOfBirthPage) must not be defined
+      result.get(DateChildWasMatchedPage) must not be defined
+      result.get(ChildHasBeenPlacedPage) must not be defined
+      result.get(ChildPlacementDatePage) must not be defined
+      result.get(ChildExpectedPlacementDatePage) must not be defined
+      result.get(PaternityLeaveLengthPage) must not be defined
+      result.get(PayStartDateBabyBornPage) must not be defined
+      result.get(PayStartDateBabyDuePage) must not be defined
+    }
   }
 }

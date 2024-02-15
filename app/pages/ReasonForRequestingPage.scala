@@ -17,9 +17,12 @@
 package pages
 
 import controllers.routes
-import models.{Mode, RelationshipToChild}
+import models.RelationshipToChild.{Adopting, ParentalOrder, SupportingAdoption}
+import models.{Mode, RelationshipToChild, UserAnswers}
 import play.api.libs.json.JsPath
 import play.api.mvc.Call
+
+import scala.util.Try
 
 case object ReasonForRequestingPage extends QuestionPage[RelationshipToChild] {
 
@@ -28,4 +31,25 @@ case object ReasonForRequestingPage extends QuestionPage[RelationshipToChild] {
   override def toString: String = "reasonForRequesting"
 
   override def route(mode: Mode): Call = routes.ReasonForRequestingController.onPageLoad(mode)
+
+  override def cleanup(value: Option[RelationshipToChild], userAnswers: UserAnswers): Try[UserAnswers] =
+    value.map {
+      case ParentalOrder =>
+        val answersToRemove = adoptingUkDateQuestions ++ adoptingAbroadDateQuestions ++ paternityPages
+        removeRedundantAnswers(userAnswers, answersToRemove)
+
+      case Adopting | SupportingAdoption =>
+        userAnswers.get(IsAdoptingFromAbroadPage).map {
+          case true =>
+            val answersToRemove = birthChildPaternityOrderDateQuestions ++ adoptingUkDateQuestions ++ paternityPages
+            removeRedundantAnswers(userAnswers, answersToRemove)
+
+          case false =>
+            val answersToRemove = birthChildPaternityOrderDateQuestions ++ adoptingAbroadDateQuestions ++ paternityPages
+            removeRedundantAnswers(userAnswers, answersToRemove)
+        }.getOrElse(super.cleanup(value, userAnswers))
+
+      case _ =>
+        super.cleanup(value, userAnswers)
+    }.getOrElse(super.cleanup(value, userAnswers))
 }
