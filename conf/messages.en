@@ -280,6 +280,9 @@ isAdoptingOrParentalOrder.error.required = Select yes if you or your partner are
 isAdoptingOrParentalOrder.change.hidden = if you or your partner are adopting a child or becoming parental order parents
 
 pdf.title = Apply for Statutory Paternity Pay and/or Paternity Leave (SC3)
+pdf.adoption.title = Apply for Statutory Paternity Pay and/or Paternity Leave - becoming an adoptive parent (SC4)
+pdf.parentalOrder.title = Apply for Statutory Paternity Pay and/or Paternity Leave - becoming a parental order parent (SC4)
+pdf.adoptionFromAbroad.title = Apply for Statutory Paternity Pay and/or Paternity Leave - when adopting from abroad (SC5)
 pdf.boolean.true = Yes
 pdf.boolean.false = No
 pdf.name = Name
