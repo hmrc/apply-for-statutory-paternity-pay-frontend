@@ -409,3 +409,59 @@ dateOfAdoptionNotification.error.required = The date you or your partner were se
 dateOfAdoptionNotification.error.invalid = Enter a real date
 dateOfAdoptionNotification.change.hidden = the date you or your partner were sent official notification
 
+
+leaveTakenTogetherOrSeparately.title = leaveTakenTogetherOrSeparately
+leaveTakenTogetherOrSeparately.heading = leaveTakenTogetherOrSeparately
+leaveTakenTogetherOrSeparately.together = Together
+leaveTakenTogetherOrSeparately.separately = Separately
+leaveTakenTogetherOrSeparately.checkYourAnswersLabel = leaveTakenTogetherOrSeparately
+leaveTakenTogetherOrSeparately.error.required = Select leaveTakenTogetherOrSeparately
+leaveTakenTogetherOrSeparately.change.hidden = LeaveTakenTogetherOrSeparately
+
+paternityLeaveLengthGbPostApril24.title = paternityLeaveLengthGbPostApril24
+paternityLeaveLengthGbPostApril24.heading = paternityLeaveLengthGbPostApril24
+paternityLeaveLengthGbPostApril24.oneweek = One week
+paternityLeaveLengthGbPostApril24.twoweeks = Two weeks
+paternityLeaveLengthGbPostApril24.checkYourAnswersLabel = paternityLeaveLengthGbPostApril24
+paternityLeaveLengthGbPostApril24.error.required = Select paternityLeaveLengthGbPostApril24
+paternityLeaveLengthGbPostApril24.change.hidden = PaternityLeaveLengthGbPostApril24
+
+payStartDateGbPreApril2024OrNi.title = PayStartDateGbPreApril2024OrNi
+payStartDateGbPreApril2024OrNi.heading = PayStartDateGbPreApril2024OrNi
+payStartDateGbPreApril2024OrNi.hint = For example, 12 11 2007.
+payStartDateGbPreApril2024OrNi.checkYourAnswersLabel = PayStartDateGbPreApril2024OrNi
+payStartDateGbPreApril2024OrNi.error.required.all = Enter the payStartDateGbPreApril2024OrNi
+payStartDateGbPreApril2024OrNi.error.required.two = The payStartDateGbPreApril2024OrNi must include {0} and {1}
+payStartDateGbPreApril2024OrNi.error.required = The payStartDateGbPreApril2024OrNi must include {0}
+payStartDateGbPreApril2024OrNi.error.invalid = Enter a real PayStartDateGbPreApril2024OrNi
+payStartDateGbPreApril2024OrNi.change.hidden = PayStartDateGbPreApril2024OrNi
+
+payStartDateSingleWeek.title = PayStartDateSingleWeek
+payStartDateSingleWeek.heading = PayStartDateSingleWeek
+payStartDateSingleWeek.hint = For example, 12 11 2007.
+payStartDateSingleWeek.checkYourAnswersLabel = PayStartDateSingleWeek
+payStartDateSingleWeek.error.required.all = Enter the payStartDateSingleWeek
+payStartDateSingleWeek.error.required.two = The payStartDateSingleWeek must include {0} and {1}
+payStartDateSingleWeek.error.required = The payStartDateSingleWeek must include {0}
+payStartDateSingleWeek.error.invalid = Enter a real PayStartDateSingleWeek
+payStartDateSingleWeek.change.hidden = PayStartDateSingleWeek
+
+payStartDateWeek1.title = PayStartDateWeek1
+payStartDateWeek1.heading = PayStartDateWeek1
+payStartDateWeek1.hint = For example, 12 11 2007.
+payStartDateWeek1.checkYourAnswersLabel = PayStartDateWeek1
+payStartDateWeek1.error.required.all = Enter the payStartDateWeek1
+payStartDateWeek1.error.required.two = The payStartDateWeek1 must include {0} and {1}
+payStartDateWeek1.error.required = The payStartDateWeek1 must include {0}
+payStartDateWeek1.error.invalid = Enter a real PayStartDateWeek1
+payStartDateWeek1.change.hidden = PayStartDateWeek1
+
+payStartDateWeek2.title = PayStartDateWeek2
+payStartDateWeek2.heading = PayStartDateWeek2
+payStartDateWeek2.hint = For example, 12 11 2007.
+payStartDateWeek2.checkYourAnswersLabel = PayStartDateWeek2
+payStartDateWeek2.error.required.all = Enter the payStartDateWeek2
+payStartDateWeek2.error.required.two = The payStartDateWeek2 must include {0} and {1}
+payStartDateWeek2.error.required = The payStartDateWeek2 must include {0}
+payStartDateWeek2.error.invalid = Enter a real PayStartDateWeek2
+payStartDateWeek2.change.hidden = PayStartDateWeek2

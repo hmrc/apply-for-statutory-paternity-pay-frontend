@@ -25,6 +25,54 @@ import uk.gov.hmrc.domain.Nino
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
 
+  implicit lazy val arbitraryPayStartDateWeek2UserAnswersEntry: Arbitrary[(PayStartDateWeek2Page.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[PayStartDateWeek2Page.type]
+        value <- arbitrary[Int].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryPayStartDateWeek1UserAnswersEntry: Arbitrary[(PayStartDateWeek1Page.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[PayStartDateWeek1Page.type]
+        value <- arbitrary[Int].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryPayStartDateSingleWeekUserAnswersEntry: Arbitrary[(PayStartDateSingleWeekPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[PayStartDateSingleWeekPage.type]
+        value <- arbitrary[Int].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryPayStartDateGbPreApril2024OrNiUserAnswersEntry: Arbitrary[(PayStartDateGbPreApril2024OrNiPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[PayStartDateGbPreApril2024OrNiPage.type]
+        value <- arbitrary[Int].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryPaternityLeaveLengthGbPostApril24UserAnswersEntry: Arbitrary[(PaternityLeaveLengthGbPostApril24Page.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[PaternityLeaveLengthGbPostApril24Page.type]
+        value <- arbitrary[PaternityLeaveLengthGbPostApril24].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryLeaveTakenTogetherOrSeparatelyUserAnswersEntry: Arbitrary[(LeaveTakenTogetherOrSeparatelyPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[LeaveTakenTogetherOrSeparatelyPage.type]
+        value <- arbitrary[LeaveTakenTogetherOrSeparately].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitraryDateOfAdoptionNotificationUserAnswersEntry: Arbitrary[(DateOfAdoptionNotificationPage.type, JsValue)] =
     Arbitrary {
       for {
