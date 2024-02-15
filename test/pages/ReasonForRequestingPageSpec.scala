@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{PaternityLeaveLength, RelationshipToChild}
+import models.{PaternityLeaveLengthGbPreApril24OrNi, RelationshipToChild}
 import org.scalacheck.Gen
 import pages.behaviours.PageBehaviours
 
@@ -47,7 +47,7 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
           .set(ChildHasBeenPlacedPage, true).success.value
           .set(ChildPlacementDatePage, LocalDate.now).success.value
           .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
-          .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
+          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
           .set(PayStartDateBabyBornPage, LocalDate.now).success.value
           .set(PayStartDateBabyDuePage, LocalDate.now).success.value
 
@@ -65,7 +65,7 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
       result.get(ChildHasBeenPlacedPage) must not be defined
       result.get(ChildPlacementDatePage) must not be defined
       result.get(ChildExpectedPlacementDatePage) must not be defined
-      result.get(PaternityLeaveLengthPage) must not be defined
+      result.get(PaternityLeaveLengthGbPreApril24OrNiPage) must not be defined
       result.get(PayStartDateBabyBornPage) must not be defined
       result.get(PayStartDateBabyDuePage) must not be defined
     }
@@ -88,7 +88,7 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
           .set(ChildHasBeenPlacedPage, true).success.value
           .set(ChildPlacementDatePage, LocalDate.now).success.value
           .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
-          .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
+          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
           .set(PayStartDateBabyBornPage, LocalDate.now).success.value
           .set(PayStartDateBabyDuePage, LocalDate.now).success.value
 
@@ -106,7 +106,7 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
       result.get(ChildHasEnteredUkPage) must not be defined
       result.get(DateChildEnteredUkPage) must not be defined
       result.get(DateChildExpectedToEnterUkPage) must not be defined
-      result.get(PaternityLeaveLengthPage) must not be defined
+      result.get(PaternityLeaveLengthGbPreApril24OrNiPage) must not be defined
       result.get(PayStartDateBabyBornPage) must not be defined
       result.get(PayStartDateBabyDuePage) must not be defined
     }
@@ -129,7 +129,7 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
           .set(ChildHasBeenPlacedPage, true).success.value
           .set(ChildPlacementDatePage, LocalDate.now).success.value
           .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
-          .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
+          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
           .set(PayStartDateBabyBornPage, LocalDate.now).success.value
           .set(PayStartDateBabyDuePage, LocalDate.now).success.value
 
@@ -147,7 +147,7 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
       result.get(ChildHasBeenPlacedPage) must not be defined
       result.get(ChildPlacementDatePage) must not be defined
       result.get(ChildExpectedPlacementDatePage) must not be defined
-      result.get(PaternityLeaveLengthPage) must not be defined
+      result.get(PaternityLeaveLengthGbPreApril24OrNiPage) must not be defined
       result.get(PayStartDateBabyBornPage) must not be defined
       result.get(PayStartDateBabyDuePage) must not be defined
     }

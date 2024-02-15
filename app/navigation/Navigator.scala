@@ -42,18 +42,18 @@ class Navigator @Inject()() {
     case NinoPage                              => ninoRoute
     case BabyHasBeenBornPage                   => babyHasBeenBornRoute
     case BabyDateOfBirthPage                   => _ => routes.BabyDueDateController.onPageLoad(NormalMode)
-    case BabyDueDatePage                       => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+    case BabyDueDatePage                       => _ => routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
     case DateChildWasMatchedPage               => _ => routes.ChildHasBeenPlacedController.onPageLoad(NormalMode)
     case ChildHasBeenPlacedPage                => childHasBeenPlacedRoute
-    case ChildPlacementDatePage                => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
-    case ChildExpectedPlacementDatePage        => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+    case ChildPlacementDatePage                => _ => routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+    case ChildExpectedPlacementDatePage        => _ => routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
     case DateOfAdoptionNotificationPage        => _ => routes.ChildHasEnteredUkController.onPageLoad(NormalMode)
     case ChildHasEnteredUkPage                 => childHasEnteredUkRoute
-    case DateChildEnteredUkPage                => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
-    case DateChildExpectedToEnterUkPage        => _ => routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+    case DateChildEnteredUkPage                => _ => routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+    case DateChildExpectedToEnterUkPage        => _ => routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
     case PayStartDateBabyBornPage              => _ => routes.CheckYourAnswersController.onPageLoad
     case PayStartDateBabyDuePage               => _ => routes.CheckYourAnswersController.onPageLoad
-    case PaternityLeaveLengthPage              => paternityLeaveLengthRoute
+    case PaternityLeaveLengthGbPreApril24OrNiPage              => paternityLeaveLengthRoute
     case _                                     => _ => routes.IndexController.onPageLoad
   }
 

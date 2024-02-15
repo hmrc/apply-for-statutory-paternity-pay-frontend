@@ -266,7 +266,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from Baby Due Date to Paternity Leave Length" in {
 
-        navigator.nextPage(BabyDueDatePage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+        navigator.nextPage(BabyDueDatePage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
       }
 
       "must go from Date Child Was Matched to Child Has Been Placed" in {
@@ -291,12 +291,12 @@ class NavigatorSpec extends SpecBase {
 
       "must go from Child Placement Date to Paternity Leave Length" in {
 
-        navigator.nextPage(ChildPlacementDatePage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+        navigator.nextPage(ChildPlacementDatePage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
       }
 
       "must go from Child Expected Placement Date to Paternity Leave Length" in {
 
-        navigator.nextPage(ChildExpectedPlacementDatePage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+        navigator.nextPage(ChildExpectedPlacementDatePage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
       }
 
       "must go from Date of Adoption Notification to Child Has Entered UK" in {
@@ -321,12 +321,12 @@ class NavigatorSpec extends SpecBase {
 
       "must go from Date Child Entered UK to Paternity Leave Length" in {
 
-        navigator.nextPage(DateChildEnteredUkPage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+        navigator.nextPage(DateChildEnteredUkPage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
       }
 
       "must go from Date Child Expected to Enter UK to Paternity Leave Length" in {
 
-        navigator.nextPage(DateChildExpectedToEnterUkPage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthController.onPageLoad(NormalMode)
+        navigator.nextPage(DateChildExpectedToEnterUkPage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
       }
 
       "must go from Parental Leave Length" - {
@@ -334,13 +334,13 @@ class NavigatorSpec extends SpecBase {
         "to Pay Start Date Baby Due has not already been born" in {
 
           val answers = emptyUserAnswers.set(BabyHasBeenBornPage, false).success.value
-          navigator.nextPage(PaternityLeaveLengthPage, NormalMode, answers) mustEqual routes.PayStartDateBabyDueController.onPageLoad(NormalMode)
+          navigator.nextPage(PaternityLeaveLengthGbPreApril24OrNiPage, NormalMode, answers) mustEqual routes.PayStartDateBabyDueController.onPageLoad(NormalMode)
         }
 
         "to Pay Start Date Baby Born when the child has already been born" in {
 
           val answers = emptyUserAnswers.set(BabyHasBeenBornPage, true).success.value
-          navigator.nextPage(PaternityLeaveLengthPage, NormalMode, answers) mustEqual routes.PayStartDateBabyBornController.onPageLoad(NormalMode)
+          navigator.nextPage(PaternityLeaveLengthGbPreApril24OrNiPage, NormalMode, answers) mustEqual routes.PayStartDateBabyBornController.onPageLoad(NormalMode)
         }
       }
 

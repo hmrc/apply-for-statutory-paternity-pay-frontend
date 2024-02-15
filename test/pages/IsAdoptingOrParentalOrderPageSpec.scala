@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{CountryOfResidence, Name, PaternityLeaveLength, RelationshipToChild}
+import models.{CountryOfResidence, Name, PaternityLeaveLengthGbPreApril24OrNi, RelationshipToChild}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 import uk.gov.hmrc.domain.Nino
@@ -45,7 +45,7 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
         .set(IsInQualifyingRelationshipPage, false).success.value
         .set(NamePage, Name("first", "last")).success.value
         .set(NinoPage, arbitrary[Nino].sample.value).success.value
-        .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
+        .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
         .set(PayStartDateBabyBornPage, LocalDate.now).success.value
         .set(PayStartDateBabyDuePage, LocalDate.now).success.value
         .set(WillHaveCaringResponsibilityPage, true).success.value
@@ -70,7 +70,7 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
         .set(IsInQualifyingRelationshipPage, false).success.value
         .set(NamePage, Name("first", "last")).success.value
         .set(NinoPage, arbitrary[Nino].sample.value).success.value
-        .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
+        .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
         .set(PayStartDateBabyBornPage, LocalDate.now).success.value
         .set(PayStartDateBabyDuePage, LocalDate.now).success.value
         .set(WillHaveCaringResponsibilityPage, true).success.value
@@ -101,7 +101,7 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
         result.get(IsInQualifyingRelationshipPage) must not be defined
         result.get(NamePage) must not be defined
         result.get(NinoPage) must not be defined
-        result.get(PaternityLeaveLengthPage) must not be defined
+        result.get(PaternityLeaveLengthGbPreApril24OrNiPage) must not be defined
         result.get(PayStartDateBabyBornPage) must not be defined
         result.get(PayStartDateBabyDuePage) must not be defined
         result.get(ReasonForRequestingPage) must not be defined
@@ -133,7 +133,7 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
         result.get(IsInQualifyingRelationshipPage) must not be defined
         result.get(NamePage) must not be defined
         result.get(NinoPage) must not be defined
-        result.get(PaternityLeaveLengthPage) must not be defined
+        result.get(PaternityLeaveLengthGbPreApril24OrNiPage) must not be defined
         result.get(PayStartDateBabyBornPage) must not be defined
         result.get(PayStartDateBabyDuePage) must not be defined
         result.get(ReasonForRequestingPage) must not be defined
@@ -165,7 +165,7 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
       result.get(IsInQualifyingRelationshipPage) mustBe defined
       result.get(NamePage) mustBe defined
       result.get(NinoPage) mustBe defined
-      result.get(PaternityLeaveLengthPage) mustBe defined
+      result.get(PaternityLeaveLengthGbPreApril24OrNiPage) mustBe defined
       result.get(PayStartDateBabyBornPage) mustBe defined
       result.get(PayStartDateBabyDuePage) mustBe defined
       result.get(ReasonForRequestingPage) mustBe defined
@@ -191,7 +191,7 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
       result.get(IsInQualifyingRelationshipPage) mustBe defined
       result.get(NamePage) mustBe defined
       result.get(NinoPage) mustBe defined
-      result.get(PaternityLeaveLengthPage) mustBe defined
+      result.get(PaternityLeaveLengthGbPreApril24OrNiPage) mustBe defined
       result.get(PayStartDateBabyBornPage) mustBe defined
       result.get(PayStartDateBabyDuePage) mustBe defined
       result.get(WillHaveCaringResponsibilityPage) mustBe defined

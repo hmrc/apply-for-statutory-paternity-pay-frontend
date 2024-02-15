@@ -17,7 +17,7 @@
 package models.auditing
 
 import models.auditing.DownloadAuditEvent.Eligibility
-import models.{CountryOfResidence, JourneyModel, Name, PaternityLeaveLength, RelationshipToChild}
+import models.{CountryOfResidence, JourneyModel, Name, PaternityLeaveLengthGbPreApril24OrNi, RelationshipToChild}
 import play.api.libs.json.{Json, Writes}
 import uk.gov.hmrc.domain.Nino
 
@@ -32,7 +32,7 @@ final case class DownloadAuditEvent(
                                      dueDate: LocalDate,
                                      birthDate: Option[LocalDate],
                                      payStartDate: LocalDate,
-                                     howLongWillYouBeOnLeave: PaternityLeaveLength
+                                     howLongWillYouBeOnLeave: PaternityLeaveLengthGbPreApril24OrNi
                                    ) {
 
 }

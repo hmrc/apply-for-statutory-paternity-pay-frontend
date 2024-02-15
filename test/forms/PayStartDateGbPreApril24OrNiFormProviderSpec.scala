@@ -16,30 +16,25 @@
 
 package forms
 
-import forms.behaviours.OptionFieldBehaviours
-import models.PaternityLeaveLength
-import play.api.data.FormError
+import java.time.{LocalDate, ZoneOffset}
+import forms.behaviours.DateBehaviours
+import play.api.i18n.Messages
+import play.api.test.Helpers.stubMessages
 
-class PaternityLeaveLengthFormProviderSpec extends OptionFieldBehaviours {
+class PayStartDateGbPreApril24OrNiFormProviderSpec extends DateBehaviours {
 
-  val form = new PaternityLeaveLengthFormProvider()()
+  private implicit val messages: Messages = stubMessages()
+  val form = new PayStartDateGbPreApril24OrNiFormProvider()()
 
   ".value" - {
 
-    val fieldName = "value"
-    val requiredKey = "paternityLeaveLength.error.required"
-
-    behave like optionsField[PaternityLeaveLength](
-      form,
-      fieldName,
-      validValues  = PaternityLeaveLength.values,
-      invalidError = FormError(fieldName, "error.invalid")
+    val validData = datesBetween(
+      min = LocalDate.of(2000, 1, 1),
+      max = LocalDate.now(ZoneOffset.UTC)
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    behave like dateField(form, "value", validData)
+
+    behave like mandatoryDateField(form, "value", "payStartDateGbPreApril24OrNi.error.required.all")
   }
 }

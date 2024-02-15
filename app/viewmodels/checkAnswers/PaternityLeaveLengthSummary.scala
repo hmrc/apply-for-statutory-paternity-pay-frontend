@@ -18,7 +18,7 @@ package viewmodels.checkAnswers
 
 import controllers.routes
 import models.{CheckMode, UserAnswers}
-import pages.PaternityLeaveLengthPage
+import pages.PaternityLeaveLengthGbPreApril24OrNiPage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
@@ -26,24 +26,24 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object PaternityLeaveLengthSummary  {
+object PaternityLeaveLengthGbPreApril24OrNiSummary  {
 
   def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(PaternityLeaveLengthPage).map {
+    answers.get(PaternityLeaveLengthGbPreApril24OrNiPage).map {
       answer =>
 
         val value = ValueViewModel(
           HtmlContent(
-            HtmlFormat.escape(messages(s"paternityLeaveLength.$answer"))
+            HtmlFormat.escape(messages(s"paternityLeaveLengthGbPreApril24OrNi.$answer"))
           )
         )
 
         SummaryListRowViewModel(
-          key     = "paternityLeaveLength.checkYourAnswersLabel",
+          key     = "paternityLeaveLengthGbPreApril24OrNi.checkYourAnswersLabel",
           value   = value,
           actions = Seq(
-            ActionItemViewModel("site.change", routes.PaternityLeaveLengthController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("paternityLeaveLength.change.hidden"))
+            ActionItemViewModel("site.change", routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(CheckMode).url)
+              .withVisuallyHiddenText(messages("paternityLeaveLengthGbPreApril24OrNi.change.hidden"))
           )
         )
     }

@@ -33,7 +33,7 @@ final case class JourneyModel(
                                dueDate: LocalDate,
                                birthDate: Option[LocalDate],
                                payStartDate: LocalDate,
-                               howLongWillYouBeOnLeave: PaternityLeaveLength
+                               howLongWillYouBeOnLeave: PaternityLeaveLengthGbPreApril24OrNi
                              )
 
 object JourneyModel {
@@ -70,7 +70,7 @@ object JourneyModel {
       answers.getEither(BabyDueDatePage),
       getBirthDate(answers),
       getPayStartDate(answers),
-      answers.getEither(PaternityLeaveLengthPage)
+      answers.getEither(PaternityLeaveLengthGbPreApril24OrNiPage)
     ).parMapN { case (country, eligibility, name, nino, alreadyBorn, dueDate, birthDate, payStartDate, paternityLeaveLength) =>
       JourneyModel(country, eligibility, name, nino, alreadyBorn, dueDate, birthDate, payStartDate, paternityLeaveLength)
     }

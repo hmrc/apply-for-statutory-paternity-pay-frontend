@@ -87,7 +87,7 @@ class CheckYourAnswersController @Inject()(
         rows = Seq(
           PayStartDateBabyBornSummary.row(request.userAnswers),
           PayStartDateBabyDueSummary.row(request.userAnswers),
-          PaternityLeaveLengthSummary.row(request.userAnswers),
+          PaternityLeaveLengthGbPreApril24OrNiSummary.row(request.userAnswers),
         ).flatten
       )
 

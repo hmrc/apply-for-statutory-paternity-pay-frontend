@@ -27,6 +27,12 @@ trait UserAnswersGenerator extends TryValues {
   self: Generators =>
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
+    arbitrary[(PayStartDateWeek2Page.type, JsValue)] ::
+    arbitrary[(PayStartDateWeek1Page.type, JsValue)] ::
+    arbitrary[(PayStartDateSingleWeekPage.type, JsValue)] ::
+    arbitrary[(PayStartDateGbPreApril24OrNiPage.type, JsValue)] ::
+    arbitrary[(PaternityLeaveLengthGbPostApril24Page.type, JsValue)] ::
+    arbitrary[(LeaveTakenTogetherOrSeparatelyPage.type, JsValue)] ::
     arbitrary[(DateOfAdoptionNotificationPage.type, JsValue)] ::
     arbitrary[(DateChildExpectedToEnterUkPage.type, JsValue)] ::
     arbitrary[(DateChildEnteredUkPage.type, JsValue)] ::
@@ -46,7 +52,7 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(WillHaveCaringResponsibilityPage.type, JsValue)] ::
     arbitrary[(PayStartDateBabyBornPage.type, JsValue)] ::
     arbitrary[(PayStartDateBabyDuePage.type, JsValue)] ::
-    arbitrary[(PaternityLeaveLengthPage.type, JsValue)] ::
+    arbitrary[(PaternityLeaveLengthGbPreApril24OrNiPage.type, JsValue)] ::
     arbitrary[(NamePage.type, JsValue)] ::
     arbitrary[(IsInQualifyingRelationshipPage.type, JsValue)] ::
     arbitrary[(IsCohabitingPage.type, JsValue)] ::

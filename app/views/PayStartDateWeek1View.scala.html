@@ -18,29 +18,26 @@
     layout: templates.Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
-    govukRadios: GovukRadios,
+    govukDateInput: GovukDateInput,
     govukButton: GovukButton
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("paternityLeaveLength.title"))) {
+@layout(pageTitle = title(form, messages("payStartDateWeek1.title"))) {
 
-    @formHelper(action = routes.PaternityLeaveLengthController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.PayStartDateWeek1Controller.onSubmit(mode), 'autoComplete -> "off") {
 
         @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
+            @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))
         }
 
-        @govukRadios(
-            RadiosViewModel(
+        @govukDateInput(
+            DateViewModel(
                 field  = form("value"),
-                legend = HmrcPageHeadingLegend(
-                    content = messages("paternityLeaveLength.heading"),
-                    caption = HmrcSectionCaption(messages("section.paternityDetails"))
-                ),
-                items  = PaternityLeaveLength.options
-            ).withHint(Hint(content = messages("paternityLeaveLength.hint")))
+                legend = LegendViewModel(messages("payStartDateWeek1.heading")).asPageHeading()
+            )
+            .withHint(HintViewModel(messages("payStartDateWeek1.hint")))
         )
 
         @govukButton(

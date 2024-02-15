@@ -20,12 +20,12 @@ import javax.inject.Inject
 
 import forms.mappings.Mappings
 import play.api.data.Form
-import models.PaternityLeaveLength
+import models.PaternityLeaveLengthGbPreApril24OrNi
 
-class PaternityLeaveLengthFormProvider @Inject() extends Mappings {
+class PaternityLeaveLengthGbPreApril24OrNiFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[PaternityLeaveLength] =
+  def apply(): Form[PaternityLeaveLengthGbPreApril24OrNi] =
     Form(
-      "value" -> enumerable[PaternityLeaveLength]("paternityLeaveLength.error.required")
+      "value" -> enumerable[PaternityLeaveLengthGbPreApril24OrNi]("paternityLeaveLengthGbPreApril24OrNi.error.required")
     )
 }

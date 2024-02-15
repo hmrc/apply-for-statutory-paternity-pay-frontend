@@ -18,13 +18,13 @@ package controllers
 
 import base.SpecBase
 import generators.ModelGenerators
-import models.{CountryOfResidence, JourneyModel, Name, NormalMode, PaternityLeaveLength}
+import models.{CountryOfResidence, JourneyModel, Name, NormalMode, PaternityLeaveLengthGbPreApril24OrNi}
 import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito.{times, verify, when}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.EitherValues
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{BabyDateOfBirthPage, BabyDueDatePage, BabyHasBeenBornPage, CountryOfResidencePage, IsAdoptingOrParentalOrderPage, IsBiologicalFatherPage, NamePage, NinoPage, PaternityLeaveLengthPage, PayStartDateBabyBornPage, WillHaveCaringResponsibilityPage, WillTakeTimeToCareForChildPage}
+import pages.{BabyDateOfBirthPage, BabyDueDatePage, BabyHasBeenBornPage, CountryOfResidencePage, IsAdoptingOrParentalOrderPage, IsBiologicalFatherPage, NamePage, NinoPage, PaternityLeaveLengthGbPreApril24OrNiPage, PayStartDateBabyBornPage, WillHaveCaringResponsibilityPage, WillTakeTimeToCareForChildPage}
 import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.test.FakeRequest
@@ -54,7 +54,7 @@ class PrintControllerSpec extends SpecBase with EitherValues with MockitoSugar w
     .set(BabyDueDatePage, dueDate).success.value
     .set(BabyDateOfBirthPage, birthDate).success.value
     .set(PayStartDateBabyBornPage, LocalDate.now).success.value
-    .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
+    .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
 
   val model = JourneyModel.from(answers).value
 

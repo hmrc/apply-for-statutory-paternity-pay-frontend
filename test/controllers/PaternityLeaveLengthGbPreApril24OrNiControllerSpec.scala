@@ -17,32 +17,32 @@
 package controllers
 
 import base.SpecBase
-import forms.PaternityLeaveLengthFormProvider
-import models.{NormalMode, PaternityLeaveLength, UserAnswers}
+import forms.PaternityLeaveLengthGbPreApril24OrNiFormProvider
+import models.{NormalMode, PaternityLeaveLengthGbPreApril24OrNi, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.PaternityLeaveLengthPage
+import pages.PaternityLeaveLengthGbPreApril24OrNiPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.PaternityLeaveLengthView
+import views.html.PaternityLeaveLengthGbPreApril24OrNiView
 
 import scala.concurrent.Future
 
-class PaternityLeaveLengthControllerSpec extends SpecBase with MockitoSugar {
+class PaternityLeaveLengthGbPreApril24OrNiControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val paternityLeaveLengthRoute = routes.PaternityLeaveLengthController.onPageLoad(NormalMode).url
+  lazy val paternityLeaveLengthRoute = routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode).url
 
-  val formProvider = new PaternityLeaveLengthFormProvider()
+  val formProvider = new PaternityLeaveLengthGbPreApril24OrNiFormProvider()
   val form = formProvider()
 
-  "PaternityLeaveLength Controller" - {
+  "PaternityLeaveLengthGbPreApril24OrNi Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -53,7 +53,7 @@ class PaternityLeaveLengthControllerSpec extends SpecBase with MockitoSugar {
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[PaternityLeaveLengthView]
+        val view = application.injector.instanceOf[PaternityLeaveLengthGbPreApril24OrNiView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
@@ -62,19 +62,19 @@ class PaternityLeaveLengthControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(PaternityLeaveLengthPage, PaternityLeaveLength.values.head).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
         val request = FakeRequest(GET, paternityLeaveLengthRoute)
 
-        val view = application.injector.instanceOf[PaternityLeaveLengthView]
+        val view = application.injector.instanceOf[PaternityLeaveLengthGbPreApril24OrNiView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(PaternityLeaveLength.values.head), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(PaternityLeaveLengthGbPreApril24OrNi.values.head), NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -95,7 +95,7 @@ class PaternityLeaveLengthControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, paternityLeaveLengthRoute)
-            .withFormUrlEncodedBody(("value", PaternityLeaveLength.values.head.toString))
+            .withFormUrlEncodedBody(("value", PaternityLeaveLengthGbPreApril24OrNi.values.head.toString))
 
         val result = route(application, request).value
 
@@ -115,7 +115,7 @@ class PaternityLeaveLengthControllerSpec extends SpecBase with MockitoSugar {
 
         val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[PaternityLeaveLengthView]
+        val view = application.injector.instanceOf[PaternityLeaveLengthGbPreApril24OrNiView]
 
         val result = route(application, request).value
 
@@ -145,7 +145,7 @@ class PaternityLeaveLengthControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, paternityLeaveLengthRoute)
-            .withFormUrlEncodedBody(("value", PaternityLeaveLength.values.head.toString))
+            .withFormUrlEncodedBody(("value", PaternityLeaveLengthGbPreApril24OrNi.values.head.toString))
 
         val result = route(application, request).value
 

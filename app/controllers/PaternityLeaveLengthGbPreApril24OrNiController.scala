@@ -17,29 +17,29 @@
 package controllers
 
 import controllers.actions._
-import forms.PaternityLeaveLengthFormProvider
+import forms.PaternityLeaveLengthGbPreApril24OrNiFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.PaternityLeaveLengthPage
+import pages.PaternityLeaveLengthGbPreApril24OrNiPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.PaternityLeaveLengthView
+import views.html.PaternityLeaveLengthGbPreApril24OrNiView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PaternityLeaveLengthController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       formProvider: PaternityLeaveLengthFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: PaternityLeaveLengthView
+class PaternityLeaveLengthGbPreApril24OrNiController @Inject()(
+                                                                override val messagesApi: MessagesApi,
+                                                                sessionRepository: SessionRepository,
+                                                                navigator: Navigator,
+                                                                identify: IdentifierAction,
+                                                                getData: DataRetrievalAction,
+                                                                requireData: DataRequiredAction,
+                                                                formProvider: PaternityLeaveLengthGbPreApril24OrNiFormProvider,
+                                                                val controllerComponents: MessagesControllerComponents,
+                                                                view: PaternityLeaveLengthGbPreApril24OrNiView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -47,7 +47,7 @@ class PaternityLeaveLengthController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(PaternityLeaveLengthPage) match {
+      val preparedForm = request.userAnswers.get(PaternityLeaveLengthGbPreApril24OrNiPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -64,9 +64,9 @@ class PaternityLeaveLengthController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(PaternityLeaveLengthPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(PaternityLeaveLengthGbPreApril24OrNiPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PaternityLeaveLengthPage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(PaternityLeaveLengthGbPreApril24OrNiPage, mode, updatedAnswers))
       )
   }
 }

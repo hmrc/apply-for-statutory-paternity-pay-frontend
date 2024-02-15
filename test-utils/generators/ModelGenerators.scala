@@ -23,6 +23,16 @@ import uk.gov.hmrc.domain.Nino
 
 trait ModelGenerators {
 
+  implicit lazy val arbitraryPaternityLeaveLengthGbPostApril24: Arbitrary[PaternityLeaveLengthGbPostApril24] =
+    Arbitrary {
+      Gen.oneOf(PaternityLeaveLengthGbPostApril24.values.toSeq)
+    }
+
+  implicit lazy val arbitraryLeaveTakenTogetherOrSeparately: Arbitrary[LeaveTakenTogetherOrSeparately] =
+    Arbitrary {
+      Gen.oneOf(LeaveTakenTogetherOrSeparately.values.toSeq)
+    }
+
   implicit lazy val arbitraryReasonForRequesting: Arbitrary[RelationshipToChild] =
     Arbitrary {
       Gen.oneOf(RelationshipToChild.values.toSeq)
@@ -33,9 +43,9 @@ trait ModelGenerators {
       Gen.oneOf(CountryOfResidence.values.toSeq)
     }
 
-  implicit lazy val arbitraryPaternityLeaveLength: Arbitrary[PaternityLeaveLength] =
+  implicit lazy val arbitraryPaternityLeaveLength: Arbitrary[PaternityLeaveLengthGbPreApril24OrNi] =
     Arbitrary {
-      Gen.oneOf(PaternityLeaveLength.values.toSeq)
+      Gen.oneOf(PaternityLeaveLengthGbPreApril24OrNi.values.toSeq)
     }
 
   implicit lazy val arbitraryName: Arbitrary[Name] =

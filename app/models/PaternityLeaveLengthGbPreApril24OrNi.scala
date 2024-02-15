@@ -20,26 +20,26 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
-sealed trait PaternityLeaveLength
+sealed trait PaternityLeaveLengthGbPreApril24OrNi
 
-object PaternityLeaveLength extends Enumerable.Implicits {
+object PaternityLeaveLengthGbPreApril24OrNi extends Enumerable.Implicits {
 
-  case object Oneweek extends WithName("oneWeek") with PaternityLeaveLength
-  case object Twoweeks extends WithName("twoWeeks") with PaternityLeaveLength
+  case object Oneweek extends WithName("oneWeek") with PaternityLeaveLengthGbPreApril24OrNi
+  case object Twoweeks extends WithName("twoWeeks") with PaternityLeaveLengthGbPreApril24OrNi
 
-  val values: Seq[PaternityLeaveLength] = Seq(
+  val values: Seq[PaternityLeaveLengthGbPreApril24OrNi] = Seq(
     Oneweek, Twoweeks
   )
 
   def options(implicit messages: Messages): Seq[RadioItem] = values.zipWithIndex.map {
     case (value, index) =>
       RadioItem(
-        content = Text(messages(s"paternityLeaveLength.${value.toString}")),
+        content = Text(messages(s"paternityLeaveLengthGbPreApril24OrNi.${value.toString}")),
         value   = Some(value.toString),
         id      = Some(s"value_$index")
       )
   }
 
-  implicit val enumerable: Enumerable[PaternityLeaveLength] =
+  implicit val enumerable: Enumerable[PaternityLeaveLengthGbPreApril24OrNi] =
     Enumerable(values.map(v => v.toString -> v): _*)
 }

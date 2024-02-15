@@ -24,40 +24,40 @@ import org.scalatest.matchers.must.Matchers
 import org.scalatest.OptionValues
 import play.api.libs.json.{JsError, JsString, Json}
 
-class PaternityLeaveLengthSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
+class LeaveTakenTogetherOrSeparatelySpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
-  "PaternityLeaveLength" - {
+  "LeaveTakenTogetherOrSeparately" - {
 
     "must deserialise valid values" in {
 
-      val gen = Gen.oneOf(PaternityLeaveLength.values.toSeq)
+      val gen = Gen.oneOf(LeaveTakenTogetherOrSeparately.values.toSeq)
 
       forAll(gen) {
-        paternityLeaveLength =>
+        leaveTakenTogetherOrSeparately =>
 
-          JsString(paternityLeaveLength.toString).validate[PaternityLeaveLength].asOpt.value mustEqual paternityLeaveLength
+          JsString(leaveTakenTogetherOrSeparately.toString).validate[LeaveTakenTogetherOrSeparately].asOpt.value mustEqual leaveTakenTogetherOrSeparately
       }
     }
 
     "must fail to deserialise invalid values" in {
 
-      val gen = arbitrary[String] suchThat (!PaternityLeaveLength.values.map(_.toString).contains(_))
+      val gen = arbitrary[String] suchThat (!LeaveTakenTogetherOrSeparately.values.map(_.toString).contains(_))
 
       forAll(gen) {
         invalidValue =>
 
-          JsString(invalidValue).validate[PaternityLeaveLength] mustEqual JsError("error.invalid")
+          JsString(invalidValue).validate[LeaveTakenTogetherOrSeparately] mustEqual JsError("error.invalid")
       }
     }
 
     "must serialise" in {
 
-      val gen = Gen.oneOf(PaternityLeaveLength.values.toSeq)
+      val gen = Gen.oneOf(LeaveTakenTogetherOrSeparately.values.toSeq)
 
       forAll(gen) {
-        paternityLeaveLength =>
+        leaveTakenTogetherOrSeparately =>
 
-          Json.toJson(paternityLeaveLength) mustEqual JsString(paternityLeaveLength.toString)
+          Json.toJson(leaveTakenTogetherOrSeparately) mustEqual JsString(leaveTakenTogetherOrSeparately.toString)
       }
     }
   }
