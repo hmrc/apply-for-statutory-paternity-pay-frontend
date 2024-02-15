@@ -71,7 +71,15 @@ class CheckYourAnswersController @Inject()(
         rows = Seq(
           BabyHasBeenBornSummary.row(request.userAnswers),
           BabyDateOfBirthSummary.row(request.userAnswers),
-          BabyDueDateSummary.row(request.userAnswers)
+          BabyDueDateSummary.row(request.userAnswers),
+          DateChildWasMatchedSummary.row(request.userAnswers),
+          ChildHasBeenPlacedSummary.row(request.userAnswers),
+          ChildPlacementDateSummary.row(request.userAnswers),
+          ChildExpectedPlacementDateSummary.row(request.userAnswers),
+          DateOfAdoptionNotificationSummary.row(request.userAnswers),
+          ChildHasEnteredUkSummary.row(request.userAnswers),
+          DateChildEnteredUkSummary.row(request.userAnswers),
+          DateChildExpectedToEnterUkSummary.row(request.userAnswers)
         ).flatten
       )
 
