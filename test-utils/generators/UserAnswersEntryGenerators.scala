@@ -49,10 +49,10 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryPayStartDateGbPreApril2024OrNiUserAnswersEntry: Arbitrary[(PayStartDateGbPreApril2024OrNiPage.type, JsValue)] =
+  implicit lazy val arbitraryPayStartDateGbPreApril24OrNiUserAnswersEntry: Arbitrary[(PayStartDateGbPreApril24OrNiPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[PayStartDateGbPreApril2024OrNiPage.type]
+        page  <- arbitrary[PayStartDateGbPreApril24OrNiPage.type]
         value <- arbitrary[Int].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -225,11 +225,11 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryPaternityLeaveLengthUserAnswersEntry: Arbitrary[(PaternityLeaveLengthPage.type, JsValue)] =
+  implicit lazy val arbitraryPaternityLeaveLengthUserAnswersEntry: Arbitrary[(PaternityLeaveLengthGbPreApril24OrNiPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[PaternityLeaveLengthPage.type]
-        value <- arbitrary[PaternityLeaveLength].map(Json.toJson(_))
+        page  <- arbitrary[PaternityLeaveLengthGbPreApril24OrNiPage.type]
+        value <- arbitrary[PaternityLeaveLengthGbPreApril24OrNi].map(Json.toJson(_))
       } yield (page, value)
     }
 

@@ -16,17 +16,17 @@
 
 package pages
 
-import models.PaternityLeaveLength
+import models.PaternityLeaveLengthGbPreApril24OrNi
 import pages.behaviours.PageBehaviours
 
 class PaternityLeaveLengthSpec extends PageBehaviours {
 
   "PaternityLeaveLengthPage" - {
 
-    beRetrievable[PaternityLeaveLength](PaternityLeaveLengthPage)
+    beRetrievable[PaternityLeaveLengthGbPreApril24OrNi](PaternityLeaveLengthGbPreApril24OrNiPage)
 
-    beSettable[PaternityLeaveLength](PaternityLeaveLengthPage)
+    beSettable[PaternityLeaveLengthGbPreApril24OrNi](PaternityLeaveLengthGbPreApril24OrNiPage)
 
-    beRemovable[PaternityLeaveLength](PaternityLeaveLengthPage)
+    beRemovable[PaternityLeaveLengthGbPreApril24OrNi](PaternityLeaveLengthGbPreApril24OrNiPage)
   }
 }

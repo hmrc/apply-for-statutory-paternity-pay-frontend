@@ -18,26 +18,29 @@
     layout: templates.Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
-    govukDateInput: GovukDateInput,
+    govukRadios: GovukRadios,
     govukButton: GovukButton
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("payStartDateGbPreApril2024OrNi.title"))) {
+@layout(pageTitle = title(form, messages("paternityLeaveLengthGbPreApril24OrNi.title"))) {
 
-    @formHelper(action = routes.PayStartDateGbPreApril2024OrNiController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.PaternityLeaveLengthGbPreApril24OrNiController.onSubmit(mode), 'autoComplete -> "off") {
 
         @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))
+            @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
         }
 
-        @govukDateInput(
-            DateViewModel(
+        @govukRadios(
+            RadiosViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages("payStartDateGbPreApril2024OrNi.heading")).asPageHeading()
-            )
-            .withHint(HintViewModel(messages("payStartDateGbPreApril2024OrNi.hint")))
+                legend = HmrcPageHeadingLegend(
+                    content = messages("paternityLeaveLengthGbPreApril24OrNi.heading"),
+                    caption = HmrcSectionCaption(messages("section.paternityDetails"))
+                ),
+                items  = PaternityLeaveLengthGbPreApril24OrNi.options
+            ).withHint(Hint(content = messages("paternityLeaveLengthGbPreApril24OrNi.hint")))
         )
 
         @govukButton(

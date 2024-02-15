@@ -76,7 +76,7 @@ package object pages {
   )
 
   val paternityPages: Set[QuestionPage[_]] = Set(
-    PaternityLeaveLengthPage,
+    PaternityLeaveLengthGbPreApril24OrNiPage,
     PayStartDateBabyDuePage,
     PayStartDateBabyBornPage
   )

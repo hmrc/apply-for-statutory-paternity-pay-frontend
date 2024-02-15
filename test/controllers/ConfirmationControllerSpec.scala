@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import generators.ModelGenerators
-import models.{CountryOfResidence, Name, PaternityLeaveLength}
+import models.{CountryOfResidence, Name, PaternityLeaveLengthGbPreApril24OrNi}
 import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
@@ -52,7 +52,7 @@ class ConfirmationControllerSpec extends SpecBase with MockitoSugar with ModelGe
           .set(IsInQualifyingRelationshipPage, true).success.value
           .set(NamePage, Name("first", "last")).success.value
           .set(NinoPage, arbitrary[Nino].sample.value).success.value
-          .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
+          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
           .set(PayStartDateBabyBornPage, LocalDate.now).success.value
           .set(WillHaveCaringResponsibilityPage, true).success.value
           .set(WillTakeTimeToCareForChildPage, true).success.value

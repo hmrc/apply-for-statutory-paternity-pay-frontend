@@ -20,25 +20,25 @@ import config.Formats.dateTimeFormat
 
 import controllers.routes
 import models.{CheckMode, UserAnswers}
-import pages.PayStartDateGbPreApril2024OrNiPage
+import pages.PayStartDateGbPreApril24OrNiPage
 import play.api.i18n.{Lang, Messages}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object PayStartDateGbPreApril2024OrNiSummary  {
+object PayStartDateGbPreApril24OrNiSummary  {
 
   def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(PayStartDateGbPreApril2024OrNiPage).map {
+    answers.get(PayStartDateGbPreApril24OrNiPage).map {
       answer =>
         implicit val lang: Lang = messages.lang
 
         SummaryListRowViewModel(
-          key     = "payStartDateGbPreApril2024OrNi.checkYourAnswersLabel",
+          key     = "payStartDateGbPreApril24OrNi.checkYourAnswersLabel",
           value   = ValueViewModel(answer.format(dateTimeFormat())),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.PayStartDateGbPreApril2024OrNiController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("payStartDateGbPreApril2024OrNi.change.hidden"))
+            ActionItemViewModel("site.change", routes.PayStartDateGbPreApril24OrNiController.onPageLoad(CheckMode).url)
+              .withVisuallyHiddenText(messages("payStartDateGbPreApril24OrNi.change.hidden"))
           )
         )
     }

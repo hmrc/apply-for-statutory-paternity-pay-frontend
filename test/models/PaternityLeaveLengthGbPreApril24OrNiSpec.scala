@@ -24,35 +24,35 @@ import org.scalatest.matchers.must.Matchers
 import org.scalatest.OptionValues
 import play.api.libs.json.{JsError, JsString, Json}
 
-class PaternityLeaveLengthSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
+class PaternityLeaveLengthGbPreApril24OrNiSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
   "PaternityLeaveLength" - {
 
     "must deserialise valid values" in {
 
-      val gen = Gen.oneOf(PaternityLeaveLength.values.toSeq)
+      val gen = Gen.oneOf(PaternityLeaveLengthGbPreApril24OrNi.values)
 
       forAll(gen) {
         paternityLeaveLength =>
 
-          JsString(paternityLeaveLength.toString).validate[PaternityLeaveLength].asOpt.value mustEqual paternityLeaveLength
+          JsString(paternityLeaveLength.toString).validate[PaternityLeaveLengthGbPreApril24OrNi].asOpt.value mustEqual paternityLeaveLength
       }
     }
 
     "must fail to deserialise invalid values" in {
 
-      val gen = arbitrary[String] suchThat (!PaternityLeaveLength.values.map(_.toString).contains(_))
+      val gen = arbitrary[String] suchThat (!PaternityLeaveLengthGbPreApril24OrNi.values.map(_.toString).contains(_))
 
       forAll(gen) {
         invalidValue =>
 
-          JsString(invalidValue).validate[PaternityLeaveLength] mustEqual JsError("error.invalid")
+          JsString(invalidValue).validate[PaternityLeaveLengthGbPreApril24OrNi] mustEqual JsError("error.invalid")
       }
     }
 
     "must serialise" in {
 
-      val gen = Gen.oneOf(PaternityLeaveLength.values.toSeq)
+      val gen = Gen.oneOf(PaternityLeaveLengthGbPreApril24OrNi.values)
 
       forAll(gen) {
         paternityLeaveLength =>

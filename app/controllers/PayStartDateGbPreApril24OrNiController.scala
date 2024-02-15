@@ -17,36 +17,36 @@
 package controllers
 
 import controllers.actions._
-import forms.PayStartDateGbPreApril2024OrNiFormProvider
+import forms.PayStartDateGbPreApril24OrNiFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.PayStartDateGbPreApril2024OrNiPage
+import pages.PayStartDateGbPreApril24OrNiPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.PayStartDateGbPreApril2024OrNiView
+import views.html.PayStartDateGbPreApril24OrNiView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PayStartDateGbPreApril2024OrNiController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: PayStartDateGbPreApril2024OrNiFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: PayStartDateGbPreApril2024OrNiView
+class PayStartDateGbPreApril24OrNiController @Inject()(
+                                                        override val messagesApi: MessagesApi,
+                                                        sessionRepository: SessionRepository,
+                                                        navigator: Navigator,
+                                                        identify: IdentifierAction,
+                                                        getData: DataRetrievalAction,
+                                                        requireData: DataRequiredAction,
+                                                        formProvider: PayStartDateGbPreApril24OrNiFormProvider,
+                                                        val controllerComponents: MessagesControllerComponents,
+                                                        view: PayStartDateGbPreApril24OrNiView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider()
 
-      val preparedForm = request.userAnswers.get(PayStartDateGbPreApril2024OrNiPage) match {
+      val preparedForm = request.userAnswers.get(PayStartDateGbPreApril24OrNiPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -64,9 +64,9 @@ class PayStartDateGbPreApril2024OrNiController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDateGbPreApril2024OrNiPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDateGbPreApril24OrNiPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PayStartDateGbPreApril2024OrNiPage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(PayStartDateGbPreApril24OrNiPage, mode, updatedAnswers))
       )
   }
 }

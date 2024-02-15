@@ -61,10 +61,10 @@ POST       /what-is-your-name                   controllers.NameController.onSub
 GET        /change-your-name                    controllers.NameController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-your-name                    controllers.NameController.onSubmit(mode: Mode = CheckMode)
 
-GET        /how-long-will-you-be-on-leave               controllers.PaternityLeaveLengthController.onPageLoad(mode: Mode = NormalMode)
-POST       /how-long-will-you-be-on-leave               controllers.PaternityLeaveLengthController.onSubmit(mode: Mode = NormalMode)
-GET        /change-how-long-you-will-be-on-leave                controllers.PaternityLeaveLengthController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-how-long-you-will-be-on-leave                controllers.PaternityLeaveLengthController.onSubmit(mode: Mode = CheckMode)
+GET        /how-long-will-you-be-on-leave               controllers.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(mode: Mode = NormalMode)
+POST       /how-long-will-you-be-on-leave               controllers.PaternityLeaveLengthGbPreApril24OrNiController.onSubmit(mode: Mode = NormalMode)
+GET        /change-how-long-you-will-be-on-leave                controllers.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-how-long-you-will-be-on-leave                controllers.PaternityLeaveLengthGbPreApril24OrNiController.onSubmit(mode: Mode = CheckMode)
 
 GET        /pay-start-date-baby-born              controllers.PayStartDateBabyBornController.onPageLoad(mode: Mode = NormalMode)
 POST       /pay-start-date-baby-born              controllers.PayStartDateBabyBornController.onSubmit(mode: Mode = NormalMode)
@@ -171,10 +171,10 @@ POST       /paternityLeaveLengthGbPostApril24                        controllers
 GET        /changePaternityLeaveLengthGbPostApril24                  controllers.PaternityLeaveLengthGbPostApril24Controller.onPageLoad(mode: Mode = CheckMode)
 POST       /changePaternityLeaveLengthGbPostApril24                  controllers.PaternityLeaveLengthGbPostApril24Controller.onSubmit(mode: Mode = CheckMode)
 
-GET        /payStartDateGbPreApril2024OrNi                  controllers.PayStartDateGbPreApril2024OrNiController.onPageLoad(mode: Mode = NormalMode)
-POST       /payStartDateGbPreApril2024OrNi                  controllers.PayStartDateGbPreApril2024OrNiController.onSubmit(mode: Mode = NormalMode)
-GET        /changePayStartDateGbPreApril2024OrNi                        controllers.PayStartDateGbPreApril2024OrNiController.onPageLoad(mode: Mode = CheckMode)
-POST       /changePayStartDateGbPreApril2024OrNi                        controllers.PayStartDateGbPreApril2024OrNiController.onSubmit(mode: Mode = CheckMode)
+GET        /payStartDateGbPreApril24OrNi                  controllers.PayStartDateGbPreApril24OrNiController.onPageLoad(mode: Mode = NormalMode)
+POST       /payStartDateGbPreApril24OrNi                  controllers.PayStartDateGbPreApril24OrNiController.onSubmit(mode: Mode = NormalMode)
+GET        /changePayStartDateGbPreApril2024OrNi                        controllers.PayStartDateGbPreApril24OrNiController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePayStartDateGbPreApril2024OrNi                        controllers.PayStartDateGbPreApril24OrNiController.onSubmit(mode: Mode = CheckMode)
 
 GET        /payStartDateSingleWeek                  controllers.PayStartDateSingleWeekController.onPageLoad(mode: Mode = NormalMode)
 POST       /payStartDateSingleWeek                  controllers.PayStartDateSingleWeekController.onSubmit(mode: Mode = NormalMode)

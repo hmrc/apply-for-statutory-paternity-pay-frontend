@@ -43,9 +43,9 @@ trait ModelGenerators {
       Gen.oneOf(CountryOfResidence.values.toSeq)
     }
 
-  implicit lazy val arbitraryPaternityLeaveLength: Arbitrary[PaternityLeaveLength] =
+  implicit lazy val arbitraryPaternityLeaveLength: Arbitrary[PaternityLeaveLengthGbPreApril24OrNi] =
     Arbitrary {
-      Gen.oneOf(PaternityLeaveLength.values.toSeq)
+      Gen.oneOf(PaternityLeaveLengthGbPreApril24OrNi.values.toSeq)
     }
 
   implicit lazy val arbitraryName: Arbitrary[Name] =

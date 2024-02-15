@@ -21,7 +21,7 @@ import java.time.LocalDate
 import org.scalacheck.Arbitrary
 import pages.behaviours.PageBehaviours
 
-class PayStartDateGbPreApril2024OrNiPageSpec extends PageBehaviours {
+class PayStartDateGbPreApril24OrNiPageSpec extends PageBehaviours {
 
   "PayStartDateGbPreApril2024OrNiPage" - {
 
@@ -29,10 +29,10 @@ class PayStartDateGbPreApril2024OrNiPageSpec extends PageBehaviours {
       datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2100, 1, 1))
     }
 
-    beRetrievable[LocalDate](PayStartDateGbPreApril2024OrNiPage)
+    beRetrievable[LocalDate](PayStartDateGbPreApril24OrNiPage)
 
-    beSettable[LocalDate](PayStartDateGbPreApril2024OrNiPage)
+    beSettable[LocalDate](PayStartDateGbPreApril24OrNiPage)
 
-    beRemovable[LocalDate](PayStartDateGbPreApril2024OrNiPage)
+    beRemovable[LocalDate](PayStartDateGbPreApril24OrNiPage)
   }
 }

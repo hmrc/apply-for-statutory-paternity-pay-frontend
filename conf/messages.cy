@@ -163,14 +163,14 @@ name.error.firstName.length = Mae’n rhaid i’r enw cyntaf fod yn 100 o gymeri
 name.error.lastName.length = Mae’n rhaid i’r enw olaf fod yn 100 o gymeriadau neu lai
 name.change.hidden = eich enw
 
-paternityLeaveLength.title = Pa mor hir y byddwch ar Absenoldeb Tadolaeth?
-paternityLeaveLength.heading = Pa mor hir y byddwch ar Absenoldeb Tadolaeth?
-paternityLeaveLength.hint = Os byddwch yn cymryd seibiant o’r gwaith am ddwy wythnos, mae’n rhaid i’r wythnosau hynny gael eu cymryd un ar ôl y llall – ni allwch eu cymryd ar wahân.
-paternityLeaveLength.oneWeek = 1 wythnos
-paternityLeaveLength.twoWeeks = 2 wythnos
-paternityLeaveLength.checkYourAnswersLabel = Pa mor hir y byddwch ar Absenoldeb Tadolaeth?
-paternityLeaveLength.error.required = Dewiswch pa mor hir y byddwch ar Absenoldeb Tadolaeth
-paternityLeaveLength.change.hidden = pa mor hir y byddwch ar Absenoldeb Tadolaeth
+paternityLeaveLengthGbPreApril24OrNi.title = Pa mor hir y byddwch ar Absenoldeb Tadolaeth?
+paternityLeaveLengthGbPreApril24OrNi.heading = Pa mor hir y byddwch ar Absenoldeb Tadolaeth?
+paternityLeaveLengthGbPreApril24OrNi.hint = Os byddwch yn cymryd seibiant o’r gwaith am ddwy wythnos, mae’n rhaid i’r wythnosau hynny gael eu cymryd un ar ôl y llall – ni allwch eu cymryd ar wahân.
+paternityLeaveLengthGbPreApril24OrNi.oneWeek = 1 wythnos
+paternityLeaveLengthGbPreApril24OrNi.twoWeeks = 2 wythnos
+paternityLeaveLengthGbPreApril24OrNi.checkYourAnswersLabel = Pa mor hir y byddwch ar Absenoldeb Tadolaeth?
+paternityLeaveLengthGbPreApril24OrNi.error.required = Dewiswch pa mor hir y byddwch ar Absenoldeb Tadolaeth
+paternityLeaveLengthGbPreApril24OrNi.change.hidden = pa mor hir y byddwch ar Absenoldeb Tadolaeth
 
 payStartDateBabyBorn.title = Ar ba ddyddiad yr hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau?
 payStartDateBabyBorn.heading = Ar ba ddyddiad yr hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau?

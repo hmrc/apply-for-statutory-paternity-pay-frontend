@@ -16,17 +16,15 @@
 
 package pages
 
-import controllers.routes
-import models.Mode
-import java.time.LocalDate
+import models.{Mode, PaternityLeaveLengthGbPreApril24OrNi}
 import play.api.libs.json.JsPath
 import play.api.mvc.Call
 
-case object PayStartDateGbPreApril2024OrNiPage extends QuestionPage[LocalDate] {
+case object PaternityLeaveLengthGbPreApril24OrNiPage extends QuestionPage[PaternityLeaveLengthGbPreApril24OrNi] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "payStartDateGbPreApril2024OrNi"
+  override def toString: String = "paternityLeaveLengthGbPreApril24OrNi"
 
-  override def route(mode: Mode): Call = routes.PayStartDateGbPreApril2024OrNiController.onPageLoad(mode)
+  override def route(mode: Mode): Call = controllers.routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(mode)
 }

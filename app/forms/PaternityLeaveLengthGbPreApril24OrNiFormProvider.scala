@@ -16,22 +16,16 @@
 
 package forms
 
-import java.time.LocalDate
+import javax.inject.Inject
 
 import forms.mappings.Mappings
-import javax.inject.Inject
 import play.api.data.Form
-import play.api.i18n.Messages
+import models.PaternityLeaveLengthGbPreApril24OrNi
 
-class PayStartDateGbPreApril2024OrNiFormProvider @Inject() extends Mappings {
+class PaternityLeaveLengthGbPreApril24OrNiFormProvider @Inject() extends Mappings {
 
-  def apply()(implicit messages: Messages): Form[LocalDate] =
+  def apply(): Form[PaternityLeaveLengthGbPreApril24OrNi] =
     Form(
-      "value" -> localDate(
-        invalidKey     = "payStartDateGbPreApril2024OrNi.error.invalid",
-        allRequiredKey = "payStartDateGbPreApril2024OrNi.error.required.all",
-        twoRequiredKey = "payStartDateGbPreApril2024OrNi.error.required.two",
-        requiredKey    = "payStartDateGbPreApril2024OrNi.error.required"
-      )
+      "value" -> enumerable[PaternityLeaveLengthGbPreApril24OrNi]("paternityLeaveLengthGbPreApril24OrNi.error.required")
     )
 }

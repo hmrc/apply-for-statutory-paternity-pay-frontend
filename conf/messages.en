@@ -210,14 +210,14 @@ name.error.firstName.length = First name must be 100 characters or less
 name.error.lastName.length = Last name must be 100 characters or less
 name.change.hidden = your name
 
-paternityLeaveLength.title = How long will you be on Paternity Leave for?
-paternityLeaveLength.heading = How long will you be on Paternity Leave for?
-paternityLeaveLength.hint = If you take two weeks off, they must be taken one after the other and cannot be taken separately.
-paternityLeaveLength.oneWeek = 1 week
-paternityLeaveLength.twoWeeks = 2 weeks
-paternityLeaveLength.checkYourAnswersLabel = How long will you be on Paternity Leave for?
-paternityLeaveLength.error.required = Select how long you will be on Paternity Leave for
-paternityLeaveLength.change.hidden = how long you will be on Paternity Leave for
+paternityLeaveLengthGbPreApril24OrNi.title = How long will you be on Paternity Leave for?
+paternityLeaveLengthGbPreApril24OrNi.heading = How long will you be on Paternity Leave for?
+paternityLeaveLengthGbPreApril24OrNi.hint = If you take two weeks off, they must be taken one after the other and cannot be taken separately.
+paternityLeaveLengthGbPreApril24OrNi.oneWeek = 1 week
+paternityLeaveLengthGbPreApril24OrNi.twoWeeks = 2 weeks
+paternityLeaveLengthGbPreApril24OrNi.checkYourAnswersLabel = How long will you be on Paternity Leave for?
+paternityLeaveLengthGbPreApril24OrNi.error.required = Select how long you will be on Paternity Leave for
+paternityLeaveLengthGbPreApril24OrNi.change.hidden = how long you will be on Paternity Leave for
 
 payStartDateBabyBorn.title = What date would you like your Statutory Paternity Pay and/or Paternity Leave to start?
 payStartDateBabyBorn.heading = What date would you like your Statutory Paternity Pay and/or Paternity Leave to start?
@@ -426,15 +426,15 @@ paternityLeaveLengthGbPostApril24.checkYourAnswersLabel = paternityLeaveLengthGb
 paternityLeaveLengthGbPostApril24.error.required = Select paternityLeaveLengthGbPostApril24
 paternityLeaveLengthGbPostApril24.change.hidden = PaternityLeaveLengthGbPostApril24
 
-payStartDateGbPreApril2024OrNi.title = PayStartDateGbPreApril2024OrNi
-payStartDateGbPreApril2024OrNi.heading = PayStartDateGbPreApril2024OrNi
-payStartDateGbPreApril2024OrNi.hint = For example, 12 11 2007.
-payStartDateGbPreApril2024OrNi.checkYourAnswersLabel = PayStartDateGbPreApril2024OrNi
-payStartDateGbPreApril2024OrNi.error.required.all = Enter the payStartDateGbPreApril2024OrNi
-payStartDateGbPreApril2024OrNi.error.required.two = The payStartDateGbPreApril2024OrNi must include {0} and {1}
-payStartDateGbPreApril2024OrNi.error.required = The payStartDateGbPreApril2024OrNi must include {0}
-payStartDateGbPreApril2024OrNi.error.invalid = Enter a real PayStartDateGbPreApril2024OrNi
-payStartDateGbPreApril2024OrNi.change.hidden = PayStartDateGbPreApril2024OrNi
+payStartDateGbPreApril24OrNi.title = PayStartDateGbPreApril2024OrNi
+payStartDateGbPreApril24OrNi.heading = PayStartDateGbPreApril2024OrNi
+payStartDateGbPreApril24OrNi.hint = For example, 12 11 2007.
+payStartDateGbPreApril24OrNi.checkYourAnswersLabel = PayStartDateGbPreApril2024OrNi
+payStartDateGbPreApril24OrNi.error.required.all = Enter the payStartDateGbPreApril24OrNi
+payStartDateGbPreApril24OrNi.error.required.two = The payStartDateGbPreApril24OrNi must include {0} and {1}
+payStartDateGbPreApril24OrNi.error.required = The payStartDateGbPreApril24OrNi must include {0}
+payStartDateGbPreApril24OrNi.error.invalid = Enter a real PayStartDateGbPreApril2024OrNi
+payStartDateGbPreApril24OrNi.change.hidden = PayStartDateGbPreApril2024OrNi
 
 payStartDateSingleWeek.title = PayStartDateSingleWeek
 payStartDateSingleWeek.heading = PayStartDateSingleWeek

@@ -30,8 +30,8 @@ trait PageGenerators {
   implicit lazy val arbitraryPayStartDateSingleWeekPage: Arbitrary[PayStartDateSingleWeekPage.type] =
     Arbitrary(PayStartDateSingleWeekPage)
 
-  implicit lazy val arbitraryPayStartDateGbPreApril2024OrNiPage: Arbitrary[PayStartDateGbPreApril2024OrNiPage.type] =
-    Arbitrary(PayStartDateGbPreApril2024OrNiPage)
+  implicit lazy val arbitraryPayStartDateGbPreApril24OrNiPage: Arbitrary[PayStartDateGbPreApril24OrNiPage.type] =
+    Arbitrary(PayStartDateGbPreApril24OrNiPage)
 
   implicit lazy val arbitraryPaternityLeaveLengthGbPostApril24Page: Arbitrary[PaternityLeaveLengthGbPostApril24Page.type] =
     Arbitrary(PaternityLeaveLengthGbPostApril24Page)
@@ -96,8 +96,8 @@ trait PageGenerators {
   implicit lazy val arbitraryPayStartDateBabyDuePage: Arbitrary[PayStartDateBabyDuePage.type] =
     Arbitrary(PayStartDateBabyDuePage)
 
-  implicit lazy val arbitraryPaternityLeaveLengthPage: Arbitrary[PaternityLeaveLengthPage.type] =
-    Arbitrary(PaternityLeaveLengthPage)
+  implicit lazy val arbitraryPaternityLeaveLengthPage: Arbitrary[PaternityLeaveLengthGbPreApril24OrNiPage.type] =
+    Arbitrary(PaternityLeaveLengthGbPreApril24OrNiPage)
 
   implicit lazy val arbitraryNamePage: Arbitrary[NamePage.type] =
     Arbitrary(NamePage)

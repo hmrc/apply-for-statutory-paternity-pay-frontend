@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import javax.inject.Inject
+import controllers.routes
+import models.Mode
+import java.time.LocalDate
+import play.api.libs.json.JsPath
+import play.api.mvc.Call
 
-import forms.mappings.Mappings
-import play.api.data.Form
-import models.PaternityLeaveLength
+case object PayStartDateGbPreApril24OrNiPage extends QuestionPage[LocalDate] {
 
-class PaternityLeaveLengthFormProvider @Inject() extends Mappings {
+  override def path: JsPath = JsPath \ toString
 
-  def apply(): Form[PaternityLeaveLength] =
-    Form(
-      "value" -> enumerable[PaternityLeaveLength]("paternityLeaveLength.error.required")
-    )
+  override def toString: String = "payStartDateGbPreApril24OrNi"
+
+  override def route(mode: Mode): Call = routes.PayStartDateGbPreApril24OrNiController.onPageLoad(mode)
 }

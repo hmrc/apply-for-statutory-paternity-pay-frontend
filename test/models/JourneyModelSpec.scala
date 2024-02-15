@@ -52,7 +52,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         .set(BabyDateOfBirthPage, birthDate).success.value
         .set(BabyDueDatePage, dueDate).success.value
         .set(PayStartDateBabyBornPage, payStartDate).success.value
-        .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
+        .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
 
       val expected = JourneyModel(
         countryOfResidence = CountryOfResidence.England,
@@ -70,7 +70,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         dueDate = dueDate,
         birthDate = Some(birthDate),
         payStartDate = payStartDate,
-        howLongWillYouBeOnLeave = PaternityLeaveLength.Oneweek
+        howLongWillYouBeOnLeave = PaternityLeaveLengthGbPreApril24OrNi.Oneweek
       )
 
       JourneyModel.from(answers).right.value mustEqual expected
@@ -96,7 +96,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         .set(BabyHasBeenBornPage, false).success.value
         .set(BabyDueDatePage, babyDueDate).success.value
         .set(PayStartDateBabyDuePage, payStartDate).success.value
-        .set(PaternityLeaveLengthPage, PaternityLeaveLength.Oneweek).success.value
+        .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
 
       val expected = JourneyModel(
         countryOfResidence = CountryOfResidence.England,
@@ -116,7 +116,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         dueDate = babyDueDate,
         birthDate = None,
         payStartDate = payStartDate,
-        howLongWillYouBeOnLeave = PaternityLeaveLength.Oneweek
+        howLongWillYouBeOnLeave = PaternityLeaveLengthGbPreApril24OrNi.Oneweek
       )
 
       JourneyModel.from(answers).right.value mustEqual expected
@@ -133,7 +133,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         NinoPage,
         BabyDueDatePage,
         BabyHasBeenBornPage,
-        PaternityLeaveLengthPage
+        PaternityLeaveLengthGbPreApril24OrNiPage
       )
     }
 
