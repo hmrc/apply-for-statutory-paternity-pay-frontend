@@ -1,0 +1,45 @@
+@*
+* Copyright 2022 HM Revenue & Customs
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*@
+
+@import views.xml.pdf.section.declaration._
+@import views.xml.pdf.component.Bullet
+
+@this(
+    signature: Signature,
+    bullet: Bullet
+)
+
+@(model: JourneyModel)(implicit request: RequestHeader, messages: Messages)
+
+
+<fo:block margin-top="8mm">
+    <fo:block margin-bottom="4mm" font-weight="bold" font-size="18pt">@messages("pdf.declaration")</fo:block>
+
+    <fo:block-container>
+        <fo:block margin-bottom="4mm">@messages("pdf.declaration.parentalOrder.declaration.1")</fo:block>
+        <fo:block margin-bottom="4mm">@messages("pdf.declaration.parentalOrder.declaration.2")</fo:block>
+            <fo:list-block space-after="4mm">
+                @bullet("pdf.declaration.parentalOrder.declaration.2.bullet.1")
+                @bullet("pdf.declaration.parentalOrder.declaration.2.bullet.2")
+            </fo:list-block>
+        <fo:block margin-bottom="4mm">@messages("pdf.declaration.parentalOrder.declaration.3")</fo:block>
+        <fo:block margin-bottom="4mm">@messages("pdf.declaration.parentalOrder.declaration.4")</fo:block>
+        <fo:block margin-bottom="4mm">@messages("pdf.declaration.parentalOrder.declaration.5")</fo:block>
+    </fo:block-container>
+
+    @signature()
+
+</fo:block>
