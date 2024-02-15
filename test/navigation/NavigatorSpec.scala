@@ -20,6 +20,8 @@ import base.SpecBase
 import controllers.routes
 import pages._
 import models._
+import org.scalacheck.Gen
+
 import java.time.LocalDate
 
 class NavigatorSpec extends SpecBase {
@@ -410,6 +412,7 @@ class NavigatorSpec extends SpecBase {
           navigator.nextPage(IsApplyingForStatutoryAdoptionPayPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
         }
       }
+
       "must go from Is Adopting From Abroad" - {
 
         "to CYA when Reason for Requesting has been answered" in {
@@ -576,6 +579,111 @@ class NavigatorSpec extends SpecBase {
         }
       }
 
+      "must go from NINO" - {
+
+        "when the user is not adopting or parental order" - {
+
+          "to CYA when Has the Baby Been Born has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(IsAdoptingOrParentalOrderPage, false).success.value
+                .set(BabyHasBeenBornPage, true).success.value
+
+            navigator.nextPage(NinoPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "to Has the Baby Been Born when it has not been answered" in {
+
+            val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
+
+            navigator.nextPage(NinoPage, CheckMode, answers) mustEqual routes.BabyHasBeenBornController.onPageLoad(CheckMode)
+          }
+        }
+
+        "when the user is adopting or supporting adoption in the UK" - {
+
+          val reason = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+
+          "to CYA when Date Child Matched has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(IsAdoptingFromAbroadPage, false).success.value
+                .set(ReasonForRequestingPage, reason).success.value
+                .set(DateChildWasMatchedPage, LocalDate.now).success.value
+
+            navigator.nextPage(NinoPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "to Date Child Matched when it has not been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(IsAdoptingFromAbroadPage, false).success.value
+                .set(ReasonForRequestingPage, reason).success.value
+
+            navigator.nextPage(NinoPage, CheckMode, answers) mustEqual routes.DateChildWasMatchedController.onPageLoad(CheckMode)
+          }
+        }
+
+        "when the user is adopting or supporting adoption from abroad" - {
+
+          val reason = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+
+          "to CYA when Date of Adoption Notification has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(IsAdoptingFromAbroadPage, true).success.value
+                .set(ReasonForRequestingPage, reason).success.value
+                .set(DateOfAdoptionNotificationPage, LocalDate.now).success.value
+
+            navigator.nextPage(NinoPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "to Date of Adoption Notification when it has not been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(IsAdoptingFromAbroadPage, true).success.value
+                .set(ReasonForRequestingPage, reason).success.value
+
+            navigator.nextPage(NinoPage, CheckMode, answers) mustEqual routes.DateOfAdoptionNotificationController.onPageLoad(CheckMode)
+          }
+        }
+
+        "when the user is a parental order parent" - {
+
+          "to CYA when Has the Baby Been Born has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(IsAdoptingFromAbroadPage, true).success.value
+                .set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
+                .set(BabyHasBeenBornPage, true).success.value
+
+            navigator.nextPage(NinoPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "to Has the Baby Been Born when it has not been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(IsAdoptingFromAbroadPage, true).success.value
+                .set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
+
+            navigator.nextPage(NinoPage, CheckMode, answers) mustEqual routes.BabyHasBeenBornController.onPageLoad(CheckMode)
+          }
+        }
+      }
+
       "must go from Baby Has Been Born" - {
 
         "when the answer is yes" - {
@@ -601,6 +709,92 @@ class NavigatorSpec extends SpecBase {
 
             val answers = emptyUserAnswers.set(BabyHasBeenBornPage, false).success.value
             navigator.nextPage(BabyHasBeenBornPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+        }
+      }
+
+      "must go from Has Child Entered UK" - {
+
+        "when the answer is yes" - {
+
+          "to CYA when Date Child Entered UK has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(ChildHasEnteredUkPage, true).success.value
+                .set(DateChildEnteredUkPage, LocalDate.now).success.value
+
+            navigator.nextPage(ChildHasEnteredUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "to Date Child Entered UK when it has not been answered" in {
+
+            val answers = emptyUserAnswers.set(ChildHasEnteredUkPage, true).success.value
+
+            navigator.nextPage(ChildHasEnteredUkPage, CheckMode, answers) mustEqual routes.DateChildEnteredUkController.onPageLoad(CheckMode)
+          }
+        }
+
+        "when the answer is no" - {
+
+          "to CYA when Date Child Expected to Enter UK has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(ChildHasEnteredUkPage, false).success.value
+                .set(DateChildExpectedToEnterUkPage, LocalDate.now).success.value
+
+            navigator.nextPage(ChildHasEnteredUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "to Date Child Expected to Enter UK when it has not been answered" in {
+
+            val answers = emptyUserAnswers.set(ChildHasEnteredUkPage, false).success.value
+
+            navigator.nextPage(ChildHasEnteredUkPage, CheckMode, answers) mustEqual routes.DateChildExpectedToEnterUkController.onPageLoad(CheckMode)
+          }
+        }
+      }
+
+      "must go from Child Has Been Placed" - {
+
+        "when the answer is yes" - {
+
+          "to CYA when Child Placement date has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(ChildHasBeenPlacedPage, true).success.value
+                .set(ChildPlacementDatePage, LocalDate.now).success.value
+
+            navigator.nextPage(ChildHasBeenPlacedPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "to Date Child Placement Date when it has not been answered" in {
+
+            val answers = emptyUserAnswers.set(ChildHasBeenPlacedPage, true).success.value
+
+            navigator.nextPage(ChildHasBeenPlacedPage, CheckMode, answers) mustEqual routes.ChildPlacementDateController.onPageLoad(CheckMode)
+          }
+        }
+
+        "when the answer is no" - {
+
+          "to CYA when Child Expected Placement Date has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(ChildHasBeenPlacedPage, false).success.value
+                .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
+
+            navigator.nextPage(ChildHasBeenPlacedPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "to Child Expected Placement Date when it has not been answered" in {
+
+            val answers = emptyUserAnswers.set(ChildHasBeenPlacedPage, false).success.value
+
+            navigator.nextPage(ChildHasBeenPlacedPage, CheckMode, answers) mustEqual routes.ChildExpectedPlacementDateController.onPageLoad(CheckMode)
           }
         }
       }

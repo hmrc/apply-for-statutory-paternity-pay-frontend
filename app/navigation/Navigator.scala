@@ -157,7 +157,10 @@ class Navigator @Inject()() {
     case WillHaveCaringResponsibilityPage      => willHaveCaringResponsibilityCheckRoute
     case WillTakeTimeToCareForChildPage        => willTakeTimeToCareForChildCheckRoute
     case WillTakeTimeToSupportPartnerPage      => willTakeTimeToSupportPartnerCheckRoute
+    case NinoPage                              => ninoCheckRoute
     case BabyHasBeenBornPage                   => babyHasBeenBornCheckRoute
+    case ChildHasBeenPlacedPage                => childHasBeenPlacedCheckRoute
+    case ChildHasEnteredUkPage                 => childHasEnteredUkCheckRoute
     case _                                     => _ => routes.CheckYourAnswersController.onPageLoad
   }
 
@@ -228,6 +231,37 @@ class Navigator @Inject()() {
       case false => routes.CannotApplyController.onPageLoad()
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
+  private def ninoCheckRoute(answers: UserAnswers): Call =
+    answers.get(IsAdoptingOrParentalOrderPage).map {
+      case true =>
+        answers.get(ReasonForRequestingPage).map {
+          case RelationshipToChild.ParentalOrder =>
+            answers.get(BabyHasBeenBornPage)
+              .map(_ => routes.CheckYourAnswersController.onPageLoad)
+              .getOrElse(routes.BabyHasBeenBornController.onPageLoad(CheckMode))
+
+          case RelationshipToChild.Adopting | RelationshipToChild.SupportingAdoption =>
+            answers.get(IsAdoptingFromAbroadPage).map {
+              case true =>
+                answers.get(DateOfAdoptionNotificationPage)
+                  .map(_ => routes.CheckYourAnswersController.onPageLoad)
+                  .getOrElse(routes.DateOfAdoptionNotificationController.onPageLoad(CheckMode))
+
+              case false =>
+                answers.get(DateChildWasMatchedPage)
+                .map(_ => routes.CheckYourAnswersController.onPageLoad)
+                .getOrElse(routes.DateChildWasMatchedController.onPageLoad(CheckMode))
+            }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+          case _ =>
+            routes.CheckYourAnswersController.onPageLoad
+        }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+      case false =>
+        answers.get(BabyHasBeenBornPage)
+        .map(_ => routes.CheckYourAnswersController.onPageLoad)
+        .getOrElse(routes.BabyHasBeenBornController.onPageLoad(CheckMode))
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
   private def babyHasBeenBornCheckRoute(answers: UserAnswers): Call =
     answers.get(BabyHasBeenBornPage).map {
       case true =>
@@ -236,6 +270,30 @@ class Navigator @Inject()() {
           .getOrElse(routes.BabyDateOfBirthController.onPageLoad(CheckMode))
       case false =>
         routes.CheckYourAnswersController.onPageLoad
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def childHasBeenPlacedCheckRoute(answers: UserAnswers): Call =
+    answers.get(ChildHasBeenPlacedPage).map {
+      case true =>
+        answers.get(ChildPlacementDatePage)
+          .map(_ => routes.CheckYourAnswersController.onPageLoad)
+          .getOrElse(routes.ChildPlacementDateController.onPageLoad(CheckMode))
+      case false =>
+        answers.get(ChildExpectedPlacementDatePage)
+          .map(_ => routes.CheckYourAnswersController.onPageLoad)
+          .getOrElse(routes.ChildExpectedPlacementDateController.onPageLoad(CheckMode))
+    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
+
+  private def childHasEnteredUkCheckRoute(answers: UserAnswers): Call =
+    answers.get(ChildHasEnteredUkPage).map {
+      case true =>
+        answers.get(DateChildEnteredUkPage)
+          .map(_ => routes.CheckYourAnswersController.onPageLoad)
+          .getOrElse(routes.DateChildEnteredUkController.onPageLoad(CheckMode))
+      case false =>
+        answers.get(DateChildExpectedToEnterUkPage)
+          .map(_ => routes.CheckYourAnswersController.onPageLoad)
+          .getOrElse(routes.DateChildExpectedToEnterUkController.onPageLoad(CheckMode))
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = mode match {
