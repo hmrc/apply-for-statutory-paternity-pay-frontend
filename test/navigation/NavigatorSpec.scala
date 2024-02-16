@@ -329,7 +329,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(DateChildExpectedToEnterUkPage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
       }
 
-      "must go from Parental Leave Length" - {
+      "must go from Paternity Leave Length GB Pre April 24 or NI" - {
 
         "to Pay Start Date Baby Due has not already been born" in {
 
@@ -342,6 +342,57 @@ class NavigatorSpec extends SpecBase {
           val answers = emptyUserAnswers.set(BabyHasBeenBornPage, true).success.value
           navigator.nextPage(PaternityLeaveLengthGbPreApril24OrNiPage, NormalMode, answers) mustEqual routes.PayStartDateBabyBornController.onPageLoad(NormalMode)
         }
+      }
+
+      "must go from Paternity Leave Length GB Post April 24" - {
+
+        "to Pay Start Date GB Post April 24 when the answer is 1 week" in {
+
+          val answers = emptyUserAnswers.set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+          navigator.nextPage(PaternityLeaveLengthGbPostApril24Page, NormalMode, answers) mustEqual routes.PayStartDateGbPostApril24Controller.onPageLoad(NormalMode)
+        }
+
+        "to Leave Taken Together or Separately when the answer is 2 weeks" in {
+
+          val answers = emptyUserAnswers.set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
+          navigator.nextPage(PaternityLeaveLengthGbPostApril24Page, NormalMode, answers) mustEqual routes.LeaveTakenTogetherOrSeparatelyController.onPageLoad(NormalMode)
+        }
+
+        "to CYA when the answer is Unsure" in {
+
+          val answers = emptyUserAnswers.set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.Unsure).success.value
+          navigator.nextPage(PaternityLeaveLengthGbPostApril24Page, NormalMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+        }
+      }
+
+      "must go from Pay Start Date GB Post April 24  to CYA" in {
+
+        navigator.nextPage(PayStartDateGbPostApril24Page, NormalMode, emptyUserAnswers) mustEqual routes.CheckYourAnswersController.onPageLoad
+      }
+
+      "must go from Leave Taken Together or Separately" - {
+
+        "to Pay Start Date GB Post April 24  to CYA when the answer is Together" in {
+
+          val answers = emptyUserAnswers.set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
+          navigator.nextPage(LeaveTakenTogetherOrSeparatelyPage, NormalMode, answers) mustEqual routes.PayStartDateGbPostApril24Controller.onPageLoad(NormalMode)
+        }
+
+        "to Pay Start Date Week 1 when the answer is Separately" in {
+
+          val answers = emptyUserAnswers.set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Separately).success.value
+          navigator.nextPage(LeaveTakenTogetherOrSeparatelyPage, NormalMode, answers) mustEqual routes.PayStartDateWeek1Controller.onPageLoad(NormalMode)
+        }
+      }
+
+      "must go from Pay Start Date Week 1 to Pay Start Date Week 2" in {
+
+        navigator.nextPage(PayStartDateWeek1Page, NormalMode, emptyUserAnswers) mustEqual routes.PayStartDateWeek2Controller.onPageLoad(NormalMode)
+      }
+
+      "must go from Pay Start Date Week 2 to CYA" in {
+
+        navigator.nextPage(PayStartDateWeek2Page, NormalMode, emptyUserAnswers) mustEqual routes.CheckYourAnswersController.onPageLoad
       }
 
       "must go from Pay Start Date Baby Born to CYA" in {
@@ -812,6 +863,114 @@ class NavigatorSpec extends SpecBase {
         "to Check Answers when it has not been answered" in {
 
           navigator.nextPage(BabyDueDatePage, CheckMode, emptyUserAnswers) mustEqual routes.CheckYourAnswersController.onPageLoad
+        }
+      }
+
+      "must go from Paternity Leave Length GB Post April 24" - {
+
+        "to CYA" - {
+
+          "when the answer is One Week and Pay Start Date GB Post April 24 has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+                .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+
+            navigator.nextPage(PaternityLeaveLengthGbPostApril24Page, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "when the answer is Two Weeks and Leave Taken Together or Separately has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
+                .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Separately).success.value
+
+            navigator.nextPage(PaternityLeaveLengthGbPostApril24Page, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "when the answer is Unsure" in {
+
+            val answers = emptyUserAnswers.set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.Unsure).success.value
+            navigator.nextPage(PaternityLeaveLengthGbPostApril24Page, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+        }
+
+        "to Pay Start Date GB Post April 24 when the answer is One Week and that question hasn't been answered" in {
+
+          val answers =
+            emptyUserAnswers
+              .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+
+          navigator.nextPage(PaternityLeaveLengthGbPostApril24Page, CheckMode, answers) mustEqual routes.PayStartDateGbPostApril24Controller.onPageLoad(CheckMode)
+        }
+
+        "to Leave Taken Together or Separately when the answer is Two Weeks and that question hasn't been answered" in {
+
+          val answers =
+            emptyUserAnswers
+              .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
+
+          navigator.nextPage(PaternityLeaveLengthGbPostApril24Page, CheckMode, answers) mustEqual routes.LeaveTakenTogetherOrSeparatelyController.onPageLoad(CheckMode)
+        }
+      }
+
+      "must go from Leave Taken Together or Separately" - {
+
+        "to CYA" - {
+
+          "when the answer is Together and Pay Start Date GB Post April 24 has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+                .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
+
+            navigator.nextPage(LeaveTakenTogetherOrSeparatelyPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+
+          "when the answer is Separately and Pay Start Date Week 1 has been answered" in {
+
+            val answers =
+              emptyUserAnswers
+                .set(PayStartDateWeek1Page, LocalDate.now).success.value
+                .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Separately).success.value
+
+            navigator.nextPage(LeaveTakenTogetherOrSeparatelyPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          }
+        }
+
+        "to Pay Start Date GB Post April 24 when the answer is Together and that question has not been answered" in {
+
+          val answers =
+            emptyUserAnswers
+              .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
+
+          navigator.nextPage(LeaveTakenTogetherOrSeparatelyPage, CheckMode, answers) mustEqual routes.PayStartDateGbPostApril24Controller.onPageLoad(CheckMode)
+        }
+
+        "to Pay Start Date Week 1 when the answer is Separately and that question has not been answered" in {
+
+          val answers =
+            emptyUserAnswers
+              .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Separately).success.value
+
+          navigator.nextPage(LeaveTakenTogetherOrSeparatelyPage, CheckMode, answers) mustEqual routes.PayStartDateWeek1Controller.onPageLoad(CheckMode)
+        }
+      }
+
+      "must go from Psy Start Date Week 1" - {
+
+        "to Pay Start Date Week 2 when it has not been answered" in {
+
+          navigator.nextPage(PayStartDateWeek1Page, CheckMode, emptyUserAnswers) mustEqual routes.PayStartDateWeek2Controller.onPageLoad(CheckMode)
+        }
+
+        "to CYA when Pay Start Date Week 2 has been answered" in {
+
+          val answers = emptyUserAnswers.set(PayStartDateWeek2Page, LocalDate.now).success.value
+          navigator.nextPage(PayStartDateWeek1Page, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
         }
       }
     }
