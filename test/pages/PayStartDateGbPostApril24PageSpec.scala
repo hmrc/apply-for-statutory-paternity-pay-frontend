@@ -21,18 +21,18 @@ import java.time.LocalDate
 import org.scalacheck.Arbitrary
 import pages.behaviours.PageBehaviours
 
-class PayStartDateSingleWeekPageSpec extends PageBehaviours {
+class PayStartDateGbPostApril24PageSpec extends PageBehaviours {
 
-  "PayStartDateSingleWeekPage" - {
+  "PayStartDateGbPostApril24Page" - {
 
     implicit lazy val arbitraryLocalDate: Arbitrary[LocalDate] = Arbitrary {
       datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2100, 1, 1))
     }
 
-    beRetrievable[LocalDate](PayStartDateSingleWeekPage)
+    beRetrievable[LocalDate](PayStartDateGbPostApril24Page)
 
-    beSettable[LocalDate](PayStartDateSingleWeekPage)
+    beSettable[LocalDate](PayStartDateGbPostApril24Page)
 
-    beRemovable[LocalDate](PayStartDateSingleWeekPage)
+    beRemovable[LocalDate](PayStartDateGbPostApril24Page)
   }
 }

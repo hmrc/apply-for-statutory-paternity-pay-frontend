@@ -29,7 +29,7 @@ trait UserAnswersGenerator extends TryValues {
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
     arbitrary[(PayStartDateWeek2Page.type, JsValue)] ::
     arbitrary[(PayStartDateWeek1Page.type, JsValue)] ::
-    arbitrary[(PayStartDateSingleWeekPage.type, JsValue)] ::
+    arbitrary[(PayStartDateGbPostApril24Page.type, JsValue)] ::
     arbitrary[(PayStartDateGbPreApril24OrNiPage.type, JsValue)] ::
     arbitrary[(PaternityLeaveLengthGbPostApril24Page.type, JsValue)] ::
     arbitrary[(LeaveTakenTogetherOrSeparatelyPage.type, JsValue)] ::

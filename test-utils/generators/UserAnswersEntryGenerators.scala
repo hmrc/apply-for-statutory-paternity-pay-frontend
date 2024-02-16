@@ -41,10 +41,10 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryPayStartDateSingleWeekUserAnswersEntry: Arbitrary[(PayStartDateSingleWeekPage.type, JsValue)] =
+  implicit lazy val arbitraryPayStartDateGbPostApril24UserAnswersEntry: Arbitrary[(PayStartDateGbPostApril24Page.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[PayStartDateSingleWeekPage.type]
+        page  <- arbitrary[PayStartDateGbPostApril24Page.type]
         value <- arbitrary[Int].map(Json.toJson(_))
       } yield (page, value)
     }

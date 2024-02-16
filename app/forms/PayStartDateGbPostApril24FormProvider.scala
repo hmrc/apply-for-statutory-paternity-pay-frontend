@@ -16,25 +16,22 @@
 
 package forms
 
-import java.time.{LocalDate, ZoneOffset}
-import forms.behaviours.DateBehaviours
+import java.time.LocalDate
+
+import forms.mappings.Mappings
+import javax.inject.Inject
+import play.api.data.Form
 import play.api.i18n.Messages
-import play.api.test.Helpers.stubMessages
 
-class PayStartDateSingleWeekFormProviderSpec extends DateBehaviours {
+class PayStartDateGbPostApril24FormProvider @Inject() extends Mappings {
 
-  private implicit val messages: Messages = stubMessages()
-  val form = new PayStartDateSingleWeekFormProvider()()
-
-  ".value" - {
-
-    val validData = datesBetween(
-      min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
+  def apply()(implicit messages: Messages): Form[LocalDate] =
+    Form(
+      "value" -> localDate(
+        invalidKey     = "payStartDateGbPostApril24.error.invalid",
+        allRequiredKey = "payStartDateGbPostApril24.error.required.all",
+        twoRequiredKey = "payStartDateGbPostApril24.error.required.two",
+        requiredKey    = "payStartDateGbPostApril24.error.required"
+      )
     )
-
-    behave like dateField(form, "value", validData)
-
-    behave like mandatoryDateField(form, "value", "payStartDateSingleWeek.error.required.all")
-  }
 }

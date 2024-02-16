@@ -176,10 +176,10 @@ POST       /pay-start-date                  controllers.PayStartDateGbPreApril24
 GET        /change-pay-start-date                        controllers.PayStartDateGbPreApril24OrNiController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-pay-start-date                        controllers.PayStartDateGbPreApril24OrNiController.onSubmit(mode: Mode = CheckMode)
 
-GET        /one-week-start-date                  controllers.PayStartDateSingleWeekController.onPageLoad(mode: Mode = NormalMode)
-POST       /one-week-start-date                  controllers.PayStartDateSingleWeekController.onSubmit(mode: Mode = NormalMode)
-GET        /change-one-week-start-date                        controllers.PayStartDateSingleWeekController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-one-week-start-date                        controllers.PayStartDateSingleWeekController.onSubmit(mode: Mode = CheckMode)
+GET        /leave-start-date                  controllers.PayStartDateGbPostApril24Controller.onPageLoad(mode: Mode = NormalMode)
+POST       /leave-start-date                  controllers.PayStartDateGbPostApril24Controller.onSubmit(mode: Mode = NormalMode)
+GET        /change-leave-start-date                        controllers.PayStartDateGbPostApril24Controller.onPageLoad(mode: Mode = CheckMode)
+POST       /change-leave-start-date                        controllers.PayStartDateGbPostApril24Controller.onSubmit(mode: Mode = CheckMode)
 
 GET        /week-one-start-date                  controllers.PayStartDateWeek1Controller.onPageLoad(mode: Mode = NormalMode)
 POST       /week-one-start-date                  controllers.PayStartDateWeek1Controller.onSubmit(mode: Mode = NormalMode)

@@ -22,11 +22,11 @@ import java.time.LocalDate
 import play.api.libs.json.JsPath
 import play.api.mvc.Call
 
-case object PayStartDateSingleWeekPage extends QuestionPage[LocalDate] {
+case object PayStartDateGbPostApril24Page extends QuestionPage[LocalDate] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "payStartDateSingleWeek"
+  override def toString: String = "payStartDateGbPostApril24"
 
-  override def route(mode: Mode): Call = routes.PayStartDateSingleWeekController.onPageLoad(mode)
+  override def route(mode: Mode): Call = routes.PayStartDateGbPostApril24Controller.onPageLoad(mode)
 }

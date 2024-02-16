@@ -25,27 +25,27 @@
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("payStartDateSingleWeek.title"))) {
+@layout(pageTitle = title(form, messages("payStartDateGbPostApril24.title"))) {
 
-    @formHelper(action = routes.PayStartDateSingleWeekController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.PayStartDateGbPostApril24Controller.onSubmit(mode), 'autoComplete -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))
         }
 
         @h1WithCaption(
-            content = messages("payStartDateSingleWeek.heading"),
+            content = messages("payStartDateGbPostApril24.heading"),
             caption = messages("section.paternityDetails")
         )
 
-        <p class="govuk-body">@messages("payStartDateSingleWeek.p1")</p>
+        <p class="govuk-body">@messages("payStartDateGbPostApril24.p1")</p>
 
         @govukDateInput(
             DateViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages("payStartDateSingleWeek.heading")).withCssClass("govuk-visually-hidden")
+                legend = LegendViewModel(messages("payStartDateGbPostApril24.heading")).withCssClass("govuk-visually-hidden")
             )
-            .withHint(HintViewModel(messages("payStartDateSingleWeek.hint")))
+            .withHint(HintViewModel(messages("payStartDateGbPostApril24.hint")))
         )
 
         @govukButton(

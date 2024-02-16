@@ -449,16 +449,16 @@ payStartDateGbPreApril24OrNi.error.required = The date you would like your Statu
 payStartDateGbPreApril24OrNi.error.invalid = Enter a real date
 payStartDateGbPreApril24OrNi.change.hidden = the date you would like your Statutory Paternity Pay and/or paternity leave to start
 
-payStartDateSingleWeek.title = When do you want your Statutory Paternity Pay and / or Paternity leave to start? (optional)
-payStartDateSingleWeek.heading = When do you want your Statutory Paternity Pay and / or Paternity leave to start? (optional)
-payStartDateSingleWeek.p1 = Your leave can be taken within 52 weeks of the child's birth. You can change this date later but you must give your employer 28 days notice of the new date.
-payStartDateSingleWeek.hint = For example, 12 11 2007.
-payStartDateSingleWeek.checkYourAnswersLabel = When do you want your Statutory Paternity Pay and / or Paternity leave to start?
-payStartDateSingleWeek.error.required.all = Enter when you want your Statutory Paternity Pay and / or Paternity leave to start
-payStartDateSingleWeek.error.required.two = When you want your Statutory Paternity Pay and / or Paternity leave to start must include {0} and {1}
-payStartDateSingleWeek.error.required = When you want your Statutory Paternity Pay and / or Paternity leave to start must include {0}
-payStartDateSingleWeek.error.invalid = Enter a real date
-payStartDateSingleWeek.change.hidden = when you want your Statutory Paternity Pay and / or Paternity leave to start
+payStartDateGbPostApril24.title = When do you want your Statutory Paternity Pay and / or Paternity leave to start? (optional)
+payStartDateGbPostApril24.heading = When do you want your Statutory Paternity Pay and / or Paternity leave to start? (optional)
+payStartDateGbPostApril24.p1 = Your leave can be taken within 52 weeks of the child's birth. You can change this date later but you must give your employer 28 days notice of the new date.
+payStartDateGbPostApril24.hint = For example, 12 11 2007.
+payStartDateGbPostApril24.checkYourAnswersLabel = When do you want your Statutory Paternity Pay and / or Paternity leave to start?
+payStartDateGbPostApril24.error.required.all = Enter when you want your Statutory Paternity Pay and / or Paternity leave to start
+payStartDateGbPostApril24.error.required.two = When you want your Statutory Paternity Pay and / or Paternity leave to start must include {0} and {1}
+payStartDateGbPostApril24.error.required = When you want your Statutory Paternity Pay and / or Paternity leave to start must include {0}
+payStartDateGbPostApril24.error.invalid = Enter a real date
+payStartDateGbPostApril24.change.hidden = when you want your Statutory Paternity Pay and / or Paternity leave to start
 
 payStartDateWeek1.title = What is the start date of your first week of leave? (optional)
 payStartDateWeek1.heading = What is the start date of your first week of leave? (optional)

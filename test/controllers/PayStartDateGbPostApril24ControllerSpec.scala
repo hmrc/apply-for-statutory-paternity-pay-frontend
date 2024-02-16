@@ -19,51 +19,51 @@ package controllers
 import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
-import forms.PayStartDateSingleWeekFormProvider
+import forms.PayStartDateGbPostApril24FormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.PayStartDateSingleWeekPage
+import pages.PayStartDateGbPostApril24Page
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.PayStartDateSingleWeekView
+import views.html.PayStartDateGbPostApril24View
 import play.api.i18n.Messages
 import play.api.test.Helpers.stubMessages
 
 import scala.concurrent.Future
 
-class PayStartDateSingleWeekControllerSpec extends SpecBase with MockitoSugar {
+class PayStartDateGbPostApril24ControllerSpec extends SpecBase with MockitoSugar {
 
   private implicit val messages: Messages = stubMessages()
 
-  val formProvider = new PayStartDateSingleWeekFormProvider()
+  val formProvider = new PayStartDateGbPostApril24FormProvider()
   private def form = formProvider()
 
   def onwardRoute = Call("GET", "/foo")
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
-  lazy val payStartDateSingleWeekRoute = routes.PayStartDateSingleWeekController.onPageLoad(NormalMode).url
+  lazy val payStartDateGbPostApril24Route = routes.PayStartDateGbPostApril24Controller.onPageLoad(NormalMode).url
 
   override val emptyUserAnswers = UserAnswers(userAnswersId)
 
   def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest(GET, payStartDateSingleWeekRoute)
+    FakeRequest(GET, payStartDateGbPostApril24Route)
 
   def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
-    FakeRequest(POST, payStartDateSingleWeekRoute)
+    FakeRequest(POST, payStartDateGbPostApril24Route)
       .withFormUrlEncodedBody(
         "value.day"   -> validAnswer.getDayOfMonth.toString,
         "value.month" -> validAnswer.getMonthValue.toString,
         "value.year"  -> validAnswer.getYear.toString
       )
 
-  "PayStartDateSingleWeek Controller" - {
+  "PayStartDateGbPostApril24 Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -72,7 +72,7 @@ class PayStartDateSingleWeekControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val result = route(application, getRequest).value
 
-        val view = application.injector.instanceOf[PayStartDateSingleWeekView]
+        val view = application.injector.instanceOf[PayStartDateGbPostApril24View]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, NormalMode)(getRequest, messages(application)).toString
@@ -81,12 +81,12 @@ class PayStartDateSingleWeekControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(PayStartDateSingleWeekPage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(PayStartDateGbPostApril24Page, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val view = application.injector.instanceOf[PayStartDateSingleWeekView]
+        val view = application.injector.instanceOf[PayStartDateGbPostApril24View]
 
         val result = route(application, getRequest).value
 
@@ -122,13 +122,13 @@ class PayStartDateSingleWeekControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, payStartDateSingleWeekRoute)
+        FakeRequest(POST, payStartDateGbPostApril24Route)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       running(application) {
         val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[PayStartDateSingleWeekView]
+        val view = application.injector.instanceOf[PayStartDateGbPostApril24View]
 
         val result = route(application, request).value
 
