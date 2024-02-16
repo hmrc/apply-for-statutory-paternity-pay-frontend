@@ -19,7 +19,8 @@
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
     govukRadios: GovukRadios,
-    govukButton: GovukButton
+    govukButton: GovukButton,
+    h1WithCaption: components.h1WithCaption
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -32,15 +33,19 @@
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
         }
 
+        @h1WithCaption(
+            content = messages("paternityLeaveLengthGbPreApril24OrNi.heading"),
+            caption = messages("section.paternityDetails")
+        )
+
+        <p class="govuk-body">@messages("paternityLeaveLengthGbPreApril24OrNi.p1")</p>
+
         @govukRadios(
             RadiosViewModel(
                 field  = form("value"),
-                legend = HmrcPageHeadingLegend(
-                    content = messages("paternityLeaveLengthGbPreApril24OrNi.heading"),
-                    caption = HmrcSectionCaption(messages("section.paternityDetails"))
-                ),
+                legend = LegendViewModel(messages("paternityLeaveLengthGbPreApril24OrNi.heading")).withCssClass("govuk-visually-hidden"),
                 items  = PaternityLeaveLengthGbPreApril24OrNi.options
-            ).withHint(Hint(content = messages("paternityLeaveLengthGbPreApril24OrNi.hint")))
+            )
         )
 
         @govukButton(

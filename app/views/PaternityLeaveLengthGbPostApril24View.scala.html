@@ -19,7 +19,8 @@
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
     govukRadios: GovukRadios,
-    govukButton: GovukButton
+    govukButton: GovukButton,
+    h1WithCaption: components.h1WithCaption
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -32,10 +33,27 @@
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
         }
 
+        @h1WithCaption(
+            content = messages("paternityLeaveLengthGbPostApril24.heading"),
+            caption = messages("section.paternityDetails")
+        )
+
+        <p class="govuk-body">@messages("paternityLeaveLengthGbPostApril24.p1")</p>
+        <p class="govuk-body">@messages("paternityLeaveLengthGbPostApril24.p2")</p>
+        <p class="govuk-body">@messages("paternityLeaveLengthGbPostApril24.p3")</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("paternityLeaveLengthGbPostApril24.bullet1")</li>
+            <li>@messages("paternityLeaveLengthGbPostApril24.bullet2")</li>
+            <li>@messages("paternityLeaveLengthGbPostApril24.bullet3")</li>
+        </ul>
+
+        <p class="govuk-body">@messages("paternityLeaveLengthGbPostApril24.p4")</p>
+
         @govukRadios(
             RadiosViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages("paternityLeaveLengthGbPostApril24.heading")).asPageHeading(),
+                legend = LegendViewModel(messages("paternityLeaveLengthGbPostApril24.question")).withCssClass("govuk-fieldset__legend--m"),
                 items  = PaternityLeaveLengthGbPostApril24.options
             )
         )

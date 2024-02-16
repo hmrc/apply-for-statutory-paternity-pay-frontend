@@ -19,6 +19,7 @@ package models
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
+import viewmodels.govuk.hint._
 
 sealed trait LeaveTakenTogetherOrSeparately
 
@@ -36,7 +37,8 @@ object LeaveTakenTogetherOrSeparately extends Enumerable.Implicits {
       RadioItem(
         content = Text(messages(s"leaveTakenTogetherOrSeparately.${value.toString}")),
         value   = Some(value.toString),
-        id      = Some(s"value_$index")
+        id      = Some(s"value_$index"),
+        hint    = Some(HintViewModel(content = Text(messages(s"leaveTakenTogetherOrSeparately.${value.toString}.hint"))))
       )
   }
 

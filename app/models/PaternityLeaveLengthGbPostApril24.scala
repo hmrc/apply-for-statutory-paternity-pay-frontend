@@ -24,11 +24,12 @@ sealed trait PaternityLeaveLengthGbPostApril24
 
 object PaternityLeaveLengthGbPostApril24 extends Enumerable.Implicits {
 
-  case object Oneweek extends WithName("oneweek") with PaternityLeaveLengthGbPostApril24
-  case object Twoweeks extends WithName("twoweeks") with PaternityLeaveLengthGbPostApril24
+  case object OneWeek extends WithName("oneWeek") with PaternityLeaveLengthGbPostApril24
+  case object TwoWeeks extends WithName("twoWeeks") with PaternityLeaveLengthGbPostApril24
+  case object Unsure extends WithName("unsure") with PaternityLeaveLengthGbPostApril24
 
   val values: Seq[PaternityLeaveLengthGbPostApril24] = Seq(
-    Oneweek, Twoweeks
+    OneWeek, TwoWeeks, Unsure
   )
 
   def options(implicit messages: Messages): Seq[RadioItem] = values.zipWithIndex.map {
