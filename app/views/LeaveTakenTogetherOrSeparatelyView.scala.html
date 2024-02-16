@@ -19,7 +19,8 @@
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
     govukRadios: GovukRadios,
-    govukButton: GovukButton
+    govukButton: GovukButton,
+    h1WithCaption: components.h1WithCaption
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -32,10 +33,17 @@
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
         }
 
+        @h1WithCaption(
+            content = messages("leaveTakenTogetherOrSeparately.heading"),
+            caption = messages("section.paternityDetails")
+        )
+
+        <p class="govuk-body">@messages("leaveTakenTogetherOrSeparately.p1")</p>
+
         @govukRadios(
             RadiosViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages("leaveTakenTogetherOrSeparately.heading")).asPageHeading(),
+                legend = LegendViewModel(messages("leaveTakenTogetherOrSeparately.heading")).withCssClass("govuk-visually-hidden"),
                 items  = LeaveTakenTogetherOrSeparately.options
             )
         )
