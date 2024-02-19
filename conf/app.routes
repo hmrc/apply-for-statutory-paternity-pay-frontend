@@ -66,16 +66,6 @@ POST       /how-long-will-you-be-on-leave               controllers.PaternityLea
 GET        /change-how-long-you-will-be-on-leave                controllers.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-how-long-you-will-be-on-leave                controllers.PaternityLeaveLengthGbPreApril24OrNiController.onSubmit(mode: Mode = CheckMode)
 
-GET        /pay-start-date-baby-born              controllers.PayStartDateBabyBornController.onPageLoad(mode: Mode = NormalMode)
-POST       /pay-start-date-baby-born              controllers.PayStartDateBabyBornController.onSubmit(mode: Mode = NormalMode)
-GET        /change-pay-start-date-baby-born               controllers.PayStartDateBabyBornController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-pay-start-date-baby-born               controllers.PayStartDateBabyBornController.onSubmit(mode: Mode = CheckMode)
-
-GET        /pay-start-date-baby-due                           controllers.PayStartDateBabyDueController.onPageLoad(mode: Mode = NormalMode)
-POST       /pay-start-date-baby-due                           controllers.PayStartDateBabyDueController.onSubmit(mode: Mode = NormalMode)
-GET        /change-pay-start-date-baby-due                        controllers.PayStartDateBabyDueController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-pay-start-date-baby-due                        controllers.PayStartDateBabyDueController.onSubmit(mode: Mode = CheckMode)
-
 GET        /will-you-have-responsibility-for-caring                     controllers.WillHaveCaringResponsibilityController.onPageLoad(mode: Mode = NormalMode)
 POST       /will-you-have-responsibility-for-caring                     controllers.WillHaveCaringResponsibilityController.onSubmit(mode: Mode = NormalMode)
 GET        /change-if-you-will-have-responsibility-for-caring               controllers.WillHaveCaringResponsibilityController.onPageLoad(mode: Mode = CheckMode)
