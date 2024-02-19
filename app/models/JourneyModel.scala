@@ -69,7 +69,7 @@ object JourneyModel {
       answers.getEither(BabyHasBeenBornPage),
       answers.getEither(BabyDueDatePage),
       getBirthDate(answers),
-      getPayStartDate(answers),
+      answers.getEither(PayStartDateGbPreApril24OrNiPage),
       answers.getEither(PaternityLeaveLengthGbPreApril24OrNiPage)
     ).parMapN { case (country, eligibility, name, nino, alreadyBorn, dueDate, birthDate, payStartDate, paternityLeaveLength) =>
       JourneyModel(country, eligibility, name, nino, alreadyBorn, dueDate, birthDate, payStartDate, paternityLeaveLength)
@@ -141,12 +141,6 @@ object JourneyModel {
         case false => WillTakeTimeToSupportPartnerPage.leftNec
       }
       case true => Right((true, None))
-    }
-
-  private def getPayStartDate(answers: UserAnswers): EitherNec[QuestionPage[_], LocalDate] =
-    answers.getEither(BabyHasBeenBornPage).flatMap {
-      case true => answers.getEither(PayStartDateBabyBornPage)
-      case false => answers.getEither(PayStartDateBabyDuePage)
     }
 
   private def getBirthDate(answers: UserAnswers): EitherNec[QuestionPage[_], Option[LocalDate]] =

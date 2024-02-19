@@ -51,7 +51,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         .set(BabyHasBeenBornPage, true).success.value
         .set(BabyDateOfBirthPage, birthDate).success.value
         .set(BabyDueDatePage, dueDate).success.value
-        .set(PayStartDateBabyBornPage, payStartDate).success.value
+        .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
         .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
 
       val expected = JourneyModel(
@@ -73,7 +73,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         howLongWillYouBeOnLeave = PaternityLeaveLengthGbPreApril24OrNi.Oneweek
       )
 
-      JourneyModel.from(answers).right.value mustEqual expected
+      JourneyModel.from(answers).value mustEqual expected
     }
 
     "must return a completed journey model when the user stays that the child has not yet been born" in {
@@ -95,7 +95,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         .set(NinoPage, nino).success.value
         .set(BabyHasBeenBornPage, false).success.value
         .set(BabyDueDatePage, babyDueDate).success.value
-        .set(PayStartDateBabyDuePage, payStartDate).success.value
+        .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
         .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
 
       val expected = JourneyModel(
@@ -119,7 +119,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         howLongWillYouBeOnLeave = PaternityLeaveLengthGbPreApril24OrNi.Oneweek
       )
 
-      JourneyModel.from(answers).right.value mustEqual expected
+      JourneyModel.from(answers).value mustEqual expected
     }
 
     "must return all pages that have failed" in {
@@ -133,7 +133,8 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         NinoPage,
         BabyDueDatePage,
         BabyHasBeenBornPage,
-        PaternityLeaveLengthGbPreApril24OrNiPage
+        PaternityLeaveLengthGbPreApril24OrNiPage,
+        PayStartDateGbPreApril24OrNiPage
       )
     }
 

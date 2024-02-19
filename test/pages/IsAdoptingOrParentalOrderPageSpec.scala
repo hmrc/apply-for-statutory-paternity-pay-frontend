@@ -46,8 +46,7 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
         .set(NamePage, Name("first", "last")).success.value
         .set(NinoPage, arbitrary[Nino].sample.value).success.value
         .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
-        .set(PayStartDateBabyBornPage, LocalDate.now).success.value
-        .set(PayStartDateBabyDuePage, LocalDate.now).success.value
+        .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
         .set(WillHaveCaringResponsibilityPage, true).success.value
         .set(WillTakeTimeToCareForChildPage, true).success.value
         .set(WillTakeTimeToSupportPartnerPage, true).success.value
@@ -71,8 +70,7 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
         .set(NamePage, Name("first", "last")).success.value
         .set(NinoPage, arbitrary[Nino].sample.value).success.value
         .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
-        .set(PayStartDateBabyBornPage, LocalDate.now).success.value
-        .set(PayStartDateBabyDuePage, LocalDate.now).success.value
+        .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
         .set(WillHaveCaringResponsibilityPage, true).success.value
         .set(WillTakeTimeToCareForChildPage, true).success.value
         .set(WillTakeTimeToSupportPartnerPage, true).success.value
@@ -102,8 +100,7 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
         result.get(NamePage) must not be defined
         result.get(NinoPage) must not be defined
         result.get(PaternityLeaveLengthGbPreApril24OrNiPage) must not be defined
-        result.get(PayStartDateBabyBornPage) must not be defined
-        result.get(PayStartDateBabyDuePage) must not be defined
+        result.get(PayStartDateGbPreApril24OrNiPage) must not be defined
         result.get(ReasonForRequestingPage) must not be defined
         result.get(WillHaveCaringResponsibilityPage) must not be defined
         result.get(WillTakeTimeToCareForChildPage) must not be defined
@@ -134,8 +131,7 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
         result.get(NamePage) must not be defined
         result.get(NinoPage) must not be defined
         result.get(PaternityLeaveLengthGbPreApril24OrNiPage) must not be defined
-        result.get(PayStartDateBabyBornPage) must not be defined
-        result.get(PayStartDateBabyDuePage) must not be defined
+        result.get(PayStartDateGbPreApril24OrNiPage) must not be defined
         result.get(ReasonForRequestingPage) must not be defined
         result.get(WillHaveCaringResponsibilityPage) must not be defined
         result.get(WillTakeTimeToCareForChildPage) must not be defined
@@ -166,8 +162,7 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
       result.get(NamePage) mustBe defined
       result.get(NinoPage) mustBe defined
       result.get(PaternityLeaveLengthGbPreApril24OrNiPage) mustBe defined
-      result.get(PayStartDateBabyBornPage) mustBe defined
-      result.get(PayStartDateBabyDuePage) mustBe defined
+      result.get(PayStartDateGbPreApril24OrNiPage) mustBe defined
       result.get(ReasonForRequestingPage) mustBe defined
       result.get(WillHaveCaringResponsibilityPage) mustBe defined
       result.get(WillTakeTimeToCareForChildPage) mustBe defined
@@ -192,8 +187,7 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
       result.get(NamePage) mustBe defined
       result.get(NinoPage) mustBe defined
       result.get(PaternityLeaveLengthGbPreApril24OrNiPage) mustBe defined
-      result.get(PayStartDateBabyBornPage) mustBe defined
-      result.get(PayStartDateBabyDuePage) mustBe defined
+      result.get(PayStartDateGbPreApril24OrNiPage) mustBe defined
       result.get(WillHaveCaringResponsibilityPage) mustBe defined
       result.get(WillTakeTimeToCareForChildPage) mustBe defined
       result.get(WillTakeTimeToSupportPartnerPage) mustBe defined

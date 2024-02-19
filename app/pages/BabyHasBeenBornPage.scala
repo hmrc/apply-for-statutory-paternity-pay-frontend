@@ -30,14 +30,8 @@ case object BabyHasBeenBornPage extends QuestionPage[Boolean] {
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     value.map {
-      case true =>
-        userAnswers
-          .remove(PayStartDateBabyDuePage)
-
-      case false =>
-        userAnswers
-          .remove(BabyDateOfBirthPage)
-          .flatMap(_.remove(PayStartDateBabyBornPage))
+      case true =>  super.cleanup(value, userAnswers)
+      case false => userAnswers.remove(BabyDateOfBirthPage)
 
     }.getOrElse(super.cleanup(value, userAnswers))
 

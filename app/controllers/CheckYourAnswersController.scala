@@ -85,9 +85,13 @@ class CheckYourAnswersController @Inject()(
 
       val paternityDetails = SummaryListViewModel(
         rows = Seq(
-          PayStartDateBabyBornSummary.row(request.userAnswers),
-          PayStartDateBabyDueSummary.row(request.userAnswers),
           PaternityLeaveLengthGbPreApril24OrNiSummary.row(request.userAnswers),
+          PayStartDateGbPreApril24OrNiSummary.row(request.userAnswers),
+          PaternityLeaveLengthGbPostApril24Summary.row(request.userAnswers),
+          LeaveTakenTogetherOrSeparatelySummary.row(request.userAnswers),
+          PayStartDateGbPostApril24Summary.row(request.userAnswers),
+          PayStartDateWeek1Summary.row(request.userAnswers),
+          PayStartDateWeek2Summary.row(request.userAnswers),
         ).flatten
       )
 

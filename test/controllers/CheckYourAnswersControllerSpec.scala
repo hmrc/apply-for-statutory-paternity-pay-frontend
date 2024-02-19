@@ -50,7 +50,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
           .set(NamePage, Name("first", "last")).success.value
           .set(NinoPage, arbitrary[Nino].sample.value).success.value
           .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
-          .set(PayStartDateBabyBornPage, LocalDate.now).success.value
+          .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
           .set(WillHaveCaringResponsibilityPage, true).success.value
           .set(WillTakeTimeToCareForChildPage, true).success.value
           .set(WillTakeTimeToSupportPartnerPage, true).success.value
@@ -102,8 +102,8 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
 
         val paternityDetails = SummaryListViewModel(
           rows = Seq(
-            PayStartDateBabyBornSummary.row(answers),
             PaternityLeaveLengthGbPreApril24OrNiSummary.row(answers),
+            PayStartDateGbPreApril24OrNiSummary.row(answers),
           ).flatten
         )
 

@@ -48,8 +48,7 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
           .set(ChildPlacementDatePage, LocalDate.now).success.value
           .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
           .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
-          .set(PayStartDateBabyBornPage, LocalDate.now).success.value
-          .set(PayStartDateBabyDuePage, LocalDate.now).success.value
+          .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
 
       val result = answers.set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
 
@@ -66,8 +65,7 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
       result.get(ChildPlacementDatePage) must not be defined
       result.get(ChildExpectedPlacementDatePage) must not be defined
       result.get(PaternityLeaveLengthGbPreApril24OrNiPage) must not be defined
-      result.get(PayStartDateBabyBornPage) must not be defined
-      result.get(PayStartDateBabyDuePage) must not be defined
+      result.get(PayStartDateGbPreApril24OrNiPage) must not be defined
     }
 
     "must remove birth child / parental order, adopting from abroad, and paternity details when set to adopting or supporting adoption in the UK" in {
@@ -89,8 +87,7 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
           .set(ChildPlacementDatePage, LocalDate.now).success.value
           .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
           .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
-          .set(PayStartDateBabyBornPage, LocalDate.now).success.value
-          .set(PayStartDateBabyDuePage, LocalDate.now).success.value
+          .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
 
       val result = answers.set(ReasonForRequestingPage, newReason).success.value
 
@@ -107,8 +104,7 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
       result.get(DateChildEnteredUkPage) must not be defined
       result.get(DateChildExpectedToEnterUkPage) must not be defined
       result.get(PaternityLeaveLengthGbPreApril24OrNiPage) must not be defined
-      result.get(PayStartDateBabyBornPage) must not be defined
-      result.get(PayStartDateBabyDuePage) must not be defined
+      result.get(PayStartDateGbPreApril24OrNiPage) must not be defined
     }
 
     "must remove birth child / parental order, adopting from UK, and paternity details when set to adopting / supporting adoption from abroad" in {
@@ -130,8 +126,7 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
           .set(ChildPlacementDatePage, LocalDate.now).success.value
           .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
           .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
-          .set(PayStartDateBabyBornPage, LocalDate.now).success.value
-          .set(PayStartDateBabyDuePage, LocalDate.now).success.value
+          .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
 
       val result = answers.set(ReasonForRequestingPage, newReason).success.value
 
@@ -148,8 +143,7 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
       result.get(ChildPlacementDatePage) must not be defined
       result.get(ChildExpectedPlacementDatePage) must not be defined
       result.get(PaternityLeaveLengthGbPreApril24OrNiPage) must not be defined
-      result.get(PayStartDateBabyBornPage) must not be defined
-      result.get(PayStartDateBabyDuePage) must not be defined
+      result.get(PayStartDateGbPreApril24OrNiPage) must not be defined
     }
   }
 }

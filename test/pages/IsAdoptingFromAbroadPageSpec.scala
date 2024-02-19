@@ -57,8 +57,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
         .set(NamePage, Name("first", "last")).success.value
         .set(NinoPage, arbitrary[Nino].sample.value).success.value
         .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
-        .set(PayStartDateBabyBornPage, LocalDate.now).success.value
-        .set(PayStartDateBabyDuePage, LocalDate.now).success.value
+        .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
 
     val fullAnswersParentalOrder =
       emptyUserAnswers
@@ -78,8 +77,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
         .set(BabyDueDatePage, LocalDate.now).success.value
         .set(BabyHasBeenBornPage, true).success.value
         .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
-        .set(PayStartDateBabyBornPage, LocalDate.now).success.value
-        .set(PayStartDateBabyDuePage, LocalDate.now).success.value
+        .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
 
     "must remove redundant answers when the answer is true and Reason for Requesting is Parental Order" in {
 
@@ -102,8 +100,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
       result.get(NamePage) must not be defined
       result.get(NinoPage) must not be defined
       result.get(PaternityLeaveLengthGbPreApril24OrNiPage) must not be defined
-      result.get(PayStartDateBabyBornPage) must not be defined
-      result.get(PayStartDateBabyDuePage) must not be defined
+      result.get(PayStartDateGbPreApril24OrNiPage) must not be defined
       result.get(ReasonForRequestingPage) must not be defined
       result.get(WillHaveCaringResponsibilityPage) must not be defined
       result.get(WillTakeTimeToCareForChildPage) must not be defined
@@ -132,8 +129,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
         result.get(NamePage) mustBe defined
         result.get(NinoPage) mustBe defined
         result.get(PaternityLeaveLengthGbPreApril24OrNiPage) mustBe defined
-        result.get(PayStartDateBabyBornPage) mustBe defined
-        result.get(PayStartDateBabyDuePage) mustBe defined
+        result.get(PayStartDateGbPreApril24OrNiPage) mustBe defined
         result.get(ReasonForRequestingPage) mustBe defined
         result.get(WillHaveCaringResponsibilityPage) mustBe defined
         result.get(WillTakeTimeToCareForChildPage) mustBe defined
@@ -157,8 +153,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
         result.get(NamePage) mustBe defined
         result.get(NinoPage) mustBe defined
         result.get(PaternityLeaveLengthGbPreApril24OrNiPage) mustBe defined
-        result.get(PayStartDateBabyBornPage) mustBe defined
-        result.get(PayStartDateBabyDuePage) mustBe defined
+        result.get(PayStartDateGbPreApril24OrNiPage) mustBe defined
         result.get(ReasonForRequestingPage) mustBe defined
         result.get(WillHaveCaringResponsibilityPage) mustBe defined
         result.get(WillTakeTimeToCareForChildPage) mustBe defined

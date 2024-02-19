@@ -51,9 +51,8 @@ class Navigator @Inject()() {
     case ChildHasEnteredUkPage                    => childHasEnteredUkRoute
     case DateChildEnteredUkPage                   => _ => routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
     case DateChildExpectedToEnterUkPage           => _ => routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
-    case PayStartDateBabyBornPage                 => _ => routes.CheckYourAnswersController.onPageLoad
-    case PayStartDateBabyDuePage                  => _ => routes.CheckYourAnswersController.onPageLoad
-    case PaternityLeaveLengthGbPreApril24OrNiPage => paternityLeaveLengthGbPreApril24OrNiRoute
+    case PaternityLeaveLengthGbPreApril24OrNiPage => _ => routes.PayStartDateGbPreApril24OrNiController.onPageLoad(NormalMode)
+    case PayStartDateGbPreApril24OrNiPage         => _ => routes.CheckYourAnswersController.onPageLoad
     case PaternityLeaveLengthGbPostApril24Page    => paternityLeaveLengthGbPostApril24Route
     case PayStartDateGbPostApril24Page            => _ => routes.CheckYourAnswersController.onPageLoad
     case LeaveTakenTogetherOrSeparatelyPage       => leaveTakenTogetherOrSeparatelyRoute
@@ -143,12 +142,6 @@ class Navigator @Inject()() {
     answers.get(ChildHasEnteredUkPage).map {
       case true  => routes.DateChildEnteredUkController.onPageLoad(NormalMode)
       case false => routes.DateChildExpectedToEnterUkController.onPageLoad(NormalMode)
-    }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
-
-  private def paternityLeaveLengthGbPreApril24OrNiRoute(answers: UserAnswers): Call =
-    answers.get(BabyHasBeenBornPage).map {
-      case true  => routes.PayStartDateBabyBornController.onPageLoad(NormalMode)
-      case false => routes.PayStartDateBabyDueController.onPageLoad(NormalMode)
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   private def paternityLeaveLengthGbPostApril24Route(answers: UserAnswers): Call =

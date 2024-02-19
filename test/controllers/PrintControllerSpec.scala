@@ -24,7 +24,7 @@ import org.mockito.Mockito.{times, verify, when}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.EitherValues
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{BabyDateOfBirthPage, BabyDueDatePage, BabyHasBeenBornPage, CountryOfResidencePage, IsAdoptingOrParentalOrderPage, IsBiologicalFatherPage, NamePage, NinoPage, PaternityLeaveLengthGbPreApril24OrNiPage, PayStartDateBabyBornPage, WillHaveCaringResponsibilityPage, WillTakeTimeToCareForChildPage}
+import pages._
 import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.test.FakeRequest
@@ -53,7 +53,7 @@ class PrintControllerSpec extends SpecBase with EitherValues with MockitoSugar w
     .set(BabyHasBeenBornPage, true).success.value
     .set(BabyDueDatePage, dueDate).success.value
     .set(BabyDateOfBirthPage, birthDate).success.value
-    .set(PayStartDateBabyBornPage, LocalDate.now).success.value
+    .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
     .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
 
   val model = JourneyModel.from(answers).value

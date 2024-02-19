@@ -53,7 +53,7 @@ class ConfirmationControllerSpec extends SpecBase with MockitoSugar with ModelGe
           .set(NamePage, Name("first", "last")).success.value
           .set(NinoPage, arbitrary[Nino].sample.value).success.value
           .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
-          .set(PayStartDateBabyBornPage, LocalDate.now).success.value
+          .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
           .set(WillHaveCaringResponsibilityPage, true).success.value
           .set(WillTakeTimeToCareForChildPage, true).success.value
           .set(WillTakeTimeToSupportPartnerPage, true).success.value

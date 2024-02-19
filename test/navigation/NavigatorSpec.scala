@@ -329,19 +329,9 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(DateChildExpectedToEnterUkPage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
       }
 
-      "must go from Paternity Leave Length GB Pre April 24 or NI" - {
+      "must go from Paternity Leave Length GB Pre April 24 or NI to Pay Start Date GB Pre April 24 or NI" in {
 
-        "to Pay Start Date Baby Due has not already been born" in {
-
-          val answers = emptyUserAnswers.set(BabyHasBeenBornPage, false).success.value
-          navigator.nextPage(PaternityLeaveLengthGbPreApril24OrNiPage, NormalMode, answers) mustEqual routes.PayStartDateBabyDueController.onPageLoad(NormalMode)
-        }
-
-        "to Pay Start Date Baby Born when the child has already been born" in {
-
-          val answers = emptyUserAnswers.set(BabyHasBeenBornPage, true).success.value
-          navigator.nextPage(PaternityLeaveLengthGbPreApril24OrNiPage, NormalMode, answers) mustEqual routes.PayStartDateBabyBornController.onPageLoad(NormalMode)
-        }
+          navigator.nextPage(PaternityLeaveLengthGbPreApril24OrNiPage, NormalMode, emptyUserAnswers) mustEqual routes.PayStartDateGbPreApril24OrNiController.onPageLoad(NormalMode)
       }
 
       "must go from Paternity Leave Length GB Post April 24" - {
@@ -365,7 +355,7 @@ class NavigatorSpec extends SpecBase {
         }
       }
 
-      "must go from Pay Start Date GB Post April 24  to CYA" in {
+      "must go from Pay Start Date GB Post April 24 to CYA" in {
 
         navigator.nextPage(PayStartDateGbPostApril24Page, NormalMode, emptyUserAnswers) mustEqual routes.CheckYourAnswersController.onPageLoad
       }
@@ -395,14 +385,9 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(PayStartDateWeek2Page, NormalMode, emptyUserAnswers) mustEqual routes.CheckYourAnswersController.onPageLoad
       }
 
-      "must go from Pay Start Date Baby Born to CYA" in {
+      "must go from Pay Start Date GB Pre April 24 or NI to CYA" in {
 
-        navigator.nextPage(PayStartDateBabyBornPage, NormalMode, emptyUserAnswers) mustEqual routes.CheckYourAnswersController.onPageLoad
-      }
-
-      "must go from Pay Start Date Baby Due to CYA" in {
-
-        navigator.nextPage(PayStartDateBabyDuePage, NormalMode, emptyUserAnswers) mustEqual routes.CheckYourAnswersController.onPageLoad
+        navigator.nextPage(PayStartDateGbPreApril24OrNiPage, NormalMode, emptyUserAnswers) mustEqual routes.CheckYourAnswersController.onPageLoad
       }
     }
 
