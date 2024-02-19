@@ -24,6 +24,8 @@ import controllers.routes
 import pages._
 import models._
 
+import java.time.LocalDate
+
 @Singleton
 class Navigator @Inject()() {
 
@@ -46,7 +48,7 @@ class Navigator @Inject()() {
     case BabyDueDatePage                          => babyDueDateRoute
     case DateChildWasMatchedPage                  => _ => routes.ChildHasBeenPlacedController.onPageLoad(NormalMode)
     case ChildHasBeenPlacedPage                   => childHasBeenPlacedRoute
-    case ChildPlacementDatePage                   => _ => routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+    case ChildPlacementDatePage                   => childPlacementDateRoute
     case ChildExpectedPlacementDatePage           => _ => routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
     case DateOfAdoptionNotificationPage           => _ => routes.ChildHasEnteredUkController.onPageLoad(NormalMode)
     case ChildHasEnteredUkPage                    => childHasEnteredUkRoute
@@ -134,7 +136,13 @@ class Navigator @Inject()() {
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   private def babyDueDateRoute(answers: UserAnswers): Call =
-    answers.get(BabyDueDatePage).map {
+    childToPaternityRoute(answers, BabyDueDatePage)
+
+  private def childPlacementDateRoute(answers: UserAnswers): Call =
+    childToPaternityRoute(answers, ChildPlacementDatePage)
+
+  private def childToPaternityRoute(answers: UserAnswers, datePage: QuestionPage[LocalDate]): Call =
+    answers.get(datePage).map {
       case d if d.isBefore(Constants.april24LegislationEffective) =>
         routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
 
@@ -187,6 +195,7 @@ class Navigator @Inject()() {
     case NinoPage                              => ninoCheckRoute
     case BabyHasBeenBornPage                   => babyHasBeenBornCheckRoute
     case BabyDueDatePage                       => babyDueDateCheckRoute
+    case ChildPlacementDatePage                => childPlacementDateCheckRoute
     case ChildHasBeenPlacedPage                => childHasBeenPlacedCheckRoute
     case ChildHasEnteredUkPage                 => childHasEnteredUkCheckRoute
     case PaternityLeaveLengthGbPostApril24Page => paternityLeaveLengthGbPostApril24CheckRoute
@@ -304,7 +313,13 @@ class Navigator @Inject()() {
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   private def babyDueDateCheckRoute(answers: UserAnswers): Call =
-    answers.get(BabyDueDatePage).map {
+    childToPaternityCheckRoute(answers, BabyDueDatePage)
+
+  private def childPlacementDateCheckRoute(answers: UserAnswers): Call =
+    childToPaternityCheckRoute(answers, ChildPlacementDatePage)
+
+  private def childToPaternityCheckRoute(answers: UserAnswers, datePage: QuestionPage[LocalDate]): Call =
+    answers.get(datePage).map {
       case d if d.isBefore(Constants.april24LegislationEffective) =>
         answers.get(PaternityLeaveLengthGbPreApril24OrNiPage)
           .map(_ => routes.CheckYourAnswersController.onPageLoad)

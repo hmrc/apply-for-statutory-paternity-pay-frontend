@@ -20,5 +20,5 @@ import java.time.LocalDate
 
 object Constants {
 
-  val april24LegislationEffective: LocalDate = LocalDate.of(2024, 6, 7)
+  val april24LegislationEffective: LocalDate = LocalDate.of(2024, 4, 7)
 }
