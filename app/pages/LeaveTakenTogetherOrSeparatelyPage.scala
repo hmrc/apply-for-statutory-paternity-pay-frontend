@@ -17,9 +17,11 @@
 package pages
 
 import controllers.routes
-import models.{LeaveTakenTogetherOrSeparately, Mode}
+import models.{LeaveTakenTogetherOrSeparately, Mode, UserAnswers}
 import play.api.libs.json.JsPath
 import play.api.mvc.Call
+
+import scala.util.Try
 
 case object LeaveTakenTogetherOrSeparatelyPage extends QuestionPage[LeaveTakenTogetherOrSeparately] {
 
@@ -28,4 +30,16 @@ case object LeaveTakenTogetherOrSeparatelyPage extends QuestionPage[LeaveTakenTo
   override def toString: String = "leaveTakenTogetherOrSeparately"
 
   override def route(mode: Mode): Call = routes.LeaveTakenTogetherOrSeparatelyController.onPageLoad(mode)
+
+  override def cleanup(value: Option[LeaveTakenTogetherOrSeparately], userAnswers: UserAnswers): Try[UserAnswers] =
+    value.map {
+      case LeaveTakenTogetherOrSeparately.Together =>
+        userAnswers
+          .remove(PayStartDateWeek1Page)
+          .flatMap(_.remove(PayStartDateWeek2Page))
+
+      case LeaveTakenTogetherOrSeparately.Separately =>
+        userAnswers.remove(PayStartDateGbPostApril24Page)
+
+    }.getOrElse(super.cleanup(value, userAnswers))
 }
