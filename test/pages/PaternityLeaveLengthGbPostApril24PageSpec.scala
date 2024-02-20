@@ -16,10 +16,12 @@
 
 package pages
 
-import models.PaternityLeaveLengthGbPostApril24
+import models.{LeaveTakenTogetherOrSeparately, PaternityLeaveLengthGbPostApril24}
 import pages.behaviours.PageBehaviours
 
-class PaternityLeaveLengthGbPostApril24Spec extends PageBehaviours {
+import java.time.LocalDate
+
+class PaternityLeaveLengthGbPostApril24PageSpec extends PageBehaviours {
 
   "PaternityLeaveLengthGbPostApril24Page" - {
 
@@ -28,5 +30,57 @@ class PaternityLeaveLengthGbPostApril24Spec extends PageBehaviours {
     beSettable[PaternityLeaveLengthGbPostApril24](PaternityLeaveLengthGbPostApril24Page)
 
     beRemovable[PaternityLeaveLengthGbPostApril24](PaternityLeaveLengthGbPostApril24Page)
+
+    "must remove Pay Start Date Week 1, Week 2, and Leave Taken Together or Separately when the answer is one week" in {
+
+      val answers =
+        emptyUserAnswers
+          .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
+          .set(PayStartDateWeek1Page, LocalDate.now).success.value
+          .set(PayStartDateWeek2Page, LocalDate.now).success.value
+          .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+
+      val result = answers.set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+
+      result.isDefined(PayStartDateGbPostApril24Page) mustEqual true
+
+      result.isDefined(LeaveTakenTogetherOrSeparatelyPage) mustEqual false
+      result.isDefined(PayStartDateWeek1Page)              mustEqual false
+      result.isDefined(PayStartDateWeek2Page)              mustEqual false
+    }
+
+    "must not remove details when the answer is two weeks" in {
+
+      val answers =
+        emptyUserAnswers
+          .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
+          .set(PayStartDateWeek1Page, LocalDate.now).success.value
+          .set(PayStartDateWeek2Page, LocalDate.now).success.value
+          .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+
+      val result = answers.set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
+
+      result.isDefined(PayStartDateGbPostApril24Page)      mustEqual true
+      result.isDefined(LeaveTakenTogetherOrSeparatelyPage) mustEqual true
+      result.isDefined(PayStartDateWeek1Page)              mustEqual true
+      result.isDefined(PayStartDateWeek2Page)              mustEqual true
+    }
+
+    "must remove all Pay details when the answer is Unsure" in {
+
+      val answers =
+        emptyUserAnswers
+          .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
+          .set(PayStartDateWeek1Page, LocalDate.now).success.value
+          .set(PayStartDateWeek2Page, LocalDate.now).success.value
+          .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+
+      val result = answers.set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.Unsure).success.value
+
+      result.isDefined(PayStartDateGbPostApril24Page)      mustEqual false
+      result.isDefined(LeaveTakenTogetherOrSeparatelyPage) mustEqual false
+      result.isDefined(PayStartDateWeek1Page)              mustEqual false
+      result.isDefined(PayStartDateWeek2Page)              mustEqual false
+    }
   }
 }
