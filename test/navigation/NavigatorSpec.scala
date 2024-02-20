@@ -17,16 +17,22 @@
 package navigation
 
 import base.SpecBase
+import config.Constants
 import controllers.routes
-import pages._
+import generators.Generators
 import models._
 import org.scalacheck.Gen
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import pages._
 
 import java.time.LocalDate
 
-class NavigatorSpec extends SpecBase {
+class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generators {
 
-  val navigator = new Navigator
+  private val navigator = new Navigator
+
+  private val dateBeforeLegistation    = LocalDate.of(2000, 1, 1)
+  private val dateAfterLegislation     = LocalDate.of(2100, 1, 1)
 
   "Navigator" - {
 
@@ -264,9 +270,44 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(BabyDateOfBirthPage, NormalMode, emptyUserAnswers) mustEqual routes.BabyDueDateController.onPageLoad(NormalMode)
       }
 
-      "must go from Baby Due Date to Paternity Leave Length" in {
+      "must go from Baby Due Date" - {
 
-        navigator.nextPage(BabyDueDatePage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+        "to Paternity Leave Length GB Pre April 24 or NI when the due date is on or before 6th April" in {
+
+          forAll(datesBetween(dateBeforeLegistation, Constants.april24LegislationEffective.minusDays(1))) { date =>
+
+            val answers = emptyUserAnswers.set(BabyDueDatePage, date).success.value
+            navigator.nextPage(BabyDueDatePage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+          }
+        }
+
+        "to Paternity Leave Length GB Pre April 24 or NI when the user is in Northern Ireland, regardless of the date" in {
+
+          forAll(datesBetween(dateBeforeLegistation, dateAfterLegislation)) { date =>
+
+            val answers =
+              emptyUserAnswers
+                .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+                .set(BabyDueDatePage, date).success.value
+
+            navigator.nextPage(BabyDueDatePage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+          }
+        }
+
+        "to Paternity Leave length GB Post April 24 when the user is not in NI and the due date is after 6th April" in {
+
+          import models.CountryOfResidence._
+
+          forAll(datesBetween(Constants.april24LegislationEffective, dateAfterLegislation), Gen.oneOf(England, Scotland, Wales)) { case (date, country) =>
+
+            val answers =
+              emptyUserAnswers
+                .set(CountryOfResidencePage, country).success.value
+                .set(BabyDueDatePage, date).success.value
+
+            navigator.nextPage(BabyDueDatePage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthGbPostApril24Controller.onPageLoad(NormalMode)
+          }
+        }
       }
 
       "must go from Date Child Was Matched to Child Has Been Placed" in {
@@ -289,14 +330,84 @@ class NavigatorSpec extends SpecBase {
         }
       }
 
-      "must go from Child Placement Date to Paternity Leave Length" in {
+      "must go from Child Placement Date" - {
 
-        navigator.nextPage(ChildPlacementDatePage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+        "to Paternity Leave Length GB Pre April 24 or NI when the date is on or before 6th April" in {
+
+          forAll(datesBetween(dateBeforeLegistation, Constants.april24LegislationEffective.minusDays(1))) { date =>
+
+            val answers = emptyUserAnswers.set(ChildPlacementDatePage, date).success.value
+            navigator.nextPage(ChildPlacementDatePage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+          }
+        }
+
+        "to Paternity Leave Length GB Pre April 24 or NI when the user is in Northern Ireland, regardless of the date" in {
+
+          forAll(datesBetween(dateBeforeLegistation, dateAfterLegislation)) { date =>
+
+            val answers =
+              emptyUserAnswers
+                .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+                .set(ChildPlacementDatePage, date).success.value
+
+            navigator.nextPage(ChildPlacementDatePage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+          }
+        }
+
+        "to Paternity Leave length GB Post April 24 when the user is not in NI and the date is after 6th April" in {
+
+          import models.CountryOfResidence._
+
+          forAll(datesBetween(Constants.april24LegislationEffective, dateAfterLegislation), Gen.oneOf(England, Scotland, Wales)) { case (date, country) =>
+
+            val answers =
+              emptyUserAnswers
+                .set(CountryOfResidencePage, country).success.value
+                .set(ChildPlacementDatePage, date).success.value
+
+            navigator.nextPage(ChildPlacementDatePage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthGbPostApril24Controller.onPageLoad(NormalMode)
+          }
+        }
       }
 
-      "must go from Child Expected Placement Date to Paternity Leave Length" in {
+      "must go from Child Expected Placement Date" - {
 
-        navigator.nextPage(ChildExpectedPlacementDatePage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+        "to Paternity Leave Length GB Pre April 24 or NI when the date is on or before 6th April" in {
+
+          forAll(datesBetween(dateBeforeLegistation, Constants.april24LegislationEffective.minusDays(1))) { date =>
+
+            val answers = emptyUserAnswers.set(ChildExpectedPlacementDatePage, date).success.value
+            navigator.nextPage(ChildExpectedPlacementDatePage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+          }
+        }
+
+        "to Paternity Leave Length GB Pre April 24 or NI when the user is in Northern Ireland, regardless of the date" in {
+
+          forAll(datesBetween(dateBeforeLegistation, dateAfterLegislation)) { date =>
+
+            val answers =
+              emptyUserAnswers
+                .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+                .set(ChildExpectedPlacementDatePage, date).success.value
+
+            navigator.nextPage(ChildExpectedPlacementDatePage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+          }
+        }
+
+        "to Paternity Leave length GB Post April 24 when the user is not in NI and the date is after 6th April" in {
+
+          import models.CountryOfResidence._
+
+          forAll(datesBetween(Constants.april24LegislationEffective, dateAfterLegislation), Gen.oneOf(England, Scotland, Wales)) { case (date, country) =>
+
+            val answers =
+              emptyUserAnswers
+                .set(CountryOfResidencePage, country).success.value
+                .set(ChildExpectedPlacementDatePage, date).success.value
+
+            navigator.nextPage(ChildExpectedPlacementDatePage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthGbPostApril24Controller.onPageLoad(NormalMode)
+          }
+        }
       }
 
       "must go from Date of Adoption Notification to Child Has Entered UK" in {
@@ -319,14 +430,84 @@ class NavigatorSpec extends SpecBase {
         }
       }
 
-      "must go from Date Child Entered UK to Paternity Leave Length" in {
+      "must go from Date Child Entered UK" - {
 
-        navigator.nextPage(DateChildEnteredUkPage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+        "to Paternity Leave Length GB Pre April 24 or NI when the date is on or before 6th April" in {
+
+          forAll(datesBetween(dateBeforeLegistation, Constants.april24LegislationEffective.minusDays(1))) { date =>
+
+            val answers = emptyUserAnswers.set(DateChildEnteredUkPage, date).success.value
+            navigator.nextPage(DateChildEnteredUkPage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+          }
+        }
+
+        "to Paternity Leave Length GB Pre April 24 or NI when the user is in Northern Ireland, regardless of the date" in {
+
+          forAll(datesBetween(dateBeforeLegistation, dateAfterLegislation)) { date =>
+
+            val answers =
+              emptyUserAnswers
+                .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+                .set(DateChildEnteredUkPage, date).success.value
+
+            navigator.nextPage(DateChildEnteredUkPage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+          }
+        }
+
+        "to Paternity Leave length GB Post April 24 when the user is not in NI and the date is after 6th April" in {
+
+          import models.CountryOfResidence._
+
+          forAll(datesBetween(Constants.april24LegislationEffective, dateAfterLegislation), Gen.oneOf(England, Scotland, Wales)) { case (date, country) =>
+
+            val answers =
+              emptyUserAnswers
+                .set(CountryOfResidencePage, country).success.value
+                .set(DateChildEnteredUkPage, date).success.value
+
+            navigator.nextPage(DateChildEnteredUkPage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthGbPostApril24Controller.onPageLoad(NormalMode)
+          }
+        }
       }
 
-      "must go from Date Child Expected to Enter UK to Paternity Leave Length" in {
+      "must go from Date Child Expected to Enter UK" - {
 
-        navigator.nextPage(DateChildExpectedToEnterUkPage, NormalMode, emptyUserAnswers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+        "to Paternity Leave Length GB Pre April 24 or NI when the date is on or before 6th April" in {
+
+          forAll(datesBetween(dateBeforeLegistation, Constants.april24LegislationEffective.minusDays(1))) { date =>
+
+            val answers = emptyUserAnswers.set(DateChildExpectedToEnterUkPage, date).success.value
+            navigator.nextPage(DateChildExpectedToEnterUkPage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+          }
+        }
+
+        "to Paternity Leave Length GB Pre April 24 or NI when the user is in Northern Ireland, regardless of the date" in {
+
+          forAll(datesBetween(dateBeforeLegistation, dateAfterLegislation)) { date =>
+
+            val answers =
+              emptyUserAnswers
+                .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+                .set(DateChildExpectedToEnterUkPage, date).success.value
+
+            navigator.nextPage(DateChildExpectedToEnterUkPage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+          }
+        }
+
+        "to Paternity Leave length GB Post April 24 when the user is not in NI and the date is after 6th April" in {
+
+          import models.CountryOfResidence._
+
+          forAll(datesBetween(Constants.april24LegislationEffective, dateAfterLegislation), Gen.oneOf(England, Scotland, Wales)) { case (date, country) =>
+
+            val answers =
+              emptyUserAnswers
+                .set(CountryOfResidencePage, country).success.value
+                .set(DateChildExpectedToEnterUkPage, date).success.value
+
+            navigator.nextPage(DateChildExpectedToEnterUkPage, NormalMode, answers) mustEqual routes.PaternityLeaveLengthGbPostApril24Controller.onPageLoad(NormalMode)
+          }
+        }
       }
 
       "must go from Paternity Leave Length GB Pre April 24 or NI to Pay Start Date GB Pre April 24 or NI" in {
@@ -792,6 +973,192 @@ class NavigatorSpec extends SpecBase {
         }
       }
 
+      "must go from Date Child Entered UK" - {
+
+        "to CYA" - {
+
+          "when the date is before 7 April 24 and Paternity Leave Length Pre April 24 has been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, Constants.april24LegislationEffective.minusDays(1))) { date =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(DateChildEnteredUkPage, date).success.value
+                  .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+
+              navigator.nextPage(DateChildEnteredUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            }
+          }
+
+          "when the user is NI and Paternity Leave Length Pre April 24 has been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, dateAfterLegislation)) { date =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(DateChildEnteredUkPage, date).success.value
+                  .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+
+              navigator.nextPage(DateChildEnteredUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            }
+          }
+
+          "when the user is not in NI, the date is on or after 7 April 24, and Paternity Length Post April 24 has been answered" in {
+
+            import models.CountryOfResidence._
+
+            forAll(datesBetween(Constants.april24LegislationEffective, dateAfterLegislation), Gen.oneOf(England, Scotland, Wales)) { case (date, country) =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(DateChildEnteredUkPage, date).success.value
+                  .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+                  .set(CountryOfResidencePage, country).success.value
+
+              navigator.nextPage(DateChildEnteredUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            }
+          }
+        }
+
+        "to Paternity Leave Length Pre April 24" - {
+
+          "when the date is before 7 April 24 and Paternity Leave Length Pre April 24 has not been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, Constants.april24LegislationEffective.minusDays(1))) { date =>
+
+              val answers = emptyUserAnswers.set(DateChildEnteredUkPage, date).success.value
+
+              navigator.nextPage(DateChildEnteredUkPage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(CheckMode)
+            }
+          }
+
+          "when the user is in NI and Paternity Leave Length Pre April 24 has not been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, dateAfterLegislation)) { date =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(DateChildEnteredUkPage, date).success.value
+                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+
+              navigator.nextPage(DateChildEnteredUkPage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(CheckMode)
+            }
+          }
+        }
+
+        "to Paternity Leave Length Post April 24" - {
+
+          "when the user is not in NI, the date is on or after 7 April 24, and Paternity Length Post April 24 has not been answered" in {
+
+            import models.CountryOfResidence._
+
+            forAll(datesBetween(Constants.april24LegislationEffective, dateAfterLegislation), Gen.oneOf(England, Scotland, Wales)) { case (date, country) =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(DateChildEnteredUkPage, date).success.value
+                  .set(CountryOfResidencePage, country).success.value
+
+              navigator.nextPage(DateChildEnteredUkPage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPostApril24Controller.onPageLoad(CheckMode)
+            }
+          }
+        }
+      }
+
+      "must go from Date Child Expected to Enter UK" - {
+
+        "to CYA" - {
+
+          "when the date is before 7 April 24 and Paternity Leave Length Pre April 24 has been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, Constants.april24LegislationEffective.minusDays(1))) { date =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(DateChildExpectedToEnterUkPage, date).success.value
+                  .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+
+              navigator.nextPage(DateChildExpectedToEnterUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            }
+          }
+
+          "when the user is NI and Paternity Leave Length Pre April 24 has been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, dateAfterLegislation)) { date =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(DateChildExpectedToEnterUkPage, date).success.value
+                  .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+
+              navigator.nextPage(DateChildExpectedToEnterUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            }
+          }
+
+          "when the user is not in NI, the date is on or after 7 April 24, and Paternity Length Post April 24 has been answered" in {
+
+            import models.CountryOfResidence._
+
+            forAll(datesBetween(Constants.april24LegislationEffective, dateAfterLegislation), Gen.oneOf(England, Scotland, Wales)) { case (date, country) =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(DateChildExpectedToEnterUkPage, date).success.value
+                  .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+                  .set(CountryOfResidencePage, country).success.value
+
+              navigator.nextPage(DateChildExpectedToEnterUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            }
+          }
+        }
+
+        "to Paternity Leave Length Pre April 24" - {
+
+          "when the date is before 7 April 24 and Paternity Leave Length Pre April 24 has not been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, Constants.april24LegislationEffective.minusDays(1))) { date =>
+
+              val answers = emptyUserAnswers.set(DateChildExpectedToEnterUkPage, date).success.value
+
+              navigator.nextPage(DateChildExpectedToEnterUkPage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(CheckMode)
+            }
+          }
+
+          "when the user is in NI and Paternity Leave Length Pre April 24 has not been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, dateAfterLegislation)) { date =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(DateChildExpectedToEnterUkPage, date).success.value
+                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+
+              navigator.nextPage(DateChildExpectedToEnterUkPage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(CheckMode)
+            }
+          }
+        }
+
+        "to Paternity Leave Length Post April 24" - {
+
+          "when the user is not in NI, the date is on or after 7 April 24, and Paternity Length Post April 24 has not been answered" in {
+
+            import models.CountryOfResidence._
+
+            forAll(datesBetween(Constants.april24LegislationEffective, dateAfterLegislation), Gen.oneOf(England, Scotland, Wales)) { case (date, country) =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(DateChildExpectedToEnterUkPage, date).success.value
+                  .set(CountryOfResidencePage, country).success.value
+
+              navigator.nextPage(DateChildExpectedToEnterUkPage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPostApril24Controller.onPageLoad(CheckMode)
+            }
+          }
+        }
+      }
+
       "must go from Child Has Been Placed" - {
 
         "when the answer is yes" - {
@@ -845,9 +1212,280 @@ class NavigatorSpec extends SpecBase {
 
       "must go from Baby Due Date" - {
 
-        "to Check Answers when it has not been answered" in {
+        "to CYA" - {
 
-          navigator.nextPage(BabyDueDatePage, CheckMode, emptyUserAnswers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          "when the due date is before 7 April 24 and Paternity Leave Length Pre April 24 has been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, Constants.april24LegislationEffective.minusDays(1))) { date =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(BabyDueDatePage, date).success.value
+                  .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+
+              navigator.nextPage(BabyDueDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            }
+          }
+
+          "when the user is NI and Paternity Leave Length Pre April 24 has been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, dateAfterLegislation)) { date =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(BabyDueDatePage, date).success.value
+                  .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+
+              navigator.nextPage(BabyDueDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            }
+          }
+
+          "when the user is not in NI, the date is on or after 7 April 24, and Paternity Length Post April 24 has been answered" in {
+
+            import models.CountryOfResidence._
+
+            forAll(datesBetween(Constants.april24LegislationEffective, dateAfterLegislation), Gen.oneOf(England, Scotland, Wales)) { case (date, country) =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(BabyDueDatePage, date).success.value
+                  .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+                  .set(CountryOfResidencePage, country).success.value
+
+              navigator.nextPage(BabyDueDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            }
+          }
+        }
+
+        "to Paternity Leave Length Pre April 24" - {
+
+          "when the due date is before 7 April 24 and Paternity Leave Length Pre April 24 has not been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, Constants.april24LegislationEffective.minusDays(1))) { date =>
+
+              val answers = emptyUserAnswers.set(BabyDueDatePage, date).success.value
+
+              navigator.nextPage(BabyDueDatePage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(CheckMode)
+            }
+          }
+
+          "when the user is in NI and Paternity Leave Length Pre April 24 has not been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, dateAfterLegislation)) { date =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(BabyDueDatePage, date).success.value
+                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+
+              navigator.nextPage(BabyDueDatePage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(CheckMode)
+            }
+          }
+        }
+
+        "to Paternity Leave Length Post April 24" - {
+
+          "when the user is not in NI, the birth is on or after 7 April 24, and Paternity Length Post April 24 has not been answered" in {
+
+            import models.CountryOfResidence._
+
+            forAll(datesBetween(Constants.april24LegislationEffective, dateAfterLegislation), Gen.oneOf(England, Scotland, Wales)) { case (date, country) =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(BabyDueDatePage, date).success.value
+                  .set(CountryOfResidencePage, country).success.value
+
+              navigator.nextPage(BabyDueDatePage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPostApril24Controller.onPageLoad(CheckMode)
+            }
+          }
+        }
+      }
+
+      "must go from Child Placement Date" - {
+
+        "to CYA" - {
+
+          "when the date is before 7 April 24 and Paternity Leave Length Pre April 24 has been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, Constants.april24LegislationEffective.minusDays(1))) { date =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(ChildPlacementDatePage, date).success.value
+                  .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+
+              navigator.nextPage(ChildPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            }
+          }
+
+          "when the user is NI and Paternity Leave Length Pre April 24 has been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, dateAfterLegislation)) { date =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(ChildPlacementDatePage, date).success.value
+                  .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+
+              navigator.nextPage(ChildPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            }
+          }
+
+          "when the user is not in NI, the date is on or after 7 April 24, and Paternity Length Post April 24 has been answered" in {
+
+            import models.CountryOfResidence._
+
+            forAll(datesBetween(Constants.april24LegislationEffective, dateAfterLegislation), Gen.oneOf(England, Scotland, Wales)) { case (date, country) =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(ChildPlacementDatePage, date).success.value
+                  .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+                  .set(CountryOfResidencePage, country).success.value
+
+              navigator.nextPage(ChildPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            }
+          }
+        }
+
+        "to Paternity Leave Length Pre April 24" - {
+
+          "when the date is before 7 April 24 and Paternity Leave Length Pre April 24 has not been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, Constants.april24LegislationEffective.minusDays(1))) { date =>
+
+              val answers = emptyUserAnswers.set(ChildPlacementDatePage, date).success.value
+
+              navigator.nextPage(ChildPlacementDatePage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(CheckMode)
+            }
+          }
+
+          "when the user is in NI and Paternity Leave Length Pre April 24 has not been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, dateAfterLegislation)) { date =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(ChildPlacementDatePage, date).success.value
+                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+
+              navigator.nextPage(ChildPlacementDatePage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(CheckMode)
+            }
+          }
+        }
+
+        "to Paternity Leave Length Post April 24" - {
+
+          "when the user is not in NI, the date is on or after 7 April 24, and Paternity Length Post April 24 has not been answered" in {
+
+            import models.CountryOfResidence._
+
+            forAll(datesBetween(Constants.april24LegislationEffective, dateAfterLegislation), Gen.oneOf(England, Scotland, Wales)) { case (date, country) =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(ChildPlacementDatePage, date).success.value
+                  .set(CountryOfResidencePage, country).success.value
+
+              navigator.nextPage(ChildPlacementDatePage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPostApril24Controller.onPageLoad(CheckMode)
+            }
+          }
+        }
+      }
+
+      "must go from Child Expected Placement Date" - {
+
+        "to CYA" - {
+
+          "when the date is before 7 April 24 and Paternity Leave Length Pre April 24 has been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, Constants.april24LegislationEffective.minusDays(1))) { date =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(ChildExpectedPlacementDatePage, date).success.value
+                  .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+
+              navigator.nextPage(ChildExpectedPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            }
+          }
+
+          "when the user is NI and Paternity Leave Length Pre April 24 has been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, dateAfterLegislation)) { date =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(ChildExpectedPlacementDatePage, date).success.value
+                  .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+
+              navigator.nextPage(ChildExpectedPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            }
+          }
+
+          "when the user is not in NI, the date is on or after 7 April 24, and Paternity Length Post April 24 has been answered" in {
+
+            import models.CountryOfResidence._
+
+            forAll(datesBetween(Constants.april24LegislationEffective, dateAfterLegislation), Gen.oneOf(England, Scotland, Wales)) { case (date, country) =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(ChildExpectedPlacementDatePage, date).success.value
+                  .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+                  .set(CountryOfResidencePage, country).success.value
+
+              navigator.nextPage(ChildExpectedPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            }
+          }
+        }
+
+        "to Paternity Leave Length Pre April 24" - {
+
+          "when the date is before 7 April 24 and Paternity Leave Length Pre April 24 has not been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, Constants.april24LegislationEffective.minusDays(1))) { date =>
+
+              val answers = emptyUserAnswers.set(ChildExpectedPlacementDatePage, date).success.value
+
+              navigator.nextPage(ChildExpectedPlacementDatePage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(CheckMode)
+            }
+          }
+
+          "when the user is in NI and Paternity Leave Length Pre April 24 has not been answered" in {
+
+            forAll(datesBetween(dateBeforeLegistation, dateAfterLegislation)) { date =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(ChildExpectedPlacementDatePage, date).success.value
+                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+
+              navigator.nextPage(ChildExpectedPlacementDatePage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(CheckMode)
+            }
+          }
+        }
+
+        "to Paternity Leave Length Post April 24" - {
+
+          "when the user is not in NI, the date is on or after 7 April 24, and Paternity Length Post April 24 has not been answered" in {
+
+            import models.CountryOfResidence._
+
+            forAll(datesBetween(Constants.april24LegislationEffective, dateAfterLegislation), Gen.oneOf(England, Scotland, Wales)) { case (date, country) =>
+
+              val answers =
+                emptyUserAnswers
+                  .set(ChildExpectedPlacementDatePage, date).success.value
+                  .set(CountryOfResidencePage, country).success.value
+
+              navigator.nextPage(ChildExpectedPlacementDatePage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPostApril24Controller.onPageLoad(CheckMode)
+            }
+          }
         }
       }
 
@@ -945,7 +1583,7 @@ class NavigatorSpec extends SpecBase {
         }
       }
 
-      "must go from Psy Start Date Week 1" - {
+      "must go from Pay Start Date Week 1" - {
 
         "to Pay Start Date Week 2 when it has not been answered" in {
 
