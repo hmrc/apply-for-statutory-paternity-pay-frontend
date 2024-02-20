@@ -19,7 +19,7 @@ package pages
 import models.PaternityLeaveLengthGbPreApril24OrNi
 import pages.behaviours.PageBehaviours
 
-class PaternityLeaveLengthSpec extends PageBehaviours {
+class PaternityLeaveLengthGbPreApril24OrNiPageSpec extends PageBehaviours {
 
   "PaternityLeaveLengthPage" - {
 

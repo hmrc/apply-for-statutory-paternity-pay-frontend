@@ -19,7 +19,9 @@ package pages
 import models.LeaveTakenTogetherOrSeparately
 import pages.behaviours.PageBehaviours
 
-class LeaveTakenTogetherOrSeparatelySpec extends PageBehaviours {
+import java.time.LocalDate
+
+class LeaveTakenTogetherOrSeparatelyPageSpec extends PageBehaviours {
 
   "LeaveTakenTogetherOrSeparatelyPage" - {
 
@@ -28,5 +30,38 @@ class LeaveTakenTogetherOrSeparatelySpec extends PageBehaviours {
     beSettable[LeaveTakenTogetherOrSeparately](LeaveTakenTogetherOrSeparatelyPage)
 
     beRemovable[LeaveTakenTogetherOrSeparately](LeaveTakenTogetherOrSeparatelyPage)
+
+    "must remove Pay Start Date Week 1 and 2 when the answer is Together" in {
+
+      val answers =
+        emptyUserAnswers
+          .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+          .set(PayStartDateWeek1Page, LocalDate.now).success.value
+          .set(PayStartDateWeek2Page, LocalDate.now).success.value
+
+      val result = answers.set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
+
+      result.isDefined(PayStartDateGbPostApril24Page) mustEqual true
+
+      result.isDefined(PayStartDateWeek1Page) mustEqual false
+      result.isDefined(PayStartDateWeek2Page) mustEqual false
+    }
+
+    "must remove Pay Start Date GB Post April 24 when the answer is Separate" in {
+
+      val answers =
+        emptyUserAnswers
+          .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+          .set(PayStartDateWeek1Page, LocalDate.now).success.value
+          .set(PayStartDateWeek2Page, LocalDate.now).success.value
+
+      val result = answers.set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Separately).success.value
+
+      result.isDefined(PayStartDateWeek1Page) mustEqual true
+      result.isDefined(PayStartDateWeek2Page) mustEqual true
+
+      result.isDefined(PayStartDateGbPostApril24Page) mustEqual false
+
+    }
   }
 }

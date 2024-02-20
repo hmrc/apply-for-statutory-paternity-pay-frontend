@@ -17,9 +17,12 @@
 package pages
 
 import controllers.routes
-import models.{PaternityLeaveLengthGbPostApril24, Mode}
+import models.PaternityLeaveLengthGbPostApril24.{OneWeek, TwoWeeks, Unsure}
+import models.{Mode, PaternityLeaveLengthGbPostApril24, UserAnswers}
 import play.api.libs.json.JsPath
 import play.api.mvc.Call
+
+import scala.util.Try
 
 case object PaternityLeaveLengthGbPostApril24Page extends QuestionPage[PaternityLeaveLengthGbPostApril24] {
 
@@ -28,4 +31,25 @@ case object PaternityLeaveLengthGbPostApril24Page extends QuestionPage[Paternity
   override def toString: String = "paternityLeaveLengthGbPostApril24"
 
   override def route(mode: Mode): Call = routes.PaternityLeaveLengthGbPostApril24Controller.onPageLoad(mode)
+
+  override def cleanup(value: Option[PaternityLeaveLengthGbPostApril24], userAnswers: UserAnswers): Try[UserAnswers] =
+    value.map {
+      case OneWeek =>
+        userAnswers
+          .remove(LeaveTakenTogetherOrSeparatelyPage)
+          .flatMap(_.remove(PayStartDateWeek1Page))
+          .flatMap(_.remove(PayStartDateWeek2Page))
+
+      case TwoWeeks =>
+        super.cleanup(value, userAnswers)
+
+      case Unsure =>
+        userAnswers
+          .remove(LeaveTakenTogetherOrSeparatelyPage)
+          .flatMap(_.remove(PayStartDateWeek1Page))
+          .flatMap(_.remove(PayStartDateWeek2Page))
+          .flatMap(_.remove(PayStartDateGbPostApril24Page))
+
+
+    }.getOrElse(super.cleanup(value, userAnswers))
 }
