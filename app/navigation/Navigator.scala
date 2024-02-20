@@ -53,7 +53,7 @@ class Navigator @Inject()() {
     case DateOfAdoptionNotificationPage           => _ => routes.ChildHasEnteredUkController.onPageLoad(NormalMode)
     case ChildHasEnteredUkPage                    => childHasEnteredUkRoute
     case DateChildEnteredUkPage                   => dateChildEnteredUkRoute
-    case DateChildExpectedToEnterUkPage           => _ => routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+    case DateChildExpectedToEnterUkPage           => dateChildExpectedToEnterUkRoute
     case PaternityLeaveLengthGbPreApril24OrNiPage => _ => routes.PayStartDateGbPreApril24OrNiController.onPageLoad(NormalMode)
     case PayStartDateGbPreApril24OrNiPage         => _ => routes.CheckYourAnswersController.onPageLoad
     case PaternityLeaveLengthGbPostApril24Page    => paternityLeaveLengthGbPostApril24Route
@@ -147,6 +147,9 @@ class Navigator @Inject()() {
   private def dateChildEnteredUkRoute(answers: UserAnswers): Call =
     childToPaternityRoute(answers, DateChildEnteredUkPage)
 
+  private def dateChildExpectedToEnterUkRoute(answers: UserAnswers): Call =
+    childToPaternityRoute(answers, DateChildExpectedToEnterUkPage)
+
   private def childToPaternityRoute(answers: UserAnswers, datePage: QuestionPage[LocalDate]): Call =
     answers.get(datePage).map {
       case d if d.isBefore(Constants.april24LegislationEffective) =>
@@ -206,6 +209,7 @@ class Navigator @Inject()() {
     case ChildHasBeenPlacedPage                => childHasBeenPlacedCheckRoute
     case ChildHasEnteredUkPage                 => childHasEnteredUkCheckRoute
     case DateChildEnteredUkPage                => dateChildEnteredUkCheckRoute
+    case DateChildExpectedToEnterUkPage        => dateChildExpectedToEnterUkCheckRoute
     case PaternityLeaveLengthGbPostApril24Page => paternityLeaveLengthGbPostApril24CheckRoute
     case LeaveTakenTogetherOrSeparatelyPage    => leaveTakenTogetherOrSeparatelyCheckRoute
     case PayStartDateWeek1Page                 => payStartDateWeek1CheckRoute
@@ -331,6 +335,9 @@ class Navigator @Inject()() {
 
   private def dateChildEnteredUkCheckRoute(answers: UserAnswers): Call =
     childToPaternityCheckRoute(answers, DateChildEnteredUkPage)
+
+  private def dateChildExpectedToEnterUkCheckRoute(answers: UserAnswers): Call =
+    childToPaternityCheckRoute(answers, DateChildExpectedToEnterUkPage)
 
   private def childToPaternityCheckRoute(answers: UserAnswers, datePage: QuestionPage[LocalDate]): Call =
     answers.get(datePage).map {
