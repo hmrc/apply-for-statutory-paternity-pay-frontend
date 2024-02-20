@@ -58,9 +58,17 @@ package object pages {
     ChildPlacementDatePage,
   )
 
-  val paternityPages: Set[QuestionPage[_]] = Set(
+  val paternityPagesGbPreApril24OrNi: Set[QuestionPage[_]] = Set(
     PaternityLeaveLengthGbPreApril24OrNiPage,
     PayStartDateGbPreApril24OrNiPage
+  )
+
+  val paternityPagesGbPostApril24: Set[QuestionPage[_]] = Set(
+    PaternityLeaveLengthGbPostApril24Page,
+    LeaveTakenTogetherOrSeparatelyPage,
+    PayStartDateGbPostApril24Page,
+    PayStartDateWeek1Page,
+    PayStartDateWeek2Page
   )
 
   val allQuestionPages: Set[QuestionPage[_]] =
@@ -70,7 +78,8 @@ package object pages {
       birthChildPaternityOrderDateQuestions ++
       adoptingAbroadDateQuestions ++
       adoptingUkDateQuestions ++
-      paternityPages
+      paternityPagesGbPreApril24OrNi ++
+      paternityPagesGbPostApril24
 
   def removeRedundantAnswers(userAnswers: UserAnswers, answersToRemove: Set[QuestionPage[_]]): Try[UserAnswers] =
     answersToRemove

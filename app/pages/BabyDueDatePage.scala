@@ -16,11 +16,14 @@
 
 package pages
 
-import models.Mode
+import config.Constants
+import models.{CountryOfResidence, Mode, UserAnswers}
 
 import java.time.LocalDate
 import play.api.libs.json.JsPath
 import play.api.mvc.Call
+
+import scala.util.Try
 
 case object BabyDueDatePage extends QuestionPage[LocalDate] {
 
@@ -29,4 +32,19 @@ case object BabyDueDatePage extends QuestionPage[LocalDate] {
   override def toString: String = "babyDueDate"
 
   override def route(mode: Mode): Call = controllers.routes.BabyDueDateController.onPageLoad(mode)
+
+  override def cleanup(value: Option[LocalDate], userAnswers: UserAnswers): Try[UserAnswers] =
+    value.map {
+      case d if d.isBefore(Constants.april24LegislationEffective) =>
+        removeRedundantAnswers(userAnswers, paternityPagesGbPostApril24)
+
+      case _ =>
+        userAnswers.get(CountryOfResidencePage).map {
+          case CountryOfResidence.NorthernIreland =>
+            removeRedundantAnswers(userAnswers, paternityPagesGbPostApril24)
+
+          case _ =>
+            removeRedundantAnswers(userAnswers, paternityPagesGbPreApril24OrNi)
+        }.getOrElse(super.cleanup(value, userAnswers))
+    }.getOrElse(super.cleanup(value, userAnswers))
 }

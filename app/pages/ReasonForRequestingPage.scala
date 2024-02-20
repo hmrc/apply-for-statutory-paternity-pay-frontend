@@ -35,17 +35,17 @@ case object ReasonForRequestingPage extends QuestionPage[RelationshipToChild] {
   override def cleanup(value: Option[RelationshipToChild], userAnswers: UserAnswers): Try[UserAnswers] =
     value.map {
       case ParentalOrder =>
-        val answersToRemove = adoptingUkDateQuestions ++ adoptingAbroadDateQuestions ++ paternityPages
+        val answersToRemove = adoptingUkDateQuestions ++ adoptingAbroadDateQuestions ++ paternityPagesGbPreApril24OrNi
         removeRedundantAnswers(userAnswers, answersToRemove)
 
       case Adopting | SupportingAdoption =>
         userAnswers.get(IsAdoptingFromAbroadPage).map {
           case true =>
-            val answersToRemove = birthChildPaternityOrderDateQuestions ++ adoptingUkDateQuestions ++ paternityPages
+            val answersToRemove = birthChildPaternityOrderDateQuestions ++ adoptingUkDateQuestions ++ paternityPagesGbPreApril24OrNi
             removeRedundantAnswers(userAnswers, answersToRemove)
 
           case false =>
-            val answersToRemove = birthChildPaternityOrderDateQuestions ++ adoptingAbroadDateQuestions ++ paternityPages
+            val answersToRemove = birthChildPaternityOrderDateQuestions ++ adoptingAbroadDateQuestions ++ paternityPagesGbPreApril24OrNi
             removeRedundantAnswers(userAnswers, answersToRemove)
         }.getOrElse(super.cleanup(value, userAnswers))
 
