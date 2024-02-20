@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{CountryOfResidence, Name, PaternityLeaveLengthGbPreApril24OrNi, RelationshipToChild}
+import models.{CountryOfResidence, LeaveTakenTogetherOrSeparately, Name, PaternityLeaveLengthGbPostApril24, PaternityLeaveLengthGbPreApril24OrNi, RelationshipToChild}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 import uk.gov.hmrc.domain.Nino
@@ -50,6 +50,11 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
         .set(WillHaveCaringResponsibilityPage, true).success.value
         .set(WillTakeTimeToCareForChildPage, true).success.value
         .set(WillTakeTimeToSupportPartnerPage, true).success.value
+        .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+        .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
+        .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+        .set(PayStartDateWeek1Page, LocalDate.now).success.value
+        .set(PayStartDateWeek2Page, LocalDate.now).success.value
 
     def fullAnswersAdopting =
       emptyUserAnswers
@@ -74,6 +79,11 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
         .set(WillHaveCaringResponsibilityPage, true).success.value
         .set(WillTakeTimeToCareForChildPage, true).success.value
         .set(WillTakeTimeToSupportPartnerPage, true).success.value
+        .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+        .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
+        .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+        .set(PayStartDateWeek1Page, LocalDate.now).success.value
+        .set(PayStartDateWeek2Page, LocalDate.now).success.value
 
     "must remove all answers except this and Country of Residence" - {
 
@@ -105,6 +115,11 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
         result.get(WillHaveCaringResponsibilityPage) must not be defined
         result.get(WillTakeTimeToCareForChildPage) must not be defined
         result.get(WillTakeTimeToSupportPartnerPage) must not be defined
+        result.get(PaternityLeaveLengthGbPostApril24Page) must not be defined
+        result.get(LeaveTakenTogetherOrSeparatelyPage) must not be defined
+        result.get(PayStartDateGbPostApril24Page) must not be defined
+        result.get(PayStartDateWeek1Page) must not be defined
+        result.get(PayStartDateWeek2Page) must not be defined
       }
 
       "when the answer changes from false to true" in {
@@ -136,6 +151,11 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
         result.get(WillHaveCaringResponsibilityPage) must not be defined
         result.get(WillTakeTimeToCareForChildPage) must not be defined
         result.get(WillTakeTimeToSupportPartnerPage) must not be defined
+        result.get(PaternityLeaveLengthGbPostApril24Page) must not be defined
+        result.get(LeaveTakenTogetherOrSeparatelyPage) must not be defined
+        result.get(PayStartDateGbPostApril24Page) must not be defined
+        result.get(PayStartDateWeek1Page) must not be defined
+        result.get(PayStartDateWeek2Page) must not be defined
       }
     }
 
@@ -167,6 +187,11 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
       result.get(WillHaveCaringResponsibilityPage) mustBe defined
       result.get(WillTakeTimeToCareForChildPage) mustBe defined
       result.get(WillTakeTimeToSupportPartnerPage) mustBe defined
+      result.get(PaternityLeaveLengthGbPostApril24Page) mustBe defined
+      result.get(LeaveTakenTogetherOrSeparatelyPage) mustBe defined
+      result.get(PayStartDateGbPostApril24Page) mustBe defined
+      result.get(PayStartDateWeek1Page) mustBe defined
+      result.get(PayStartDateWeek2Page) mustBe defined
     }
 
     "must not remove any answers when the answer does not change from false" in {
@@ -191,6 +216,11 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
       result.get(WillHaveCaringResponsibilityPage) mustBe defined
       result.get(WillTakeTimeToCareForChildPage) mustBe defined
       result.get(WillTakeTimeToSupportPartnerPage) mustBe defined
+      result.get(PaternityLeaveLengthGbPostApril24Page) mustBe defined
+      result.get(LeaveTakenTogetherOrSeparatelyPage) mustBe defined
+      result.get(PayStartDateGbPostApril24Page) mustBe defined
+      result.get(PayStartDateWeek1Page) mustBe defined
+      result.get(PayStartDateWeek2Page) mustBe defined
     }
   }
 }

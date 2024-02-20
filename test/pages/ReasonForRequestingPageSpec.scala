@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{PaternityLeaveLengthGbPreApril24OrNi, RelationshipToChild}
+import models.{LeaveTakenTogetherOrSeparately, PaternityLeaveLengthGbPostApril24, PaternityLeaveLengthGbPreApril24OrNi, RelationshipToChild}
 import org.scalacheck.Gen
 import pages.behaviours.PageBehaviours
 
@@ -49,6 +49,11 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
           .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
           .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
           .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
+          .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+          .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
+          .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+          .set(PayStartDateWeek1Page, LocalDate.now).success.value
+          .set(PayStartDateWeek2Page, LocalDate.now).success.value
 
       val result = answers.set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
 
@@ -66,6 +71,11 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
       result.get(ChildExpectedPlacementDatePage) must not be defined
       result.get(PaternityLeaveLengthGbPreApril24OrNiPage) must not be defined
       result.get(PayStartDateGbPreApril24OrNiPage) must not be defined
+      result.get(PaternityLeaveLengthGbPostApril24Page) must not be defined
+      result.get(LeaveTakenTogetherOrSeparatelyPage) must not be defined
+      result.get(PayStartDateGbPostApril24Page) must not be defined
+      result.get(PayStartDateWeek1Page) must not be defined
+      result.get(PayStartDateWeek2Page) must not be defined
     }
 
     "must remove birth child / parental order, adopting from abroad, and paternity details when set to adopting or supporting adoption in the UK" in {
@@ -88,6 +98,11 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
           .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
           .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
           .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
+          .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+          .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
+          .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+          .set(PayStartDateWeek1Page, LocalDate.now).success.value
+          .set(PayStartDateWeek2Page, LocalDate.now).success.value
 
       val result = answers.set(ReasonForRequestingPage, newReason).success.value
 
@@ -105,6 +120,11 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
       result.get(DateChildExpectedToEnterUkPage) must not be defined
       result.get(PaternityLeaveLengthGbPreApril24OrNiPage) must not be defined
       result.get(PayStartDateGbPreApril24OrNiPage) must not be defined
+      result.get(PaternityLeaveLengthGbPostApril24Page) must not be defined
+      result.get(LeaveTakenTogetherOrSeparatelyPage) must not be defined
+      result.get(PayStartDateGbPostApril24Page) must not be defined
+      result.get(PayStartDateWeek1Page) must not be defined
+      result.get(PayStartDateWeek2Page) must not be defined
     }
 
     "must remove birth child / parental order, adopting from UK, and paternity details when set to adopting / supporting adoption from abroad" in {
@@ -127,6 +147,11 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
           .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
           .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
           .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
+          .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+          .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
+          .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+          .set(PayStartDateWeek1Page, LocalDate.now).success.value
+          .set(PayStartDateWeek2Page, LocalDate.now).success.value
 
       val result = answers.set(ReasonForRequestingPage, newReason).success.value
 
@@ -144,6 +169,11 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
       result.get(ChildExpectedPlacementDatePage) must not be defined
       result.get(PaternityLeaveLengthGbPreApril24OrNiPage) must not be defined
       result.get(PayStartDateGbPreApril24OrNiPage) must not be defined
+      result.get(PaternityLeaveLengthGbPostApril24Page) must not be defined
+      result.get(LeaveTakenTogetherOrSeparatelyPage) must not be defined
+      result.get(PayStartDateGbPostApril24Page) must not be defined
+      result.get(PayStartDateWeek1Page) must not be defined
+      result.get(PayStartDateWeek2Page) must not be defined
     }
   }
 }

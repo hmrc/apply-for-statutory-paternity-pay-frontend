@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{CountryOfResidence, Name, PaternityLeaveLengthGbPreApril24OrNi, RelationshipToChild}
+import models.{CountryOfResidence, LeaveTakenTogetherOrSeparately, Name, PaternityLeaveLengthGbPostApril24, PaternityLeaveLengthGbPreApril24OrNi, RelationshipToChild}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import pages.behaviours.PageBehaviours
@@ -57,7 +57,12 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
         .set(NamePage, Name("first", "last")).success.value
         .set(NinoPage, arbitrary[Nino].sample.value).success.value
         .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+        .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
         .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
+        .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
+        .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+        .set(PayStartDateWeek1Page, LocalDate.now).success.value
+        .set(PayStartDateWeek2Page, LocalDate.now).success.value
 
     val fullAnswersParentalOrder =
       emptyUserAnswers
@@ -78,6 +83,12 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
         .set(BabyHasBeenBornPage, true).success.value
         .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
         .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
+        .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+        .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
+        .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
+        .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+        .set(PayStartDateWeek1Page, LocalDate.now).success.value
+        .set(PayStartDateWeek2Page, LocalDate.now).success.value
 
     "must remove redundant answers when the answer is true and Reason for Requesting is Parental Order" in {
 
@@ -109,6 +120,11 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
       result.get(ChildHasEnteredUkPage) must not be defined
       result.get(DateChildEnteredUkPage) must not be defined
       result.get(DateChildExpectedToEnterUkPage) must not be defined
+      result.get(PaternityLeaveLengthGbPostApril24Page) must not be defined
+      result.get(LeaveTakenTogetherOrSeparatelyPage) must not be defined
+      result.get(PayStartDateGbPostApril24Page) must not be defined
+      result.get(PayStartDateWeek1Page) must not be defined
+      result.get(PayStartDateWeek2Page) must not be defined
     }
 
     "must not remove any answers" - {
@@ -134,6 +150,11 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
         result.get(WillHaveCaringResponsibilityPage) mustBe defined
         result.get(WillTakeTimeToCareForChildPage) mustBe defined
         result.get(WillTakeTimeToSupportPartnerPage) mustBe defined
+        result.get(PaternityLeaveLengthGbPostApril24Page) mustBe defined
+        result.get(LeaveTakenTogetherOrSeparatelyPage) mustBe defined
+        result.get(PayStartDateGbPostApril24Page) mustBe defined
+        result.get(PayStartDateWeek1Page) mustBe defined
+        result.get(PayStartDateWeek2Page) mustBe defined
       }
 
       "when the answer is true and Reason for Requesting is Adopting or Supporting Adoption" in {
@@ -162,6 +183,11 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
         result.get(ChildHasEnteredUkPage) mustBe defined
         result.get(DateChildEnteredUkPage) mustBe defined
         result.get(DateChildExpectedToEnterUkPage) mustBe defined
+        result.get(PaternityLeaveLengthGbPostApril24Page) mustBe defined
+        result.get(LeaveTakenTogetherOrSeparatelyPage) mustBe defined
+        result.get(PayStartDateGbPostApril24Page) mustBe defined
+        result.get(PayStartDateWeek1Page) mustBe defined
+        result.get(PayStartDateWeek2Page) mustBe defined
       }
     }
   }
