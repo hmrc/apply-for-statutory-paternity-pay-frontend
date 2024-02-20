@@ -49,7 +49,7 @@ class Navigator @Inject()() {
     case DateChildWasMatchedPage                  => _ => routes.ChildHasBeenPlacedController.onPageLoad(NormalMode)
     case ChildHasBeenPlacedPage                   => childHasBeenPlacedRoute
     case ChildPlacementDatePage                   => childPlacementDateRoute
-    case ChildExpectedPlacementDatePage           => _ => routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
+    case ChildExpectedPlacementDatePage           => childExpectedPlacementDateRoute
     case DateOfAdoptionNotificationPage           => _ => routes.ChildHasEnteredUkController.onPageLoad(NormalMode)
     case ChildHasEnteredUkPage                    => childHasEnteredUkRoute
     case DateChildEnteredUkPage                   => _ => routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(NormalMode)
@@ -141,6 +141,9 @@ class Navigator @Inject()() {
   private def childPlacementDateRoute(answers: UserAnswers): Call =
     childToPaternityRoute(answers, ChildPlacementDatePage)
 
+  private def childExpectedPlacementDateRoute(answers: UserAnswers): Call =
+    childToPaternityRoute(answers, ChildExpectedPlacementDatePage)
+
   private def childToPaternityRoute(answers: UserAnswers, datePage: QuestionPage[LocalDate]): Call =
     answers.get(datePage).map {
       case d if d.isBefore(Constants.april24LegislationEffective) =>
@@ -196,6 +199,7 @@ class Navigator @Inject()() {
     case BabyHasBeenBornPage                   => babyHasBeenBornCheckRoute
     case BabyDueDatePage                       => babyDueDateCheckRoute
     case ChildPlacementDatePage                => childPlacementDateCheckRoute
+    case ChildExpectedPlacementDatePage        => childExpectedPlacementDateCheckRoute
     case ChildHasBeenPlacedPage                => childHasBeenPlacedCheckRoute
     case ChildHasEnteredUkPage                 => childHasEnteredUkCheckRoute
     case PaternityLeaveLengthGbPostApril24Page => paternityLeaveLengthGbPostApril24CheckRoute
@@ -317,6 +321,9 @@ class Navigator @Inject()() {
 
   private def childPlacementDateCheckRoute(answers: UserAnswers): Call =
     childToPaternityCheckRoute(answers, ChildPlacementDatePage)
+
+  private def childExpectedPlacementDateCheckRoute(answers: UserAnswers): Call =
+    childToPaternityCheckRoute(answers, ChildExpectedPlacementDatePage)
 
   private def childToPaternityCheckRoute(answers: UserAnswers, datePage: QuestionPage[LocalDate]): Call =
     answers.get(datePage).map {
