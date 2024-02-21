@@ -80,31 +80,7 @@
 
                 </fo:block-container>
 
-                <fo:block-container margin-top="8mm">
-                    <!-- Baby details -->
-                    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.babyDetails")</fo:block>
 
-                    <!-- Due date -->
-                    <fo:block-container>
-                        <fo:block-container margin-bottom="3mm">
-                            <fo:block>
-                                <fo:inline font-weight="bold">@messages("pdf.dueDate"): </fo:inline>
-                                <fo:inline>@dateTimeFormat(model.dueDate)</fo:inline>
-                            </fo:block>
-                        </fo:block-container>
-                    </fo:block-container>
-
-                    @model.birthDate.map { birthDate =>
-                        <fo:block-container>
-                            <fo:block-container margin-bottom="3mm">
-                                <fo:block>
-                                    <fo:inline font-weight="bold">@messages("pdf.birthDate"): </fo:inline>
-                                    <fo:inline>@dateTimeFormat(birthDate)</fo:inline>
-                                </fo:block>
-                            </fo:block-container>
-                        </fo:block-container>
-                    }
-                </fo:block-container>
 
                 <fo:block-container margin-top="8mm">
                     <!-- Paternity details -->

@@ -16,7 +16,7 @@
 
 package models.auditing
 
-import models.auditing.DownloadAuditEvent.Eligibility
+import models.auditing.DownloadAuditEvent.{ChildDetails, Eligibility}
 import models.{CountryOfResidence, JourneyModel, Name, PaternityLeaveLengthGbPreApril24OrNi, RelationshipToChild}
 import play.api.libs.json.{Json, Writes}
 import uk.gov.hmrc.domain.Nino
@@ -28,9 +28,7 @@ final case class DownloadAuditEvent(
                                      eligibility: Eligibility,
                                      name: Name,
                                      nino: Nino,
-                                     hasTheBabyBeenBorn: Boolean,
-                                     dueDate: LocalDate,
-                                     birthDate: Option[LocalDate],
+                                     childDetails: ChildDetails,
                                      payStartDate: LocalDate,
                                      howLongWillYouBeOnLeave: PaternityLeaveLengthGbPreApril24OrNi
                                    ) {
@@ -75,15 +73,51 @@ object DownloadAuditEvent {
     }
   }
 
+  sealed trait ChildDetails
+
+  final case class BirthParentalOrderChild(
+                                            dueDate: LocalDate,
+                                            birthDate: Option[LocalDate]
+                                          ) extends ChildDetails
+
+  object BirthParentalOrderChild {
+    implicit lazy val writes: Writes[BirthParentalOrderChild] = Json.writes
+  }
+
+  final case class AdoptedUkChild(
+                                   matchedDate: LocalDate,
+                                   hasBeenPlaced: Boolean,
+                                   effectiveDate: LocalDate
+                                 ) extends ChildDetails
+
+  object AdoptedUkChild {
+    implicit lazy val writes: Writes[AdoptedUkChild] = Json.writes
+  }
+
+  final case class AdoptedAbroadChild(
+                                       notifiedDate: LocalDate,
+                                       hasEnteredUk: Boolean,
+                                       effectiveDate: LocalDate
+                                     ) extends ChildDetails
+
+  object AdoptedAbroadChild {
+    implicit lazy val writes: Writes[AdoptedAbroadChild] = Json.writes
+  }
+  object ChildDetails {
+    implicit lazy val writes: Writes[ChildDetails] = Writes[ChildDetails] {
+      case x: BirthParentalOrderChild => Json.toJson(x)(BirthParentalOrderChild.writes)
+      case x: AdoptedUkChild => Json.toJson(x)(AdoptedUkChild.writes)
+      case x:AdoptedAbroadChild => Json.toJson(x)(AdoptedAbroadChild.writes)
+    }
+  }
+
   def from(model: JourneyModel): DownloadAuditEvent =
     DownloadAuditEvent(
       countryOfResidence = model.countryOfResidence,
       eligibility = getEligibility(model),
       name = model.name,
       nino = model.nino,
-      dueDate = model.dueDate,
-      hasTheBabyBeenBorn = model.hasTheBabyBeenBorn,
-      birthDate = model.birthDate,
+      getChildDetails(model.childDetails),
       payStartDate = model.payStartDate,
       howLongWillYouBeOnLeave = model.howLongWillYouBeOnLeave
     )
@@ -111,6 +145,18 @@ object DownloadAuditEvent {
           timeOffToCareForChild = e.timeOffToCareForChild,
           timeOffToSupportPartner = e.timeOffToSupportPartner
         )
+    }
+
+  private def getChildDetails(model: models.JourneyModel.ChildDetails): ChildDetails =
+    model match {
+      case x: models.JourneyModel.BirthParentalOrderChild =>
+        BirthParentalOrderChild(x.dueDate, x.birthDate)
+
+      case x: models.JourneyModel.AdoptedUkChild =>
+        AdoptedUkChild(x.matchedDate, x.hasBeenPlaced, x.effectiveDate)
+
+      case x: models.JourneyModel.AdoptedAbroadChild =>
+        AdoptedAbroadChild(x.notifiedDate, x.hasEnteredUk, x.effectiveDate)
     }
 
   implicit lazy val writes: Writes[DownloadAuditEvent] = Json.writes[DownloadAuditEvent]

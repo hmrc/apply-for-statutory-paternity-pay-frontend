@@ -19,6 +19,7 @@ package services.auditing
 import generators.ModelGenerators
 import models.{CountryOfResidence, JourneyModel, Name, PaternityLeaveLengthGbPreApril24OrNi}
 import models.auditing.DownloadAuditEvent
+import models.auditing.DownloadAuditEvent.BirthParentalOrderChild
 import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito.{times, verify}
 import org.scalacheck.Arbitrary.arbitrary
@@ -48,6 +49,7 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar with 
 
       val birthDate = LocalDate.now
       val dueDate = LocalDate.now.minusDays(1)
+      val payStartDate = LocalDate.now
 
       val model: JourneyModel = JourneyModel(
         countryOfResidence = CountryOfResidence.England,
@@ -61,10 +63,8 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar with 
         ),
         name = Name("foo", "bar"),
         nino = nino,
-        hasTheBabyBeenBorn = true,
-        dueDate = dueDate,
-        birthDate = Some(birthDate),
-        payStartDate = LocalDate.now,
+        childDetails = JourneyModel.BirthParentalOrderChild(birthDate, Some(dueDate)),
+        payStartDate = payStartDate,
         howLongWillYouBeOnLeave = PaternityLeaveLengthGbPreApril24OrNi.Oneweek
       )
 
@@ -80,10 +80,8 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar with 
         ),
         name = Name("foo", "bar"),
         nino = nino,
-        hasTheBabyBeenBorn = true,
-        dueDate = dueDate,
-        birthDate = Some(birthDate),
-        payStartDate = LocalDate.now,
+        childDetails = BirthParentalOrderChild(birthDate, Some(dueDate)),
+        payStartDate = payStartDate,
         howLongWillYouBeOnLeave = PaternityLeaveLengthGbPreApril24OrNi.Oneweek
       )
 
