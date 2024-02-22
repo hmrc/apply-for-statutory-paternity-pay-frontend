@@ -16,21 +16,33 @@
 
 package models
 
-import generators.ModelGenerators
-import models.JourneyModel.{AdoptedAbroadChild, AdoptedUkChild, BirthParentalOrderChild}
+import config.Constants
+import generators.Generators
+import models.CountryOfResidence._
+import models.JourneyModel._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{EitherValues, OptionValues, TryValues}
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages._
 import uk.gov.hmrc.domain.Nino
 
 import java.time.LocalDate
 
-class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with TryValues with EitherValues with ModelGenerators {
+class JourneyModelSpec
+  extends AnyFreeSpec
+    with Matchers
+    with OptionValues
+    with TryValues
+    with EitherValues
+    with Generators
+    with ScalaCheckPropertyChecks {
 
   private val nino = arbitrary[Nino].sample.value
+  private val dateBeforeLegislation = LocalDate.of(2000, 1, 1)
+  private val dateAfterLegislation = LocalDate.of(2100, 1, 1)
   
   ".from" - {
 
@@ -38,360 +50,1208 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
 
     "must return a completed journey model" - {
 
-      "when the user says that a birth child has already been born" in {
+      "when the user says that a birth child has already been born" - {
 
-        val dueDate = LocalDate.now.minusDays(2)
-        val birthDate = LocalDate.now.minusDays(1)
-        val payStartDate = LocalDate.now.plusMonths(1)
+        "in Northern Ireland" in {
 
-        val answers = emptyUserAnswers
-          .set(CountryOfResidencePage, CountryOfResidence.England).success.value
-          .set(IsAdoptingOrParentalOrderPage, false).success.value
-          .set(IsBiologicalFatherPage, true).success.value
-          .set(WillHaveCaringResponsibilityPage, true).success.value
-          .set(WillTakeTimeToCareForChildPage, true).success.value
-          .set(NamePage, Name("foo", "bar")).success.value
-          .set(NinoPage, nino).success.value
-          .set(BabyHasBeenBornPage, true).success.value
-          .set(BabyDateOfBirthPage, birthDate).success.value
-          .set(BabyDueDatePage, dueDate).success.value
-          .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
-          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+          forAll(datesBetween(dateBeforeLegislation, dateAfterLegislation)) { dueDate =>
 
-        val expected = JourneyModel(
-          countryOfResidence = CountryOfResidence.England,
-          eligibility = JourneyModel.BirthChildEligibility(
-            biologicalFather = true,
-            inRelationshipWithMother = None,
-            livingWithMother = None,
-            responsibilityForChild = true,
-            timeOffToCareForChild = true,
-            timeOffToSupportPartner = None
-          ),
-          name = Name("foo", "bar"),
-          nino = nino,
-          childDetails = BirthParentalOrderChild(dueDate, Some(birthDate)),
-          payStartDate = payStartDate,
-          howLongWillYouBeOnLeave = PaternityLeaveLengthGbPreApril24OrNi.Oneweek
-        )
+            val birthDate = LocalDate.now
+            val payStartDate = LocalDate.now.plusMonths(1)
 
-        JourneyModel.from(answers).value mustEqual expected
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, NorthernIreland).success.value
+              .set(IsAdoptingOrParentalOrderPage, false).success.value
+              .set(IsBiologicalFatherPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(BabyHasBeenBornPage, true).success.value
+              .set(BabyDateOfBirthPage, birthDate).success.value
+              .set(BabyDueDatePage, dueDate).success.value
+              .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
+              .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = NorthernIreland,
+              eligibility = JourneyModel.BirthChildEligibility(
+                biologicalFather = true,
+                inRelationshipWithMother = None,
+                livingWithMother = None,
+                responsibilityForChild = true,
+                timeOffToCareForChild = true,
+                timeOffToSupportPartner = None
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = BirthParentalOrderChild(dueDate, Some(birthDate)),
+              paternityLeaveDetails = PaternityLeaveGbPreApril24OrNi(PaternityLeaveLengthGbPreApril24OrNi.OneWeek, payStartDate)
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
+
+        "in England, Scotland or Wales before 7 April 24" in {
+
+          val gen = for {
+            date <- datesBetween(dateBeforeLegislation, Constants.april24LegislationEffective.minusDays(1))
+            country <- Gen.oneOf(England, Scotland, Wales)
+          } yield (date, country)
+          
+          forAll(gen) { case (dueDate, country) =>
+
+            val birthDate = LocalDate.now
+            val payStartDate = LocalDate.now.plusMonths(1)
+
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, country).success.value
+              .set(IsAdoptingOrParentalOrderPage, false).success.value
+              .set(IsBiologicalFatherPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(BabyHasBeenBornPage, true).success.value
+              .set(BabyDateOfBirthPage, birthDate).success.value
+              .set(BabyDueDatePage, dueDate).success.value
+              .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
+              .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = country,
+              eligibility = JourneyModel.BirthChildEligibility(
+                biologicalFather = true,
+                inRelationshipWithMother = None,
+                livingWithMother = None,
+                responsibilityForChild = true,
+                timeOffToCareForChild = true,
+                timeOffToSupportPartner = None
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = BirthParentalOrderChild(dueDate, Some(birthDate)),
+              paternityLeaveDetails = PaternityLeaveGbPreApril24OrNi(PaternityLeaveLengthGbPreApril24OrNi.OneWeek, payStartDate)
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
+
+        "in England, Scotland or Wales on or after 7 April 24" in {
+
+          val gen = for {
+            date <- datesBetween(Constants.april24LegislationEffective, dateAfterLegislation)
+            country <- Gen.oneOf(England, Scotland, Wales)
+          } yield (date, country)
+
+          forAll(gen) { case (dueDate, country) =>
+
+            val birthDate = LocalDate.now
+
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, country).success.value
+              .set(IsAdoptingOrParentalOrderPage, false).success.value
+              .set(IsBiologicalFatherPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(BabyHasBeenBornPage, true).success.value
+              .set(BabyDateOfBirthPage, birthDate).success.value
+              .set(BabyDueDatePage, dueDate).success.value
+              .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.Unsure).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = country,
+              eligibility = JourneyModel.BirthChildEligibility(
+                biologicalFather = true,
+                inRelationshipWithMother = None,
+                livingWithMother = None,
+                responsibilityForChild = true,
+                timeOffToCareForChild = true,
+                timeOffToSupportPartner = None
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = BirthParentalOrderChild(dueDate, Some(birthDate)),
+              paternityLeaveDetails = PaternityLeaveGbPostApril24Unsure
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
       }
 
-      "when the user says that a birth child has not yet been born" in {
+      "when the user says that a birth child has not yet been born" - {
 
-        val dueDate = LocalDate.now.plusDays(1)
-        val payStartDate = LocalDate.now.plusMonths(1)
+        "in Northern Ireland" in {
 
-        val answers = emptyUserAnswers
-          .set(CountryOfResidencePage, CountryOfResidence.England).success.value
-          .set(IsAdoptingOrParentalOrderPage, false).success.value
-          .set(IsBiologicalFatherPage, false).success.value
-          .set(IsInQualifyingRelationshipPage, true).success.value
-          .set(WillHaveCaringResponsibilityPage, true).success.value
-          .set(WillTakeTimeToCareForChildPage, false).success.value
-          .set(WillTakeTimeToSupportPartnerPage, true).success.value
-          .set(NamePage, Name("foo", "bar")).success.value
-          .set(NinoPage, nino).success.value
-          .set(BabyHasBeenBornPage, false).success.value
-          .set(BabyDueDatePage, dueDate).success.value
-          .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
-          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+          forAll(datesBetween(dateBeforeLegislation, dateAfterLegislation)) { dueDate =>
 
-        val expected = JourneyModel(
-          countryOfResidence = CountryOfResidence.England,
-          eligibility = JourneyModel.BirthChildEligibility(
-            biologicalFather = false,
-            inRelationshipWithMother = Some(true),
-            livingWithMother = None,
-            responsibilityForChild = true,
-            timeOffToCareForChild = false,
-            timeOffToSupportPartner = Some(true)
-          ),
-          name = Name("foo", "bar"),
-          nino = nino,
-          childDetails = BirthParentalOrderChild(dueDate, None),
-          payStartDate = payStartDate,
-          howLongWillYouBeOnLeave = PaternityLeaveLengthGbPreApril24OrNi.Oneweek
-        )
+            val payStartDate = LocalDate.now.plusMonths(1)
 
-        JourneyModel.from(answers).value mustEqual expected
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, NorthernIreland).success.value
+              .set(IsAdoptingOrParentalOrderPage, false).success.value
+              .set(IsBiologicalFatherPage, false).success.value
+              .set(IsInQualifyingRelationshipPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, false).success.value
+              .set(WillTakeTimeToSupportPartnerPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(BabyHasBeenBornPage, false).success.value
+              .set(BabyDueDatePage, dueDate).success.value
+              .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
+              .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = NorthernIreland,
+              eligibility = JourneyModel.BirthChildEligibility(
+                biologicalFather = false,
+                inRelationshipWithMother = Some(true),
+                livingWithMother = None,
+                responsibilityForChild = true,
+                timeOffToCareForChild = false,
+                timeOffToSupportPartner = Some(true)
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = BirthParentalOrderChild(dueDate, None),
+              paternityLeaveDetails = PaternityLeaveGbPreApril24OrNi(PaternityLeaveLengthGbPreApril24OrNi.OneWeek, payStartDate)
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
+
+        "in England, Scotland or Wales and due before 7 April 2024" in {
+
+          val gen = for {
+            date <- datesBetween(dateBeforeLegislation, Constants.april24LegislationEffective)
+            country <- Gen.oneOf(England, Scotland, Wales)
+          } yield (date, country)
+
+          forAll(gen) { case (dueDate, country) =>
+
+            val payStartDate = LocalDate.now.plusMonths(1)
+
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, country).success.value
+              .set(IsAdoptingOrParentalOrderPage, false).success.value
+              .set(IsBiologicalFatherPage, false).success.value
+              .set(IsInQualifyingRelationshipPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, false).success.value
+              .set(WillTakeTimeToSupportPartnerPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(BabyHasBeenBornPage, false).success.value
+              .set(BabyDueDatePage, dueDate).success.value
+              .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.TwoWeeks).success.value
+              .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = country,
+              eligibility = JourneyModel.BirthChildEligibility(
+                biologicalFather = false,
+                inRelationshipWithMother = Some(true),
+                livingWithMother = None,
+                responsibilityForChild = true,
+                timeOffToCareForChild = false,
+                timeOffToSupportPartner = Some(true)
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = BirthParentalOrderChild(dueDate, None),
+              paternityLeaveDetails = PaternityLeaveGbPreApril24OrNi(PaternityLeaveLengthGbPreApril24OrNi.TwoWeeks, payStartDate)
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
+
+        "in England, Scotland or Wales and due on or after 7 April 2024" in {
+
+          val gen = for {
+            date <- datesBetween(Constants.april24LegislationEffective, dateAfterLegislation)
+            country <- Gen.oneOf(England, Scotland, Wales)
+          } yield (date, country)
+
+          forAll(gen) { case (dueDate, country) =>
+
+            val payStartDate = LocalDate.now.plusMonths(1)
+
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, country).success.value
+              .set(IsAdoptingOrParentalOrderPage, false).success.value
+              .set(IsBiologicalFatherPage, false).success.value
+              .set(IsInQualifyingRelationshipPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, false).success.value
+              .set(WillTakeTimeToSupportPartnerPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(BabyHasBeenBornPage, false).success.value
+              .set(BabyDueDatePage, dueDate).success.value
+              .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+              .set(PayStartDateGbPostApril24Page, payStartDate).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = country,
+              eligibility = JourneyModel.BirthChildEligibility(
+                biologicalFather = false,
+                inRelationshipWithMother = Some(true),
+                livingWithMother = None,
+                responsibilityForChild = true,
+                timeOffToCareForChild = false,
+                timeOffToSupportPartner = Some(true)
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = BirthParentalOrderChild(dueDate, None),
+              paternityLeaveDetails = PaternityLeaveGbPostApril24OneWeek(Some(payStartDate))
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
       }
 
-      "when the user says that a parental order child has already been born" in {
+      "when the user says that a parental order child has already been born" - {
 
-        val dueDate = LocalDate.now.minusDays(2)
-        val birthDate = LocalDate.now.minusDays(1)
-        val payStartDate = LocalDate.now.plusMonths(1)
+        "in Northern Ireland" in {
 
-        val answers = emptyUserAnswers
-          .set(CountryOfResidencePage, CountryOfResidence.England).success.value
-          .set(IsAdoptingOrParentalOrderPage, true).success.value
-          .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
-          .set(IsAdoptingFromAbroadPage, false).success.value
-          .set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
-          .set(IsInQualifyingRelationshipPage, true).success.value
-          .set(WillHaveCaringResponsibilityPage, true).success.value
-          .set(WillTakeTimeToCareForChildPage, true).success.value
-          .set(NamePage, Name("foo", "bar")).success.value
-          .set(NinoPage, nino).success.value
-          .set(BabyHasBeenBornPage, true).success.value
-          .set(BabyDateOfBirthPage, birthDate).success.value
-          .set(BabyDueDatePage, dueDate).success.value
-          .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
-          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+          forAll(datesBetween(dateBeforeLegislation, dateAfterLegislation)) { dueDate =>
 
-        val expected = JourneyModel(
-          countryOfResidence = CountryOfResidence.England,
-          eligibility = JourneyModel.AdoptionParentalOrderEligibility(
-            applyingForStatutoryAdoptionPay = false,
-            adoptingFromAbroad = false,
-            reasonForRequesting = RelationshipToChild.ParentalOrder,
-            inQualifyingRelationship = true,
-            livingWithPartner = None,
-            responsibilityForChild = true,
-            timeOffToCareForChild = true,
-            timeOffToSupportPartner = None
-          ),
-          name = Name("foo", "bar"),
-          nino = nino,
-          childDetails = BirthParentalOrderChild(dueDate, Some(birthDate)),
-          payStartDate = payStartDate,
-          howLongWillYouBeOnLeave = PaternityLeaveLengthGbPreApril24OrNi.Oneweek
-        )
+            val birthDate = LocalDate.now.minusDays(1)
+            val payStartDate = LocalDate.now.plusMonths(1)
 
-        JourneyModel.from(answers).value mustEqual expected
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, NorthernIreland).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, false).success.value
+              .set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
+              .set(IsInQualifyingRelationshipPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(BabyHasBeenBornPage, true).success.value
+              .set(BabyDateOfBirthPage, birthDate).success.value
+              .set(BabyDueDatePage, dueDate).success.value
+              .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
+              .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = NorthernIreland,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = false,
+                reasonForRequesting = RelationshipToChild.ParentalOrder,
+                inQualifyingRelationship = true,
+                livingWithPartner = None,
+                responsibilityForChild = true,
+                timeOffToCareForChild = true,
+                timeOffToSupportPartner = None
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = BirthParentalOrderChild(dueDate, Some(birthDate)),
+              paternityLeaveDetails = PaternityLeaveGbPreApril24OrNi(PaternityLeaveLengthGbPreApril24OrNi.OneWeek, payStartDate)
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
+
+        "in England, Scotland or Wales before 7 April 2024" in {
+
+          val gen = for {
+            date <- datesBetween(dateBeforeLegislation, Constants.april24LegislationEffective)
+            country <- Gen.oneOf(England, Scotland, Wales)
+          } yield (date, country)
+
+          forAll(gen) { case (dueDate, country) =>
+
+            val birthDate = LocalDate.now.minusDays(1)
+            val payStartDate = LocalDate.now.plusMonths(1)
+
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, country).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, false).success.value
+              .set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
+              .set(IsInQualifyingRelationshipPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(BabyHasBeenBornPage, true).success.value
+              .set(BabyDateOfBirthPage, birthDate).success.value
+              .set(BabyDueDatePage, dueDate).success.value
+              .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
+              .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = country,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = false,
+                reasonForRequesting = RelationshipToChild.ParentalOrder,
+                inQualifyingRelationship = true,
+                livingWithPartner = None,
+                responsibilityForChild = true,
+                timeOffToCareForChild = true,
+                timeOffToSupportPartner = None
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = BirthParentalOrderChild(dueDate, Some(birthDate)),
+              paternityLeaveDetails = PaternityLeaveGbPreApril24OrNi(PaternityLeaveLengthGbPreApril24OrNi.OneWeek, payStartDate)
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
+
+        "in England, Scotland or Wales on or after 7 April 2024" in {
+
+          val gen = for {
+            date <- datesBetween(Constants.april24LegislationEffective, dateAfterLegislation)
+            country <- Gen.oneOf(England, Scotland, Wales)
+          } yield (date, country)
+
+          forAll(gen) { case (dueDate, country) =>
+
+            val birthDate = LocalDate.now.minusDays(1)
+            val payStartDate = LocalDate.now.plusMonths(1)
+
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, country).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, false).success.value
+              .set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
+              .set(IsInQualifyingRelationshipPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(BabyHasBeenBornPage, true).success.value
+              .set(BabyDateOfBirthPage, birthDate).success.value
+              .set(BabyDueDatePage, dueDate).success.value
+              .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
+              .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
+              .set(PayStartDateGbPostApril24Page, payStartDate).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = country,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = false,
+                reasonForRequesting = RelationshipToChild.ParentalOrder,
+                inQualifyingRelationship = true,
+                livingWithPartner = None,
+                responsibilityForChild = true,
+                timeOffToCareForChild = true,
+                timeOffToSupportPartner = None
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = BirthParentalOrderChild(dueDate, Some(birthDate)),
+              paternityLeaveDetails = PaternityLeaveGbPostApril24TwoWeeksTogether(Some(payStartDate))
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
       }
 
-      "when the user says that a parental order child has not yet been born" in {
+      "when the user says that a parental order child has not yet been born" - {
 
-        val dueDate = LocalDate.now.plusDays(1)
-        val payStartDate = LocalDate.now.plusMonths(1)
+        "in Northern Ireland" in {
 
-        val answers = emptyUserAnswers
-          .set(CountryOfResidencePage, CountryOfResidence.England).success.value
-          .set(IsAdoptingOrParentalOrderPage, true).success.value
-          .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
-          .set(IsAdoptingFromAbroadPage, false).success.value
-          .set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
-          .set(IsInQualifyingRelationshipPage, false).success.value
-          .set(IsCohabitingPage, true).success.value
-          .set(WillHaveCaringResponsibilityPage, true).success.value
-          .set(WillTakeTimeToCareForChildPage, false).success.value
-          .set(WillTakeTimeToSupportPartnerPage, true).success.value
-          .set(NamePage, Name("foo", "bar")).success.value
-          .set(NinoPage, nino).success.value
-          .set(BabyHasBeenBornPage, false).success.value
-          .set(BabyDueDatePage, dueDate).success.value
-          .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
-          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+          forAll(datesBetween(dateBeforeLegislation, dateAfterLegislation)) { dueDate =>
 
-        val expected = JourneyModel(
-          countryOfResidence = CountryOfResidence.England,
-          eligibility = JourneyModel.AdoptionParentalOrderEligibility(
-            applyingForStatutoryAdoptionPay = false,
-            adoptingFromAbroad = false,
-            reasonForRequesting = RelationshipToChild.ParentalOrder,
-            inQualifyingRelationship = false,
-            livingWithPartner = Some(true),
-            responsibilityForChild = true,
-            timeOffToCareForChild = false,
-            timeOffToSupportPartner = Some(true)
-          ),
-          name = Name("foo", "bar"),
-          nino = nino,
-          childDetails = BirthParentalOrderChild(dueDate, None),
-          payStartDate = payStartDate,
-          howLongWillYouBeOnLeave = PaternityLeaveLengthGbPreApril24OrNi.Oneweek
-        )
+            val payStartDate = LocalDate.now.plusMonths(1)
 
-        JourneyModel.from(answers).value mustEqual expected
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, NorthernIreland).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, false).success.value
+              .set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
+              .set(IsInQualifyingRelationshipPage, false).success.value
+              .set(IsCohabitingPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, false).success.value
+              .set(WillTakeTimeToSupportPartnerPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(BabyHasBeenBornPage, false).success.value
+              .set(BabyDueDatePage, dueDate).success.value
+              .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
+              .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = NorthernIreland,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = false,
+                reasonForRequesting = RelationshipToChild.ParentalOrder,
+                inQualifyingRelationship = false,
+                livingWithPartner = Some(true),
+                responsibilityForChild = true,
+                timeOffToCareForChild = false,
+                timeOffToSupportPartner = Some(true)
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = BirthParentalOrderChild(dueDate, None),
+              paternityLeaveDetails = PaternityLeaveGbPreApril24OrNi(PaternityLeaveLengthGbPreApril24OrNi.OneWeek, payStartDate)
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
+
+        "in England, Scotland or Wales and due before 7 April 24" in {
+
+          val gen = for {
+            date <- datesBetween(dateBeforeLegislation, Constants.april24LegislationEffective)
+            country <- Gen.oneOf(England, Scotland, Wales)
+          } yield (date, country)
+
+          forAll(gen) { case (dueDate, country) =>
+
+            val payStartDate = LocalDate.now.plusMonths(1)
+
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, country).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, false).success.value
+              .set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
+              .set(IsInQualifyingRelationshipPage, false).success.value
+              .set(IsCohabitingPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, false).success.value
+              .set(WillTakeTimeToSupportPartnerPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(BabyHasBeenBornPage, false).success.value
+              .set(BabyDueDatePage, dueDate).success.value
+              .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+              .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = country,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = false,
+                reasonForRequesting = RelationshipToChild.ParentalOrder,
+                inQualifyingRelationship = false,
+                livingWithPartner = Some(true),
+                responsibilityForChild = true,
+                timeOffToCareForChild = false,
+                timeOffToSupportPartner = Some(true)
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = BirthParentalOrderChild(dueDate, None),
+              paternityLeaveDetails = PaternityLeaveGbPreApril24OrNi(PaternityLeaveLengthGbPreApril24OrNi.OneWeek, payStartDate)
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
+
+        "in England, Scotland or Wales and due after 7 April 24" in {
+
+          val gen = for {
+            date <- datesBetween(Constants.april24LegislationEffective, dateAfterLegislation)
+            country <- Gen.oneOf(England, Scotland, Wales)
+          } yield (date, country)
+
+          forAll(gen) { case (dueDate, country) =>
+
+            val payStartDate = LocalDate.now.plusMonths(1)
+
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, country).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, false).success.value
+              .set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
+              .set(IsInQualifyingRelationshipPage, false).success.value
+              .set(IsCohabitingPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, false).success.value
+              .set(WillTakeTimeToSupportPartnerPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(BabyHasBeenBornPage, false).success.value
+              .set(BabyDueDatePage, dueDate).success.value
+              .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
+              .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Separately).success.value
+              .set(PayStartDateWeek1Page, payStartDate).success.value
+              .set(PayStartDateWeek2Page, payStartDate).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = country,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = false,
+                reasonForRequesting = RelationshipToChild.ParentalOrder,
+                inQualifyingRelationship = false,
+                livingWithPartner = Some(true),
+                responsibilityForChild = true,
+                timeOffToCareForChild = false,
+                timeOffToSupportPartner = Some(true)
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = BirthParentalOrderChild(dueDate, None),
+              paternityLeaveDetails = PaternityLeaveGbPostApril24TwoWeeksSeparate(Some(payStartDate), Some(payStartDate))
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
       }
 
-      "when the user says that a UK adopted child has already been placed" in {
+      "when the user says that a UK adopted child has already been placed" - {
 
-        val matchedDate = LocalDate.now.minusDays(2)
-        val placementDate = LocalDate.now.minusDays(1)
-        val payStartDate = LocalDate.now.plusMonths(1)
-        val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+        "in Northern Ireland" in {
 
-        val answers = emptyUserAnswers
-          .set(CountryOfResidencePage, CountryOfResidence.England).success.value
-          .set(IsAdoptingOrParentalOrderPage, true).success.value
-          .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
-          .set(IsAdoptingFromAbroadPage, false).success.value
-          .set(ReasonForRequestingPage, relationship).success.value
-          .set(IsInQualifyingRelationshipPage, true).success.value
-          .set(WillHaveCaringResponsibilityPage, true).success.value
-          .set(WillTakeTimeToCareForChildPage, true).success.value
-          .set(NamePage, Name("foo", "bar")).success.value
-          .set(NinoPage, nino).success.value
-          .set(DateChildWasMatchedPage, matchedDate).success.value
-          .set(ChildHasBeenPlacedPage, true).success.value
-          .set(ChildPlacementDatePage, placementDate).success.value
-          .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
-          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+          forAll(datesBetween(dateBeforeLegislation, dateAfterLegislation)) { placementDate =>
 
-        val expected = JourneyModel(
-          countryOfResidence = CountryOfResidence.England,
-          eligibility = JourneyModel.AdoptionParentalOrderEligibility(
-            applyingForStatutoryAdoptionPay = false,
-            adoptingFromAbroad = false,
-            reasonForRequesting = relationship,
-            inQualifyingRelationship = true,
-            livingWithPartner = None,
-            responsibilityForChild = true,
-            timeOffToCareForChild = true,
-            timeOffToSupportPartner = None
-          ),
-          name = Name("foo", "bar"),
-          nino = nino,
-          childDetails = AdoptedUkChild(matchedDate, hasBeenPlaced = true, placementDate),
-          payStartDate = payStartDate,
-          howLongWillYouBeOnLeave = PaternityLeaveLengthGbPreApril24OrNi.Oneweek
-        )
+            val matchedDate = LocalDate.now.minusDays(2)
+            val payStartDate = LocalDate.now.plusMonths(1)
+            val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
 
-        JourneyModel.from(answers).value mustEqual expected
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, NorthernIreland).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, false).success.value
+              .set(ReasonForRequestingPage, relationship).success.value
+              .set(IsInQualifyingRelationshipPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(DateChildWasMatchedPage, matchedDate).success.value
+              .set(ChildHasBeenPlacedPage, true).success.value
+              .set(ChildPlacementDatePage, placementDate).success.value
+              .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
+              .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = NorthernIreland,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = false,
+                reasonForRequesting = relationship,
+                inQualifyingRelationship = true,
+                livingWithPartner = None,
+                responsibilityForChild = true,
+                timeOffToCareForChild = true,
+                timeOffToSupportPartner = None
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = AdoptedUkChild(matchedDate, hasBeenPlaced = true, placementDate),
+              paternityLeaveDetails = PaternityLeaveGbPreApril24OrNi(PaternityLeaveLengthGbPreApril24OrNi.OneWeek, payStartDate)
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
+
+        "in England, Scotland or Wales placed before 7 April 24" in {
+
+          val gen = for {
+            date <- datesBetween(dateBeforeLegislation, Constants.april24LegislationEffective)
+            country <- Gen.oneOf(England, Scotland, Wales)
+          } yield (date, country)
+
+          forAll(gen) { case (placementDate, country) =>
+
+            val matchedDate = LocalDate.now.minusDays(2)
+            val payStartDate = LocalDate.now.plusMonths(1)
+            val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, country).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, false).success.value
+              .set(ReasonForRequestingPage, relationship).success.value
+              .set(IsInQualifyingRelationshipPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(DateChildWasMatchedPage, matchedDate).success.value
+              .set(ChildHasBeenPlacedPage, true).success.value
+              .set(ChildPlacementDatePage, placementDate).success.value
+              .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
+              .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = country,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = false,
+                reasonForRequesting = relationship,
+                inQualifyingRelationship = true,
+                livingWithPartner = None,
+                responsibilityForChild = true,
+                timeOffToCareForChild = true,
+                timeOffToSupportPartner = None
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = AdoptedUkChild(matchedDate, hasBeenPlaced = true, placementDate),
+              paternityLeaveDetails = PaternityLeaveGbPreApril24OrNi(PaternityLeaveLengthGbPreApril24OrNi.OneWeek, payStartDate)
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
+
+        "in England, Scotland or Wales placed on or after 7 April 24" in {
+
+          val gen = for {
+            date <- datesBetween(Constants.april24LegislationEffective, dateAfterLegislation)
+            country <- Gen.oneOf(England, Scotland, Wales)
+          } yield (date, country)
+
+          forAll(gen) { case (placementDate, country) =>
+
+            val matchedDate = LocalDate.now.minusDays(2)
+            val payStartDate = LocalDate.now.plusMonths(1)
+            val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, country).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, false).success.value
+              .set(ReasonForRequestingPage, relationship).success.value
+              .set(IsInQualifyingRelationshipPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(DateChildWasMatchedPage, matchedDate).success.value
+              .set(ChildHasBeenPlacedPage, true).success.value
+              .set(ChildPlacementDatePage, placementDate).success.value
+              .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+              .set(PayStartDateGbPostApril24Page, payStartDate).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = country,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = false,
+                reasonForRequesting = relationship,
+                inQualifyingRelationship = true,
+                livingWithPartner = None,
+                responsibilityForChild = true,
+                timeOffToCareForChild = true,
+                timeOffToSupportPartner = None
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = AdoptedUkChild(matchedDate, hasBeenPlaced = true, placementDate),
+              paternityLeaveDetails = PaternityLeaveGbPostApril24OneWeek(Some(payStartDate))
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
       }
 
-      "when the user says that a UK adopted child has not yet been placed" in {
+      "when the user says that a UK adopted child has not yet been placed" - {
 
-        val matchedDate = LocalDate.now.plusDays(1)
-        val expectedPlacementDate = LocalDate.now.plusMonths(1)
-        val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+        "in Northern Ireland" in {
 
-        val answers = emptyUserAnswers
-          .set(CountryOfResidencePage, CountryOfResidence.England).success.value
-          .set(IsAdoptingOrParentalOrderPage, true).success.value
-          .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
-          .set(IsAdoptingFromAbroadPage, false).success.value
-          .set(ReasonForRequestingPage, relationship).success.value
-          .set(IsInQualifyingRelationshipPage, false).success.value
-          .set(IsCohabitingPage, true).success.value
-          .set(WillHaveCaringResponsibilityPage, true).success.value
-          .set(WillTakeTimeToCareForChildPage, false).success.value
-          .set(WillTakeTimeToSupportPartnerPage, true).success.value
-          .set(NamePage, Name("foo", "bar")).success.value
-          .set(NinoPage, nino).success.value
-          .set(DateChildWasMatchedPage, matchedDate).success.value
-          .set(ChildHasBeenPlacedPage, false).success.value
-          .set(ChildExpectedPlacementDatePage, expectedPlacementDate).success.value
-          .set(PayStartDateGbPreApril24OrNiPage, expectedPlacementDate).success.value
-          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+          forAll(datesBetween(dateBeforeLegislation, dateAfterLegislation)) { expectedPlacementDate =>
 
-        val expected = JourneyModel(
-          countryOfResidence = CountryOfResidence.England,
-          eligibility = JourneyModel.AdoptionParentalOrderEligibility(
-            applyingForStatutoryAdoptionPay = false,
-            adoptingFromAbroad = false,
-            reasonForRequesting = relationship,
-            inQualifyingRelationship = false,
-            livingWithPartner = Some(true),
-            responsibilityForChild = true,
-            timeOffToCareForChild = false,
-            timeOffToSupportPartner = Some(true)
-          ),
-          name = Name("foo", "bar"),
-          nino = nino,
-          childDetails = AdoptedUkChild(matchedDate, hasBeenPlaced = false, expectedPlacementDate),
-          payStartDate = expectedPlacementDate,
-          howLongWillYouBeOnLeave = PaternityLeaveLengthGbPreApril24OrNi.Oneweek
-        )
+            val matchedDate = LocalDate.now.plusDays(1)
+            val payStartDate = LocalDate.now.plusMonths(1)
+            val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
 
-        JourneyModel.from(answers).value mustEqual expected
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, NorthernIreland).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, false).success.value
+              .set(ReasonForRequestingPage, relationship).success.value
+              .set(IsInQualifyingRelationshipPage, false).success.value
+              .set(IsCohabitingPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, false).success.value
+              .set(WillTakeTimeToSupportPartnerPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(DateChildWasMatchedPage, matchedDate).success.value
+              .set(ChildHasBeenPlacedPage, false).success.value
+              .set(ChildExpectedPlacementDatePage, expectedPlacementDate).success.value
+              .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
+              .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = NorthernIreland,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = false,
+                reasonForRequesting = relationship,
+                inQualifyingRelationship = false,
+                livingWithPartner = Some(true),
+                responsibilityForChild = true,
+                timeOffToCareForChild = false,
+                timeOffToSupportPartner = Some(true)
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = AdoptedUkChild(matchedDate, hasBeenPlaced = false, expectedPlacementDate),
+              paternityLeaveDetails = PaternityLeaveGbPreApril24OrNi(PaternityLeaveLengthGbPreApril24OrNi.OneWeek, payStartDate)
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
+
+        "in England, Scotland or Wales with an expected placement date before 7 April 24" in {
+
+          val gen = for {
+            date <- datesBetween(dateBeforeLegislation, Constants.april24LegislationEffective)
+            country <- Gen.oneOf(England, Scotland, Wales)
+          } yield (date, country)
+
+          forAll(gen) { case (expectedPlacementDate, country) =>
+
+            val matchedDate = LocalDate.now.plusDays(1)
+            val payStartDate = LocalDate.now.plusMonths(1)
+            val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, country).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, false).success.value
+              .set(ReasonForRequestingPage, relationship).success.value
+              .set(IsInQualifyingRelationshipPage, false).success.value
+              .set(IsCohabitingPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, false).success.value
+              .set(WillTakeTimeToSupportPartnerPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(DateChildWasMatchedPage, matchedDate).success.value
+              .set(ChildHasBeenPlacedPage, false).success.value
+              .set(ChildExpectedPlacementDatePage, expectedPlacementDate).success.value
+              .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
+              .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = country,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = false,
+                reasonForRequesting = relationship,
+                inQualifyingRelationship = false,
+                livingWithPartner = Some(true),
+                responsibilityForChild = true,
+                timeOffToCareForChild = false,
+                timeOffToSupportPartner = Some(true)
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = AdoptedUkChild(matchedDate, hasBeenPlaced = false, expectedPlacementDate),
+              paternityLeaveDetails = PaternityLeaveGbPreApril24OrNi(PaternityLeaveLengthGbPreApril24OrNi.OneWeek, payStartDate)
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
+
+        "in England, Scotland or Wales with an expected placement date on r after 7 April 24" in {
+
+          val gen = for {
+            date <- datesBetween(Constants.april24LegislationEffective, dateAfterLegislation)
+            country <- Gen.oneOf(England, Scotland, Wales)
+          } yield (date, country)
+
+          forAll(gen) { case (expectedPlacementDate, country) =>
+
+            val matchedDate = LocalDate.now.plusDays(1)
+            val payStartDate = LocalDate.now.plusMonths(1)
+            val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, country).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, false).success.value
+              .set(ReasonForRequestingPage, relationship).success.value
+              .set(IsInQualifyingRelationshipPage, false).success.value
+              .set(IsCohabitingPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, false).success.value
+              .set(WillTakeTimeToSupportPartnerPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(DateChildWasMatchedPage, matchedDate).success.value
+              .set(ChildHasBeenPlacedPage, false).success.value
+              .set(ChildExpectedPlacementDatePage, expectedPlacementDate).success.value
+              .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.Unsure).success.value
+              .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = country,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = false,
+                reasonForRequesting = relationship,
+                inQualifyingRelationship = false,
+                livingWithPartner = Some(true),
+                responsibilityForChild = true,
+                timeOffToCareForChild = false,
+                timeOffToSupportPartner = Some(true)
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = AdoptedUkChild(matchedDate, hasBeenPlaced = false, expectedPlacementDate),
+              paternityLeaveDetails = PaternityLeaveGbPostApril24Unsure
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
       }
 
-      "when the user says that a child adopted from abroad has entered the UK" in {
+      "when the user says that a child adopted from abroad has entered the UK" - {
 
-        val notifiedDate = LocalDate.now.minusDays(2)
-        val enteredUkDate = LocalDate.now.minusDays(1)
-        val payStartDate = LocalDate.now.plusMonths(1)
-        val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+        "in Northern Ireland" in {
 
-        val answers = emptyUserAnswers
-          .set(CountryOfResidencePage, CountryOfResidence.England).success.value
-          .set(IsAdoptingOrParentalOrderPage, true).success.value
-          .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
-          .set(IsAdoptingFromAbroadPage, true).success.value
-          .set(ReasonForRequestingPage, relationship).success.value
-          .set(IsInQualifyingRelationshipPage, true).success.value
-          .set(WillHaveCaringResponsibilityPage, true).success.value
-          .set(WillTakeTimeToCareForChildPage, true).success.value
-          .set(NamePage, Name("foo", "bar")).success.value
-          .set(NinoPage, nino).success.value
-          .set(DateOfAdoptionNotificationPage, notifiedDate).success.value
-          .set(ChildHasEnteredUkPage, true).success.value
-          .set(DateChildEnteredUkPage, enteredUkDate).success.value
-          .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
-          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+          forAll(datesBetween(dateBeforeLegislation, dateAfterLegislation)) { enteredUkDate =>
 
-        val expected = JourneyModel(
-          countryOfResidence = CountryOfResidence.England,
-          eligibility = JourneyModel.AdoptionParentalOrderEligibility(
-            applyingForStatutoryAdoptionPay = false,
-            adoptingFromAbroad = true,
-            reasonForRequesting = relationship,
-            inQualifyingRelationship = true,
-            livingWithPartner = None,
-            responsibilityForChild = true,
-            timeOffToCareForChild = true,
-            timeOffToSupportPartner = None
-          ),
-          name = Name("foo", "bar"),
-          nino = nino,
-          childDetails = AdoptedAbroadChild(notifiedDate, hasEnteredUk = true, enteredUkDate),
-          payStartDate = payStartDate,
-          howLongWillYouBeOnLeave = PaternityLeaveLengthGbPreApril24OrNi.Oneweek
-        )
+            val notifiedDate = LocalDate.now.minusDays(2)
+            val payStartDate = LocalDate.now.plusMonths(1)
+            val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
 
-        JourneyModel.from(answers).value mustEqual expected
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, NorthernIreland).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, true).success.value
+              .set(ReasonForRequestingPage, relationship).success.value
+              .set(IsInQualifyingRelationshipPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(DateOfAdoptionNotificationPage, notifiedDate).success.value
+              .set(ChildHasEnteredUkPage, true).success.value
+              .set(DateChildEnteredUkPage, enteredUkDate).success.value
+              .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
+              .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = NorthernIreland,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = true,
+                reasonForRequesting = relationship,
+                inQualifyingRelationship = true,
+                livingWithPartner = None,
+                responsibilityForChild = true,
+                timeOffToCareForChild = true,
+                timeOffToSupportPartner = None
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = AdoptedAbroadChild(notifiedDate, hasEnteredUk = true, enteredUkDate),
+              paternityLeaveDetails = PaternityLeaveGbPreApril24OrNi(PaternityLeaveLengthGbPreApril24OrNi.OneWeek, payStartDate)
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
+
+        "in England, Scotland or Wales and they entered the UK before 7 April 24" in {
+
+          val gen = for {
+            date <- datesBetween(dateBeforeLegislation, Constants.april24LegislationEffective)
+            country <- Gen.oneOf(England, Scotland, Wales)
+          } yield (date, country)
+
+          forAll(gen) { case (enteredUkDate, country) =>
+
+            val notifiedDate = LocalDate.now.minusDays(2)
+            val payStartDate = LocalDate.now.plusMonths(1)
+            val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, country).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, true).success.value
+              .set(ReasonForRequestingPage, relationship).success.value
+              .set(IsInQualifyingRelationshipPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(DateOfAdoptionNotificationPage, notifiedDate).success.value
+              .set(ChildHasEnteredUkPage, true).success.value
+              .set(DateChildEnteredUkPage, enteredUkDate).success.value
+              .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
+              .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = country,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = true,
+                reasonForRequesting = relationship,
+                inQualifyingRelationship = true,
+                livingWithPartner = None,
+                responsibilityForChild = true,
+                timeOffToCareForChild = true,
+                timeOffToSupportPartner = None
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = AdoptedAbroadChild(notifiedDate, hasEnteredUk = true, enteredUkDate),
+              paternityLeaveDetails = PaternityLeaveGbPreApril24OrNi(PaternityLeaveLengthGbPreApril24OrNi.OneWeek, payStartDate)
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
+
+        "in England, Scotland or Wales and they entered the UK on or after 7 April 24" in {
+
+          val gen = for {
+            date <- datesBetween(Constants.april24LegislationEffective, dateAfterLegislation)
+            country <- Gen.oneOf(England, Scotland, Wales)
+          } yield (date, country)
+
+          forAll(gen) { case (enteredUkDate, country) =>
+
+            val notifiedDate = LocalDate.now.minusDays(2)
+            val payStartDate = LocalDate.now.plusMonths(1)
+            val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, country).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, true).success.value
+              .set(ReasonForRequestingPage, relationship).success.value
+              .set(IsInQualifyingRelationshipPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(DateOfAdoptionNotificationPage, notifiedDate).success.value
+              .set(ChildHasEnteredUkPage, true).success.value
+              .set(DateChildEnteredUkPage, enteredUkDate).success.value
+              .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
+              .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
+              .set(PayStartDateGbPostApril24Page, payStartDate).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = country,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = true,
+                reasonForRequesting = relationship,
+                inQualifyingRelationship = true,
+                livingWithPartner = None,
+                responsibilityForChild = true,
+                timeOffToCareForChild = true,
+                timeOffToSupportPartner = None
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = AdoptedAbroadChild(notifiedDate, hasEnteredUk = true, enteredUkDate),
+              paternityLeaveDetails = PaternityLeaveGbPostApril24TwoWeeksTogether(Some(payStartDate))
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
       }
 
-      "when the user says that a child adopted from abroad has not yet entered the UK" in {
+      "when the user says that a child adopted from abroad has not yet entered the UK" - {
 
-        val notifiedDate = LocalDate.now.plusDays(1)
-        val expectedUkEntryDate = LocalDate.now.plusMonths(1)
-        val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+        "in Northern Ireland" in {
 
-        val answers = emptyUserAnswers
-          .set(CountryOfResidencePage, CountryOfResidence.England).success.value
-          .set(IsAdoptingOrParentalOrderPage, true).success.value
-          .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
-          .set(IsAdoptingFromAbroadPage, true).success.value
-          .set(ReasonForRequestingPage, relationship).success.value
-          .set(IsInQualifyingRelationshipPage, false).success.value
-          .set(IsCohabitingPage, true).success.value
-          .set(WillHaveCaringResponsibilityPage, true).success.value
-          .set(WillTakeTimeToCareForChildPage, false).success.value
-          .set(WillTakeTimeToSupportPartnerPage, true).success.value
-          .set(NamePage, Name("foo", "bar")).success.value
-          .set(NinoPage, nino).success.value
-          .set(DateOfAdoptionNotificationPage, notifiedDate).success.value
-          .set(ChildHasEnteredUkPage, false).success.value
-          .set(DateChildExpectedToEnterUkPage, expectedUkEntryDate).success.value
-          .set(PayStartDateGbPreApril24OrNiPage, expectedUkEntryDate).success.value
-          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+          forAll(datesBetween(dateBeforeLegislation, dateAfterLegislation)) { expectedUkEntryDate =>
 
-        val expected = JourneyModel(
-          countryOfResidence = CountryOfResidence.England,
-          eligibility = JourneyModel.AdoptionParentalOrderEligibility(
-            applyingForStatutoryAdoptionPay = false,
-            adoptingFromAbroad = true,
-            reasonForRequesting = relationship,
-            inQualifyingRelationship = false,
-            livingWithPartner = Some(true),
-            responsibilityForChild = true,
-            timeOffToCareForChild = false,
-            timeOffToSupportPartner = Some(true)
-          ),
-          name = Name("foo", "bar"),
-          nino = nino,
-          childDetails = AdoptedAbroadChild(notifiedDate, hasEnteredUk = false, expectedUkEntryDate),
-          payStartDate = expectedUkEntryDate,
-          howLongWillYouBeOnLeave = PaternityLeaveLengthGbPreApril24OrNi.Oneweek
-        )
+            val notifiedDate = LocalDate.now.plusDays(1)
+            val payStartDate = LocalDate.now.plusMonths(1)
+            val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
 
-        JourneyModel.from(answers).value mustEqual expected
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, NorthernIreland).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, true).success.value
+              .set(ReasonForRequestingPage, relationship).success.value
+              .set(IsInQualifyingRelationshipPage, false).success.value
+              .set(IsCohabitingPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, false).success.value
+              .set(WillTakeTimeToSupportPartnerPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(DateOfAdoptionNotificationPage, notifiedDate).success.value
+              .set(ChildHasEnteredUkPage, false).success.value
+              .set(DateChildExpectedToEnterUkPage, expectedUkEntryDate).success.value
+              .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
+              .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = NorthernIreland,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = true,
+                reasonForRequesting = relationship,
+                inQualifyingRelationship = false,
+                livingWithPartner = Some(true),
+                responsibilityForChild = true,
+                timeOffToCareForChild = false,
+                timeOffToSupportPartner = Some(true)
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = AdoptedAbroadChild(notifiedDate, hasEnteredUk = false, expectedUkEntryDate),
+              paternityLeaveDetails = PaternityLeaveGbPreApril24OrNi(PaternityLeaveLengthGbPreApril24OrNi.OneWeek, payStartDate)
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
+
+        "in England, Scotland or Wales and they are expected to enter the UK before 7 April 24" in {
+
+          val gen = for {
+            date <- datesBetween(dateBeforeLegislation, Constants.april24LegislationEffective)
+            country <- Gen.oneOf(England, Scotland, Wales)
+          } yield (date, country)
+
+          forAll(gen) { case (expectedUkEntryDate, country) =>
+
+            val notifiedDate = LocalDate.now.plusDays(1)
+            val payStartDate = LocalDate.now.plusMonths(1)
+            val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, country).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, true).success.value
+              .set(ReasonForRequestingPage, relationship).success.value
+              .set(IsInQualifyingRelationshipPage, false).success.value
+              .set(IsCohabitingPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, false).success.value
+              .set(WillTakeTimeToSupportPartnerPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(DateOfAdoptionNotificationPage, notifiedDate).success.value
+              .set(ChildHasEnteredUkPage, false).success.value
+              .set(DateChildExpectedToEnterUkPage, expectedUkEntryDate).success.value
+              .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+              .set(PayStartDateGbPreApril24OrNiPage, payStartDate).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = country,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = true,
+                reasonForRequesting = relationship,
+                inQualifyingRelationship = false,
+                livingWithPartner = Some(true),
+                responsibilityForChild = true,
+                timeOffToCareForChild = false,
+                timeOffToSupportPartner = Some(true)
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = AdoptedAbroadChild(notifiedDate, hasEnteredUk = false, expectedUkEntryDate),
+              paternityLeaveDetails = PaternityLeaveGbPreApril24OrNi(PaternityLeaveLengthGbPreApril24OrNi.OneWeek, payStartDate)
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
+
+        "in England, Scotland or Wales and they are expected to enter the UK on or after 7 April 24" in {
+
+          val gen = for {
+            date <- datesBetween(Constants.april24LegislationEffective, dateAfterLegislation)
+            country <- Gen.oneOf(England, Scotland, Wales)
+          } yield (date, country)
+
+          forAll(gen) { case (expectedUkEntryDate, country) =>
+
+            val notifiedDate = LocalDate.now.plusDays(1)
+            val payStartDate = LocalDate.now.plusMonths(1)
+            val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+
+            val answers = emptyUserAnswers
+              .set(CountryOfResidencePage, country).success.value
+              .set(IsAdoptingOrParentalOrderPage, true).success.value
+              .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
+              .set(IsAdoptingFromAbroadPage, true).success.value
+              .set(ReasonForRequestingPage, relationship).success.value
+              .set(IsInQualifyingRelationshipPage, false).success.value
+              .set(IsCohabitingPage, true).success.value
+              .set(WillHaveCaringResponsibilityPage, true).success.value
+              .set(WillTakeTimeToCareForChildPage, false).success.value
+              .set(WillTakeTimeToSupportPartnerPage, true).success.value
+              .set(NamePage, Name("foo", "bar")).success.value
+              .set(NinoPage, nino).success.value
+              .set(DateOfAdoptionNotificationPage, notifiedDate).success.value
+              .set(ChildHasEnteredUkPage, false).success.value
+              .set(DateChildExpectedToEnterUkPage, expectedUkEntryDate).success.value
+              .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+              .set(PayStartDateGbPostApril24Page, payStartDate).success.value
+
+            val expected = JourneyModel(
+              countryOfResidence = country,
+              eligibility = JourneyModel.AdoptionParentalOrderEligibility(
+                applyingForStatutoryAdoptionPay = false,
+                adoptingFromAbroad = true,
+                reasonForRequesting = relationship,
+                inQualifyingRelationship = false,
+                livingWithPartner = Some(true),
+                responsibilityForChild = true,
+                timeOffToCareForChild = false,
+                timeOffToSupportPartner = Some(true)
+              ),
+              name = Name("foo", "bar"),
+              nino = nino,
+              childDetails = AdoptedAbroadChild(notifiedDate, hasEnteredUk = false, expectedUkEntryDate),
+              paternityLeaveDetails = PaternityLeaveGbPostApril24OneWeek(Some(payStartDate))
+            )
+
+            JourneyModel.from(answers).value mustEqual expected
+          }
+        }
       }
     }
 
@@ -403,9 +1263,7 @@ class JourneyModelSpec extends AnyFreeSpec with Matchers with OptionValues with 
         CountryOfResidencePage,
         IsAdoptingOrParentalOrderPage,
         NamePage,
-        NinoPage,
-        PaternityLeaveLengthGbPreApril24OrNiPage,
-        PayStartDateGbPreApril24OrNiPage
+        NinoPage
       )
     }
 

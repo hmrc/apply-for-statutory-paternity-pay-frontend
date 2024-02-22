@@ -18,7 +18,8 @@ package models
 
 import cats.data.EitherNec
 import cats.implicits._
-import models.JourneyModel.{ChildDetails, Eligibility}
+import config.Constants
+import models.JourneyModel.{ChildDetails, Eligibility, PaternityLeaveDetails}
 import pages._
 import uk.gov.hmrc.domain.Nino
 
@@ -30,8 +31,7 @@ final case class JourneyModel(
                                name: Name,
                                nino: Nino,
                                childDetails: ChildDetails,
-                               payStartDate: LocalDate,
-                               howLongWillYouBeOnLeave: PaternityLeaveLengthGbPreApril24OrNi
+                               paternityLeaveDetails: PaternityLeaveDetails
                              )
 
 object JourneyModel {
@@ -77,6 +77,28 @@ object JourneyModel {
                                        effectiveDate: LocalDate
                                      ) extends ChildDetails
 
+  sealed trait PaternityLeaveDetails
+
+  final case class PaternityLeaveGbPreApril24OrNi(
+                                                   leaveLength: PaternityLeaveLengthGbPreApril24OrNi,
+                                                   payStartDate: LocalDate
+                                                 ) extends PaternityLeaveDetails
+
+  final case class PaternityLeaveGbPostApril24OneWeek(
+                                                       payStartDate: Option[LocalDate]
+                                                     ) extends PaternityLeaveDetails
+
+  final case class PaternityLeaveGbPostApril24TwoWeeksTogether(
+                                                                payStartDate: Option[LocalDate]
+                                                              ) extends PaternityLeaveDetails
+
+  final case class PaternityLeaveGbPostApril24TwoWeeksSeparate(
+                                                                week1StartDate: Option[LocalDate],
+                                                                week2StartDate: Option[LocalDate]
+                                                              ) extends PaternityLeaveDetails
+
+  case object PaternityLeaveGbPostApril24Unsure extends PaternityLeaveDetails
+
   def from(answers: UserAnswers): EitherNec[QuestionPage[_], JourneyModel] =
     (
       answers.getEither(CountryOfResidencePage),
@@ -84,10 +106,9 @@ object JourneyModel {
       answers.getEither(NamePage),
       answers.getEither(NinoPage),
       getChildDetails(answers),
-      answers.getEither(PaternityLeaveLengthGbPreApril24OrNiPage),
-      answers.getEither(PayStartDateGbPreApril24OrNiPage),
-    ).parMapN { case (country, eligibility, name, nino, childDetails, paternityLeaveLength, payStartDate) =>
-      JourneyModel(country, eligibility, name, nino, childDetails, payStartDate, paternityLeaveLength)
+      getPaternityDetails(answers),
+    ).parMapN { case (country, eligibility, name, nino, childDetails, paternityDetails) =>
+      JourneyModel(country, eligibility, name, nino, childDetails, paternityDetails)
     }
 
   private def getEligibility(answers: UserAnswers): EitherNec[QuestionPage[_], Eligibility] =
@@ -216,5 +237,84 @@ object JourneyModel {
       }
     ).parMapN { case (notifiedDate, hasEnteredUk, effectiveDate) =>
       AdoptedAbroadChild(notifiedDate, hasEnteredUk, effectiveDate)
+    }
+
+  private def getPaternityDetails(answers: UserAnswers): EitherNec[QuestionPage[_], PaternityLeaveDetails] = {
+
+    def getDetailsBasedOnDate(datePage: QuestionPage[LocalDate], answers: UserAnswers): EitherNec[QuestionPage[_], PaternityLeaveDetails] =
+      answers.getEither(datePage).flatMap {
+        case d if d.isBefore(Constants.april24LegislationEffective) =>
+          getGbPreApril24OrNiPaternityDetails(answers)
+
+        case _ =>
+          getGBPostApril24PaternityDetails(answers)
+      }
+
+    answers.getEither(CountryOfResidencePage).flatMap {
+      case CountryOfResidence.NorthernIreland =>
+        getGbPreApril24OrNiPaternityDetails(answers)
+
+      case _ =>
+        answers.getEither(IsAdoptingOrParentalOrderPage).flatMap {
+          case true =>
+            answers.getEither(IsAdoptingFromAbroadPage).flatMap {
+              case true =>
+                answers.getEither(ChildHasEnteredUkPage).flatMap {
+                  case true  => getDetailsBasedOnDate(DateChildEnteredUkPage, answers)
+                  case false => getDetailsBasedOnDate(DateChildExpectedToEnterUkPage, answers)
+                }
+
+              case false =>
+                answers.getEither(ReasonForRequestingPage).flatMap {
+                  case RelationshipToChild.ParentalOrder =>
+                    getDetailsBasedOnDate(BabyDueDatePage, answers)
+
+                  case _ =>
+                    answers.getEither(ChildHasBeenPlacedPage).flatMap {
+                      case true  => getDetailsBasedOnDate(ChildPlacementDatePage, answers)
+                      case false => getDetailsBasedOnDate(ChildExpectedPlacementDatePage, answers)
+                    }
+                }
+            }
+
+          case false =>
+            getDetailsBasedOnDate(BabyDueDatePage, answers)
+        }
+    }
+  }
+
+  private def getGbPreApril24OrNiPaternityDetails(answers: UserAnswers): EitherNec[QuestionPage[_], PaternityLeaveDetails] =
+    (
+      answers.getEither(PaternityLeaveLengthGbPreApril24OrNiPage),
+      answers.getEither(PayStartDateGbPreApril24OrNiPage)
+    ).parMapN { case (leaveLength, payStartDate) =>
+      PaternityLeaveGbPreApril24OrNi(leaveLength, payStartDate)
+    }
+
+  private def getGBPostApril24PaternityDetails(answers: UserAnswers): EitherNec[QuestionPage[_], PaternityLeaveDetails] =
+    answers.getEither(PaternityLeaveLengthGbPostApril24Page).flatMap {
+      case PaternityLeaveLengthGbPostApril24.OneWeek =>
+        answers
+          .getEither(PayStartDateGbPostApril24Page)
+          .map(x => PaternityLeaveGbPostApril24OneWeek(Some(x)))
+
+      case PaternityLeaveLengthGbPostApril24.TwoWeeks =>
+        answers.getEither(LeaveTakenTogetherOrSeparatelyPage).flatMap {
+          case LeaveTakenTogetherOrSeparately.Together =>
+            answers
+              .getEither(PayStartDateGbPostApril24Page)
+              .map(x => PaternityLeaveGbPostApril24TwoWeeksTogether(Some(x)))
+
+          case LeaveTakenTogetherOrSeparately.Separately =>
+            (
+              answers.getEither(PayStartDateWeek1Page),
+              answers.getEither(PayStartDateWeek2Page)
+            ).parMapN { case (week1Date, week2Date) =>
+              PaternityLeaveGbPostApril24TwoWeeksSeparate(Some(week1Date), Some(week2Date))
+            }
+        }
+
+      case PaternityLeaveLengthGbPostApril24.Unsure =>
+        Right(PaternityLeaveGbPostApril24Unsure)
     }
 }

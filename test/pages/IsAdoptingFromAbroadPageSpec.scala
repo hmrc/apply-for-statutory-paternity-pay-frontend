@@ -56,7 +56,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
         .set(DateChildExpectedToEnterUkPage, LocalDate.now).success.value
         .set(NamePage, Name("first", "last")).success.value
         .set(NinoPage, arbitrary[Nino].sample.value).success.value
-        .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+        .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
         .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
         .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
         .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
@@ -81,7 +81,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
         .set(BabyDateOfBirthPage, LocalDate.now).success.value
         .set(BabyDueDatePage, LocalDate.now).success.value
         .set(BabyHasBeenBornPage, true).success.value
-        .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+        .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
         .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
         .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
         .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value

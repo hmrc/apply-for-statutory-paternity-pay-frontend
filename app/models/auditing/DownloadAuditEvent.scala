@@ -16,9 +16,9 @@
 
 package models.auditing
 
-import models.auditing.DownloadAuditEvent.{ChildDetails, Eligibility}
+import models.auditing.DownloadAuditEvent.{ChildDetails, Eligibility, PaternityLeaveDetails}
 import models.{CountryOfResidence, JourneyModel, Name, PaternityLeaveLengthGbPreApril24OrNi, RelationshipToChild}
-import play.api.libs.json.{Json, Writes}
+import play.api.libs.json.{JsValue, Json, Writes}
 import uk.gov.hmrc.domain.Nino
 
 import java.time.LocalDate
@@ -29,8 +29,7 @@ final case class DownloadAuditEvent(
                                      name: Name,
                                      nino: Nino,
                                      childDetails: ChildDetails,
-                                     payStartDate: LocalDate,
-                                     howLongWillYouBeOnLeave: PaternityLeaveLengthGbPreApril24OrNi
+                                     paternityLeaveDetails: PaternityLeaveDetails
                                    ) {
 
 }
@@ -103,11 +102,106 @@ object DownloadAuditEvent {
   object AdoptedAbroadChild {
     implicit lazy val writes: Writes[AdoptedAbroadChild] = Json.writes
   }
+
   object ChildDetails {
     implicit lazy val writes: Writes[ChildDetails] = Writes[ChildDetails] {
       case x: BirthParentalOrderChild => Json.toJson(x)(BirthParentalOrderChild.writes)
       case x: AdoptedUkChild => Json.toJson(x)(AdoptedUkChild.writes)
       case x:AdoptedAbroadChild => Json.toJson(x)(AdoptedAbroadChild.writes)
+    }
+  }
+
+  sealed trait PaternityLeaveDetails
+
+  final case class PaternityLeaveGbPreApril24OrNi(
+                                                   leaveLength: PaternityLeaveLengthGbPreApril24OrNi,
+                                                   payStartDate: LocalDate
+                                                 ) extends PaternityLeaveDetails
+
+  object PaternityLeaveGbPreApril24OrNi {
+    implicit lazy val writes: Writes[PaternityLeaveGbPreApril24OrNi] = Json.writes
+  }
+
+  final case class PaternityLeaveGbPostApril24OneWeek(
+                                                       payStartDate: Option[LocalDate]
+                                                     ) extends PaternityLeaveDetails
+
+  object PaternityLeaveGbPostApril24OneWeek {
+
+    implicit lazy val writes: Writes[PaternityLeaveGbPostApril24OneWeek] =
+      new Writes[PaternityLeaveGbPostApril24OneWeek] {
+        override def writes(o: PaternityLeaveGbPostApril24OneWeek): JsValue = {
+
+          val payDateJson = o.payStartDate.map { date =>
+            Json.obj("payStartDate" -> Json.toJson(date))
+          }.getOrElse(Json.obj())
+
+          Json.obj(
+            "leaveLength" -> "oneWeek",
+          ) ++ payDateJson
+        }
+      }
+  }
+
+  final case class PaternityLeaveGbPostApril24TwoWeeksTogether(
+                                                                payStartDate: Option[LocalDate]
+                                                              ) extends PaternityLeaveDetails
+
+  object PaternityLeaveGbPostApril24TwoWeeksTogether {
+
+    implicit lazy val writes: Writes[PaternityLeaveGbPostApril24TwoWeeksTogether] =
+      new Writes[PaternityLeaveGbPostApril24TwoWeeksTogether] {
+        override def writes(o: PaternityLeaveGbPostApril24TwoWeeksTogether): JsValue = {
+
+          val payDateJson = o.payStartDate.map { date =>
+            Json.obj("payStartDate" -> Json.toJson(date))
+          }.getOrElse(Json.obj())
+
+          Json.obj(
+            "leaveLength" -> "twoWeeks",
+            "takenTogetherOrSeparately" -> "together"
+          ) ++ payDateJson
+        }
+      }
+  }
+
+  final case class PaternityLeaveGbPostApril24TwoWeeksSeparate(
+                                                                week1StartDate: Option[LocalDate],
+                                                                week2StartDate: Option[LocalDate]
+                                                              ) extends PaternityLeaveDetails
+
+  object PaternityLeaveGbPostApril24TwoWeeksSeparate {
+
+    implicit lazy val writes: Writes[PaternityLeaveGbPostApril24TwoWeeksSeparate] =
+      new Writes[PaternityLeaveGbPostApril24TwoWeeksSeparate] {
+        override def writes(o: PaternityLeaveGbPostApril24TwoWeeksSeparate): JsValue = {
+
+          val week1Json = o.week1StartDate.map { date =>
+            Json.obj("week1StartDate" -> Json.toJson(date))
+          }.getOrElse(Json.obj())
+
+          val week2Json = o.week2StartDate.map { date =>
+            Json.obj("week2StartDate" -> Json.toJson(date))
+          }.getOrElse(Json.obj())
+
+          Json.obj(
+            "leaveLength" -> "twoWeeks",
+            "takenTogetherOrSeparately" -> "separately"
+          ) ++ week1Json ++ week2Json
+        }
+      }
+  }
+
+  case object PaternityLeaveGbPostApril24Unsure extends PaternityLeaveDetails
+
+  object PaternityLeaveDetails {
+
+    implicit lazy val writes: Writes[PaternityLeaveDetails] = Writes {
+      case x: PaternityLeaveGbPreApril24OrNi => Json.toJson(x)(PaternityLeaveGbPreApril24OrNi.writes)
+      case x: PaternityLeaveGbPostApril24OneWeek => Json.toJson(x)(PaternityLeaveGbPostApril24OneWeek.writes)
+      case x: PaternityLeaveGbPostApril24TwoWeeksTogether => Json.toJson(x)(PaternityLeaveGbPostApril24TwoWeeksTogether.writes)
+      case x: PaternityLeaveGbPostApril24TwoWeeksSeparate => Json.toJson(x)(PaternityLeaveGbPostApril24TwoWeeksSeparate.writes)
+      case PaternityLeaveGbPostApril24Unsure => Json.obj("leaveLength" -> "unsure")
     }
   }
 
@@ -118,8 +212,7 @@ object DownloadAuditEvent {
       name = model.name,
       nino = model.nino,
       getChildDetails(model.childDetails),
-      payStartDate = model.payStartDate,
-      howLongWillYouBeOnLeave = model.howLongWillYouBeOnLeave
+      paternityLeaveDetails = getPaternityDetails(model.paternityLeaveDetails)
     )
 
   private def getEligibility(model: JourneyModel): Eligibility =
@@ -157,6 +250,24 @@ object DownloadAuditEvent {
 
       case x: models.JourneyModel.AdoptedAbroadChild =>
         AdoptedAbroadChild(x.notifiedDate, x.hasEnteredUk, x.effectiveDate)
+    }
+
+  private def getPaternityDetails(model: models.JourneyModel.PaternityLeaveDetails): PaternityLeaveDetails =
+    model match {
+      case x: models.JourneyModel.PaternityLeaveGbPreApril24OrNi =>
+        PaternityLeaveGbPreApril24OrNi(x.leaveLength, x.payStartDate)
+
+      case x: models.JourneyModel.PaternityLeaveGbPostApril24OneWeek =>
+        PaternityLeaveGbPostApril24OneWeek(x.payStartDate)
+
+      case x: models.JourneyModel.PaternityLeaveGbPostApril24TwoWeeksTogether =>
+        PaternityLeaveGbPostApril24TwoWeeksTogether(x.payStartDate)
+
+      case x: models.JourneyModel.PaternityLeaveGbPostApril24TwoWeeksSeparate =>
+        PaternityLeaveGbPostApril24TwoWeeksSeparate(x.week1StartDate, x.week2StartDate)
+
+      case models.JourneyModel.PaternityLeaveGbPostApril24Unsure =>
+        PaternityLeaveGbPostApril24Unsure
     }
 
   implicit lazy val writes: Writes[DownloadAuditEvent] = Json.writes[DownloadAuditEvent]

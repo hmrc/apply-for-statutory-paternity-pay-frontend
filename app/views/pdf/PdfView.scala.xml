@@ -86,26 +86,6 @@
                     <!-- Paternity details -->
                     <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.paternityDetails")</fo:block>
 
-                    <!-- Pay start date -->
-                    <fo:block-container>
-                        <fo:block-container margin-bottom="3mm">
-                            <fo:block>
-                                <fo:inline font-weight="bold">@messages("pdf.payStartDate"): </fo:inline>
-                                <fo:inline>@dateTimeFormat(model.payStartDate)</fo:inline>
-                            </fo:block>
-                        </fo:block-container>
-                    </fo:block-container>
-
-                    <!-- Paternity length -->
-                    <fo:block-container>
-                        <fo:block-container margin-bottom="3mm">
-                            <fo:block>
-                                <fo:inline font-weight="bold">@messages("pdf.paternityLength"): </fo:inline>
-                                <fo:inline>@messages(s"paternityLeaveLengthGbPreApril24OrNi.${model.howLongWillYouBeOnLeave}")</fo:inline>
-                            </fo:block>
-                        </fo:block-container>
-                    </fo:block-container>
-
                 </fo:block-container>
 
             </fo:block-container>

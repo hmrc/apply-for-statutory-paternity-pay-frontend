@@ -45,7 +45,7 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
         .set(IsInQualifyingRelationshipPage, false).success.value
         .set(NamePage, Name("first", "last")).success.value
         .set(NinoPage, arbitrary[Nino].sample.value).success.value
-        .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+        .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
         .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
         .set(WillHaveCaringResponsibilityPage, true).success.value
         .set(WillTakeTimeToCareForChildPage, true).success.value
@@ -74,7 +74,7 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
         .set(IsInQualifyingRelationshipPage, false).success.value
         .set(NamePage, Name("first", "last")).success.value
         .set(NinoPage, arbitrary[Nino].sample.value).success.value
-        .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+        .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
         .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
         .set(WillHaveCaringResponsibilityPage, true).success.value
         .set(WillTakeTimeToCareForChildPage, true).success.value
