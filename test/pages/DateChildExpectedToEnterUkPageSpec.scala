@@ -42,7 +42,7 @@ class DateChildExpectedToEnterUkPageSpec extends PageBehaviours with ScalaCheckP
     def paternityPageAnswers(country: CountryOfResidence = arbitraryCountry) =
       emptyUserAnswers
         .set(CountryOfResidencePage, country).success.value
-        .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+        .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
         .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
         .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
         .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Separately).success.value

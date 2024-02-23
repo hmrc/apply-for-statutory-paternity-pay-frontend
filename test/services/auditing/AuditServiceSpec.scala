@@ -19,6 +19,8 @@ package services.auditing
 import generators.ModelGenerators
 import models.{CountryOfResidence, JourneyModel, Name, PaternityLeaveLengthGbPreApril24OrNi}
 import models.auditing.DownloadAuditEvent
+import models.auditing.DownloadAuditEvent.BirthParentalOrderChild
+import models.auditing.DownloadAuditEvent.PaternityLeaveGbPostApril24Unsure
 import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito.{times, verify}
 import org.scalacheck.Arbitrary.arbitrary
@@ -61,11 +63,8 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar with 
         ),
         name = Name("foo", "bar"),
         nino = nino,
-        hasTheBabyBeenBorn = true,
-        dueDate = dueDate,
-        birthDate = Some(birthDate),
-        payStartDate = LocalDate.now,
-        howLongWillYouBeOnLeave = PaternityLeaveLengthGbPreApril24OrNi.Oneweek
+        childDetails = JourneyModel.BirthParentalOrderChild(birthDate, Some(dueDate)),
+        paternityLeaveDetails = JourneyModel.PaternityLeaveGbPostApril24Unsure
       )
 
       val expected: DownloadAuditEvent = DownloadAuditEvent(
@@ -80,11 +79,8 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar with 
         ),
         name = Name("foo", "bar"),
         nino = nino,
-        hasTheBabyBeenBorn = true,
-        dueDate = dueDate,
-        birthDate = Some(birthDate),
-        payStartDate = LocalDate.now,
-        howLongWillYouBeOnLeave = PaternityLeaveLengthGbPreApril24OrNi.Oneweek
+        childDetails = BirthParentalOrderChild(birthDate, Some(dueDate)),
+        paternityLeaveDetails = PaternityLeaveGbPostApril24Unsure
       )
 
       val hc = HeaderCarrier()

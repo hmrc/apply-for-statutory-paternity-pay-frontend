@@ -54,7 +54,7 @@ class PrintControllerSpec extends SpecBase with EitherValues with MockitoSugar w
     .set(BabyDueDatePage, dueDate).success.value
     .set(BabyDateOfBirthPage, birthDate).success.value
     .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
-    .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+    .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
 
   val model = JourneyModel.from(answers).value
 

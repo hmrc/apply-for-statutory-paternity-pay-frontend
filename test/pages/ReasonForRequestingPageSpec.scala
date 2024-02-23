@@ -47,7 +47,7 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
           .set(ChildHasBeenPlacedPage, true).success.value
           .set(ChildPlacementDatePage, LocalDate.now).success.value
           .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
-          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
           .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
           .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
           .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
@@ -96,7 +96,7 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
           .set(ChildHasBeenPlacedPage, true).success.value
           .set(ChildPlacementDatePage, LocalDate.now).success.value
           .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
-          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
           .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
           .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
           .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
@@ -145,7 +145,7 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
           .set(ChildHasBeenPlacedPage, true).success.value
           .set(ChildPlacementDatePage, LocalDate.now).success.value
           .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
-          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.Oneweek).success.value
+          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
           .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
           .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
           .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
