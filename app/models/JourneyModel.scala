@@ -138,73 +138,68 @@ object JourneyModel {
   }
 
   private def getApplyingForStatutoryAdoptionPay(answers: UserAnswers): EitherNec[QuestionPage[_], Boolean] =
-    answers.getEither(IsApplyingForStatutoryAdoptionPayPage).flatMap {
-      case true => IsApplyingForStatutoryAdoptionPayPage.leftNec
-      case false => Right(false)
-    }
+    answers.getEither(IsApplyingForStatutoryAdoptionPayPage).ifM(
+      ifTrue  = IsApplyingForStatutoryAdoptionPayPage.leftNec,
+      ifFalse = Right(false)
+  )
 
   private def getAdoptionRelationshipEligibility(answers: UserAnswers): EitherNec[QuestionPage[_], (Boolean, Option[Boolean])] =
-    answers.getEither(IsInQualifyingRelationshipPage).flatMap {
-      case true => Right(true, None)
-      case false => answers.getEither(IsCohabitingPage).flatMap {
-        case true => Right(false, Some(true))
-        case false => IsCohabitingPage.leftNec
-      }
-    }
+    answers.getEither(IsInQualifyingRelationshipPage).ifM(
+      ifTrue  = Right(true, None),
+      ifFalse = answers.getEither(IsCohabitingPage).ifM(
+        ifTrue  = Right(false, Some(true)),
+        ifFalse = IsCohabitingPage.leftNec
+      )
+    )
 
   private def getBirthChildRelationshipEligibility(answers: UserAnswers): EitherNec[QuestionPage[_], (Boolean, Option[Boolean], Option[Boolean])] =
-    answers.getEither(IsBiologicalFatherPage).flatMap {
-      case false => answers.getEither(IsInQualifyingRelationshipPage).flatMap {
-        case false => answers.getEither(IsCohabitingPage).flatMap {
-          case false => IsCohabitingPage.leftNec
-          case true => Right((false, Some(false), Some(true)))
-        }
-        case true => Right((false, Some(true), None))
-      }
-      case true => Right((true, None, None))
-    }
+    answers.getEither(IsBiologicalFatherPage).ifM(
+      ifTrue  = Right((true, None, None)),
+      ifFalse = answers.getEither(IsInQualifyingRelationshipPage).ifM(
+        ifTrue  = Right((false, Some(true), None)),
+        ifFalse = answers.getEither(IsCohabitingPage).ifM(
+          ifTrue  = Right((false, Some(false), Some(true))),
+          ifFalse = IsCohabitingPage.leftNec
+        )
+      )
+    )
 
   private def getWillHaveCaringResponsibility(answers: UserAnswers): EitherNec[QuestionPage[_], Boolean] =
-    answers.getEither(WillHaveCaringResponsibilityPage).flatMap {
-      case true => Right(true)
-      case false => WillHaveCaringResponsibilityPage.leftNec
-    }
+    answers.getEither(WillHaveCaringResponsibilityPage).ifM(
+      ifTrue  = Right(true),
+      ifFalse = WillHaveCaringResponsibilityPage.leftNec
+    )
 
   private def getTimeEligibility(answers: UserAnswers): EitherNec[QuestionPage[_], (Boolean, Option[Boolean])] =
-    answers.getEither(WillTakeTimeToCareForChildPage).flatMap {
-      case false => answers.getEither(WillTakeTimeToSupportPartnerPage).flatMap {
-        case true => Right((false, Some(true)))
-        case false => WillTakeTimeToSupportPartnerPage.leftNec
-      }
-      case true => Right((true, None))
-    }
+    answers.getEither(WillTakeTimeToCareForChildPage).ifM(
+      ifTrue  = Right((true, None)),
+      ifFalse = answers.getEither(WillTakeTimeToSupportPartnerPage).ifM(
+        ifTrue  = Right((false, Some(true))),
+        ifFalse = WillTakeTimeToSupportPartnerPage.leftNec
+      )
+    )
 
   private def getBirthDate(answers: UserAnswers): EitherNec[QuestionPage[_], Option[LocalDate]] =
-    answers.getEither(BabyHasBeenBornPage).flatMap {
-      case true => answers.getEither(BabyDateOfBirthPage).map(Some(_))
-      case false => Right(None)
-    }
+    answers.getEither(BabyHasBeenBornPage).ifM(
+      ifTrue  = answers.getEither(BabyDateOfBirthPage).map(Some(_)),
+      ifFalse = Right(None)
+    )
 
   private def getChildDetails(answers: UserAnswers): EitherNec[QuestionPage[_], ChildDetails] =
-    answers.getEither(IsAdoptingOrParentalOrderPage).flatMap {
-      case true =>
+    answers.getEither(IsAdoptingOrParentalOrderPage).ifM(
+      ifTrue =
         answers.getEither(ReasonForRequestingPage).flatMap {
           case RelationshipToChild.ParentalOrder =>
             getBirthParentalOrderChildDetails(answers)
 
           case _ =>
-            answers.getEither(IsAdoptingFromAbroadPage).flatMap {
-              case true =>
-                getAdoptedAbroadChildDetails(answers)
-
-              case false =>
-                getAdoptedUkChildDetails(answers)
-            }
-        }
-
-      case false =>
-        getBirthParentalOrderChildDetails(answers)
-    }
+            answers.getEither(IsAdoptingFromAbroadPage).ifM(
+              ifTrue  = getAdoptedAbroadChildDetails(answers),
+              ifFalse = getAdoptedUkChildDetails(answers)
+          )
+        },
+      ifFalse = getBirthParentalOrderChildDetails(answers)
+  )
 
   private def getBirthParentalOrderChildDetails(answers: UserAnswers): EitherNec[QuestionPage[_], BirthParentalOrderChild] = {
     (
@@ -219,10 +214,10 @@ object JourneyModel {
     (
       answers.getEither(DateChildWasMatchedPage),
       answers.getEither(ChildHasBeenPlacedPage),
-      answers.getEither(ChildHasBeenPlacedPage).flatMap {
-        case true  => answers.getEither(ChildPlacementDatePage)
-        case false => answers.getEither(ChildExpectedPlacementDatePage)
-      }
+      answers.getEither(ChildHasBeenPlacedPage).ifM(
+        ifTrue  = answers.getEither(ChildPlacementDatePage),
+        ifFalse = answers.getEither(ChildExpectedPlacementDatePage)
+      )
     ).parMapN { case (dateMatched, hasBeenPlaced, effectiveDate) =>
       AdoptedUkChild(dateMatched, hasBeenPlaced, effectiveDate)
     }
@@ -231,10 +226,10 @@ object JourneyModel {
     (
       answers.getEither(DateOfAdoptionNotificationPage),
       answers.getEither(ChildHasEnteredUkPage),
-      answers.getEither(ChildHasEnteredUkPage).flatMap {
-        case true  => answers.getEither(DateChildEnteredUkPage)
-        case false => answers.getEither(DateChildExpectedToEnterUkPage)
-      }
+      answers.getEither(ChildHasEnteredUkPage).ifM(
+        ifTrue  = answers.getEither(DateChildEnteredUkPage),
+        ifFalse = answers.getEither(DateChildExpectedToEnterUkPage)
+      )
     ).parMapN { case (notifiedDate, hasEnteredUk, effectiveDate) =>
       AdoptedAbroadChild(notifiedDate, hasEnteredUk, effectiveDate)
     }
@@ -255,31 +250,28 @@ object JourneyModel {
         getGbPreApril24OrNiPaternityDetails(answers)
 
       case _ =>
-        answers.getEither(IsAdoptingOrParentalOrderPage).flatMap {
-          case true =>
-            answers.getEither(IsAdoptingFromAbroadPage).flatMap {
-              case true =>
-                answers.getEither(ChildHasEnteredUkPage).flatMap {
-                  case true  => getDetailsBasedOnDate(DateChildEnteredUkPage, answers)
-                  case false => getDetailsBasedOnDate(DateChildExpectedToEnterUkPage, answers)
-                }
-
-              case false =>
+        answers.getEither(IsAdoptingOrParentalOrderPage).ifM(
+          ifTrue =
+            answers.getEither(IsAdoptingFromAbroadPage).ifM(
+              ifTrue =
+                answers.getEither(ChildHasEnteredUkPage).ifM(
+                  ifTrue  = getDetailsBasedOnDate(DateChildEnteredUkPage, answers),
+                  ifFalse = getDetailsBasedOnDate(DateChildExpectedToEnterUkPage, answers)
+                ),
+              ifFalse =
                 answers.getEither(ReasonForRequestingPage).flatMap {
                   case RelationshipToChild.ParentalOrder =>
                     getDetailsBasedOnDate(BabyDueDatePage, answers)
 
                   case _ =>
-                    answers.getEither(ChildHasBeenPlacedPage).flatMap {
-                      case true  => getDetailsBasedOnDate(ChildPlacementDatePage, answers)
-                      case false => getDetailsBasedOnDate(ChildExpectedPlacementDatePage, answers)
-                    }
+                    answers.getEither(ChildHasBeenPlacedPage).ifM(
+                      ifTrue  = getDetailsBasedOnDate(ChildPlacementDatePage, answers),
+                      ifFalse = getDetailsBasedOnDate(ChildExpectedPlacementDatePage, answers)
+                    )
                 }
-            }
-
-          case false =>
-            getDetailsBasedOnDate(BabyDueDatePage, answers)
-        }
+            ),
+          ifFalse = getDetailsBasedOnDate(BabyDueDatePage, answers)
+      )
     }
   }
 

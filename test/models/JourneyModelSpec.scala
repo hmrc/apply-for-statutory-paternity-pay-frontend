@@ -884,7 +884,7 @@ class JourneyModelSpec
           }
         }
 
-        "in England, Scotland or Wales with an expected placement date on r after 7 April 24" in {
+        "in England, Scotland or Wales with an expected placement date on or after 7 April 24" in {
 
           val gen = for {
             date <- datesBetween(Constants.april24LegislationEffective, dateAfterLegislation)
