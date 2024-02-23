@@ -18,7 +18,8 @@ package models.auditing
 
 import models.auditing.DownloadAuditEvent.{ChildDetails, Eligibility, PaternityLeaveDetails}
 import models.{CountryOfResidence, JourneyModel, Name, PaternityLeaveLengthGbPreApril24OrNi, RelationshipToChild}
-import play.api.libs.json.{JsValue, Json, Writes}
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
 import uk.gov.hmrc.domain.Nino
 
 import java.time.LocalDate
@@ -47,7 +48,7 @@ object DownloadAuditEvent {
                                         ) extends Eligibility
 
   object BirthChildEligibility {
-    implicit lazy val writes: Writes[BirthChildEligibility] = Json.writes[BirthChildEligibility]
+    implicit lazy val writes: OWrites[BirthChildEligibility] = Json.writes[BirthChildEligibility]
   }
 
   final case class AdoptionParentalOrderEligibility(
@@ -62,13 +63,13 @@ object DownloadAuditEvent {
                                                    ) extends Eligibility
 
   object AdoptionParentalOrderEligibility {
-    implicit lazy val writes: Writes[AdoptionParentalOrderEligibility] = Json.writes[AdoptionParentalOrderEligibility]
+    implicit lazy val writes: OWrites[AdoptionParentalOrderEligibility] = Json.writes[AdoptionParentalOrderEligibility]
   }
 
   object Eligibility {
-    implicit lazy val writes: Writes[Eligibility] = Writes[Eligibility] {
-      case x: BirthChildEligibility => Json.toJson(x)(BirthChildEligibility.writes)
-      case x: AdoptionParentalOrderEligibility => Json.toJson(x)(AdoptionParentalOrderEligibility.writes)
+    implicit lazy val writes: OWrites[Eligibility] = OWrites[Eligibility] {
+      case x: BirthChildEligibility => Json.toJsObject(x)(BirthChildEligibility.writes)
+      case x: AdoptionParentalOrderEligibility => Json.toJsObject(x)(AdoptionParentalOrderEligibility.writes)
     }
   }
 
@@ -80,7 +81,7 @@ object DownloadAuditEvent {
                                           ) extends ChildDetails
 
   object BirthParentalOrderChild {
-    implicit lazy val writes: Writes[BirthParentalOrderChild] = Json.writes
+    implicit lazy val writes: OWrites[BirthParentalOrderChild] = Json.writes
   }
 
   final case class AdoptedUkChild(
@@ -90,7 +91,7 @@ object DownloadAuditEvent {
                                  ) extends ChildDetails
 
   object AdoptedUkChild {
-    implicit lazy val writes: Writes[AdoptedUkChild] = Json.writes
+    implicit lazy val writes: OWrites[AdoptedUkChild] = Json.writes
   }
 
   final case class AdoptedAbroadChild(
@@ -100,14 +101,14 @@ object DownloadAuditEvent {
                                      ) extends ChildDetails
 
   object AdoptedAbroadChild {
-    implicit lazy val writes: Writes[AdoptedAbroadChild] = Json.writes
+    implicit lazy val writes: OWrites[AdoptedAbroadChild] = Json.writes
   }
 
   object ChildDetails {
-    implicit lazy val writes: Writes[ChildDetails] = Writes[ChildDetails] {
-      case x: BirthParentalOrderChild => Json.toJson(x)(BirthParentalOrderChild.writes)
-      case x: AdoptedUkChild => Json.toJson(x)(AdoptedUkChild.writes)
-      case x:AdoptedAbroadChild => Json.toJson(x)(AdoptedAbroadChild.writes)
+    implicit lazy val writes: OWrites[ChildDetails] = OWrites[ChildDetails] {
+      case x: BirthParentalOrderChild => Json.toJsObject(x)(BirthParentalOrderChild.writes)
+      case x: AdoptedUkChild => Json.toJsObject(x)(AdoptedUkChild.writes)
+      case x:AdoptedAbroadChild => Json.toJsObject(x)(AdoptedAbroadChild.writes)
     }
   }
 
@@ -119,7 +120,7 @@ object DownloadAuditEvent {
                                                  ) extends PaternityLeaveDetails
 
   object PaternityLeaveGbPreApril24OrNi {
-    implicit lazy val writes: Writes[PaternityLeaveGbPreApril24OrNi] = Json.writes
+    implicit lazy val writes: OWrites[PaternityLeaveGbPreApril24OrNi] = Json.writes
   }
 
   final case class PaternityLeaveGbPostApril24OneWeek(
@@ -128,19 +129,11 @@ object DownloadAuditEvent {
 
   object PaternityLeaveGbPostApril24OneWeek {
 
-    implicit lazy val writes: Writes[PaternityLeaveGbPostApril24OneWeek] =
-      new Writes[PaternityLeaveGbPostApril24OneWeek] {
-        override def writes(o: PaternityLeaveGbPostApril24OneWeek): JsValue = {
-
-          val payDateJson = o.payStartDate.map { date =>
-            Json.obj("payStartDate" -> Json.toJson(date))
-          }.getOrElse(Json.obj())
-
-          Json.obj(
-            "leaveLength" -> "oneWeek",
-          ) ++ payDateJson
-        }
-      }
+    implicit lazy val writes: OWrites[PaternityLeaveGbPostApril24OneWeek] =
+      (
+        (__ \ "payStartDate").writeNullable[LocalDate] and
+        (__ \ "leaveLength").write(Writes.pure("oneWeek"))
+      )(x => (x.payStartDate, JsNull))
   }
 
   final case class PaternityLeaveGbPostApril24TwoWeeksTogether(
@@ -149,20 +142,12 @@ object DownloadAuditEvent {
 
   object PaternityLeaveGbPostApril24TwoWeeksTogether {
 
-    implicit lazy val writes: Writes[PaternityLeaveGbPostApril24TwoWeeksTogether] =
-      new Writes[PaternityLeaveGbPostApril24TwoWeeksTogether] {
-        override def writes(o: PaternityLeaveGbPostApril24TwoWeeksTogether): JsValue = {
-
-          val payDateJson = o.payStartDate.map { date =>
-            Json.obj("payStartDate" -> Json.toJson(date))
-          }.getOrElse(Json.obj())
-
-          Json.obj(
-            "leaveLength" -> "twoWeeks",
-            "takenTogetherOrSeparately" -> "together"
-          ) ++ payDateJson
-        }
-      }
+    implicit lazy val writes: OWrites[PaternityLeaveGbPostApril24TwoWeeksTogether] =
+      (
+        (__ \ "payStartDate").writeNullable[LocalDate] and
+        (__ \ "leaveLength").write(Writes.pure("twoWeeks")) and
+        (__ \ "takenTogetherOrSeparately").write(Writes.pure("together"))
+      )(x => (x.payStartDate, JsNull, JsNull))
   }
 
   final case class PaternityLeaveGbPostApril24TwoWeeksSeparate(
@@ -172,35 +157,25 @@ object DownloadAuditEvent {
 
   object PaternityLeaveGbPostApril24TwoWeeksSeparate {
 
-    implicit lazy val writes: Writes[PaternityLeaveGbPostApril24TwoWeeksSeparate] =
-      new Writes[PaternityLeaveGbPostApril24TwoWeeksSeparate] {
-        override def writes(o: PaternityLeaveGbPostApril24TwoWeeksSeparate): JsValue = {
+    implicit lazy val writes: OWrites[PaternityLeaveGbPostApril24TwoWeeksSeparate] =
+      (
+        (__ \ "week1StartDate").writeNullable[LocalDate] and
+        (__ \ "week2StartDate").writeNullable[LocalDate] and
+        (__ \ "leaveLength").write(Writes.pure("twoWeeks")) and
+        (__ \ "takenTogetherOrSeparately").write(Writes.pure("separately"))
+      )(x => (x.week1StartDate, x.week2StartDate, JsNull, JsNull))
 
-          val week1Json = o.week1StartDate.map { date =>
-            Json.obj("week1StartDate" -> Json.toJson(date))
-          }.getOrElse(Json.obj())
-
-          val week2Json = o.week2StartDate.map { date =>
-            Json.obj("week2StartDate" -> Json.toJson(date))
-          }.getOrElse(Json.obj())
-
-          Json.obj(
-            "leaveLength" -> "twoWeeks",
-            "takenTogetherOrSeparately" -> "separately"
-          ) ++ week1Json ++ week2Json
-        }
-      }
   }
 
   case object PaternityLeaveGbPostApril24Unsure extends PaternityLeaveDetails
 
   object PaternityLeaveDetails {
 
-    implicit lazy val writes: Writes[PaternityLeaveDetails] = Writes {
-      case x: PaternityLeaveGbPreApril24OrNi => Json.toJson(x)(PaternityLeaveGbPreApril24OrNi.writes)
-      case x: PaternityLeaveGbPostApril24OneWeek => Json.toJson(x)(PaternityLeaveGbPostApril24OneWeek.writes)
-      case x: PaternityLeaveGbPostApril24TwoWeeksTogether => Json.toJson(x)(PaternityLeaveGbPostApril24TwoWeeksTogether.writes)
-      case x: PaternityLeaveGbPostApril24TwoWeeksSeparate => Json.toJson(x)(PaternityLeaveGbPostApril24TwoWeeksSeparate.writes)
+    implicit lazy val writes: OWrites[PaternityLeaveDetails] = OWrites {
+      case x: PaternityLeaveGbPreApril24OrNi => Json.toJsObject(x)(PaternityLeaveGbPreApril24OrNi.writes)
+      case x: PaternityLeaveGbPostApril24OneWeek => Json.toJsObject(x)(PaternityLeaveGbPostApril24OneWeek.writes)
+      case x: PaternityLeaveGbPostApril24TwoWeeksTogether => Json.toJsObject(x)(PaternityLeaveGbPostApril24TwoWeeksTogether.writes)
+      case x: PaternityLeaveGbPostApril24TwoWeeksSeparate => Json.toJsObject(x)(PaternityLeaveGbPostApril24TwoWeeksSeparate.writes)
       case PaternityLeaveGbPostApril24Unsure => Json.obj("leaveLength" -> "unsure")
     }
   }
@@ -270,5 +245,5 @@ object DownloadAuditEvent {
         PaternityLeaveGbPostApril24Unsure
     }
 
-  implicit lazy val writes: Writes[DownloadAuditEvent] = Json.writes[DownloadAuditEvent]
+  implicit lazy val writes: OWrites[DownloadAuditEvent] = Json.writes[DownloadAuditEvent]
 }
