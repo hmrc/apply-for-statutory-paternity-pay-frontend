@@ -17,15 +17,14 @@
 package forms
 
 import config.Formats.dateTimeFormat
-
-import java.time.{Clock, LocalDate, ZoneId, ZoneOffset}
 import forms.behaviours.DateBehaviours
 import play.api.data.FormError
 import play.api.i18n.{Lang, Messages}
 import play.api.test.Helpers.stubMessages
 
-class DateChildExpectedToEnterUkFormProviderSpec extends DateBehaviours {
+import java.time.{Clock, LocalDate, ZoneId}
 
+class DateChildExpectedToEnterUkFormProviderSpec extends DateBehaviours {
 
   private val today        = LocalDate.now
   private val maximumDate  = today
