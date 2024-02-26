@@ -16,25 +16,49 @@
 
 package forms
 
-import java.time.{LocalDate, ZoneOffset}
+import config.Formats.dateTimeFormat
+
+import java.time.{Clock, LocalDate, ZoneId, ZoneOffset}
 import forms.behaviours.DateBehaviours
-import play.api.i18n.Messages
+import play.api.data.FormError
+import play.api.i18n.{Lang, Messages}
 import play.api.test.Helpers.stubMessages
 
 class DateChildEnteredUkFormProviderSpec extends DateBehaviours {
 
+  private val today        = LocalDate.now
+  private val maximumDate  = today
+  private val minimumDate  = today.minusWeeks(51)
+  private val fixedInstant = today.atStartOfDay(ZoneId.systemDefault).toInstant
+  private val clock        = Clock.fixed(fixedInstant, ZoneId.systemDefault)
   private implicit val messages: Messages = stubMessages()
-  val form = new DateChildEnteredUkFormProvider()()
+  private implicit val lang: Lang = Lang("en")
+
+  val form = new DateChildEnteredUkFormProvider(clock)()
 
   ".value" - {
 
     val validData = datesBetween(
-      min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
+      min = minimumDate,
+      max = maximumDate
     )
 
     behave like dateField(form, "value", validData)
 
     behave like mandatoryDateField(form, "value", "dateChildEnteredUk.error.required.all")
+
+    behave like dateFieldWithMax(
+      form,
+      "value",
+      maximumDate,
+      FormError("value", "dateChildEnteredUk.error.tooHigh", Seq(maximumDate.format(dateTimeFormat)))
+    )
+
+    behave like dateFieldWithMin(
+      form,
+      "value",
+      minimumDate,
+      FormError("value", "dateChildEnteredUk.error.tooLow", Seq(minimumDate.format(dateTimeFormat)))
+    )
   }
 }
