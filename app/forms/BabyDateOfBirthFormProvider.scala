@@ -30,7 +30,8 @@ class BabyDateOfBirthFormProvider @Inject()(clock: Clock) extends Mappings {
   def apply()(implicit messages: Messages): Form[LocalDate] = {
     implicit val lang: Lang = messages.lang
 
-    val minimumDate = LocalDate.now(clock).minusWeeks(7)
+    val maximumDate = LocalDate.now(clock)
+    val minimumDate = LocalDate.now(clock).minusWeeks(51)
 
     Form(
       "value" -> localDate(
@@ -38,7 +39,7 @@ class BabyDateOfBirthFormProvider @Inject()(clock: Clock) extends Mappings {
         allRequiredKey = "babyDateOfBirth.error.required.all",
         twoRequiredKey = "babyDateOfBirth.error.required.two",
         requiredKey = "babyDateOfBirth.error.required"
-      ).verifying(maxDate(LocalDate.now(clock), "babyDateOfBirth.error.future"))
+      ).verifying(maxDate(maximumDate, "babyDateOfBirth.error.future"))
         .verifying(minDate(minimumDate, "babyDateOfBirth.error.beforeMinimum", minimumDate.format(dateTimeFormat())))
     )
   }

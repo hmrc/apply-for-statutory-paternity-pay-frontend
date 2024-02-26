@@ -27,7 +27,7 @@ import play.api.test.Helpers.stubMessages
 class BabyDateOfBirthFormProviderSpec extends DateBehaviours {
 
   private val today        = LocalDate.now
-  private val minimumDate  = today.minusWeeks(7)
+  private val minimumDate  = today.minusWeeks(51)
   private val fixedInstant = today.atStartOfDay(ZoneId.systemDefault).toInstant
   private val clock        = Clock.fixed(fixedInstant, ZoneId.systemDefault)
   private implicit val messages: Messages = stubMessages()
