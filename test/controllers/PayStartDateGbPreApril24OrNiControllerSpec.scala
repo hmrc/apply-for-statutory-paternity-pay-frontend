@@ -17,7 +17,6 @@
 package controllers
 
 import java.time.{LocalDate, ZoneOffset}
-
 import base.SpecBase
 import forms.PayStartDateGbPreApril24OrNiFormProvider
 import models.{NormalMode, UserAnswers}
@@ -25,7 +24,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.PayStartDateGbPreApril24OrNiPage
+import pages.{BabyHasBeenBornPage, PayStartDateGbPreApril24OrNiPage}
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
@@ -65,17 +64,50 @@ class PayStartDateGbPreApril24OrNiControllerSpec extends SpecBase with MockitoSu
 
   "PayStartDateGbPreApril24OrNi Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "must return OK and the correct view for a GET" - {
+      
+      "when the birth or parental order child has been born" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        val answers = emptyUserAnswers.set(BabyHasBeenBornPage, true).success.value
+        val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      running(application) {
-        val result = route(application, getRequest).value
+        running(application) {
+          val result = route(application, getRequest).value
 
-        val view = application.injector.instanceOf[PayStartDateGbPreApril24OrNiView]
+          val view = application.injector.instanceOf[PayStartDateGbPreApril24OrNiView]
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(getRequest, messages(application)).toString
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(form, NormalMode, showBabyNotBornHint = false)(getRequest, messages(application)).toString
+        }
+      }
+      
+      "when a birth or parental order child has not yet been born" in {
+
+        val answers = emptyUserAnswers.set(BabyHasBeenBornPage, false).success.value
+        val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+        running(application) {
+          val result = route(application, getRequest).value
+
+          val view = application.injector.instanceOf[PayStartDateGbPreApril24OrNiView]
+
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(form, NormalMode, showBabyNotBornHint = true)(getRequest, messages(application)).toString
+        }
+      }
+      
+      "when the child is not a birth or parental order child" in {
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+        running(application) {
+          val result = route(application, getRequest).value
+
+          val view = application.injector.instanceOf[PayStartDateGbPreApril24OrNiView]
+
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(form, NormalMode, showBabyNotBornHint = false)(getRequest, messages(application)).toString
+        }
       }
     }
 
@@ -91,7 +123,7 @@ class PayStartDateGbPreApril24OrNiControllerSpec extends SpecBase with MockitoSu
         val result = route(application, getRequest).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, false)(getRequest, messages(application)).toString
       }
     }
 
@@ -133,7 +165,7 @@ class PayStartDateGbPreApril24OrNiControllerSpec extends SpecBase with MockitoSu
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, showBabyNotBornHint = false)(request, messages(application)).toString
       }
     }
 

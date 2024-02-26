@@ -18,10 +18,11 @@ package controllers
 
 import controllers.actions._
 import forms.PayStartDateGbPreApril24OrNiFormProvider
+
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.PayStartDateGbPreApril24OrNiPage
+import pages.{BabyHasBeenBornPage, PayStartDateGbPreApril24OrNiPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -44,6 +45,11 @@ class PayStartDateGbPreApril24OrNiController @Inject()(
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      val showBabyNotBornHint =
+        request.userAnswers
+          .get(BabyHasBeenBornPage)
+          .map(x => !x).getOrElse(false)
+
       val form = formProvider()
 
       val preparedForm = request.userAnswers.get(PayStartDateGbPreApril24OrNiPage) match {
@@ -51,16 +57,21 @@ class PayStartDateGbPreApril24OrNiController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, showBabyNotBornHint))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      val showBabyNotBornHint =
+        request.userAnswers
+          .get(BabyHasBeenBornPage)
+          .map(x => !x).getOrElse(false)
+
       val form = formProvider()
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, showBabyNotBornHint))),
 
         value =>
           for {
