@@ -30,8 +30,8 @@ class DateChildExpectedToEnterUkFormProvider @Inject()(clock: Clock) extends Map
   def apply()(implicit messages: Messages): Form[LocalDate] = {
     implicit val lang: Lang = messages.lang
 
-    val maximumDate = LocalDate.now(clock)
-    val minimumDate = LocalDate.now(clock).minusWeeks(40)
+    val maximumDate = LocalDate.now(clock).plusWeeks(40)
+    val minimumDate = LocalDate.now(clock)
 
     Form(
       "value" -> localDate(

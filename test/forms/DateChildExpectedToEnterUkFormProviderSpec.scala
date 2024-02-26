@@ -27,8 +27,8 @@ import java.time.{Clock, LocalDate, ZoneId}
 class DateChildExpectedToEnterUkFormProviderSpec extends DateBehaviours {
 
   private val today        = LocalDate.now
-  private val maximumDate  = today
-  private val minimumDate  = today.minusWeeks(40)
+  private val maximumDate  = today.plusWeeks(40)
+  private val minimumDate  = today
   private val fixedInstant = today.atStartOfDay(ZoneId.systemDefault).toInstant
   private val clock        = Clock.fixed(fixedInstant, ZoneId.systemDefault)
   private implicit val messages: Messages = stubMessages()
