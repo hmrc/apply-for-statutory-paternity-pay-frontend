@@ -16,8 +16,7 @@
 
 package controllers
 
-import java.time.{LocalDate, ZoneOffset}
-
+import java.time.{Clock, LocalDate, ZoneId, ZoneOffset}
 import base.SpecBase
 import forms.ChildPlacementDateFormProvider
 import models.{NormalMode, UserAnswers}
@@ -41,12 +40,16 @@ class ChildPlacementDateControllerSpec extends SpecBase with MockitoSugar {
 
   private implicit val messages: Messages = stubMessages()
 
-  val formProvider = new ChildPlacementDateFormProvider()
+  private val today        = LocalDate.now
+  private val fixedInstant = today.atStartOfDay(ZoneId.systemDefault).toInstant
+  private val clock        = Clock.fixed(fixedInstant, ZoneId.systemDefault)
+
+  val formProvider = new ChildPlacementDateFormProvider(clock)
   private def form = formProvider()
 
   def onwardRoute = Call("GET", "/foo")
 
-  val validAnswer = LocalDate.now(ZoneOffset.UTC)
+  val validAnswer = today
 
   lazy val childPlacementDateRoute = routes.ChildPlacementDateController.onPageLoad(NormalMode).url
 
