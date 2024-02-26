@@ -413,7 +413,7 @@ paternityLeaveLengthGbPostApril24.change.hidden = how long you will be on Patern
 
 payStartDateGbPreApril24OrNi.title = What date would you like your Statutory Paternity Pay and/or paternity leave to start?
 payStartDateGbPreApril24OrNi.heading = What date would you like your Statutory Paternity Pay and/or paternity leave to start?
-payStartDateGbPreApril24OrNi.p1.born = The start date must be between {0} and {1}. You can change this date later but you must give your employer at least 28 days notice of the new date.
+payStartDateGbPreApril24OrNi.p1 = The start date must be between {0} and {1}. You can change this date later but you must give your employer at least 28 days notice of the new date.
 payStartDateGbPreApril24OrNi.p1.notBorn = The start date must be between {0} and {1}. You can change this date later but you must give your employer at least 28 days notice of the new date. If your baby is born sooner or later than expected, please discuss the situation with your employer.
 payStartDateGbPreApril24OrNi.hint = For example, 12 11 2007.
 payStartDateGbPreApril24OrNi.checkYourAnswersLabel = What date would you like your Statutory Paternity Pay and/or paternity leave to start?
