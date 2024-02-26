@@ -28,7 +28,7 @@ class BabyDueDateFormProviderSpec extends DateBehaviours {
 
   private val today        = LocalDate.now
   private val maximumDate  = today.plusWeeks(40)
-  private val minimumDate  = today.minusWeeks(8)
+  private val minimumDate  = today.minusWeeks(51)
   private val fixedInstant = today.atStartOfDay(ZoneId.systemDefault).toInstant
   private val clock        = Clock.fixed(fixedInstant, ZoneId.systemDefault)
   private implicit val messages: Messages = stubMessages()

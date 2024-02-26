@@ -31,7 +31,7 @@ class BabyDueDateFormProvider @Inject()(clock: Clock) extends Mappings {
     implicit val lang: Lang = messages.lang
 
     val maximumDate = LocalDate.now(clock).plusWeeks(40)
-    val minimumDate = LocalDate.now(clock).minusWeeks(8)
+    val minimumDate = LocalDate.now(clock).minusWeeks(51)
 
     Form(
       "value" -> localDate(
