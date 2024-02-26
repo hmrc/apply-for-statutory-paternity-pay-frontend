@@ -16,8 +16,6 @@
 
 package controllers
 
-import java.time.{LocalDate, ZoneOffset}
-
 import base.SpecBase
 import forms.ChildExpectedPlacementDateFormProvider
 import models.{NormalMode, UserAnswers}
@@ -26,27 +24,31 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ChildExpectedPlacementDatePage
+import play.api.i18n.Messages
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.ChildExpectedPlacementDateView
-import play.api.i18n.Messages
-import play.api.test.Helpers.stubMessages
 
+import java.time.{Clock, LocalDate, ZoneId}
 import scala.concurrent.Future
 
 class ChildExpectedPlacementDateControllerSpec extends SpecBase with MockitoSugar {
 
   private implicit val messages: Messages = stubMessages()
 
-  val formProvider = new ChildExpectedPlacementDateFormProvider()
+  private val today        = LocalDate.now
+  private val fixedInstant = today.atStartOfDay(ZoneId.systemDefault).toInstant
+  private val clock        = Clock.fixed(fixedInstant, ZoneId.systemDefault)
+
+  val formProvider = new ChildExpectedPlacementDateFormProvider(clock)
   private def form = formProvider()
 
   def onwardRoute = Call("GET", "/foo")
 
-  val validAnswer = LocalDate.now(ZoneOffset.UTC)
+  val validAnswer = today
 
   lazy val childExpectedPlacementDateRoute = routes.ChildExpectedPlacementDateController.onPageLoad(NormalMode).url
 

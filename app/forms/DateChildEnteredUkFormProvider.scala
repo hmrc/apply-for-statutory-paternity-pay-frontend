@@ -16,22 +16,33 @@
 
 package forms
 
-import java.time.LocalDate
+import config.Formats.dateTimeFormat
 
+import java.time.{Clock, LocalDate}
 import forms.mappings.Mappings
+
 import javax.inject.Inject
 import play.api.data.Form
-import play.api.i18n.Messages
+import play.api.i18n.{Lang, Messages}
 
-class DateChildEnteredUkFormProvider @Inject() extends Mappings {
+class DateChildEnteredUkFormProvider @Inject()(clock: Clock) extends Mappings {
 
-  def apply()(implicit messages: Messages): Form[LocalDate] =
+  def apply()(implicit messages: Messages): Form[LocalDate] = {
+    implicit val lang: Lang = messages.lang
+
+    val maximumDate = LocalDate.now(clock)
+    val minimumDate = LocalDate.now(clock).minusWeeks(51)
+
     Form(
       "value" -> localDate(
-        invalidKey     = "dateChildEnteredUk.error.invalid",
+        invalidKey = "dateChildEnteredUk.error.invalid",
         allRequiredKey = "dateChildEnteredUk.error.required.all",
         twoRequiredKey = "dateChildEnteredUk.error.required.two",
-        requiredKey    = "dateChildEnteredUk.error.required"
+        requiredKey = "dateChildEnteredUk.error.required"
+      ).verifying(
+        maxDate(maximumDate, "dateChildEnteredUk.error.tooHigh", maximumDate.format(dateTimeFormat())),
+        minDate(minimumDate, "dateChildEnteredUk.error.tooLow", minimumDate.format(dateTimeFormat()))
       )
     )
+  }
 }

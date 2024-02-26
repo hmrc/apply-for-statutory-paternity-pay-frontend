@@ -16,25 +16,49 @@
 
 package forms
 
-import java.time.{LocalDate, ZoneOffset}
+import config.Formats.dateTimeFormat
+
+import java.time.{Clock, LocalDate, ZoneId, ZoneOffset}
 import forms.behaviours.DateBehaviours
-import play.api.i18n.Messages
+import play.api.data.FormError
+import play.api.i18n.{Lang, Messages}
 import play.api.test.Helpers.stubMessages
 
 class DateOfAdoptionNotificationFormProviderSpec extends DateBehaviours {
 
+  private val today        = LocalDate.now
+  private val maximumDate  = today
+  private val minimumDate  = today.minusYears(2)
+  private val fixedInstant = today.atStartOfDay(ZoneId.systemDefault).toInstant
+  private val clock        = Clock.fixed(fixedInstant, ZoneId.systemDefault)
   private implicit val messages: Messages = stubMessages()
-  val form = new DateOfAdoptionNotificationFormProvider()()
+  private implicit val lang: Lang = Lang("en")
+
+  val form = new DateOfAdoptionNotificationFormProvider(clock)()
 
   ".value" - {
 
     val validData = datesBetween(
-      min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
+      min = minimumDate,
+      max = maximumDate
     )
 
     behave like dateField(form, "value", validData)
 
     behave like mandatoryDateField(form, "value", "dateOfAdoptionNotification.error.required.all")
+
+    behave like dateFieldWithMax(
+      form,
+      "value",
+      maximumDate,
+      FormError("value", "dateOfAdoptionNotification.error.tooHigh", Seq(maximumDate.format(dateTimeFormat)))
+    )
+
+    behave like dateFieldWithMin(
+      form,
+      "value",
+      minimumDate,
+      FormError("value", "dateOfAdoptionNotification.error.tooLow", Seq(minimumDate.format(dateTimeFormat)))
+    )
   }
 }
