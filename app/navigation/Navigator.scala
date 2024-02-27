@@ -17,14 +17,14 @@
 package navigation
 
 import config.Constants
-
-import javax.inject.{Inject, Singleton}
-import play.api.mvc.Call
 import controllers.routes
-import pages._
+import json.OptionalLocalDateReads._
 import models._
+import pages._
+import play.api.mvc.Call
 
 import java.time.LocalDate
+import javax.inject.{Inject, Singleton}
 
 @Singleton
 class Navigator @Inject()() {
@@ -389,8 +389,10 @@ class Navigator @Inject()() {
     answers.get(PaternityLeaveLengthGbPostApril24Page).map {
       case PaternityLeaveLengthGbPostApril24.OneWeek =>
         answers.get(PayStartDateGbPostApril24Page)
-          .map(_ => routes.CheckYourAnswersController.onPageLoad)
-          .getOrElse(routes.PayStartDateGbPostApril24Controller.onPageLoad(CheckMode))
+          .map(_.map { _ =>
+              routes.CheckYourAnswersController.onPageLoad
+            }.getOrElse(routes.PayStartDateGbPostApril24Controller.onPageLoad(CheckMode))
+          ).getOrElse(routes.PayStartDateGbPostApril24Controller.onPageLoad(CheckMode))
 
       case PaternityLeaveLengthGbPostApril24.TwoWeeks =>
         answers.get(LeaveTakenTogetherOrSeparatelyPage)
@@ -405,8 +407,10 @@ class Navigator @Inject()() {
     answers.get(LeaveTakenTogetherOrSeparatelyPage).map {
       case LeaveTakenTogetherOrSeparately.Together =>
         answers.get(PayStartDateGbPostApril24Page)
-          .map(_ => routes.CheckYourAnswersController.onPageLoad)
-          .getOrElse(routes.PayStartDateGbPostApril24Controller.onPageLoad(CheckMode))
+          .map(_.map { _ =>
+              routes.CheckYourAnswersController.onPageLoad
+            }.getOrElse(routes.PayStartDateGbPostApril24Controller.onPageLoad(CheckMode))
+          ).getOrElse(routes.PayStartDateGbPostApril24Controller.onPageLoad(CheckMode))
 
       case LeaveTakenTogetherOrSeparately.Separately =>
         answers.get(PayStartDateWeek1Page)

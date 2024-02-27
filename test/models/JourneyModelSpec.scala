@@ -297,7 +297,7 @@ class JourneyModelSpec
               .set(BabyHasBeenBornPage, false).success.value
               .set(BabyDueDatePage, dueDate).success.value
               .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
-              .set(PayStartDateGbPostApril24Page, payStartDate).success.value
+              .set(PayStartDateGbPostApril24Page, Some(payStartDate)).success.value
 
             val expected = JourneyModel(
               countryOfResidence = country,
@@ -447,7 +447,7 @@ class JourneyModelSpec
               .set(BabyDueDatePage, dueDate).success.value
               .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
               .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
-              .set(PayStartDateGbPostApril24Page, payStartDate).success.value
+              .set(PayStartDateGbPostApril24Page, Some(payStartDate)).success.value
 
             val expected = JourneyModel(
               countryOfResidence = country,
@@ -736,7 +736,6 @@ class JourneyModelSpec
           forAll(gen) { case (placementDate, country) =>
 
             val matchedDate = LocalDate.now.minusDays(2)
-            val payStartDate = LocalDate.now.plusMonths(1)
             val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
 
             val answers = emptyUserAnswers
@@ -754,7 +753,7 @@ class JourneyModelSpec
               .set(ChildHasBeenPlacedPage, true).success.value
               .set(ChildPlacementDatePage, placementDate).success.value
               .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
-              .set(PayStartDateGbPostApril24Page, payStartDate).success.value
+              .set(PayStartDateGbPostApril24Page, None).success.value
 
             val expected = JourneyModel(
               countryOfResidence = country,
@@ -771,7 +770,7 @@ class JourneyModelSpec
               name = Name("foo", "bar"),
               nino = nino,
               childDetails = AdoptedUkChild(matchedDate, hasBeenPlaced = true, placementDate),
-              paternityLeaveDetails = PaternityLeaveGbPostApril24OneWeek(Some(payStartDate))
+              paternityLeaveDetails = PaternityLeaveGbPostApril24OneWeek(None)
             )
 
             JourneyModel.from(answers).value mustEqual expected
@@ -1050,7 +1049,6 @@ class JourneyModelSpec
           forAll(gen) { case (enteredUkDate, country) =>
 
             val notifiedDate = LocalDate.now.minusDays(2)
-            val payStartDate = LocalDate.now.plusMonths(1)
             val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
 
             val answers = emptyUserAnswers
@@ -1069,7 +1067,7 @@ class JourneyModelSpec
               .set(DateChildEnteredUkPage, enteredUkDate).success.value
               .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
               .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
-              .set(PayStartDateGbPostApril24Page, payStartDate).success.value
+              .set(PayStartDateGbPostApril24Page, None).success.value
 
             val expected = JourneyModel(
               countryOfResidence = country,
@@ -1086,7 +1084,7 @@ class JourneyModelSpec
               name = Name("foo", "bar"),
               nino = nino,
               childDetails = AdoptedAbroadChild(notifiedDate, hasEnteredUk = true, enteredUkDate),
-              paternityLeaveDetails = PaternityLeaveGbPostApril24TwoWeeksTogether(Some(payStartDate))
+              paternityLeaveDetails = PaternityLeaveGbPostApril24TwoWeeksTogether(None)
             )
 
             JourneyModel.from(answers).value mustEqual expected
@@ -1209,7 +1207,6 @@ class JourneyModelSpec
           forAll(gen) { case (expectedUkEntryDate, country) =>
 
             val notifiedDate = LocalDate.now.plusDays(1)
-            val payStartDate = LocalDate.now.plusMonths(1)
             val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
 
             val answers = emptyUserAnswers
@@ -1229,7 +1226,7 @@ class JourneyModelSpec
               .set(ChildHasEnteredUkPage, false).success.value
               .set(DateChildExpectedToEnterUkPage, expectedUkEntryDate).success.value
               .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
-              .set(PayStartDateGbPostApril24Page, payStartDate).success.value
+              .set(PayStartDateGbPostApril24Page, None).success.value
 
             val expected = JourneyModel(
               countryOfResidence = country,
@@ -1246,7 +1243,7 @@ class JourneyModelSpec
               name = Name("foo", "bar"),
               nino = nino,
               childDetails = AdoptedAbroadChild(notifiedDate, hasEnteredUk = false, expectedUkEntryDate),
-              paternityLeaveDetails = PaternityLeaveGbPostApril24OneWeek(Some(payStartDate))
+              paternityLeaveDetails = PaternityLeaveGbPostApril24OneWeek(None)
             )
 
             JourneyModel.from(answers).value mustEqual expected

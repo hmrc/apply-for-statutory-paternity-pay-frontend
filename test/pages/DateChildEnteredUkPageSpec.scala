@@ -47,7 +47,7 @@ class DateChildEnteredUkPageSpec extends PageBehaviours with ScalaCheckPropertyC
         .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
         .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
         .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Separately).success.value
-        .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+        .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
         .set(PayStartDateWeek1Page, LocalDate.now).success.value
         .set(PayStartDateWeek2Page, LocalDate.now).success.value
 

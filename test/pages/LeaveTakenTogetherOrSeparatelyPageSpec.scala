@@ -16,6 +16,7 @@
 
 package pages
 
+import json.OptionalLocalDateReads._
 import models.LeaveTakenTogetherOrSeparately
 import pages.behaviours.PageBehaviours
 
@@ -35,7 +36,7 @@ class LeaveTakenTogetherOrSeparatelyPageSpec extends PageBehaviours {
 
       val answers =
         emptyUserAnswers
-          .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+          .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
           .set(PayStartDateWeek1Page, LocalDate.now).success.value
           .set(PayStartDateWeek2Page, LocalDate.now).success.value
 
@@ -51,7 +52,7 @@ class LeaveTakenTogetherOrSeparatelyPageSpec extends PageBehaviours {
 
       val answers =
         emptyUserAnswers
-          .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+          .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
           .set(PayStartDateWeek1Page, LocalDate.now).success.value
           .set(PayStartDateWeek2Page, LocalDate.now).success.value
 
@@ -61,7 +62,6 @@ class LeaveTakenTogetherOrSeparatelyPageSpec extends PageBehaviours {
       result.isDefined(PayStartDateWeek2Page) mustEqual true
 
       result.isDefined(PayStartDateGbPostApril24Page) mustEqual false
-
     }
   }
 }

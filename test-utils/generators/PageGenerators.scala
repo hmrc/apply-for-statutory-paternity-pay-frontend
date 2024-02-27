@@ -27,9 +27,6 @@ trait PageGenerators {
   implicit lazy val arbitraryPayStartDateWeek1Page: Arbitrary[PayStartDateWeek1Page.type] =
     Arbitrary(PayStartDateWeek1Page)
 
-  implicit lazy val arbitraryPayStartDateGbPostApril24Page: Arbitrary[PayStartDateGbPostApril24Page.type] =
-    Arbitrary(PayStartDateGbPostApril24Page)
-
   implicit lazy val arbitraryPayStartDateGbPreApril24OrNiPage: Arbitrary[PayStartDateGbPreApril24OrNiPage.type] =
     Arbitrary(PayStartDateGbPreApril24OrNiPage)
 

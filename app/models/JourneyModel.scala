@@ -19,6 +19,7 @@ package models
 import cats.data.EitherNec
 import cats.implicits._
 import config.Constants
+import json.OptionalLocalDateReads._
 import models.JourneyModel.{ChildDetails, Eligibility, PaternityLeaveDetails}
 import pages._
 import uk.gov.hmrc.domain.Nino
@@ -288,14 +289,14 @@ object JourneyModel {
       case PaternityLeaveLengthGbPostApril24.OneWeek =>
         answers
           .getEither(PayStartDateGbPostApril24Page)
-          .map(x => PaternityLeaveGbPostApril24OneWeek(Some(x)))
+          .map(PaternityLeaveGbPostApril24OneWeek)
 
       case PaternityLeaveLengthGbPostApril24.TwoWeeks =>
         answers.getEither(LeaveTakenTogetherOrSeparatelyPage).flatMap {
           case LeaveTakenTogetherOrSeparately.Together =>
             answers
               .getEither(PayStartDateGbPostApril24Page)
-              .map(x => PaternityLeaveGbPostApril24TwoWeeksTogether(Some(x)))
+              .map(PaternityLeaveGbPostApril24TwoWeeksTogether)
 
           case LeaveTakenTogetherOrSeparately.Separately =>
             (

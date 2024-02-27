@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-package pages
+package json
 
-import controllers.routes
-import models.Mode
+import play.api.libs.json.{Reads, __}
+
 import java.time.LocalDate
-import play.api.libs.json.JsPath
-import play.api.mvc.Call
 
-case object PayStartDateGbPostApril24Page extends QuestionPage[Option[LocalDate]] {
+object OptionalLocalDateReads {
 
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "payStartDateGbPostApril24"
-
-  override def route(mode: Mode): Call = routes.PayStartDateGbPostApril24Controller.onPageLoad(mode)
+  implicit val reads: Reads[Option[LocalDate]] =
+    Reads.nullable[LocalDate](__)
 }

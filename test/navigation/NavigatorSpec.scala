@@ -1498,7 +1498,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
             val answers =
               emptyUserAnswers
                 .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
-                .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+                .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
 
             navigator.nextPage(PaternityLeaveLengthGbPostApril24Page, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
           }
@@ -1547,7 +1547,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
             val answers =
               emptyUserAnswers
-                .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+                .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
                 .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
 
             navigator.nextPage(LeaveTakenTogetherOrSeparatelyPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
