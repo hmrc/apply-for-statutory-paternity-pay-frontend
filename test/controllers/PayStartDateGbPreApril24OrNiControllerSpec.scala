@@ -18,13 +18,14 @@ package controllers
 
 import java.time.{LocalDate, ZoneOffset}
 import base.SpecBase
+import cats.data.NonEmptyChain
 import forms.PayStartDateGbPreApril24OrNiFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, PayStartDateLimits, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{BabyHasBeenBornPage, PayStartDateGbPreApril24OrNiPage}
+import pages.{BabyHasBeenBornPage, IsAdoptingOrParentalOrderPage, PayStartDateGbPreApril24OrNiPage}
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
@@ -33,15 +34,19 @@ import repositories.SessionRepository
 import views.html.PayStartDateGbPreApril24OrNiView
 import play.api.i18n.Messages
 import play.api.test.Helpers.stubMessages
+import services.PayStartDateService
 
 import scala.concurrent.Future
 
 class PayStartDateGbPreApril24OrNiControllerSpec extends SpecBase with MockitoSugar {
 
   private implicit val messages: Messages = stubMessages()
+  private val minDate = LocalDate.now
+  private val maxDate = LocalDate.now.plusDays(1)
+  private val payStartDateLimits = PayStartDateLimits(minDate, maxDate)
 
   val formProvider = new PayStartDateGbPreApril24OrNiFormProvider()
-  private def form = formProvider()
+  private def form = formProvider(payStartDateLimits)
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -69,7 +74,14 @@ class PayStartDateGbPreApril24OrNiControllerSpec extends SpecBase with MockitoSu
       "when the birth or parental order child has been born" in {
 
         val answers = emptyUserAnswers.set(BabyHasBeenBornPage, true).success.value
-        val application = applicationBuilder(userAnswers = Some(answers)).build()
+        val mockPayStartDateService = mock[PayStartDateService]
+
+        when(mockPayStartDateService.gbPreApril24OrNiDates(any())) thenReturn Right(payStartDateLimits)
+
+        val application =
+          applicationBuilder(userAnswers = Some(answers))
+            .overrides(bind[PayStartDateService].toInstance(mockPayStartDateService))
+            .build()
 
         running(application) {
           val result = route(application, getRequest).value
@@ -77,14 +89,21 @@ class PayStartDateGbPreApril24OrNiControllerSpec extends SpecBase with MockitoSu
           val view = application.injector.instanceOf[PayStartDateGbPreApril24OrNiView]
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form, NormalMode, showBabyNotBornHint = false)(getRequest, messages(application)).toString
+          contentAsString(result) mustEqual view(form, NormalMode, showBabyNotBornHint = false, payStartDateLimits)(getRequest, messages(application)).toString
         }
       }
       
       "when a birth or parental order child has not yet been born" in {
 
         val answers = emptyUserAnswers.set(BabyHasBeenBornPage, false).success.value
-        val application = applicationBuilder(userAnswers = Some(answers)).build()
+        val mockPayStartDateService = mock[PayStartDateService]
+
+        when(mockPayStartDateService.gbPreApril24OrNiDates(any())) thenReturn Right(payStartDateLimits)
+
+        val application =
+          applicationBuilder(userAnswers = Some(answers))
+            .overrides(bind[PayStartDateService].toInstance(mockPayStartDateService))
+            .build()
 
         running(application) {
           val result = route(application, getRequest).value
@@ -92,13 +111,20 @@ class PayStartDateGbPreApril24OrNiControllerSpec extends SpecBase with MockitoSu
           val view = application.injector.instanceOf[PayStartDateGbPreApril24OrNiView]
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form, NormalMode, showBabyNotBornHint = true)(getRequest, messages(application)).toString
+          contentAsString(result) mustEqual view(form, NormalMode, showBabyNotBornHint = true, payStartDateLimits)(getRequest, messages(application)).toString
         }
       }
       
       "when the child is not a birth or parental order child" in {
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        val mockPayStartDateService = mock[PayStartDateService]
+
+        when(mockPayStartDateService.gbPreApril24OrNiDates(any())) thenReturn Right(payStartDateLimits)
+
+        val application =
+          applicationBuilder(userAnswers = Some(emptyUserAnswers))
+            .overrides(bind[PayStartDateService].toInstance(mockPayStartDateService))
+            .build()
 
         running(application) {
           val result = route(application, getRequest).value
@@ -106,7 +132,7 @@ class PayStartDateGbPreApril24OrNiControllerSpec extends SpecBase with MockitoSu
           val view = application.injector.instanceOf[PayStartDateGbPreApril24OrNiView]
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form, NormalMode, showBabyNotBornHint = false)(getRequest, messages(application)).toString
+          contentAsString(result) mustEqual view(form, NormalMode, showBabyNotBornHint = false, payStartDateLimits)(getRequest, messages(application)).toString
         }
       }
     }
@@ -115,7 +141,14 @@ class PayStartDateGbPreApril24OrNiControllerSpec extends SpecBase with MockitoSu
 
       val userAnswers = UserAnswers(userAnswersId).set(PayStartDateGbPreApril24OrNiPage, validAnswer).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val mockPayStartDateService = mock[PayStartDateService]
+
+      when(mockPayStartDateService.gbPreApril24OrNiDates(any())) thenReturn Right(payStartDateLimits)
+
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers))
+          .overrides(bind[PayStartDateService].toInstance(mockPayStartDateService))
+          .build()
 
       running(application) {
         val view = application.injector.instanceOf[PayStartDateGbPreApril24OrNiView]
@@ -123,21 +156,24 @@ class PayStartDateGbPreApril24OrNiControllerSpec extends SpecBase with MockitoSu
         val result = route(application, getRequest).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, false)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, false, payStartDateLimits)(getRequest, messages(application)).toString
       }
     }
 
     "must redirect to the next page when valid data is submitted" in {
 
       val mockSessionRepository = mock[SessionRepository]
+      val mockPayStartDateService = mock[PayStartDateService]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(mockPayStartDateService.gbPreApril24OrNiDates(any())) thenReturn Right(payStartDateLimits)
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+            bind[SessionRepository].toInstance(mockSessionRepository),
+            bind[PayStartDateService].toInstance(mockPayStartDateService)
           )
           .build()
 
@@ -151,7 +187,14 @@ class PayStartDateGbPreApril24OrNiControllerSpec extends SpecBase with MockitoSu
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val mockPayStartDateService = mock[PayStartDateService]
+
+      when(mockPayStartDateService.gbPreApril24OrNiDates(any())) thenReturn Right(payStartDateLimits)
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[PayStartDateService].toInstance(mockPayStartDateService))
+          .build()
 
       val request =
         FakeRequest(POST, payStartDateGbPreApril24OrNiRoute)
@@ -165,13 +208,40 @@ class PayStartDateGbPreApril24OrNiControllerSpec extends SpecBase with MockitoSu
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, showBabyNotBornHint = false)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, showBabyNotBornHint = false, payStartDateLimits)(request, messages(application)).toString
       }
     }
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val mockPayStartDateService = mock[PayStartDateService]
+
+      when(mockPayStartDateService.gbPreApril24OrNiDates(any())) thenReturn Right(payStartDateLimits)
+
+      val application =
+        applicationBuilder(userAnswers = None)
+          .overrides(bind[PayStartDateService].toInstance(mockPayStartDateService))
+          .build()
+
+
+      running(application) {
+        val result = route(application, getRequest).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must redirect to Journey Recovery for a GET if pay start date limits cannot be calculated" in {
+
+      val mockPayStartDateService = mock[PayStartDateService]
+
+      when(mockPayStartDateService.gbPreApril24OrNiDates(any())) thenReturn Left(NonEmptyChain(IsAdoptingOrParentalOrderPage))
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[PayStartDateService].toInstance(mockPayStartDateService))
+          .build()
 
       running(application) {
         val result = route(application, getRequest).value
@@ -183,7 +253,34 @@ class PayStartDateGbPreApril24OrNiControllerSpec extends SpecBase with MockitoSu
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val mockPayStartDateService = mock[PayStartDateService]
+
+      when(mockPayStartDateService.gbPreApril24OrNiDates(any())) thenReturn Right(payStartDateLimits)
+
+      val application =
+        applicationBuilder(userAnswers = None)
+          .overrides(bind[PayStartDateService].toInstance(mockPayStartDateService))
+          .build()
+
+
+      running(application) {
+        val result = route(application, postRequest).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must redirect to Journey Recovery for a POST if pay start date limits cannot be calculated" in {
+
+      val mockPayStartDateService = mock[PayStartDateService]
+
+      when(mockPayStartDateService.gbPreApril24OrNiDates(any())) thenReturn Left(NonEmptyChain(IsAdoptingOrParentalOrderPage))
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[PayStartDateService].toInstance(mockPayStartDateService))
+          .build()
 
       running(application) {
         val result = route(application, postRequest).value

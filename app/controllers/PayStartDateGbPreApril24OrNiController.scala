@@ -18,6 +18,7 @@ package controllers
 
 import controllers.actions._
 import forms.PayStartDateGbPreApril24OrNiFormProvider
+import logging.Logging
 
 import javax.inject.Inject
 import models.Mode
@@ -26,6 +27,7 @@ import pages.{BabyHasBeenBornPage, PayStartDateGbPreApril24OrNiPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.PayStartDateService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.PayStartDateGbPreApril24OrNiView
 
@@ -40,8 +42,12 @@ class PayStartDateGbPreApril24OrNiController @Inject()(
                                                         requireData: DataRequiredAction,
                                                         formProvider: PayStartDateGbPreApril24OrNiFormProvider,
                                                         val controllerComponents: MessagesControllerComponents,
-                                                        view: PayStartDateGbPreApril24OrNiView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                                        view: PayStartDateGbPreApril24OrNiView,
+                                                        payStartDateService: PayStartDateService
+                                      )(implicit ec: ExecutionContext)
+  extends FrontendBaseController
+    with I18nSupport
+    with Logging {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -50,14 +56,23 @@ class PayStartDateGbPreApril24OrNiController @Inject()(
           .get(BabyHasBeenBornPage)
           .map(x => !x).getOrElse(false)
 
-      val form = formProvider()
+      payStartDateService.gbPreApril24OrNiDates(request.userAnswers).fold(
+        pages => {
+          val message = pages.toChain.toList.mkString(", ")
+          logger.warn(s"Failed to find pay start date limits GB pre April 24 or NI, missing pages: $message")
+          Redirect(routes.JourneyRecoveryController.onPageLoad())
+        },
+        limits => {
+          val form = formProvider(limits)
 
-      val preparedForm = request.userAnswers.get(PayStartDateGbPreApril24OrNiPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
+          val preparedForm = request.userAnswers.get(PayStartDateGbPreApril24OrNiPage) match {
+            case None => form
+            case Some(value) => form.fill(value)
+          }
 
-      Ok(view(preparedForm, mode, showBabyNotBornHint))
+          Ok(view(preparedForm, mode, showBabyNotBornHint, limits))
+        }
+      )
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -67,17 +82,26 @@ class PayStartDateGbPreApril24OrNiController @Inject()(
           .get(BabyHasBeenBornPage)
           .map(x => !x).getOrElse(false)
 
-      val form = formProvider()
+      payStartDateService.gbPreApril24OrNiDates(request.userAnswers).fold(
+        pages => {
+          val message = pages.toChain.toList.mkString(", ")
+          logger.warn(s"Failed to find pay start date limits GB pre April 24 or NI, missing pages: $message")
+          Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        },
+        limits => {
+          val form = formProvider(limits)
 
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, showBabyNotBornHint))),
+          form.bindFromRequest().fold(
+            formWithErrors =>
+              Future.successful(BadRequest(view(formWithErrors, mode, showBabyNotBornHint, limits))),
 
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDateGbPreApril24OrNiPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PayStartDateGbPreApril24OrNiPage, mode, updatedAnswers))
+            value =>
+              for {
+                updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDateGbPreApril24OrNiPage, value))
+                _              <- sessionRepository.set(updatedAnswers)
+              } yield Redirect(navigator.nextPage(PayStartDateGbPreApril24OrNiPage, mode, updatedAnswers))
+          )
+        }
       )
   }
 }
