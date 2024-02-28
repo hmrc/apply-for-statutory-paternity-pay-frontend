@@ -181,7 +181,7 @@ isBiologicalFather.checkYourAnswersLabel = Ai chi yw tad biolegol y plentyn?
 isBiologicalFather.error.required = Dewiswch ‘Iawn’ os mai chi yw tad biolegol y plentyn
 isBiologicalFather.change.hidden = os mai chi yw tad biolegol y plentyn
 
-isCohabiting.hint = An enduring family relationship is when two people are not married or in a civil partnership, but are living together as a couple.
+isCohabiting.hint = Perthynas deuluol barhaus yw pan nad yw dau berson yn briod neu mewn partneriaeth sifil, ond eu bod yn byw gyda’i gilydd fel cwpl.
 isCohabiting.birthChild.title = Do you live with the mother and child in an enduring family relationship?
 isCohabiting.birthChild.heading = Do you live with the mother and child in an enduring family relationship?
 isCohabiting.birthChild.checkYourAnswersLabel = Do you live with the mother and child in an enduring family relationship?
