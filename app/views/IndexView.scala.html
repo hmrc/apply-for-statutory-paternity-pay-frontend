@@ -38,21 +38,43 @@
 
     <p class="govuk-body">@messages("index.guidance.p2")</p>
 
-    <div class="govuk-inset-text">
-        @messages("index.guidance.panel.1")
-        <a href="@messages("index.guidance.panel.link.href")" class="govuk-link">@messages("index.guidance.panel.link.text")</a>
-        @messages("index.guidance.panel.2")
-    </div>
+    <p class="govuk-body">@messages("index.guidance.p3")</p>
 
-    <p class="govuk-body">
-        @messages("index.guidance.p3")
-        <a href="@messages("index.guidance.p3.link.href")" class="govuk-link">@messages("index.guidance.p3.link.text")</a>.
-    </p>
+    <p class="govuk-body"><a href="@messages("index.guidance.p4.link.href")" class="govuk-link")>@messages("index.guidance.p4.link.text")</a></p>
+
     <h2 class="govuk-heading-m">@messages("index.guidance.beforeYouStart.heading")</h2>
 
-    <p class="govuk-body">@messages("index.guidance.beforeYouStart.p1")</p>
-    <p class="govuk-body">@messages("index.guidance.beforeYouStart.p2")</p>
-    <p class="govuk-body">@messages("index.guidance.beforeYouStart.p3")</p>
+        <h3 class="govuk-heading-s">@messages("index.guidance.beforeYouStart.englandScotlandWales.heading")</h3>
+
+            <p class="govuk-body">@messages("index.guidance.beforeYouStart.englandScotlandWales.p1")</p>
+
+            <ul class="govuk-list govuk-list--bullet">
+                <li>
+                    @messages("index.guidance.beforeYouStart.englandScotlandWales.bullet.1.beforeLink")
+                    <a href="@messages("index.guidance.beforeYouStart.englandScotlandWales.bullet.1.link.href")" class="govuk-link")>@messages("index.guidance.beforeYouStart.englandScotlandWales.bullet.1.link.text")</a>@messages("index.guidance.beforeYouStart.englandScotlandWales.bullet.1.afterLink")
+                </li>
+                <li>@messages("index.guidance.beforeYouStart.englandScotlandWales.bullet.2")</li>
+            </ul>
+
+            <p class="govuk-body">@messages("index.guidance.beforeYouStart.englandScotlandWales.p2")</p>
+
+        <h3 class="govuk-heading-s">@messages("index.guidance.beforeYouStart.northernIreland.heading")</h3>
+
+            <p class="govuk-body">@messages("index.guidance.beforeYouStart.northernIreland.p1")</p>
+
+            <ul class="govuk-list govuk-list--bullet">
+                <li>
+                    @messages("index.guidance.beforeYouStart.northernIreland.bullet.1.beforeLink")
+                    <a href="@messages("index.guidance.beforeYouStart.northernIreland.bullet.1.link.href")" class="govuk-link")>@messages("index.guidance.beforeYouStart.northernIreland.bullet.1.link.text")</a>@messages("index.guidance.beforeYouStart.northernIreland.bullet.1.afterLink")
+                </li>
+                <li>@messages("index.guidance.beforeYouStart.northernIreland.bullet.2")</li>
+            </ul>
+
+            <p class="govuk-body">@messages("index.guidance.beforeYouStart.northernIreland.p2")</p>
+
+    <h2 class="govuk-heading-m">@messages("index.guidance.sendingToEmployer.heading")</h2>
+
+        <p class="govuk-body">@messages("index.guidance.sendingToEmployer.p1")</p>
 
     <a id="start" role="button" data-module="govuk-button" href="@routes.CountryOfResidenceController.onPageLoad(NormalMode)" class="govuk-button govuk-button--start">
         @messages("site.start")
