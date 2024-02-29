@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions._
 import forms.PayStartDateGbPostApril24FormProvider
-import javax.inject.Inject
+import json.OptionalLocalDateReads._
 import models.Mode
 import navigation.Navigator
 import pages.PayStartDateGbPostApril24Page
@@ -28,6 +28,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.PayStartDateGbPostApril24View
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class PayStartDateGbPostApril24Controller @Inject()(
@@ -40,33 +41,42 @@ class PayStartDateGbPostApril24Controller @Inject()(
                                                      formProvider: PayStartDateGbPostApril24FormProvider,
                                                      val controllerComponents: MessagesControllerComponents,
                                                      view: PayStartDateGbPostApril24View
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                      )(implicit ec: ExecutionContext)
+  extends FrontendBaseController
+    with I18nSupport
+    with AnswerExtractor {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val form = formProvider()
+      getPaternityReason { paternityReason =>
 
-      val preparedForm = request.userAnswers.get(PayStartDateGbPostApril24Page) match {
-        case None => form
-        case Some(value) => form.fill(value)
+        val form = formProvider()
+
+        val preparedForm = request.userAnswers.get(PayStartDateGbPostApril24Page) match {
+          case None => form
+          case Some(value) => form.fill(value)
+        }
+
+        Ok(view(preparedForm, mode, paternityReason))
       }
-
-      Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider()
+      getPaternityReasonAsync { paternityReason =>
 
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+        val form = formProvider()
 
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDateGbPostApril24Page, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PayStartDateGbPostApril24Page, mode, updatedAnswers))
-      )
+        form.bindFromRequest().fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, mode, paternityReason))),
+
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDateGbPostApril24Page, value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(PayStartDateGbPostApril24Page, mode, updatedAnswers))
+        )
+    }
   }
 }

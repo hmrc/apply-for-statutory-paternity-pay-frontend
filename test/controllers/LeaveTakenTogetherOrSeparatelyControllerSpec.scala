@@ -18,12 +18,12 @@ package controllers
 
 import base.SpecBase
 import forms.LeaveTakenTogetherOrSeparatelyFormProvider
-import models.{NormalMode, LeaveTakenTogetherOrSeparately, UserAnswers}
+import models.{LeaveTakenTogetherOrSeparately, NormalMode, PaternityReason}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.LeaveTakenTogetherOrSeparatelyPage
+import pages.{IsAdoptingOrParentalOrderPage, LeaveTakenTogetherOrSeparatelyPage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -41,12 +41,13 @@ class LeaveTakenTogetherOrSeparatelyControllerSpec extends SpecBase with Mockito
 
   val formProvider = new LeaveTakenTogetherOrSeparatelyFormProvider()
   val form = formProvider()
+  private val baseAnswers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
 
   "LeaveTakenTogetherOrSeparately Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
 
       running(application) {
         val request = FakeRequest(GET, leaveTakenTogetherOrSeparatelyRoute)
@@ -56,13 +57,13 @@ class LeaveTakenTogetherOrSeparatelyControllerSpec extends SpecBase with Mockito
         val view = application.injector.instanceOf[LeaveTakenTogetherOrSeparatelyView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, PaternityReason.PaternityFromBirth)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.values.head).success.value
+      val userAnswers = baseAnswers.set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -74,7 +75,7 @@ class LeaveTakenTogetherOrSeparatelyControllerSpec extends SpecBase with Mockito
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(LeaveTakenTogetherOrSeparately.values.head), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(LeaveTakenTogetherOrSeparately.values.head), NormalMode, PaternityReason.PaternityFromBirth)(request, messages(application)).toString
       }
     }
 
@@ -85,7 +86,7 @@ class LeaveTakenTogetherOrSeparatelyControllerSpec extends SpecBase with Mockito
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(baseAnswers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -106,7 +107,7 @@ class LeaveTakenTogetherOrSeparatelyControllerSpec extends SpecBase with Mockito
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
 
       running(application) {
         val request =
@@ -120,7 +121,7 @@ class LeaveTakenTogetherOrSeparatelyControllerSpec extends SpecBase with Mockito
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, PaternityReason.PaternityFromBirth)(request, messages(application)).toString
       }
     }
 

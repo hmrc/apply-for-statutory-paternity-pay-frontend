@@ -23,7 +23,7 @@ import models.{CountryOfResidence, LeaveTakenTogetherOrSeparately, PaternityLeav
 import org.scalacheck.Arbitrary.arbitrary
 
 import java.time.LocalDate
-import org.scalacheck.{Arbitrary, Gen}
+import org.scalacheck.Gen
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.behaviours.PageBehaviours
 
@@ -46,7 +46,7 @@ class DateChildExpectedToEnterUkPageSpec extends PageBehaviours with ScalaCheckP
         .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
         .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
         .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Separately).success.value
-        .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+        .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
         .set(PayStartDateWeek1Page, LocalDate.now).success.value
         .set(PayStartDateWeek2Page, LocalDate.now).success.value
 

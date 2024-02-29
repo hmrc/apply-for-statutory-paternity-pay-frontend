@@ -40,33 +40,40 @@ class LeaveTakenTogetherOrSeparatelyController @Inject()(
                                        formProvider: LeaveTakenTogetherOrSeparatelyFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: LeaveTakenTogetherOrSeparatelyView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                     )(implicit ec: ExecutionContext)
+  extends FrontendBaseController
+    with I18nSupport
+    with AnswerExtractor {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      getPaternityReason { reason =>
 
-      val preparedForm = request.userAnswers.get(LeaveTakenTogetherOrSeparatelyPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
+        val preparedForm = request.userAnswers.get(LeaveTakenTogetherOrSeparatelyPage) match {
+          case None => form
+          case Some(value) => form.fill(value)
+        }
+
+        Ok(view(preparedForm, mode, reason))
       }
-
-      Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      getPaternityReasonAsync { reason =>
 
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+        form.bindFromRequest().fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, mode, reason))),
 
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(LeaveTakenTogetherOrSeparatelyPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(LeaveTakenTogetherOrSeparatelyPage, mode, updatedAnswers))
-      )
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(LeaveTakenTogetherOrSeparatelyPage, value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(LeaveTakenTogetherOrSeparatelyPage, mode, updatedAnswers))
+        )
+      }
   }
 }

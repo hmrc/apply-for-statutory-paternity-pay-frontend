@@ -16,6 +16,7 @@
 
 package pages
 
+import json.OptionalLocalDateReads._
 import models.{CountryOfResidence, LeaveTakenTogetherOrSeparately, Name, PaternityLeaveLengthGbPostApril24, PaternityLeaveLengthGbPreApril24OrNi, RelationshipToChild}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
@@ -60,7 +61,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
         .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
         .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
         .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
-        .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+        .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
         .set(PayStartDateWeek1Page, LocalDate.now).success.value
         .set(PayStartDateWeek2Page, LocalDate.now).success.value
 
@@ -86,7 +87,7 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
         .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
         .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
         .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
-        .set(PayStartDateGbPostApril24Page, LocalDate.now).success.value
+        .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
         .set(PayStartDateWeek1Page, LocalDate.now).success.value
         .set(PayStartDateWeek2Page, LocalDate.now).success.value
 

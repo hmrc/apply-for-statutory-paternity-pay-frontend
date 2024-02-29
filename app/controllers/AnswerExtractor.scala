@@ -16,9 +16,9 @@
 
 package controllers
 
-import models.RelationshipToChild
+import models.{PaternityReason, RelationshipToChild}
 import models.requests.DataRequest
-import pages.{IsAdoptingOrParentalOrderPage, ReasonForRequestingPage}
+import pages.{IsAdoptingFromAbroadPage, IsAdoptingOrParentalOrderPage, ReasonForRequestingPage}
 import play.api.libs.json.Reads
 import play.api.mvc.{AnyContent, Result}
 import play.api.mvc.Results.Redirect
@@ -84,5 +84,43 @@ trait AnswerExtractor {
 
         case false =>
           block(RelationshipToChild.BirthChild)
+      }.getOrElse(Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad())))
+
+  def getPaternityReason(block: PaternityReason => Result)
+                                (implicit request: DataRequest[AnyContent]): Result =
+    request.userAnswers
+      .get(IsAdoptingOrParentalOrderPage).map {
+        case true =>
+          request.userAnswers.get(ReasonForRequestingPage).map {
+            case RelationshipToChild.ParentalOrder =>
+              block(PaternityReason.PaternityFromBirth)
+
+            case _ =>
+              request.userAnswers.get(IsAdoptingFromAbroadPage).map {
+                case true => block(PaternityReason.PaternityFromAdoptionFromAbroad)
+                case false => block(PaternityReason.PaternityFromUkAdoption)
+              }.getOrElse(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+          }.getOrElse(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+
+        case false => block(PaternityReason.PaternityFromBirth)
+      }.getOrElse(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+
+  def getPaternityReasonAsync(block: PaternityReason => Future[Result])
+                                     (implicit request: DataRequest[AnyContent]): Future[Result] =
+    request.userAnswers
+      .get(IsAdoptingOrParentalOrderPage).map {
+        case true =>
+          request.userAnswers.get(ReasonForRequestingPage).map {
+            case RelationshipToChild.ParentalOrder =>
+              block(PaternityReason.PaternityFromBirth)
+
+            case _ =>
+              request.userAnswers.get(IsAdoptingFromAbroadPage).map {
+                case true => block(PaternityReason.PaternityFromAdoptionFromAbroad)
+                case false => block(PaternityReason.PaternityFromUkAdoption)
+              }.getOrElse(Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad())))
+          }.getOrElse(Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad())))
+
+        case false => block(PaternityReason.PaternityFromBirth)
       }.getOrElse(Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad())))
 }

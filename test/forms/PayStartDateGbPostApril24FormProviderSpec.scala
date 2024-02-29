@@ -34,7 +34,5 @@ class PayStartDateGbPostApril24FormProviderSpec extends DateBehaviours {
     )
 
     behave like dateField(form, "value", validData)
-
-    behave like mandatoryDateField(form, "value", "payStartDateGbPostApril24.error.required.all")
   }
 }

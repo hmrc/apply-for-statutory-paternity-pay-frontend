@@ -18,15 +18,16 @@ package controllers
 
 import base.SpecBase
 import models.RelationshipToChild._
-import models.{Mode, RelationshipToChild, UserAnswers}
+import models.{Mode, PaternityReason, RelationshipToChild, UserAnswers}
 import models.requests.DataRequest
 import org.scalacheck.Gen
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import pages.{IsAdoptingOrParentalOrderPage, QuestionPage, ReasonForRequestingPage}
+import pages.{IsAdoptingFromAbroadPage, IsAdoptingOrParentalOrderPage, QuestionPage, ReasonForRequestingPage}
 import play.api.libs.json.{JsPath, JsString, Json}
 import play.api.mvc.Results.{Ok, Redirect}
 import play.api.mvc.{AnyContent, Call, Result}
 import play.api.test.FakeRequest
+import play.api.test.Helpers._
 import queries.Gettable
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -66,6 +67,18 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
       getRelationshipToChildAsync {
         relationship =>
           Future.successful(Ok(Json.toJson(relationship)))
+      }
+
+    def getPatReason(implicit request: DataRequest[AnyContent]): Result =
+      getPaternityReason {
+        reason =>
+          Ok(Json.toJson(reason))
+      }
+
+    def getPatReasonAsync(implicit request: DataRequest[AnyContent]): Future[Result] =
+      getPaternityReasonAsync {
+        reason =>
+          Future.successful(Ok(Json.toJson(reason)))
       }
   }
 
@@ -210,6 +223,126 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
       val controller = new TestController()
 
       controller.getRelationshipAsync.futureValue mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad())
+    }
+  }
+
+  "getPaternityReason" - {
+
+    "must return Parental From Birth Child when the user is not adopting or a parental order parent" in {
+
+      val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
+      implicit val request = buildRequest(answers)
+
+      val controller = new TestController()
+
+      contentAsJson(Future.successful(controller.getPatReason)) mustEqual JsString(PaternityReason.PaternityFromBirth.toString)
+    }
+
+    "must return Parental From Birth Child when the user is a parental order child" in {
+
+      val answers =
+        emptyUserAnswers
+          .set(IsAdoptingOrParentalOrderPage, false).success.value
+          .set(IsAdoptingFromAbroadPage, false).success.value
+          .set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
+
+      implicit val request = buildRequest(answers)
+
+      val controller = new TestController()
+
+      contentAsJson(Future.successful(controller.getPatReason)) mustEqual JsString(PaternityReason.PaternityFromBirth.toString)
+    }
+
+    "must return Parental From Uk Adoption when the user is adopting or supporting adoption from a child in the UK" in {
+
+      val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+      val answers =
+        emptyUserAnswers
+          .set(IsAdoptingOrParentalOrderPage, true).success.value
+          .set(IsAdoptingFromAbroadPage, false).success.value
+          .set(ReasonForRequestingPage, relationship).success.value
+
+      implicit val request = buildRequest(answers)
+
+      val controller = new TestController()
+
+      contentAsJson(Future.successful(controller.getPatReason)) mustEqual JsString(PaternityReason.PaternityFromUkAdoption.toString)
+    }
+
+    "must return Parental From Adoption From Abroad when the user is adopting or supporting adoption from abroad" in {
+
+      val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+      val answers =
+        emptyUserAnswers
+          .set(IsAdoptingOrParentalOrderPage, true).success.value
+          .set(IsAdoptingFromAbroadPage, true).success.value
+          .set(ReasonForRequestingPage, relationship).success.value
+
+      implicit val request = buildRequest(answers)
+
+      val controller = new TestController()
+
+      contentAsJson(Future.successful(controller.getPatReason)) mustEqual JsString(PaternityReason.PaternityFromAdoptionFromAbroad.toString)
+    }
+  }
+
+  "getPaternityReasonAsync" - {
+
+    "must return Parental From Birth Child when the user is not adopting or a parental order parent" in {
+
+      val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
+      implicit val request = buildRequest(answers)
+
+      val controller = new TestController()
+
+      contentAsJson(controller.getPatReasonAsync) mustEqual JsString(PaternityReason.PaternityFromBirth.toString)
+    }
+
+    "must return Parental From Birth Child when the user is a parental order child" in {
+
+      val answers =
+        emptyUserAnswers
+          .set(IsAdoptingOrParentalOrderPage, false).success.value
+          .set(IsAdoptingFromAbroadPage, false).success.value
+          .set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
+
+      implicit val request = buildRequest(answers)
+
+      val controller = new TestController()
+
+      contentAsJson(controller.getPatReasonAsync) mustEqual JsString(PaternityReason.PaternityFromBirth.toString)
+    }
+
+    "must return Parental From Uk Adoption when the user is adopting or supporting adoption from a child in the UK" in {
+
+      val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+      val answers =
+        emptyUserAnswers
+          .set(IsAdoptingOrParentalOrderPage, true).success.value
+          .set(IsAdoptingFromAbroadPage, false).success.value
+          .set(ReasonForRequestingPage, relationship).success.value
+
+      implicit val request = buildRequest(answers)
+
+      val controller = new TestController()
+
+      contentAsJson(controller.getPatReasonAsync) mustEqual JsString(PaternityReason.PaternityFromUkAdoption.toString)
+    }
+
+    "must return Parental From Adoption From Abroad when the user is adopting or supporting adoption from abroad" in {
+
+      val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
+      val answers =
+        emptyUserAnswers
+          .set(IsAdoptingOrParentalOrderPage, true).success.value
+          .set(IsAdoptingFromAbroadPage, true).success.value
+          .set(ReasonForRequestingPage, relationship).success.value
+
+      implicit val request = buildRequest(answers)
+
+      val controller = new TestController()
+
+      contentAsJson(controller.getPatReasonAsync) mustEqual JsString(PaternityReason.PaternityFromAdoptionFromAbroad.toString)
     }
   }
 }
