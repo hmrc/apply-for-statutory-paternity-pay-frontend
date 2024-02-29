@@ -17,15 +17,14 @@
 package controllers
 
 import java.time.{LocalDate, ZoneOffset}
-
 import base.SpecBase
 import forms.PayStartDateWeek1FormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, PaternityReason, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.PayStartDateWeek1Page
+import pages.{IsAdoptingOrParentalOrderPage, PayStartDateWeek1Page}
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
@@ -50,7 +49,7 @@ class PayStartDateWeek1ControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val payStartDateWeek1Route = routes.PayStartDateWeek1Controller.onPageLoad(NormalMode).url
 
-  override val emptyUserAnswers = UserAnswers(userAnswersId)
+  val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
 
   def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, payStartDateWeek1Route)
@@ -67,7 +66,7 @@ class PayStartDateWeek1ControllerSpec extends SpecBase with MockitoSugar {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
 
       running(application) {
         val result = route(application, getRequest).value
@@ -75,13 +74,13 @@ class PayStartDateWeek1ControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[PayStartDateWeek1View]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, PaternityReason.PaternityFromBirth)(getRequest, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(PayStartDateWeek1Page, validAnswer).success.value
+      val userAnswers = answers.set(PayStartDateWeek1Page, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -91,7 +90,7 @@ class PayStartDateWeek1ControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, getRequest).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, PaternityReason.PaternityFromBirth)(getRequest, messages(application)).toString
       }
     }
 
@@ -102,7 +101,7 @@ class PayStartDateWeek1ControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(answers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -119,7 +118,7 @@ class PayStartDateWeek1ControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
 
       val request =
         FakeRequest(POST, payStartDateWeek1Route)
@@ -133,7 +132,7 @@ class PayStartDateWeek1ControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, PaternityReason.PaternityFromBirth)(request, messages(application)).toString
       }
     }
 
