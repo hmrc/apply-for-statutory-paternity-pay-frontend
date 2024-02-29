@@ -397,7 +397,9 @@ dateOfAdoptionNotification.change.hidden = the date you or your partner were sen
 
 leaveTakenTogetherOrSeparately.title = Would you like to take your leave together or separately?
 leaveTakenTogetherOrSeparately.heading = Would you like to take your leave together or separately?
-leaveTakenTogetherOrSeparately.p1 = Your weeks of leave can be taken either together or separately within 52 weeks of the child’s birth. You can change your decision later but you must give your employer 28 days notice of this change.
+leaveTakenTogetherOrSeparately.p1.paternityFromBirth = Your weeks of leave can be taken either together or separately within 52 weeks of the child’s birth. You can change your decision later but you must give your employer 28 days notice of this change.
+leaveTakenTogetherOrSeparately.p1.paternityFromUkAdoption = Your weeks of leave can be taken either together or separately within 52 weeks of the child being placed. You can change your decision later but you must give your employer 28 days notice of this change.
+leaveTakenTogetherOrSeparately.p1.paternityFromAdoptionFromAbroad = Your weeks of leave can be taken either together or separately within 52 weeks of the child entering the UK. You can change your decision later but you must give your employer 28 days notice of this change.
 leaveTakenTogetherOrSeparately.together = Together
 leaveTakenTogetherOrSeparately.together.hint = You’ll take your first and second weeks of leave one after the other.
 leaveTakenTogetherOrSeparately.separately = Separately
