@@ -19,8 +19,8 @@ package viewmodels.checkAnswers
 import config.Formats.dateTimeFormat
 import controllers.routes
 import json.OptionalLocalDateReads._
-import models.{CheckMode, LeaveTakenTogetherOrSeparately, PaternityLeaveLengthGbPostApril24, UserAnswers}
-import pages.{LeaveTakenTogetherOrSeparatelyPage, PaternityLeaveLengthGbPostApril24Page, PayStartDateGbPostApril24Page}
+import models.{CheckMode, UserAnswers}
+import pages.PayStartDateGbPostApril24Page
 import play.api.i18n.{Lang, Messages}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryListRow, Value}
 import viewmodels.govuk.summarylist._

@@ -45,7 +45,7 @@ class PayStartDateWeek2ControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val validAnswer = LocalDate.now(ZoneOffset.UTC)
+  val validAnswer = Some(LocalDate.now(ZoneOffset.UTC))
 
   lazy val payStartDateWeek2Route = routes.PayStartDateWeek2Controller.onPageLoad(NormalMode).url
 
@@ -57,9 +57,9 @@ class PayStartDateWeek2ControllerSpec extends SpecBase with MockitoSugar {
   def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
     FakeRequest(POST, payStartDateWeek2Route)
       .withFormUrlEncodedBody(
-        "value.day"   -> validAnswer.getDayOfMonth.toString,
-        "value.month" -> validAnswer.getMonthValue.toString,
-        "value.year"  -> validAnswer.getYear.toString
+        "value.day"   -> validAnswer.value.getDayOfMonth.toString,
+        "value.month" -> validAnswer.value.getMonthValue.toString,
+        "value.year"  -> validAnswer.value.getYear.toString
       )
 
   "PayStartDateWeek2 Controller" - {

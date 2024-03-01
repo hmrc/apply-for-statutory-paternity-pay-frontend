@@ -21,12 +21,6 @@ import pages._
 
 trait PageGenerators {
 
-  implicit lazy val arbitraryPayStartDateWeek2Page: Arbitrary[PayStartDateWeek2Page.type] =
-    Arbitrary(PayStartDateWeek2Page)
-
-  implicit lazy val arbitraryPayStartDateWeek1Page: Arbitrary[PayStartDateWeek1Page.type] =
-    Arbitrary(PayStartDateWeek1Page)
-
   implicit lazy val arbitraryPayStartDateGbPreApril24OrNiPage: Arbitrary[PayStartDateGbPreApril24OrNiPage.type] =
     Arbitrary(PayStartDateGbPreApril24OrNiPage)
 

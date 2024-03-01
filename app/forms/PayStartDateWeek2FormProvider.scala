@@ -17,21 +17,22 @@
 package forms
 
 import java.time.LocalDate
-
 import forms.mappings.Mappings
+
 import javax.inject.Inject
 import play.api.data.Form
+import play.api.data.Forms.optional
 import play.api.i18n.Messages
 
 class PayStartDateWeek2FormProvider @Inject() extends Mappings {
 
-  def apply()(implicit messages: Messages): Form[LocalDate] =
+  def apply()(implicit messages: Messages): Form[Option[LocalDate]] =
     Form(
-      "value" -> localDate(
+      "value" -> optional(localDate(
         invalidKey     = "payStartDateWeek2.error.invalid",
         allRequiredKey = "payStartDateWeek2.error.required.all",
         twoRequiredKey = "payStartDateWeek2.error.required.two",
         requiredKey    = "payStartDateWeek2.error.required"
-      )
+      ))
     )
 }

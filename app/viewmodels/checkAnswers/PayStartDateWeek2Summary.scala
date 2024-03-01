@@ -17,12 +17,12 @@
 package viewmodels.checkAnswers
 
 import config.Formats.dateTimeFormat
-
 import controllers.routes
+import json.OptionalLocalDateReads._
 import models.{CheckMode, UserAnswers}
 import pages.PayStartDateWeek2Page
 import play.api.i18n.{Lang, Messages}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryListRow, Value}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -30,16 +30,23 @@ object PayStartDateWeek2Summary  {
 
   def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(PayStartDateWeek2Page).map {
-      answer =>
-        implicit val lang: Lang = messages.lang
+      _.map {
+        answer =>
+          implicit val lang: Lang = messages.lang
 
-        SummaryListRowViewModel(
-          key     = "payStartDateWeek2.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.format(dateTimeFormat())),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.PayStartDateWeek2Controller.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("payStartDateWeek2.change.hidden"))
-          )
-        )
+          viewModel(ValueViewModel(answer.format(dateTimeFormat())))
+      }.getOrElse {
+        viewModel(ValueViewModel(messages("site.notProvided")))
+      }
     }
+
+  private def viewModel(value: Value)(implicit messages: Messages): SummaryListRow =
+    SummaryListRowViewModel(
+      key = "payStartDateWeek2.checkYourAnswersLabel",
+      value = value,
+      actions = Seq(
+        ActionItemViewModel("site.change", routes.PayStartDateWeek2Controller.onPageLoad(CheckMode).url)
+          .withVisuallyHiddenText(messages("payStartDateWeek2.change.hidden"))
+      )
+    )
 }

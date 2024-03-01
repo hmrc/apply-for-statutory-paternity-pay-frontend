@@ -54,8 +54,8 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
         .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
         .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
         .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
-        .set(PayStartDateWeek1Page, LocalDate.now).success.value
-        .set(PayStartDateWeek2Page, LocalDate.now).success.value
+        .set(PayStartDateWeek1Page, Some(LocalDate.now)).success.value
+        .set(PayStartDateWeek2Page, Some(LocalDate.now)).success.value
 
     def fullAnswersAdopting =
       emptyUserAnswers
@@ -83,8 +83,8 @@ class IsAdoptingOrParentalOrderPageSpec extends PageBehaviours {
         .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
         .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
         .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
-        .set(PayStartDateWeek1Page, LocalDate.now).success.value
-        .set(PayStartDateWeek2Page, LocalDate.now).success.value
+        .set(PayStartDateWeek1Page, Some(LocalDate.now)).success.value
+        .set(PayStartDateWeek2Page, Some(LocalDate.now)).success.value
 
     "must remove all answers except this and Country of Residence" - {
 

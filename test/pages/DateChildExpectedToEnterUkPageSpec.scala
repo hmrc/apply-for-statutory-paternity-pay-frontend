@@ -47,8 +47,8 @@ class DateChildExpectedToEnterUkPageSpec extends PageBehaviours with ScalaCheckP
         .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
         .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Separately).success.value
         .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
-        .set(PayStartDateWeek1Page, LocalDate.now).success.value
-        .set(PayStartDateWeek2Page, LocalDate.now).success.value
+        .set(PayStartDateWeek1Page, Some(LocalDate.now)).success.value
+        .set(PayStartDateWeek2Page, Some(LocalDate.now)).success.value
 
     val dateBeforeLegislation = LocalDate.of(2000, 1, 1)
     val dateAfterLegislation  = LocalDate.of(2100, 1, 1)

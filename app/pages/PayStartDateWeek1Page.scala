@@ -22,7 +22,7 @@ import java.time.LocalDate
 import play.api.libs.json.JsPath
 import play.api.mvc.Call
 
-case object PayStartDateWeek1Page extends QuestionPage[LocalDate] {
+case object PayStartDateWeek1Page extends QuestionPage[Option[LocalDate]] {
 
   override def path: JsPath = JsPath \ toString
 

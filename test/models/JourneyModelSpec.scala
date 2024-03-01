@@ -599,8 +599,8 @@ class JourneyModelSpec
               .set(BabyDueDatePage, dueDate).success.value
               .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
               .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Separately).success.value
-              .set(PayStartDateWeek1Page, payStartDate).success.value
-              .set(PayStartDateWeek2Page, payStartDate).success.value
+              .set(PayStartDateWeek1Page, Some(payStartDate)).success.value
+              .set(PayStartDateWeek2Page, None).success.value
 
             val expected = JourneyModel(
               countryOfResidence = country,
@@ -617,7 +617,7 @@ class JourneyModelSpec
               name = Name("foo", "bar"),
               nino = nino,
               childDetails = BirthParentalOrderChild(dueDate, None),
-              paternityLeaveDetails = PaternityLeaveGbPostApril24TwoWeeksSeparate(Some(payStartDate), Some(payStartDate))
+              paternityLeaveDetails = PaternityLeaveGbPostApril24TwoWeeksSeparate(Some(payStartDate), None)
             )
 
             JourneyModel.from(answers).value mustEqual expected
