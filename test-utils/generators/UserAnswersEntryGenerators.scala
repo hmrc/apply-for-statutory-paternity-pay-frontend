@@ -25,22 +25,6 @@ import uk.gov.hmrc.domain.Nino
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
 
-  implicit lazy val arbitraryPayStartDateWeek2UserAnswersEntry: Arbitrary[(PayStartDateWeek2Page.type, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[PayStartDateWeek2Page.type]
-        value <- arbitrary[Int].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryPayStartDateWeek1UserAnswersEntry: Arbitrary[(PayStartDateWeek1Page.type, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[PayStartDateWeek1Page.type]
-        value <- arbitrary[Int].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
   implicit lazy val arbitraryPayStartDateGbPreApril24OrNiUserAnswersEntry: Arbitrary[(PayStartDateGbPreApril24OrNiPage.type, JsValue)] =
     Arbitrary {
       for {

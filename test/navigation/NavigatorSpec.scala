@@ -1557,7 +1557,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
             val answers =
               emptyUserAnswers
-                .set(PayStartDateWeek1Page, LocalDate.now).success.value
+                .set(PayStartDateWeek1Page, Some(LocalDate.now)).success.value
                 .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Separately).success.value
 
             navigator.nextPage(LeaveTakenTogetherOrSeparatelyPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
@@ -1592,7 +1592,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
         "to CYA when Pay Start Date Week 2 has been answered" in {
 
-          val answers = emptyUserAnswers.set(PayStartDateWeek2Page, LocalDate.now).success.value
+          val answers = emptyUserAnswers.set(PayStartDateWeek2Page, Some(LocalDate.now)).success.value
           navigator.nextPage(PayStartDateWeek1Page, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
         }
       }

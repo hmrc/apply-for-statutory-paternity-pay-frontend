@@ -16,7 +16,6 @@
 
 package pages
 
-import json.OptionalLocalDateReads._
 import models.{LeaveTakenTogetherOrSeparately, PaternityLeaveLengthGbPostApril24}
 import pages.behaviours.PageBehaviours
 
@@ -37,8 +36,8 @@ class PaternityLeaveLengthGbPostApril24PageSpec extends PageBehaviours {
       val answers =
         emptyUserAnswers
           .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
-          .set(PayStartDateWeek1Page, LocalDate.now).success.value
-          .set(PayStartDateWeek2Page, LocalDate.now).success.value
+          .set(PayStartDateWeek1Page, Some(LocalDate.now)).success.value
+          .set(PayStartDateWeek2Page, Some(LocalDate.now)).success.value
           .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
 
       val result = answers.set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
@@ -55,8 +54,8 @@ class PaternityLeaveLengthGbPostApril24PageSpec extends PageBehaviours {
       val answers =
         emptyUserAnswers
           .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
-          .set(PayStartDateWeek1Page, LocalDate.now).success.value
-          .set(PayStartDateWeek2Page, LocalDate.now).success.value
+          .set(PayStartDateWeek1Page, Some(LocalDate.now)).success.value
+          .set(PayStartDateWeek2Page, Some(LocalDate.now)).success.value
           .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
 
       val result = answers.set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
@@ -72,8 +71,8 @@ class PaternityLeaveLengthGbPostApril24PageSpec extends PageBehaviours {
       val answers =
         emptyUserAnswers
           .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
-          .set(PayStartDateWeek1Page, LocalDate.now).success.value
-          .set(PayStartDateWeek2Page, LocalDate.now).success.value
+          .set(PayStartDateWeek1Page, Some(LocalDate.now)).success.value
+          .set(PayStartDateWeek2Page, Some(LocalDate.now)).success.value
           .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
 
       val result = answers.set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.Unsure).success.value

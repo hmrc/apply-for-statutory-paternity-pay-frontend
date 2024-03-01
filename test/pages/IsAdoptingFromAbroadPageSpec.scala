@@ -62,8 +62,8 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
         .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
         .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
         .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
-        .set(PayStartDateWeek1Page, LocalDate.now).success.value
-        .set(PayStartDateWeek2Page, LocalDate.now).success.value
+        .set(PayStartDateWeek1Page, Some(LocalDate.now)).success.value
+        .set(PayStartDateWeek2Page, Some(LocalDate.now)).success.value
 
     val fullAnswersParentalOrder =
       emptyUserAnswers
@@ -88,8 +88,8 @@ class IsAdoptingFromAbroadPageSpec extends PageBehaviours {
         .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
         .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
         .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
-        .set(PayStartDateWeek1Page, LocalDate.now).success.value
-        .set(PayStartDateWeek2Page, LocalDate.now).success.value
+        .set(PayStartDateWeek1Page, Some(LocalDate.now)).success.value
+        .set(PayStartDateWeek2Page, Some(LocalDate.now)).success.value
 
     "must remove redundant answers when the answer is true and Reason for Requesting is Parental Order" in {
 

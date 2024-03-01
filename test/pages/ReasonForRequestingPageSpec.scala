@@ -53,8 +53,8 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
           .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
           .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
           .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
-          .set(PayStartDateWeek1Page, LocalDate.now).success.value
-          .set(PayStartDateWeek2Page, LocalDate.now).success.value
+          .set(PayStartDateWeek1Page, Some(LocalDate.now)).success.value
+          .set(PayStartDateWeek2Page, Some(LocalDate.now)).success.value
 
       val result = answers.set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
 
@@ -102,8 +102,8 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
           .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
           .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
           .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
-          .set(PayStartDateWeek1Page, LocalDate.now).success.value
-          .set(PayStartDateWeek2Page, LocalDate.now).success.value
+          .set(PayStartDateWeek1Page, Some(LocalDate.now)).success.value
+          .set(PayStartDateWeek2Page, Some(LocalDate.now)).success.value
 
       val result = answers.set(ReasonForRequestingPage, newReason).success.value
 
@@ -151,8 +151,8 @@ class ReasonForRequestingPageSpec extends PageBehaviours {
           .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
           .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
           .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
-          .set(PayStartDateWeek1Page, LocalDate.now).success.value
-          .set(PayStartDateWeek2Page, LocalDate.now).success.value
+          .set(PayStartDateWeek1Page, Some(LocalDate.now)).success.value
+          .set(PayStartDateWeek2Page, Some(LocalDate.now)).success.value
 
       val result = answers.set(ReasonForRequestingPage, newReason).success.value
 

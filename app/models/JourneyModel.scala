@@ -303,7 +303,7 @@ object JourneyModel {
               answers.getEither(PayStartDateWeek1Page),
               answers.getEither(PayStartDateWeek2Page)
             ).parMapN { case (week1Date, week2Date) =>
-              PaternityLeaveGbPostApril24TwoWeeksSeparate(Some(week1Date), Some(week2Date))
+              PaternityLeaveGbPostApril24TwoWeeksSeparate(week1Date, week2Date)
             }
         }
 

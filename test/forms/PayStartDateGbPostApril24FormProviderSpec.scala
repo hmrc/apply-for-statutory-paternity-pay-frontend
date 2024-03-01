@@ -34,5 +34,7 @@ class PayStartDateGbPostApril24FormProviderSpec extends DateBehaviours {
     )
 
     behave like dateField(form, "value", validData)
+
+    behave like optionalDateField(form, "value")
   }
 }

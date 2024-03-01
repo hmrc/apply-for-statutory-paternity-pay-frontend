@@ -17,22 +17,22 @@
 package pages
 
 import java.time.LocalDate
-
-import org.scalacheck.Arbitrary
+import json.OptionalLocalDateReads._
+import org.scalacheck.{Arbitrary, Gen}
 import pages.behaviours.PageBehaviours
 
 class PayStartDateWeek1PageSpec extends PageBehaviours {
 
   "PayStartDateWeek1Page" - {
 
-    implicit lazy val arbitraryLocalDate: Arbitrary[LocalDate] = Arbitrary {
-      datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2100, 1, 1))
+    implicit lazy val arbitraryOptionalLocalDate: Arbitrary[Option[LocalDate]] = Arbitrary {
+      Gen.option(datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2100, 1, 1)))
     }
 
-    beRetrievable[LocalDate](PayStartDateWeek1Page)
+    beRetrievable[Option[LocalDate]](PayStartDateWeek1Page)
 
-    beSettable[LocalDate](PayStartDateWeek1Page)
+    beSettable[Option[LocalDate]](PayStartDateWeek1Page)
 
-    beRemovable[LocalDate](PayStartDateWeek1Page)
+    beRemovable[Option[LocalDate]](PayStartDateWeek1Page)
   }
 }

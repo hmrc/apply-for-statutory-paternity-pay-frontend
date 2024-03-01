@@ -35,6 +35,6 @@ class PayStartDateWeek2FormProviderSpec extends DateBehaviours {
 
     behave like dateField(form, "value", validData)
 
-    behave like mandatoryDateField(form, "value", "payStartDateWeek2.error.required.all")
+    behave like optionalDateField(form, "value")
   }
 }

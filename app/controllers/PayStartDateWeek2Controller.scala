@@ -19,6 +19,7 @@ package controllers
 import controllers.actions._
 import forms.PayStartDateWeek2FormProvider
 import javax.inject.Inject
+import json.OptionalLocalDateReads._
 import models.Mode
 import navigation.Navigator
 import pages.PayStartDateWeek2Page
@@ -40,33 +41,40 @@ class PayStartDateWeek2Controller @Inject()(
                                         formProvider: PayStartDateWeek2FormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: PayStartDateWeek2View
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                      )(implicit ec: ExecutionContext)
+  extends FrontendBaseController
+    with I18nSupport
+    with AnswerExtractor {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val form = formProvider()
+      getPaternityReason { paternityReason =>
+        val form = formProvider()
 
-      val preparedForm = request.userAnswers.get(PayStartDateWeek2Page) match {
-        case None => form
-        case Some(value) => form.fill(value)
+        val preparedForm = request.userAnswers.get(PayStartDateWeek2Page) match {
+          case None => form
+          case Some(value) => form.fill(value)
+        }
+
+        Ok(view(preparedForm, mode, paternityReason))
       }
-
-      Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider()
+      getPaternityReasonAsync { paternityReason =>
+        val form = formProvider()
 
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+        form.bindFromRequest().fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, mode, paternityReason))),
 
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDateWeek2Page, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PayStartDateWeek2Page, mode, updatedAnswers))
-      )
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDateWeek2Page, value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(PayStartDateWeek2Page, mode, updatedAnswers))
+        )
+      }
   }
 }
