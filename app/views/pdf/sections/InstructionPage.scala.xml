@@ -15,17 +15,17 @@
         <fo:block-container>
 
             <fo:block margin-bottom="8mm">
-                <fo:block font-weight="bold">@messages("pdf.whatToDoNow.heading")</fo:block>
+                <fo:block role="H2" font-weight="bold">@messages("pdf.whatToDoNow.heading")</fo:block>
                 <fo:inline>@messages("pdf.whatToDoNow.p")</fo:inline>
             </fo:block>
 
             <fo:block margin-bottom="8mm">
-                <fo:block font-weight="bold">@messages("pdf.furtherInfo.heading")</fo:block>
+                <fo:block role="H2" font-weight="bold">@messages("pdf.furtherInfo.heading")</fo:block>
                 <fo:inline>@messages("pdf.furtherInfo.p")</fo:inline>
             </fo:block>
 
             <fo:block margin-bottom="8mm">
-                <fo:block font-weight="bold">@messages("pdf.penalties.heading")</fo:block>
+                <fo:block role="H2" font-weight="bold">@messages("pdf.penalties.heading")</fo:block>
                 <fo:inline>@messages("pdf.penalties.p")</fo:inline>
             </fo:block>
 

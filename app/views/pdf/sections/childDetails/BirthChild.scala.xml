@@ -11,7 +11,7 @@
 
 <fo:block-container margin-top="8mm">
     <!-- Baby details -->
-    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.babyDetails")</fo:block>
+    <fo:block role="H2" font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.babyDetails")</fo:block>
 
     <!-- Due date -->
     <fo:block-container>
