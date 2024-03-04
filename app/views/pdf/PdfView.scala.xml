@@ -21,7 +21,8 @@
     paternityDetailsGbPostApril24TwoWeeksTogether: PaternityDetailsGbPostApril24TwoWeeksTogether,
     paternityDetailsGbPostApril24TwoWeeksSeparate: PaternityDetailsGbPostApril24TwoWeeksSeparate,
     paternityDetailsGbPostApril24Unsure: PaternityDetailsGbPostApril24Unsure,
-    instructionPage: InstructionPage
+    instructionPage: InstructionPage,
+    bookmarkTree: BookmarkTree
 )
 
 @(model: JourneyModel)(implicit request: RequestHeader, messages: Messages)
@@ -41,6 +42,8 @@
             </pdf:dictionary>
         </pdf:catalog>
     </fo:declarations>
+
+    @bookmarkTree(model)
 
     <fo:page-sequence master-reference="main">
 

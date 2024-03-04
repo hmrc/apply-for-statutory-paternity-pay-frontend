@@ -8,7 +8,7 @@
 
 
 <fo:block margin-top="8mm">
-    <fo:block role="H2" margin-bottom="4mm" font-weight="bold" font-size="18pt">@messages("pdf.declaration")</fo:block>
+    <fo:block role="H2" id="declaration" margin-bottom="4mm" font-weight="bold" font-size="18pt">@messages("pdf.declaration")</fo:block>
 
     <fo:block-container>
         <fo:block margin-bottom="4mm">@messages("pdf.declaration.declaration.1")</fo:block>
