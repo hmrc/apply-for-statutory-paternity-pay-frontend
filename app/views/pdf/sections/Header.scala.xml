@@ -1,0 +1,32 @@
+@this()
+
+@(model: JourneyModel)(implicit request: RequestHeader, messages: Messages)
+
+<fo:static-content flow-name="xsl-region-before">
+    <fo:block>
+        @if(messages.lang.locale.getLanguage == "cy") {
+            <fo:external-graphic content-width="3.5cm" src="url(conf/resources/logo_cy.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
+        } else {
+            <fo:external-graphic content-width="3.5cm" src="url(conf/resources/logo.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
+        }
+        <fo:block margin-left="4cm" margin-top="-1.25cm" text-align="right" font-size="16pt" font-weight="bold">
+
+            @{model.eligibility match {
+            case _: JourneyModel.BirthChildEligibility =>
+                messages("pdf.title")
+
+            case eligibility: JourneyModel.AdoptionParentalOrderEligibility =>
+                if(eligibility.adoptingFromAbroad) {
+                    messages("pdf.adoptionFromAbroad.title")
+                } else {
+                    if(eligibility.reasonForRequesting == RelationshipToChild.ParentalOrder) {
+                        messages("pdf.parentalOrder.title")
+                    } else {
+                        messages("pdf.adoption.title")
+                    }
+                }
+            }}
+
+        </fo:block>
+    </fo:block>
+</fo:static-content>

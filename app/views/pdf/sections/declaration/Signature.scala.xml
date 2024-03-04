@@ -1,0 +1,31 @@
+@this()
+
+@()(implicit request: RequestHeader, messages: Messages)
+
+
+<fo:block font-weight="bold" margin-bottom="1mm">@messages("pdf.declaration.signature")</fo:block>
+
+<fo:block margin-right="6cm" padding-top="1.5cm" margin-bottom="4mm" border="0.5mm solid black"> </fo:block>
+
+<fo:block font-weight="bold" margin-bottom="1mm">@messages("pdf.declaration.date")</fo:block>
+
+<fo:block margin-top="2mm">
+    <fo:inline>@messages("date.day")</fo:inline>
+    <fo:inline padding-left="2.5cm">@messages("date.month")</fo:inline>
+    <fo:inline padding-left="2.2cm">@messages("date.year")</fo:inline>
+</fo:block>
+
+<fo:block margin-top="0.9cm">
+    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">D</fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">D</fo:inline>
+    <fo:inline padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">/</fo:inline>
+
+    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">M</fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">M</fo:inline>
+    <fo:inline padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">/</fo:inline>
+
+    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
+</fo:block>

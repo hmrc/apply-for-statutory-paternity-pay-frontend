@@ -1,0 +1,22 @@
+@import views.xml.pdf.sections.declaration._
+
+@this(
+    signature: Signature
+)
+
+@()(implicit request: RequestHeader, messages: Messages)
+
+
+<fo:block margin-top="8mm">
+    <fo:block margin-bottom="4mm" font-weight="bold" font-size="18pt">@messages("pdf.declaration")</fo:block>
+
+    <fo:block-container>
+        <fo:block margin-bottom="4mm">@messages("pdf.declaration.declaration.1")</fo:block>
+        <fo:block margin-bottom="4mm">@messages("pdf.declaration.declaration.2")</fo:block>
+        <fo:block margin-bottom="4mm">@messages("pdf.declaration.declaration.3")</fo:block>
+        <fo:block margin-bottom="4mm">@messages("pdf.declaration.declaration.4")</fo:block>
+    </fo:block-container>
+
+    @signature()
+
+</fo:block>

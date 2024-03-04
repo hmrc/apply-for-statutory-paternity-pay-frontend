@@ -1,0 +1,35 @@
+@import views.xml.pdf.sections.Header
+
+@this(
+    header: Header
+)
+
+@(model: JourneyModel)(implicit request: RequestHeader, messages: Messages)
+
+<fo:page-sequence master-reference="main">
+
+    @header(model)
+
+    <!-- Instructions -->
+    <fo:flow flow-name="xsl-region-body">
+        <fo:block-container>
+
+            <fo:block margin-bottom="8mm">
+                <fo:block font-weight="bold">@messages("pdf.whatToDoNow.heading")</fo:block>
+                <fo:inline>@messages("pdf.whatToDoNow.p")</fo:inline>
+            </fo:block>
+
+            <fo:block margin-bottom="8mm">
+                <fo:block font-weight="bold">@messages("pdf.furtherInfo.heading")</fo:block>
+                <fo:inline>@messages("pdf.furtherInfo.p")</fo:inline>
+            </fo:block>
+
+            <fo:block margin-bottom="8mm">
+                <fo:block font-weight="bold">@messages("pdf.penalties.heading")</fo:block>
+                <fo:inline>@messages("pdf.penalties.p")</fo:inline>
+            </fo:block>
+
+        </fo:block-container>
+    </fo:flow>
+
+</fo:page-sequence>

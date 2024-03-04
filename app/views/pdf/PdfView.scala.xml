@@ -1,173 +1,96 @@
-@*
-* Copyright 2022 HM Revenue & Customs
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*@
-
 @import java.time.LocalDate
 @import java.time.format.DateTimeFormatter
 @import config.Formats
+@import views.xml.pdf.sections._
+@import views.xml.pdf.sections.declaration._
+@import views.xml.pdf.sections.childDetails._
+@import views.xml.pdf.sections.paternity._
 
-@this()
+@this(
+    layout: Layout,
+    header: views.xml.pdf.sections.Header,
+    personalDetails: views.xml.pdf.sections.PersonalDetails,
+    birthDeclaration: BirthDeclaration,
+    adoptionDeclaration: AdoptionDeclaration,
+    parentalOrderDeclaration: ParentalOrderDeclaration,
+    birthChild: BirthChild,
+    adoptedChild: AdoptedChild,
+    adoptedFromAbroadChild: AdoptedFromAbroadChild,
+    paternityDetailsGbPreApril24OrNi: PaternityDetailsGbPreApril24OrNi,
+    paternityDetailsGbPostApril24OneWeek: PaternityDetailsGbPostApril24OneWeek,
+    paternityDetailsGbPostApril24TwoWeeksTogether: PaternityDetailsGbPostApril24TwoWeeksTogether,
+    paternityDetailsGbPostApril24TwoWeeksSeparate: PaternityDetailsGbPostApril24TwoWeeksSeparate,
+    paternityDetailsGbPostApril24Unsure: PaternityDetailsGbPostApril24Unsure,
+    instructionPage: InstructionPage
+)
 
 @(model: JourneyModel)(implicit request: RequestHeader, messages: Messages)
 
 @dateTimeFormat(date: LocalDate) = {
-        @Formats.dateTimeFormat()(messages.lang).format(date)
+    @Formats.dateTimeFormat()(messages.lang).format(date)
 }
 
 <fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:fox="http://xmlgraphics.apache.org/fop/extensions" font-family="sans-serif">
 
-    <fo:layout-master-set>
-        <fo:simple-page-master master-name="main" page-height="297mm" page-width="210mm" margin="2cm">
-            <fo:region-body region-name="xsl-region-body" margin-top="3cm"/>
-            <fo:region-before region-name="xsl-region-before"/>
-            <fo:region-after region-name="xsl-region-after"/>
-        </fo:simple-page-master>
-    </fo:layout-master-set>
+    @layout()
 
     <fo:page-sequence master-reference="main">
 
-        <!-- Header -->
-        <fo:static-content flow-name="xsl-region-before">
-            <fo:block>
-                @if(messages.lang.locale.getLanguage == "cy") {
-                    <fo:external-graphic content-width="3.5cm" src="url(conf/resources/logo_cy.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
-                } else {
-                    <fo:external-graphic content-width="3.5cm" src="url(conf/resources/logo.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
-                }
-                <fo:block margin-left="4cm" margin-top="-1.25cm" text-align="right" font-size="16pt" font-weight="bold">@messages("pdf.title")</fo:block>
-            </fo:block>
-        </fo:static-content>
+        @header(model)
 
         <!-- Body -->
         <fo:flow flow-name="xsl-region-body">
             <fo:block-container>
 
-                <fo:block-container>
-                    <!-- Personal details -->
-                    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.personalDetails")</fo:block>
+                @personalDetails(model)
 
-                    <!-- Name -->
-                    <fo:block-container>
-                        <fo:block-container margin-bottom="3mm">
-                            <fo:block>
-                                <fo:inline font-weight="bold">@messages("pdf.name"): </fo:inline>
-                                <fo:inline>@model.name.firstName @model.name.lastName</fo:inline>
-                            </fo:block>
-                        </fo:block-container>
-                    </fo:block-container>
+                @{model.childDetails match {
+                    case child: JourneyModel.BirthParentalOrderChild =>
+                        birthChild(child)
 
-                    <!-- NINO -->
-                    <fo:block>
-                        <fo:block-container margin-bottom="3mm">
-                            <fo:block>
-                                <fo:inline font-weight="bold">@messages("pdf.nino"): </fo:inline>
-                                <fo:inline>@model.nino.value</fo:inline>
-                            </fo:block>
-                        </fo:block-container>
-                    </fo:block>
+                    case child: JourneyModel.AdoptedUkChild =>
+                        adoptedChild(child)
 
-                </fo:block-container>
+                    case child: JourneyModel.AdoptedAbroadChild =>
+                        adoptedFromAbroadChild(child)
+                }}
 
+                @{model.paternityLeaveDetails match {
+                    case details: JourneyModel.PaternityLeaveGbPreApril24OrNi =>
+                        paternityDetailsGbPreApril24OrNi(details)
 
+                    case details: JourneyModel.PaternityLeaveGbPostApril24OneWeek =>
+                        paternityDetailsGbPostApril24OneWeek(details)
 
-                <fo:block-container margin-top="8mm">
-                    <!-- Paternity details -->
-                    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.paternityDetails")</fo:block>
+                    case details: JourneyModel.PaternityLeaveGbPostApril24TwoWeeksTogether =>
+                        paternityDetailsGbPostApril24TwoWeeksTogether(details)
 
-                </fo:block-container>
+                    case details: JourneyModel.PaternityLeaveGbPostApril24TwoWeeksSeparate =>
+                        paternityDetailsGbPostApril24TwoWeeksSeparate(details)
+
+                    case JourneyModel.PaternityLeaveGbPostApril24Unsure =>
+                        paternityDetailsGbPostApril24Unsure()
+                }}
 
             </fo:block-container>
 
-            <fo:block margin-top="8mm">
-                <fo:block margin-bottom="4mm" font-weight="bold" font-size="18pt">@messages("pdf.declaration")</fo:block>
+            @{model.eligibility match {
+                case _: JourneyModel.BirthChildEligibility =>
+                    birthDeclaration()
 
-                <fo:block-container>
-                    <fo:block margin-bottom="4mm">@messages("pdf.declaration.declaration.1")</fo:block>
-                    <fo:block margin-bottom="4mm">@messages("pdf.declaration.declaration.2")</fo:block>
-                    <fo:block margin-bottom="4mm">@messages("pdf.declaration.declaration.3")</fo:block>
-                    <fo:block margin-bottom="4mm">@messages("pdf.declaration.declaration.4")</fo:block>
-                </fo:block-container>
+                case _ =>
+                    model.childDetails match {
+                        case _: JourneyModel.BirthParentalOrderChild =>
+                            parentalOrderDeclaration()
 
-                <fo:block font-weight="bold" margin-bottom="1mm">@messages("pdf.declaration.signature")</fo:block>
-
-                <fo:block margin-right="6cm" padding-top="1.5cm" margin-bottom="4mm" border="0.5mm solid black"> </fo:block>
-
-                <fo:block font-weight="bold" margin-bottom="1mm">@messages("pdf.declaration.date")</fo:block>
-
-                <fo:block margin-top="2mm">
-                    <fo:inline>@messages("date.day")</fo:inline>
-                    <fo:inline padding-left="2.5cm">@messages("date.month")</fo:inline>
-                    <fo:inline padding-left="2.2cm">@messages("date.year")</fo:inline>
-                </fo:block>
-
-                <fo:block margin-top="0.9cm">
-                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">D</fo:inline>
-                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">D</fo:inline>
-                    <fo:inline padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">/</fo:inline>
-
-                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">M</fo:inline>
-                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">M</fo:inline>
-                    <fo:inline padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">/</fo:inline>
-
-                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
-                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
-                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
-                    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
-                </fo:block>
-
-            </fo:block>
+                        case _ =>
+                            adoptionDeclaration()
+                    }
+            }}
         </fo:flow>
 
     </fo:page-sequence>
 
-    <fo:page-sequence master-reference="main">
-
-        <!-- Header -->
-        <fo:static-content flow-name="xsl-region-before">
-            <fo:block>
-                @if(messages.lang.locale.getLanguage == "cy") {
-                    <fo:external-graphic content-width="3.5cm" src="url(conf/resources/logo_cy.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
-                } else {
-                    <fo:external-graphic content-width="3.5cm" src="url(conf/resources/logo.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
-                }
-                <fo:block margin-left="4cm" margin-top="-1.25cm" text-align="right" font-size="16pt" font-weight="bold">@messages("pdf.title")</fo:block>
-            </fo:block>
-        </fo:static-content>
-
-        <!-- Instructions -->
-        <fo:flow flow-name="xsl-region-body">
-            <fo:block-container>
-
-                <fo:block margin-bottom="8mm">
-                    <fo:block font-weight="bold">@messages("pdf.whatToDoNow.heading")</fo:block>
-                    <fo:inline>@messages("pdf.whatToDoNow.p")</fo:inline>
-                </fo:block>
-
-                <fo:block margin-bottom="8mm">
-                    <fo:block font-weight="bold">@messages("pdf.furtherInfo.heading")</fo:block>
-                    <fo:inline>@messages("pdf.furtherInfo.p")</fo:inline>
-                </fo:block>
-
-                <fo:block margin-bottom="8mm">
-                    <fo:block font-weight="bold">@messages("pdf.penalties.heading")</fo:block>
-                    <fo:inline>@messages("pdf.penalties.p")</fo:inline>
-                </fo:block>
-
-            </fo:block-container>
-        </fo:flow>
-
-    </fo:page-sequence>
+    @instructionPage(model)
 
 </fo:root>
