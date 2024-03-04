@@ -1,0 +1,49 @@
+@this()
+
+@(model: JourneyModel)(implicit messages: Messages)
+
+<fo:bookmark-tree>
+    <fo:bookmark internal-destination="title">
+        <fo:bookmark-title>
+            @{model.eligibility match {
+                case _: JourneyModel.BirthChildEligibility =>
+                    messages("pdf.title")
+
+                case eligibility: JourneyModel.AdoptionParentalOrderEligibility =>
+                    if(eligibility.adoptingFromAbroad) {
+                        messages("pdf.adoptionFromAbroad.title")
+                    } else {
+                        if(eligibility.reasonForRequesting == RelationshipToChild.ParentalOrder) {
+                            messages("pdf.parentalOrder.title")
+                        } else {
+                            messages("pdf.adoption.title")
+                        }
+                    }
+            }}
+        </fo:bookmark-title>
+
+        <fo:bookmark internal-destination="personal-details">
+            <fo:bookmark-title>@messages("section.personalDetails")</fo:bookmark-title>
+        </fo:bookmark>
+
+        <fo:bookmark internal-destination="child-details">
+            <fo:bookmark-title>@messages("section.childDetails")</fo:bookmark-title>
+        </fo:bookmark>
+
+        <fo:bookmark internal-destination="paternity-details">
+            <fo:bookmark-title>@messages("section.paternityDetails")</fo:bookmark-title>
+        </fo:bookmark>
+
+        <fo:bookmark internal-destination="what-to-do-now">
+            <fo:bookmark-title>@messages("pdf.whatToDoNow.heading")</fo:bookmark-title>
+        </fo:bookmark>
+
+        <fo:bookmark internal-destination="further-information">
+            <fo:bookmark-title>@messages("pdf.furtherInfo.heading")</fo:bookmark-title>
+        </fo:bookmark>
+
+        <fo:bookmark internal-destination="penalties">
+            <fo:bookmark-title>@messages("pdf.penalties.heading")</fo:bookmark-title>
+        </fo:bookmark>
+    </fo:bookmark>
+</fo:bookmark-tree>

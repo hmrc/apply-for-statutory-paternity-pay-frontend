@@ -16,16 +16,16 @@
 </fo:block>
 
 <fo:block margin-top="0.9cm">
-    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">D</fo:inline>
-    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">D</fo:inline>
-    <fo:inline padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">/</fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
+    <fo:inline padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
 
-    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">M</fo:inline>
-    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">M</fo:inline>
-    <fo:inline padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">/</fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
+    <fo:inline padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
 
-    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
-    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
-    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
-    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff">Y</fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
 </fo:block>

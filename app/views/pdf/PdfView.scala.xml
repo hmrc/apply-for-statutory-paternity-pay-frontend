@@ -21,7 +21,8 @@
     paternityDetailsGbPostApril24TwoWeeksTogether: PaternityDetailsGbPostApril24TwoWeeksTogether,
     paternityDetailsGbPostApril24TwoWeeksSeparate: PaternityDetailsGbPostApril24TwoWeeksSeparate,
     paternityDetailsGbPostApril24Unsure: PaternityDetailsGbPostApril24Unsure,
-    instructionPage: InstructionPage
+    instructionPage: InstructionPage,
+    bookmarkTree: BookmarkTree
 )
 
 @(model: JourneyModel)(implicit request: RequestHeader, messages: Messages)
@@ -30,9 +31,19 @@
     @Formats.dateTimeFormat()(messages.lang).format(date)
 }
 
-<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:fox="http://xmlgraphics.apache.org/fop/extensions" font-family="sans-serif">
+<fo:root xml:lang="@messages.lang.locale.getLanguage" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:fox="http://xmlgraphics.apache.org/fop/extensions" font-family="sans-serif">
 
     @layout()
+
+    <fo:declarations>
+        <pdf:catalog xmlns:pdf="http://xmlgraphics.apache.org/fop/extensions/pdf">
+            <pdf:dictionary type="normal" key="ViewerPreferences">
+                <pdf:boolean key="DisplayDocTitle">true</pdf:boolean>
+            </pdf:dictionary>
+        </pdf:catalog>
+    </fo:declarations>
+
+    @bookmarkTree(model)
 
     <fo:page-sequence master-reference="main">
 

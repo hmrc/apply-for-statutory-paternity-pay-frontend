@@ -5,7 +5,7 @@
 
 <fo:block-container>
     <!-- Personal details -->
-    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.personalDetails")</fo:block>
+    <fo:block role="H2" id="personal-details" font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.personalDetails")</fo:block>
 
     <!-- Name -->
     <fo:block-container>

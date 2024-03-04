@@ -122,7 +122,7 @@ thisSectionIs = This section is
 section.applicationDetails = Application details
 section.relationship = Relationship with child
 section.personalDetails = Personal details
-section.babyDetails = Baby’s details
+section.childDetails = Child’s details
 section.paternityDetails = Paternity details
 
 babyDateOfBirth.title = What date was the baby born?

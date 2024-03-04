@@ -105,7 +105,7 @@ signedOut.restart = Dechrau eto
 thisSectionIs = Yr adran hon yw
 section.relationship = Perthynas â’r plentyn
 section.personalDetails = Manylion personol
-section.babyDetails = Manylion y baban
+section.childDetails = Manylion y baban
 section.paternityDetails = Manylion tadolaeth
 
 babyDateOfBirth.title = Ar ba ddyddiad y cafodd y baban ei eni?
