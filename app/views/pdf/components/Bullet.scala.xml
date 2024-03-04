@@ -1,0 +1,18 @@
+@this()
+
+@(messageKey: String)(implicit request: RequestHeader, messages: Messages)
+
+<fo:list-item>
+    <!-- insert a bullet -->
+    <fo:list-item-label start-indent="1.5em" end-indent="1.5em">
+        <fo:block>
+            <fo:inline>•</fo:inline>
+        </fo:block>
+    </fo:list-item-label>
+    <!-- list text -->
+    <fo:list-item-body start-indent="2.5em">
+        <fo:block>
+            @messages(messageKey)
+        </fo:block>
+    </fo:list-item-body>
+</fo:list-item>

@@ -1,0 +1,29 @@
+@import views.xml.pdf.sections.declaration._
+@import views.xml.pdf.components.Bullet
+
+@this(
+    signature: Signature,
+    bullet: Bullet
+)
+
+@()(implicit request: RequestHeader, messages: Messages)
+
+
+<fo:block margin-top="8mm">
+    <fo:block margin-bottom="4mm" font-weight="bold" font-size="18pt">@messages("pdf.declaration")</fo:block>
+
+    <fo:block-container>
+        <fo:block margin-bottom="4mm">@messages("pdf.declaration.parentalOrder.declaration.1")</fo:block>
+        <fo:block margin-bottom="4mm">@messages("pdf.declaration.parentalOrder.declaration.2")</fo:block>
+        <fo:list-block space-after="4mm">
+            @bullet("pdf.declaration.parentalOrder.declaration.2.bullet.1")
+            @bullet("pdf.declaration.parentalOrder.declaration.2.bullet.2")
+        </fo:list-block>
+        <fo:block margin-bottom="4mm">@messages("pdf.declaration.parentalOrder.declaration.3")</fo:block>
+        <fo:block margin-bottom="4mm">@messages("pdf.declaration.parentalOrder.declaration.4")</fo:block>
+        <fo:block margin-bottom="4mm">@messages("pdf.declaration.parentalOrder.declaration.5")</fo:block>
+    </fo:block-container>
+
+    @signature()
+
+</fo:block>

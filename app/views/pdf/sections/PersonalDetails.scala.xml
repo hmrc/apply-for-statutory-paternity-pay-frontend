@@ -1,0 +1,30 @@
+@this()
+
+    @(model: JourneyModel)(implicit request: RequestHeader, messages: Messages)
+
+
+<fo:block-container>
+    <!-- Personal details -->
+    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.personalDetails")</fo:block>
+
+    <!-- Name -->
+    <fo:block-container>
+        <fo:block-container margin-bottom="3mm">
+            <fo:block>
+                <fo:inline font-weight="bold">@messages("pdf.name"): </fo:inline>
+                <fo:inline>@model.name.firstName @model.name.lastName</fo:inline>
+            </fo:block>
+        </fo:block-container>
+    </fo:block-container>
+
+    <!-- NINO -->
+    <fo:block>
+        <fo:block-container margin-bottom="3mm">
+            <fo:block>
+                <fo:inline font-weight="bold">@messages("pdf.nino"): </fo:inline>
+                <fo:inline>@model.nino.value</fo:inline>
+            </fo:block>
+        </fo:block-container>
+    </fo:block>
+
+</fo:block-container>

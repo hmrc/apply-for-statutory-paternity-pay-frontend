@@ -1,0 +1,40 @@
+@import java.time.LocalDate
+@import java.time.format.DateTimeFormatter
+@import config.Formats
+@import views.xml.pdf.sections.declaration._
+
+@this()
+
+@(model: JourneyModel.PaternityLeaveGbPostApril24TwoWeeksTogether)(implicit request: RequestHeader, messages: Messages)
+
+@dateTimeFormat(date: LocalDate) = {
+    @Formats.dateTimeFormat()(messages.lang).format(date)
+}
+
+<fo:block-container margin-top="8mm">
+    <!-- Paternity details -->
+    <fo:block font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.paternityDetails")</fo:block>
+
+    <!-- Pay start date -->
+    @model.payStartDate.map { date =>
+    <fo:block-container>
+        <fo:block-container margin-bottom="3mm">
+            <fo:block>
+                <fo:inline font-weight="bold">@messages("pdf.payStartDate"): </fo:inline>
+                <fo:inline>@dateTimeFormat(date)</fo:inline>
+            </fo:block>
+        </fo:block-container>
+    </fo:block-container>
+    }
+
+    <!-- Paternity length -->
+    <fo:block-container>
+        <fo:block-container margin-bottom="3mm">
+            <fo:block>
+                <fo:inline font-weight="bold">@messages("pdf.paternityLength"): </fo:inline>
+                <fo:inline>@messages("paternityLeaveLengthGbPostApril24.twoWeeks")</fo:inline>
+            </fo:block>
+        </fo:block-container>
+    </fo:block-container>
+
+</fo:block-container>
