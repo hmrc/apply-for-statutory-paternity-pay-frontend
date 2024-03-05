@@ -37,7 +37,8 @@
                 field  = form("value"),
                 legend = HmrcPageHeadingLegend(
                     content = messages("countryOfResidence.heading"),
-                    caption = HmrcSectionCaption(messages("section.applicationDetails"))
+                    caption = HmrcSectionCaption(messages("section.applicationDetails")),
+                    classes = "govuk-fieldset__legend--l"
                 ),
                 items  = CountryOfResidence.options
             )
