@@ -37,7 +37,8 @@
                 field  = form("value"),
                 legend = HmrcPageHeadingLegend(
                     content = messages(s"babyDueDate.heading.$babyHasBeenBorn"),
-                    caption = HmrcSectionCaption(messages("section.childDetails"))
+                    caption = HmrcSectionCaption(messages("section.childDetails")),
+                    classes = "govuk-fieldset__legend--l"
                 )
             )
             .withHint(HintViewModel(messages("babyDueDate.hint", dateHint)))

@@ -17,9 +17,11 @@
 package pages
 
 import controllers.routes
-import models.{CountryOfResidence, Mode}
+import models.{CountryOfResidence, Mode, UserAnswers}
 import play.api.libs.json.JsPath
 import play.api.mvc.Call
+
+import scala.util.Try
 
 case object CountryOfResidencePage extends QuestionPage[CountryOfResidence] {
 
@@ -28,4 +30,7 @@ case object CountryOfResidencePage extends QuestionPage[CountryOfResidence] {
   override def toString: String = "countryOfResidence"
 
   override def route(mode: Mode): Call = routes.CountryOfResidenceController.onPageLoad(mode)
+
+  override def cleanup(value: Option[CountryOfResidence], userAnswers: UserAnswers): Try[UserAnswers] =
+    removeRedundantAnswers(userAnswers, paternityPagesGbPreApril24OrNi ++ paternityPagesGbPostApril24)
 }
