@@ -16,25 +16,30 @@
 
 package controllers
 
+import config.Constants
 import controllers.actions.IdentifierAction
+
 import javax.inject.Inject
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.{IndexView, TransitionalIndexView}
 
+import java.time.{Clock, LocalDate}
+
 class IndexController @Inject()(
                                  val controllerComponents: MessagesControllerComponents,
                                  identify: IdentifierAction,
                                  view: IndexView,
-                                 transitionalView: TransitionalIndexView
+                                 transitionalView: TransitionalIndexView,
+                                 clock: Clock
                                ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = identify { implicit request =>
-    Ok(view())
-  }
-
-  def onPageLoadTransitional: Action[AnyContent] = identify { implicit request =>
-    Ok(transitionalView())
+    if (Constants.april24LegislationEffective.isAfter(LocalDate.now(clock))) {
+      Ok(transitionalView())
+    } else {
+      Ok(view())
+    }
   }
 }
