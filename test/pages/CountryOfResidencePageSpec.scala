@@ -16,10 +16,14 @@
 
 package pages
 
-import models.CountryOfResidence
+import models._
+import org.scalacheck.Gen
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.behaviours.PageBehaviours
 
-class CountryOfResidenceSpec extends PageBehaviours {
+import java.time.LocalDate
+
+class CountryOfResidencePageSpec extends PageBehaviours with ScalaCheckPropertyChecks {
 
   "CountryOfResidencePage" - {
 
@@ -28,5 +32,31 @@ class CountryOfResidenceSpec extends PageBehaviours {
     beSettable[CountryOfResidence](CountryOfResidencePage)
 
     beRemovable[CountryOfResidence](CountryOfResidencePage)
+
+    "must delete paternity details pages when changed" in {
+
+      forAll(Gen.oneOf(CountryOfResidence.values)) { country =>
+
+        val answers =
+          emptyUserAnswers
+            .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+            .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
+            .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+            .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Separately).success.value
+            .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
+            .set(PayStartDateWeek1Page, Some(LocalDate.now)).success.value
+            .set(PayStartDateWeek2Page, Some(LocalDate.now)).success.value
+
+        val result = answers.set(CountryOfResidencePage, country).success.value
+
+        result.isDefined(PaternityLeaveLengthGbPostApril24Page)    mustBe false
+        result.isDefined(PaternityLeaveLengthGbPreApril24OrNiPage) mustBe false
+        result.isDefined(PayStartDateGbPreApril24OrNiPage)         mustBe false
+        result.isDefined(LeaveTakenTogetherOrSeparatelyPage)       mustBe false
+        result.isDefined(PayStartDateGbPostApril24Page)            mustBe false
+        result.isDefined(PayStartDateWeek1Page)                    mustBe false
+        result.isDefined(PayStartDateWeek2Page)                    mustBe false
+      }
+    }
   }
 }
