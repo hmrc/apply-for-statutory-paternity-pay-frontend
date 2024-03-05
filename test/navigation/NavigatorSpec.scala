@@ -996,9 +996,9 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
+                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
                   .set(DateChildEnteredUkPage, date).success.value
                   .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
-                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
 
               navigator.nextPage(DateChildEnteredUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
             }
@@ -1012,9 +1012,9 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
+                  .set(CountryOfResidencePage, country).success.value
                   .set(DateChildEnteredUkPage, date).success.value
                   .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
-                  .set(CountryOfResidencePage, country).success.value
 
               navigator.nextPage(DateChildEnteredUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
             }
@@ -1039,8 +1039,8 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
-                  .set(DateChildEnteredUkPage, date).success.value
                   .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+                  .set(DateChildEnteredUkPage, date).success.value
 
               navigator.nextPage(DateChildEnteredUkPage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(CheckMode)
             }
@@ -1057,8 +1057,8 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
-                  .set(DateChildEnteredUkPage, date).success.value
                   .set(CountryOfResidencePage, country).success.value
+                  .set(DateChildEnteredUkPage, date).success.value
 
               navigator.nextPage(DateChildEnteredUkPage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPostApril24Controller.onPageLoad(CheckMode)
             }
@@ -1089,9 +1089,9 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
+                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
                   .set(DateChildExpectedToEnterUkPage, date).success.value
                   .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
-                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
 
               navigator.nextPage(DateChildExpectedToEnterUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
             }
@@ -1105,9 +1105,9 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
+                  .set(CountryOfResidencePage, country).success.value
                   .set(DateChildExpectedToEnterUkPage, date).success.value
                   .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
-                  .set(CountryOfResidencePage, country).success.value
 
               navigator.nextPage(DateChildExpectedToEnterUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
             }
@@ -1132,8 +1132,8 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
-                  .set(DateChildExpectedToEnterUkPage, date).success.value
                   .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+                  .set(DateChildExpectedToEnterUkPage, date).success.value
 
               navigator.nextPage(DateChildExpectedToEnterUkPage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(CheckMode)
             }
@@ -1150,8 +1150,8 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
-                  .set(DateChildExpectedToEnterUkPage, date).success.value
                   .set(CountryOfResidencePage, country).success.value
+                  .set(DateChildExpectedToEnterUkPage, date).success.value
 
               navigator.nextPage(DateChildExpectedToEnterUkPage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPostApril24Controller.onPageLoad(CheckMode)
             }
@@ -1233,9 +1233,9 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
+                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
                   .set(BabyDueDatePage, date).success.value
                   .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
-                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
 
               navigator.nextPage(BabyDueDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
             }
@@ -1249,9 +1249,9 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
+                  .set(CountryOfResidencePage, country).success.value
                   .set(BabyDueDatePage, date).success.value
                   .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
-                  .set(CountryOfResidencePage, country).success.value
 
               navigator.nextPage(BabyDueDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
             }
@@ -1276,8 +1276,8 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
-                  .set(BabyDueDatePage, date).success.value
                   .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+                  .set(BabyDueDatePage, date).success.value
 
               navigator.nextPage(BabyDueDatePage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(CheckMode)
             }
@@ -1294,8 +1294,8 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
-                  .set(BabyDueDatePage, date).success.value
                   .set(CountryOfResidencePage, country).success.value
+                  .set(BabyDueDatePage, date).success.value
 
               navigator.nextPage(BabyDueDatePage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPostApril24Controller.onPageLoad(CheckMode)
             }
@@ -1326,9 +1326,9 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
+                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
                   .set(ChildPlacementDatePage, date).success.value
                   .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
-                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
 
               navigator.nextPage(ChildPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
             }
@@ -1342,9 +1342,9 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
+                  .set(CountryOfResidencePage, country).success.value
                   .set(ChildPlacementDatePage, date).success.value
                   .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
-                  .set(CountryOfResidencePage, country).success.value
 
               navigator.nextPage(ChildPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
             }
@@ -1369,8 +1369,8 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
-                  .set(ChildPlacementDatePage, date).success.value
                   .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+                  .set(ChildPlacementDatePage, date).success.value
 
               navigator.nextPage(ChildPlacementDatePage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(CheckMode)
             }
@@ -1387,8 +1387,8 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
-                  .set(ChildPlacementDatePage, date).success.value
                   .set(CountryOfResidencePage, country).success.value
+                  .set(ChildPlacementDatePage, date).success.value
 
               navigator.nextPage(ChildPlacementDatePage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPostApril24Controller.onPageLoad(CheckMode)
             }
@@ -1419,9 +1419,9 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
+                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
                   .set(ChildExpectedPlacementDatePage, date).success.value
                   .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
-                  .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
 
               navigator.nextPage(ChildExpectedPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
             }
@@ -1435,9 +1435,9 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
+                  .set(CountryOfResidencePage, country).success.value
                   .set(ChildExpectedPlacementDatePage, date).success.value
                   .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
-                  .set(CountryOfResidencePage, country).success.value
 
               navigator.nextPage(ChildExpectedPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
             }
@@ -1462,8 +1462,8 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
-                  .set(ChildExpectedPlacementDatePage, date).success.value
                   .set(CountryOfResidencePage, CountryOfResidence.NorthernIreland).success.value
+                  .set(ChildExpectedPlacementDatePage, date).success.value
 
               navigator.nextPage(ChildExpectedPlacementDatePage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPreApril24OrNiController.onPageLoad(CheckMode)
             }
@@ -1480,8 +1480,8 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
               val answers =
                 emptyUserAnswers
-                  .set(ChildExpectedPlacementDatePage, date).success.value
                   .set(CountryOfResidencePage, country).success.value
+                  .set(ChildExpectedPlacementDatePage, date).success.value
 
               navigator.nextPage(ChildExpectedPlacementDatePage, CheckMode, answers) mustEqual routes.PaternityLeaveLengthGbPostApril24Controller.onPageLoad(CheckMode)
             }
