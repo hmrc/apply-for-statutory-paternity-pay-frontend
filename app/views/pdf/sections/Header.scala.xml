@@ -9,7 +9,7 @@
         } else {
             <fo:external-graphic content-width="3.5cm" src="url(conf/resources/logo.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
         }
-        <fo:block role="H1" margin-left="4cm" margin-top="-1.25cm" text-align="right" font-size="16pt" font-weight="bold">
+        <fo:block role="H1" margin-left="4cm" margin-top="-1.25cm" text-align="right" font-size="15pt" font-weight="bold">
 
             @{model.eligibility match {
             case _: JourneyModel.BirthChildEligibility =>
