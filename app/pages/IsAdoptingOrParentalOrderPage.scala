@@ -48,5 +48,5 @@ case object IsAdoptingOrParentalOrderPage extends QuestionPage[Boolean] {
 
     }.getOrElse(super.cleanup(value, userAnswers))
 
-  private val answersToRemoveWhenAnswerChanges = allQuestionPages - CountryOfResidencePage - IsAdoptingOrParentalOrderPage
+  private lazy val answersToRemoveWhenAnswerChanges = allQuestionPages - CountryOfResidencePage - IsAdoptingOrParentalOrderPage
 }

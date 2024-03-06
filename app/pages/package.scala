@@ -20,7 +20,7 @@ import scala.util.{Success, Try}
 
 package object pages {
 
-  val filterQuestions: Set[QuestionPage[_]] = Set(
+  lazy val filterQuestions: Set[QuestionPage[_]] = Set(
     IsAdoptingOrParentalOrderPage,
     IsApplyingForStatutoryAdoptionPayPage,
     IsAdoptingFromAbroadPage,
@@ -33,37 +33,37 @@ package object pages {
     WillTakeTimeToSupportPartnerPage
   )
 
-  val applicantQuestions: Set[QuestionPage[_]] = Set(
+  lazy val applicantQuestions: Set[QuestionPage[_]] = Set(
     NamePage,
     NinoPage,
   )
 
-  val birthChildPaternityOrderDateQuestions: Set[QuestionPage[_]] = Set(
+  lazy val birthChildPaternityOrderDateQuestions: Set[QuestionPage[_]] = Set(
     BabyHasBeenBornPage,
     BabyDateOfBirthPage,
     BabyDueDatePage,
   )
 
-  val adoptingAbroadDateQuestions: Set[QuestionPage[_]] = Set(
+  lazy val adoptingAbroadDateQuestions: Set[QuestionPage[_]] = Set(
     DateOfAdoptionNotificationPage,
     ChildHasEnteredUkPage,
     DateChildEnteredUkPage,
     DateChildExpectedToEnterUkPage
   )
 
-  val adoptingUkDateQuestions: Set[QuestionPage[_]] = Set(
+  lazy val adoptingUkDateQuestions: Set[QuestionPage[_]] = Set(
     DateChildWasMatchedPage,
     ChildHasBeenPlacedPage,
     ChildExpectedPlacementDatePage,
     ChildPlacementDatePage,
   )
 
-  val paternityPagesGbPreApril24OrNi: Set[QuestionPage[_]] = Set(
+  lazy val paternityPagesGbPreApril24OrNi: Set[QuestionPage[_]] = Set(
     PaternityLeaveLengthGbPreApril24OrNiPage,
     PayStartDateGbPreApril24OrNiPage
   )
 
-  val paternityPagesGbPostApril24: Set[QuestionPage[_]] = Set(
+  lazy val paternityPagesGbPostApril24: Set[QuestionPage[_]] = Set(
     PaternityLeaveLengthGbPostApril24Page,
     LeaveTakenTogetherOrSeparatelyPage,
     PayStartDateGbPostApril24Page,
@@ -71,7 +71,7 @@ package object pages {
     PayStartDateWeek2Page
   )
 
-  val allQuestionPages: Set[QuestionPage[_]] =
+  lazy val allQuestionPages: Set[QuestionPage[_]] =
     Set(CountryOfResidencePage) ++
       filterQuestions ++
       applicantQuestions ++
