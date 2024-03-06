@@ -16,25 +16,51 @@
 
 package forms
 
+import config.Formats.dateTimeFormat
+
 import java.time.{LocalDate, ZoneOffset}
 import forms.behaviours.DateBehaviours
-import play.api.i18n.Messages
+import models.PayStartDateLimits
+import play.api.data.FormError
+import play.api.i18n.{Lang, Messages}
 import play.api.test.Helpers.stubMessages
 
 class PayStartDateGbPostApril24FormProviderSpec extends DateBehaviours {
 
+  private val limitsGen = for {
+    min <- datesBetween(LocalDate.of(2000, 1, 1), LocalDate.of(2050, 1, 1))
+    max <- datesBetween(min.plusDays(1), LocalDate.of(2100, 1, 1))
+  } yield PayStartDateLimits(min, max)
+
+  val limits = limitsGen.sample.value
+
   private implicit val messages: Messages = stubMessages()
-  val form = new PayStartDateGbPostApril24FormProvider()()
+  private implicit val lang: Lang = Lang("en")
+  val form = new PayStartDateGbPostApril24FormProvider()(limits)
 
   ".value" - {
 
     val validData = datesBetween(
-      min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
+      min = limits.min,
+      max = limits.max
     )
 
     behave like dateField(form, "value", validData)
 
     behave like optionalDateField(form, "value")
+
+    behave like dateFieldWithMax(
+      form,
+      "value",
+      limits.max,
+      FormError("value", "payStartDateGbPostApril24.error.tooHigh", Seq(limits.max.format(dateTimeFormat)))
+    )
+
+    behave like dateFieldWithMin(
+      form,
+      "value",
+      limits.min,
+      FormError("value", "payStartDateGbPostApril24.error.tooLow", Seq(limits.min.format(dateTimeFormat)))
+    )
   }
 }

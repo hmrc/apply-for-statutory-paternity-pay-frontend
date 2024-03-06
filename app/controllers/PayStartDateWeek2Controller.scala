@@ -18,6 +18,7 @@ package controllers
 
 import controllers.actions._
 import forms.PayStartDateWeek2FormProvider
+
 import javax.inject.Inject
 import json.OptionalLocalDateReads._
 import models.Mode
@@ -26,6 +27,7 @@ import pages.PayStartDateWeek2Page
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.PayStartDateService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.PayStartDateWeek2View
 
@@ -40,7 +42,8 @@ class PayStartDateWeek2Controller @Inject()(
                                         requireData: DataRequiredAction,
                                         formProvider: PayStartDateWeek2FormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: PayStartDateWeek2View
+                                        view: PayStartDateWeek2View,
+                                        payStartDateService: PayStartDateService
                                       )(implicit ec: ExecutionContext)
   extends FrontendBaseController
     with I18nSupport

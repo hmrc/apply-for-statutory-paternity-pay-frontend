@@ -18,7 +18,7 @@ package services
 
 import cats.data.EitherNec
 import cats.implicits._
-import models.{PaternityLeaveLengthGbPreApril24OrNi, PayStartDateLimits, RelationshipToChild, UserAnswers}
+import models.{PaternityLeaveLengthGbPostApril24, PaternityLeaveLengthGbPreApril24OrNi, PayStartDateLimits, RelationshipToChild, UserAnswers}
 import pages._
 
 import java.time.DayOfWeek.SUNDAY
@@ -49,6 +49,59 @@ class PayStartDateService @Inject()(clock: Clock) {
       (
         answers.getEither(datePage),
         answers.getEither(PaternityLeaveLengthGbPreApril24OrNiPage).map(maxWeeksAllowed)
+      ).parMapN { case (date, maxWeeks) =>
+        val endDate = if (extendToEndOfWeek) date.plusWeeks(maxWeeks).`with`(next(SUNDAY)) else date.plusWeeks(maxWeeks)
+        PayStartDateLimits(LocalDate.now(clock), endDate)
+      }
+
+    def getBirthParentalOrderDates(answers: UserAnswers): EitherNec[QuestionPage[_], PayStartDateLimits] =
+      answers.getEither(BabyHasBeenBornPage).ifM(
+        ifTrue  = getLimitsBasedOnHistoricalDate(BabyDateOfBirthPage, answers, extendToEndOfWeek = false),
+        ifFalse = getLimitsBasedOnExpectedDate(BabyDueDatePage, answers, extendToEndOfWeek = true)
+      )
+
+    answers.getEither(IsAdoptingOrParentalOrderPage).ifM(
+      ifTrue = answers.getEither(ReasonForRequestingPage).flatMap {
+        case RelationshipToChild.ParentalOrder =>
+          getBirthParentalOrderDates(answers)
+
+        case _ =>
+          answers.getEither(IsAdoptingFromAbroadPage).ifM(
+            ifTrue  = answers.getEither(ChildHasEnteredUkPage).ifM(
+              ifTrue  = getLimitsBasedOnHistoricalDate(DateChildEnteredUkPage, answers, extendToEndOfWeek = true),
+              ifFalse = getLimitsBasedOnExpectedDate(DateChildExpectedToEnterUkPage, answers, extendToEndOfWeek = true)
+            ),
+            ifFalse = answers.getEither(ChildHasBeenPlacedPage).ifM(
+              ifTrue  = getLimitsBasedOnHistoricalDate(ChildPlacementDatePage, answers, extendToEndOfWeek = true),
+              ifFalse = getLimitsBasedOnExpectedDate(ChildExpectedPlacementDatePage, answers, extendToEndOfWeek = true)
+            )
+          )
+      },
+      ifFalse = getBirthParentalOrderDates(answers)
+    )
+  }
+
+  def gbPostApril24Dates(answers: UserAnswers): EitherNec[QuestionPage[_], PayStartDateLimits] = {
+
+    def maxWeeksAllowed(leaveLength: PaternityLeaveLengthGbPostApril24): Int =
+      leaveLength match {
+        case PaternityLeaveLengthGbPostApril24.OneWeek  => 51
+        case PaternityLeaveLengthGbPostApril24.TwoWeeks => 50
+      }
+
+    def getLimitsBasedOnExpectedDate(datePage: QuestionPage[LocalDate], answers: UserAnswers, extendToEndOfWeek: Boolean): EitherNec[QuestionPage[_], PayStartDateLimits] =
+      (
+        answers.getEither(datePage),
+        answers.getEither(PaternityLeaveLengthGbPostApril24Page).map(maxWeeksAllowed)
+      ).parMapN { case (date, maxWeeks) =>
+        val endDate = if (extendToEndOfWeek) date.plusWeeks(maxWeeks).`with`(next(SUNDAY)) else date.plusWeeks(maxWeeks)
+        PayStartDateLimits(date, endDate)
+      }
+
+    def getLimitsBasedOnHistoricalDate(datePage: QuestionPage[LocalDate], answers: UserAnswers, extendToEndOfWeek: Boolean): EitherNec[QuestionPage[_], PayStartDateLimits] =
+      (
+        answers.getEither(datePage),
+        answers.getEither(PaternityLeaveLengthGbPostApril24Page).map(maxWeeksAllowed)
       ).parMapN { case (date, maxWeeks) =>
         val endDate = if (extendToEndOfWeek) date.plusWeeks(maxWeeks).`with`(next(SUNDAY)) else date.plusWeeks(maxWeeks)
         PayStartDateLimits(LocalDate.now(clock), endDate)

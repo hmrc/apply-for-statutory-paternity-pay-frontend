@@ -22,9 +22,11 @@ import json.OptionalLocalDateReads._
 import models.Mode
 import navigation.Navigator
 import pages.PayStartDateGbPostApril24Page
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.PayStartDateService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.PayStartDateGbPostApril24View
 
@@ -40,24 +42,35 @@ class PayStartDateGbPostApril24Controller @Inject()(
                                                      requireData: DataRequiredAction,
                                                      formProvider: PayStartDateGbPostApril24FormProvider,
                                                      val controllerComponents: MessagesControllerComponents,
-                                                     view: PayStartDateGbPostApril24View
+                                                     view: PayStartDateGbPostApril24View,
+                                                     payStartDateService: PayStartDateService
                                       )(implicit ec: ExecutionContext)
   extends FrontendBaseController
     with I18nSupport
-    with AnswerExtractor {
+    with AnswerExtractor
+    with Logging {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       getPaternityReason { paternityReason =>
 
-        val form = formProvider()
+        payStartDateService.gbPostApril24Dates(request.userAnswers).fold(
+          pages => {
+            val message = pages.toChain.toList.mkString(", ")
+            logger.warn(s"Failed to find pay start date limits GB post April 24, missing pages: $message")
+            Redirect(routes.JourneyRecoveryController.onPageLoad())
+          },
+          limits => {
+            val form = formProvider(limits)
 
-        val preparedForm = request.userAnswers.get(PayStartDateGbPostApril24Page) match {
-          case None => form
-          case Some(value) => form.fill(value)
-        }
+            val preparedForm = request.userAnswers.get(PayStartDateGbPostApril24Page) match {
+              case None => form
+              case Some(value) => form.fill(value)
+            }
 
-        Ok(view(preparedForm, mode, paternityReason))
+            Ok(view(preparedForm, mode, paternityReason))
+          }
+        )
       }
   }
 
@@ -65,17 +78,26 @@ class PayStartDateGbPostApril24Controller @Inject()(
     implicit request =>
       getPaternityReasonAsync { paternityReason =>
 
-        val form = formProvider()
+        payStartDateService.gbPostApril24Dates(request.userAnswers).fold(
+          pages => {
+            val message = pages.toChain.toList.mkString(", ")
+            logger.warn(s"Failed to find pay start date limits GB post April 24, missing pages: $message")
+            Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+          },
+          limits => {
+            val form = formProvider(limits)
 
-        form.bindFromRequest().fold(
-          formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, mode, paternityReason))),
+            form.bindFromRequest().fold(
+              formWithErrors =>
+                Future.successful(BadRequest(view(formWithErrors, mode, paternityReason))),
 
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDateGbPostApril24Page, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(PayStartDateGbPostApril24Page, mode, updatedAnswers))
+              value =>
+                for {
+                  updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDateGbPostApril24Page, value))
+                  _              <- sessionRepository.set(updatedAnswers)
+                } yield Redirect(navigator.nextPage(PayStartDateGbPostApril24Page, mode, updatedAnswers))
+            )
+          }
         )
     }
   }

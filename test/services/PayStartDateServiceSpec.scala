@@ -18,7 +18,7 @@ package services
 
 import generators.Generators
 import models.RelationshipToChild._
-import models.{PaternityLeaveLengthGbPreApril24OrNi, PayStartDateLimits, RelationshipToChild, UserAnswers}
+import models.{PaternityLeaveLengthGbPostApril24, PaternityLeaveLengthGbPreApril24OrNi, PayStartDateLimits, UserAnswers}
 import org.scalacheck.Gen
 import org.scalatest.{EitherValues, OptionValues, TryValues}
 import org.scalatest.freespec.AnyFreeSpec
@@ -223,7 +223,7 @@ class PayStartDateServiceSpec
       "and the user is taking one week" - {
 
         "must give limits oftoday to the Sunday after 7 weeks after the placement date" in {
-          
+
           forAll(datesBetween(lowDate, highDate), Gen.oneOf(Adopting, SupportingAdoption)) { case (date, relationship) =>
             val answers =
               UserAnswers("id")
@@ -393,6 +393,360 @@ class PayStartDateServiceSpec
             val result = service.gbPreApril24OrNiDates(answers).value
 
             result mustEqual PayStartDateLimits(date, date.plusWeeks(6).`with`(next(SUNDAY)))
+          }
+        }
+      }
+    }
+  }
+
+  ".gbPostApril24Dates" - {
+
+    val lowDate = LocalDate.of(2000, 1, 1)
+    val highDate = LocalDate.of(2100, 1, 1)
+
+    "when a birth child has been born" - {
+
+      "and the user is taking one week" - {
+
+        "must give limits of today to 51 weeks after the DOB" in {
+
+          forAll(datesBetween(lowDate, highDate)) { date =>
+            val answers =
+              UserAnswers("id")
+                .set(IsAdoptingOrParentalOrderPage, false).success.value
+                .set(BabyHasBeenBornPage, true).success.value
+                .set(BabyDateOfBirthPage, date).success.value
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+
+            val result = service.gbPostApril24Dates(answers).value
+
+            result mustEqual PayStartDateLimits(today, date.plusWeeks(51))
+          }
+        }
+      }
+
+      "and the user is taking two weeks" - {
+
+        "must give limits of today to 50 weeks after the DOB" in {
+
+          forAll(datesBetween(lowDate, highDate)) { date =>
+            val answers =
+              UserAnswers("id")
+                .set(IsAdoptingOrParentalOrderPage, false).success.value
+                .set(BabyHasBeenBornPage, true).success.value
+                .set(BabyDateOfBirthPage, date).success.value
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
+
+            val result = service.gbPostApril24Dates(answers).value
+
+            result mustEqual PayStartDateLimits(today, date.plusWeeks(50))
+          }
+        }
+      }
+    }
+
+    "when a birth child is due" - {
+
+      "and the user is taking one week" - {
+
+        "must give limits of the due date to the Sunday after 51 weeks after the due date" in {
+
+          forAll(datesBetween(lowDate, highDate)) { date =>
+            val answers =
+              UserAnswers("id")
+                .set(IsAdoptingOrParentalOrderPage, false).success.value
+                .set(BabyHasBeenBornPage, false).success.value
+                .set(BabyDueDatePage, date).success.value
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+
+            val result = service.gbPostApril24Dates(answers).value
+
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(51).`with`(next(SUNDAY)))
+          }
+        }
+      }
+
+      "and the user is taking two weeks" - {
+
+        "must give limits of the due date to the Sunday after 50 weeks after the due date" in {
+
+          forAll(datesBetween(lowDate, highDate)) { date =>
+            val answers =
+              UserAnswers("id")
+                .set(IsAdoptingOrParentalOrderPage, false).success.value
+                .set(BabyHasBeenBornPage, false).success.value
+                .set(BabyDueDatePage, date).success.value
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
+
+            val result = service.gbPostApril24Dates(answers).value
+
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(50).`with`(next(SUNDAY)))
+          }
+        }
+      }
+    }
+
+    "when a parental order child has been born" - {
+
+      "and the user is taking one week" - {
+
+        "must give limits of today to 51 weeks after the DOB" in {
+
+          forAll(datesBetween(lowDate, highDate)) { date =>
+            val answers =
+              UserAnswers("id")
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(ReasonForRequestingPage, ParentalOrder).success.value
+                .set(BabyHasBeenBornPage, true).success.value
+                .set(BabyDateOfBirthPage, date).success.value
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+
+            val result = service.gbPostApril24Dates(answers).value
+
+            result mustEqual PayStartDateLimits(today, date.plusWeeks(51))
+          }
+        }
+      }
+
+      "and the user is taking two weeks" - {
+
+        "must give limits of today to 50 weeks after the DOB" in {
+
+          forAll(datesBetween(lowDate, highDate)) { date =>
+            val answers =
+              UserAnswers("id")
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(ReasonForRequestingPage, ParentalOrder).success.value
+                .set(BabyHasBeenBornPage, true).success.value
+                .set(BabyDateOfBirthPage, date).success.value
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
+
+            val result = service.gbPostApril24Dates(answers).value
+
+            result mustEqual PayStartDateLimits(today, date.plusWeeks(50))
+          }
+        }
+      }
+    }
+
+    "when a parental order child is due" - {
+
+      "and the user is taking one week" - {
+
+        "must give limits of the due date to the Sunday after 51 weeks after the due date" in {
+
+          forAll(datesBetween(lowDate, highDate)) { date =>
+            val answers =
+              UserAnswers("id")
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(ReasonForRequestingPage, ParentalOrder).success.value
+                .set(BabyHasBeenBornPage, false).success.value
+                .set(BabyDueDatePage, date).success.value
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+
+            val result = service.gbPostApril24Dates(answers).value
+
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(51).`with`(next(SUNDAY)))
+          }
+        }
+      }
+
+      "and the user is taking two weeks" - {
+
+        "must give limits of the due date to the Sunday after 50 weeks after the due date" in {
+
+          forAll(datesBetween(lowDate, highDate)) { date =>
+            val answers =
+              UserAnswers("id")
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(ReasonForRequestingPage, ParentalOrder).success.value
+                .set(BabyHasBeenBornPage, false).success.value
+                .set(BabyDueDatePage, date).success.value
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
+
+            val result = service.gbPostApril24Dates(answers).value
+
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(50).`with`(next(SUNDAY)))
+          }
+        }
+      }
+    }
+
+    "when a child being adopted in the UK has been placed" - {
+
+      "and the user is taking one week" - {
+
+        "must give limits oftoday to the Sunday after 51 weeks after the placement date" in {
+
+          forAll(datesBetween(lowDate, highDate), Gen.oneOf(Adopting, SupportingAdoption)) { case (date, relationship) =>
+            val answers =
+              UserAnswers("id")
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(IsAdoptingFromAbroadPage, false).success.value
+                .set(ReasonForRequestingPage, relationship).success.value
+                .set(ChildHasBeenPlacedPage, true).success.value
+                .set(ChildPlacementDatePage, date).success.value
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+
+            val result = service.gbPostApril24Dates(answers).value
+
+            result mustEqual PayStartDateLimits(today, date.plusWeeks(51).`with`(next(SUNDAY)))
+          }
+        }
+      }
+
+      "and the user is taking two weeks" - {
+
+        "must give limits of today to the Sunday after 50 weeks after the placement date" in {
+
+          forAll(datesBetween(lowDate, highDate), Gen.oneOf(Adopting, SupportingAdoption)) { case (date, relationship) =>
+            val answers =
+              UserAnswers("id")
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(IsAdoptingFromAbroadPage, false).success.value
+                .set(ReasonForRequestingPage, relationship).success.value
+                .set(ChildHasBeenPlacedPage, true).success.value
+                .set(ChildPlacementDatePage, date).success.value
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
+
+            val result = service.gbPostApril24Dates(answers).value
+
+            result mustEqual PayStartDateLimits(today, date.plusWeeks(50).`with`(next(SUNDAY)))
+          }
+        }
+      }
+    }
+
+    "when a child being adopted in the UK has not been placed" - {
+
+      "and the user is taking one week" - {
+
+        "must give limits of the expected placement date to the Sunday after 51 weeks after the placement date" in {
+
+          forAll(datesBetween(lowDate, highDate), Gen.oneOf(Adopting, SupportingAdoption)) { case (date, relationship) =>
+            val answers =
+              UserAnswers("id")
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(IsAdoptingFromAbroadPage, false).success.value
+                .set(ReasonForRequestingPage, relationship).success.value
+                .set(ChildHasBeenPlacedPage, false).success.value
+                .set(ChildExpectedPlacementDatePage, date).success.value
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+
+            val result = service.gbPostApril24Dates(answers).value
+
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(51).`with`(next(SUNDAY)))
+          }
+        }
+      }
+
+      "and the user is taking two weeks" - {
+
+        "must give limits of the expected placement date to the Sunday after 50 weeks after the placement date" in {
+
+          forAll(datesBetween(lowDate, highDate), Gen.oneOf(Adopting, SupportingAdoption)) { case (date, relationship) =>
+            val answers =
+              UserAnswers("id")
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(IsAdoptingFromAbroadPage, false).success.value
+                .set(ReasonForRequestingPage, relationship).success.value
+                .set(ChildHasBeenPlacedPage, false).success.value
+                .set(ChildExpectedPlacementDatePage, date).success.value
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
+
+            val result = service.gbPostApril24Dates(answers).value
+
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(50).`with`(next(SUNDAY)))
+          }
+        }
+      }
+    }
+
+    "when a child being adopted from abroad has entered the UK" - {
+
+      "and the user is taking one week" - {
+
+        "must give limits of today to the Sunday after 51 weeks after the entry date" in {
+
+          forAll(datesBetween(lowDate, highDate), Gen.oneOf(Adopting, SupportingAdoption)) { case (date, relationship) =>
+            val answers =
+              UserAnswers("id")
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(IsAdoptingFromAbroadPage, true).success.value
+                .set(ReasonForRequestingPage, relationship).success.value
+                .set(ChildHasEnteredUkPage, true).success.value
+                .set(DateChildEnteredUkPage, date).success.value
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+
+            val result = service.gbPostApril24Dates(answers).value
+
+            result mustEqual PayStartDateLimits(today, date.plusWeeks(51).`with`(next(SUNDAY)))
+          }
+        }
+      }
+
+      "and the user is taking two weeks" - {
+
+        "must give limits of today to the Sunday after 50 weeks after the entry date" in {
+
+          forAll(datesBetween(lowDate, highDate), Gen.oneOf(Adopting, SupportingAdoption)) { case (date, relationship) =>
+            val answers =
+              UserAnswers("id")
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(IsAdoptingFromAbroadPage, true).success.value
+                .set(ReasonForRequestingPage, relationship).success.value
+                .set(ChildHasEnteredUkPage, true).success.value
+                .set(DateChildEnteredUkPage, date).success.value
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
+
+            val result = service.gbPostApril24Dates(answers).value
+
+            result mustEqual PayStartDateLimits(today, date.plusWeeks(50).`with`(next(SUNDAY)))
+          }
+        }
+      }
+    }
+
+    "when a child being adopted from abroad has not yet entered the UK" - {
+
+      "and the user is taking one week" - {
+
+        "must give limits of the expected entry date to the Sunday after 51 weeks after the expected entry date" in {
+
+          forAll(datesBetween(lowDate, highDate), Gen.oneOf(Adopting, SupportingAdoption)) { case (date, relationship) =>
+            val answers =
+              UserAnswers("id")
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(IsAdoptingFromAbroadPage, true).success.value
+                .set(ReasonForRequestingPage, relationship).success.value
+                .set(ChildHasEnteredUkPage, false).success.value
+                .set(DateChildExpectedToEnterUkPage, date).success.value
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+
+            val result = service.gbPostApril24Dates(answers).value
+
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(51).`with`(next(SUNDAY)))
+          }
+        }
+      }
+
+      "and the user is taking two weeks" - {
+
+        "must give limits of the expected entry date to the Sunday after 50 weeks after the expected entry date" in {
+
+          forAll(datesBetween(lowDate, highDate), Gen.oneOf(Adopting, SupportingAdoption)) { case (date, relationship) =>
+            val answers =
+              UserAnswers("id")
+                .set(IsAdoptingOrParentalOrderPage, true).success.value
+                .set(IsAdoptingFromAbroadPage, true).success.value
+                .set(ReasonForRequestingPage, relationship).success.value
+                .set(ChildHasEnteredUkPage, false).success.value
+                .set(DateChildExpectedToEnterUkPage, date).success.value
+                .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
+
+            val result = service.gbPostApril24Dates(answers).value
+
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(50).`with`(next(SUNDAY)))
           }
         }
       }
