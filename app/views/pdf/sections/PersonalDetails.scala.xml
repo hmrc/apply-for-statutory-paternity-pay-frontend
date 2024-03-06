@@ -5,11 +5,11 @@
 
 <fo:block-container>
     <!-- Personal details -->
-    <fo:block role="H2" id="personal-details" font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.personalDetails")</fo:block>
+    <fo:block role="H2" id="personal-details" font-size="14pt" font-weight="bold" margin-bottom="3mm">@messages("section.personalDetails")</fo:block>
 
     <!-- Name -->
     <fo:block-container>
-        <fo:block-container margin-bottom="3mm">
+        <fo:block-container margin-bottom="2mm">
             <fo:block>
                 <fo:inline font-weight="bold">@messages("pdf.name"): </fo:inline>
                 <fo:inline>@model.name.firstName @model.name.lastName</fo:inline>
@@ -19,7 +19,7 @@
 
     <!-- NINO -->
     <fo:block>
-        <fo:block-container margin-bottom="3mm">
+        <fo:block-container margin-bottom="2mm">
             <fo:block>
                 <fo:inline font-weight="bold">@messages("pdf.nino"): </fo:inline>
                 <fo:inline>@model.nino.value</fo:inline>

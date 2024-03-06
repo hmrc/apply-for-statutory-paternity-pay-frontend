@@ -3,29 +3,29 @@
 @()(implicit request: RequestHeader, messages: Messages)
 
 
-<fo:block font-weight="bold" margin-bottom="1mm">@messages("pdf.declaration.signature")</fo:block>
+<fo:block font-weight="bold" margin-bottom="1mm" margin-top="5mm">@messages("pdf.declaration.signature")</fo:block>
 
-<fo:block margin-right="6cm" padding-top="1.5cm" margin-bottom="4mm" border="0.5mm solid black"> </fo:block>
+<fo:block margin-right="6cm" padding-top="1.4cm" margin-bottom="3mm" border="0.5mm solid black"> </fo:block>
 
 <fo:block font-weight="bold" margin-bottom="1mm">@messages("pdf.declaration.date")</fo:block>
 
 <fo:block margin-top="2mm">
     <fo:inline>@messages("date.day")</fo:inline>
-    <fo:inline padding-left="2.5cm">@messages("date.month")</fo:inline>
-    <fo:inline padding-left="2.2cm">@messages("date.year")</fo:inline>
+    <fo:inline padding-left="2.1cm">@messages("date.month")</fo:inline>
+    <fo:inline padding-left="1.6cm">@messages("date.year")</fo:inline>
 </fo:block>
 
-<fo:block margin-top="0.9cm">
-    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
-    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
-    <fo:inline padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
+<fo:block margin-top="0.7cm">
+    <fo:inline border="0.5mm solid black" padding-top="0.6cm" padding-left="0.8cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.6cm" padding-left="0.8cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
+    <fo:inline padding-top="0.6cm" padding-left="0.8cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
 
-    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
-    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
-    <fo:inline padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.6cm" padding-left="0.8cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.6cm" padding-left="0.8cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
+    <fo:inline padding-top="0.6cm" padding-left="0.8cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
 
-    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
-    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
-    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
-    <fo:inline border="0.5mm solid black" padding-top="0.7cm" padding-left="0.7cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.6cm" padding-left="0.8cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.6cm" padding-left="0.8cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.6cm" padding-left="0.8cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
+    <fo:inline border="0.5mm solid black" padding-top="0.6cm" padding-left="0.8cm" color="#ffffff"><fo:wrapper role="artefact"> </fo:wrapper></fo:inline>
 </fo:block>

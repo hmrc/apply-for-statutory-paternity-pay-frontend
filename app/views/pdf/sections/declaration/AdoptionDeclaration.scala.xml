@@ -11,19 +11,19 @@
 
 
 <fo:block margin-top="8mm">
-    <fo:block role="H2" id="declaration" margin-bottom="4mm" font-weight="bold" font-size="18pt">@messages("pdf.declaration")</fo:block>
+    <fo:block role="H2" id="declaration" margin-bottom="3mm" font-weight="bold" font-size="14pt">@messages("pdf.declaration")</fo:block>
 
     <fo:block-container>
-        <fo:block margin-bottom="4mm">@messages("pdf.declaration.adoption.declaration.1")</fo:block>
-        <fo:block margin-bottom="4mm">@messages("pdf.declaration.adoption.declaration.2")</fo:block>
-        <fo:list-block space-after="4mm">
+        <fo:block margin-bottom="3mm">@messages("pdf.declaration.adoption.declaration.1")</fo:block>
+        <fo:block margin-bottom="3mm">@messages("pdf.declaration.adoption.declaration.2")</fo:block>
+        <fo:list-block space-after="3mm">
             @bullet("pdf.declaration.adoption.declaration.2.bullet.1")
             @bullet("pdf.declaration.adoption.declaration.2.bullet.2")
             @bullet("pdf.declaration.adoption.declaration.2.bullet.3")
         </fo:list-block>
-        <fo:block margin-bottom="4mm">@messages("pdf.declaration.adoption.declaration.3")</fo:block>
-        <fo:block margin-bottom="4mm">@messages("pdf.declaration.adoption.declaration.4")</fo:block>
-        <fo:block margin-bottom="4mm">@messages("pdf.declaration.adoption.declaration.5")</fo:block>
+        <fo:block margin-bottom="3mm">@messages("pdf.declaration.adoption.declaration.3")</fo:block>
+        <fo:block margin-bottom="3mm">@messages("pdf.declaration.adoption.declaration.4")</fo:block>
+        <fo:block margin-bottom="3mm">@messages("pdf.declaration.adoption.declaration.5")</fo:block>
     </fo:block-container>
 
     @signature()

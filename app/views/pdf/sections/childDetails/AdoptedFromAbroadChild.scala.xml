@@ -14,10 +14,10 @@
 
 <fo:block-container margin-top="8mm">
     <!-- Baby details -->
-    <fo:block role="H2" id="child-details" font-size="18pt" font-weight="bold" margin-bottom="5mm">@messages("section.childDetails")</fo:block>
+    <fo:block role="H2" id="child-details" font-size="14pt" font-weight="bold" margin-bottom="3mm">@messages("section.childDetails")</fo:block>
 
     <fo:block-container>
-        <fo:block-container margin-bottom="3mm">
+        <fo:block-container margin-bottom="2mm">
             <fo:block>
                 <fo:inline font-weight="bold">@messages("pdf.adoptionFromAbroad.officialNotification"): </fo:inline>
                 <fo:inline>@dateTimeFormat(model.notifiedDate)</fo:inline>
@@ -26,7 +26,7 @@
     </fo:block-container>
 
     <fo:block-container>
-        <fo:block-container margin-bottom="3mm">
+        <fo:block-container margin-bottom="2mm">
             <fo:block>
                 <fo:inline font-weight="bold">
                     @if(model.hasEnteredUk) {
