@@ -22,11 +22,11 @@ import models.{PaternityLeaveLengthGbPreApril24OrNi, PayStartDateLimits, Relatio
 import pages._
 
 import java.time.DayOfWeek.SUNDAY
-import java.time.LocalDate
+import java.time.{Clock, LocalDate}
 import java.time.temporal.TemporalAdjusters.next
 import javax.inject.Inject
 
-class PayStartDateService @Inject() {
+class PayStartDateService @Inject()(clock: Clock) {
 
   def gbPreApril24OrNiDates(answers: UserAnswers): EitherNec[QuestionPage[_], PayStartDateLimits] = {
 
@@ -36,19 +36,28 @@ class PayStartDateService @Inject() {
         case PaternityLeaveLengthGbPreApril24OrNi.TwoWeeks => 6
       }
 
-    def getLimitsBasedOnDate(datePage: QuestionPage[LocalDate], answers: UserAnswers, extendToEndOfWeek: Boolean): EitherNec[QuestionPage[_], PayStartDateLimits] =
+    def getLimitsBasedOnExpectedDate(datePage: QuestionPage[LocalDate], answers: UserAnswers, extendToEndOfWeek: Boolean): EitherNec[QuestionPage[_], PayStartDateLimits] =
       (
         answers.getEither(datePage),
         answers.getEither(PaternityLeaveLengthGbPreApril24OrNiPage).map(maxWeeksAllowed)
       ).parMapN { case (date, maxWeeks) =>
         val endDate = if (extendToEndOfWeek) date.plusWeeks(maxWeeks).`with`(next(SUNDAY)) else date.plusWeeks(maxWeeks)
-        PayStartDateLimits(date.plusDays(1), endDate)
+        PayStartDateLimits(date, endDate)
+      }
+
+    def getLimitsBasedOnHistoricalDate(datePage: QuestionPage[LocalDate], answers: UserAnswers, extendToEndOfWeek: Boolean): EitherNec[QuestionPage[_], PayStartDateLimits] =
+      (
+        answers.getEither(datePage),
+        answers.getEither(PaternityLeaveLengthGbPreApril24OrNiPage).map(maxWeeksAllowed)
+      ).parMapN { case (date, maxWeeks) =>
+        val endDate = if (extendToEndOfWeek) date.plusWeeks(maxWeeks).`with`(next(SUNDAY)) else date.plusWeeks(maxWeeks)
+        PayStartDateLimits(LocalDate.now(clock), endDate)
       }
 
     def getBirthParentalOrderDates(answers: UserAnswers): EitherNec[QuestionPage[_], PayStartDateLimits] =
       answers.getEither(BabyHasBeenBornPage).ifM(
-        ifTrue  = getLimitsBasedOnDate(BabyDateOfBirthPage, answers, extendToEndOfWeek = false),
-        ifFalse = getLimitsBasedOnDate(BabyDueDatePage, answers, extendToEndOfWeek = true)
+        ifTrue  = getLimitsBasedOnHistoricalDate(BabyDateOfBirthPage, answers, extendToEndOfWeek = false),
+        ifFalse = getLimitsBasedOnExpectedDate(BabyDueDatePage, answers, extendToEndOfWeek = true)
       )
 
     answers.getEither(IsAdoptingOrParentalOrderPage).ifM(
@@ -59,12 +68,12 @@ class PayStartDateService @Inject() {
         case _ =>
           answers.getEither(IsAdoptingFromAbroadPage).ifM(
             ifTrue  = answers.getEither(ChildHasEnteredUkPage).ifM(
-              ifTrue  = getLimitsBasedOnDate(DateChildEnteredUkPage, answers, extendToEndOfWeek = true),
-              ifFalse = getLimitsBasedOnDate(DateChildExpectedToEnterUkPage, answers, extendToEndOfWeek = true)
+              ifTrue  = getLimitsBasedOnHistoricalDate(DateChildEnteredUkPage, answers, extendToEndOfWeek = true),
+              ifFalse = getLimitsBasedOnExpectedDate(DateChildExpectedToEnterUkPage, answers, extendToEndOfWeek = true)
             ),
             ifFalse = answers.getEither(ChildHasBeenPlacedPage).ifM(
-              ifTrue  = getLimitsBasedOnDate(ChildPlacementDatePage, answers, extendToEndOfWeek = true),
-              ifFalse = getLimitsBasedOnDate(ChildExpectedPlacementDatePage, answers, extendToEndOfWeek = true)
+              ifTrue  = getLimitsBasedOnHistoricalDate(ChildPlacementDatePage, answers, extendToEndOfWeek = true),
+              ifFalse = getLimitsBasedOnExpectedDate(ChildExpectedPlacementDatePage, answers, extendToEndOfWeek = true)
             )
           )
       },
