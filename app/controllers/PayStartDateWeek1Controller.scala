@@ -18,14 +18,17 @@ package controllers
 
 import controllers.actions._
 import forms.PayStartDateWeek1FormProvider
+
 import javax.inject.Inject
 import json.OptionalLocalDateReads._
+import logging.Logging
 import models.Mode
 import navigation.Navigator
 import pages.PayStartDateWeek1Page
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.PayStartDateService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.PayStartDateWeek1View
 
@@ -40,40 +43,62 @@ class PayStartDateWeek1Controller @Inject()(
                                         requireData: DataRequiredAction,
                                         formProvider: PayStartDateWeek1FormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: PayStartDateWeek1View
+                                        view: PayStartDateWeek1View,
+                                        payStartDateService: PayStartDateService
                                       )(implicit ec: ExecutionContext)
   extends FrontendBaseController
     with I18nSupport
-    with AnswerExtractor {
+    with AnswerExtractor
+    with Logging {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       getPaternityReason { paternityReason =>
-        val form = formProvider()
 
-        val preparedForm = request.userAnswers.get(PayStartDateWeek1Page) match {
-          case None => form
-          case Some(value) => form.fill(value)
-        }
+        payStartDateService.gbPostApril24Dates(request.userAnswers).fold(
+          pages => {
+            val message = pages.toChain.toList.mkString(", ")
+            logger.warn(s"Failed to find pay start date limits GB post April 24, missing pages: $message")
+            Redirect(routes.JourneyRecoveryController.onPageLoad())
+          },
+          limits => {
+            val form = formProvider(limits)
 
-        Ok(view(preparedForm, mode, paternityReason))
+            val preparedForm = request.userAnswers.get(PayStartDateWeek1Page) match {
+              case None => form
+              case Some(value) => form.fill(value)
+            }
+
+            Ok(view(preparedForm, mode, paternityReason))
+          }
+        )
       }
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       getPaternityReasonAsync { paternityReason =>
-        val form = formProvider()
 
-        form.bindFromRequest().fold(
-          formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, mode, paternityReason))),
+        payStartDateService.gbPostApril24Dates(request.userAnswers).fold(
+          pages => {
+            val message = pages.toChain.toList.mkString(", ")
+            logger.warn(s"Failed to find pay start date limits GB post April 24, missing pages: $message")
+            Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+          },
+          limits => {
+            val form = formProvider(limits)
 
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDateWeek1Page, value))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(PayStartDateWeek1Page, mode, updatedAnswers))
+            form.bindFromRequest().fold(
+              formWithErrors =>
+                Future.successful(BadRequest(view(formWithErrors, mode, paternityReason))),
+
+              value =>
+                for {
+                  updatedAnswers <- Future.fromTry(request.userAnswers.set(PayStartDateWeek1Page, value))
+                  _ <- sessionRepository.set(updatedAnswers)
+                } yield Redirect(navigator.nextPage(PayStartDateWeek1Page, mode, updatedAnswers))
+            )
+          }
         )
       }
   }

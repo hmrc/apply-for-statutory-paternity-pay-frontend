@@ -54,8 +54,6 @@ class PayStartDateGbPreApril24OrNiControllerSpec extends SpecBase with MockitoSu
 
   lazy val payStartDateGbPreApril24OrNiRoute = routes.PayStartDateGbPreApril24OrNiController.onPageLoad(NormalMode).url
 
-  override val emptyUserAnswers = UserAnswers(userAnswersId)
-
   def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, payStartDateGbPreApril24OrNiRoute)
 
