@@ -16,23 +16,32 @@
 
 package forms
 
+import config.Formats.dateTimeFormat
+
 import java.time.LocalDate
 import forms.mappings.Mappings
+import models.PayStartDateLimits
 
 import javax.inject.Inject
 import play.api.data.Form
 import play.api.data.Forms.optional
-import play.api.i18n.Messages
+import play.api.i18n.{Lang, Messages}
 
 class PayStartDateWeek2FormProvider @Inject() extends Mappings {
 
-  def apply()(implicit messages: Messages): Form[Option[LocalDate]] =
+  def apply(limits: PayStartDateLimits)(implicit messages: Messages): Form[Option[LocalDate]] = {
+    implicit val lang: Lang = messages.lang
+
     Form(
       "value" -> optional(localDate(
-        invalidKey     = "payStartDateWeek2.error.invalid",
+        invalidKey = "payStartDateWeek2.error.invalid",
         allRequiredKey = "payStartDateWeek2.error.required.all",
         twoRequiredKey = "payStartDateWeek2.error.required.two",
-        requiredKey    = "payStartDateWeek2.error.required"
+        requiredKey = "payStartDateWeek2.error.required"
+      ).verifying(
+        maxDate(limits.max, "payStartDateWeek2.error.tooHigh", limits.max.format(dateTimeFormat())),
+        minDate(limits.min, "payStartDateWeek2.error.tooLow", limits.min.format(dateTimeFormat()))
       ))
     )
+  }
 }

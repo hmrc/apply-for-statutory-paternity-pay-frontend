@@ -19,7 +19,7 @@ package controllers
 import java.time.{LocalDate, ZoneOffset}
 import base.SpecBase
 import forms.PayStartDateWeek1FormProvider
-import models.{NormalMode, PaternityReason, UserAnswers}
+import models.{NormalMode, PaternityReason, PayStartDateLimits, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -33,15 +33,19 @@ import repositories.SessionRepository
 import views.html.PayStartDateWeek1View
 import play.api.i18n.Messages
 import play.api.test.Helpers.stubMessages
+import services.PayStartDateService
 
 import scala.concurrent.Future
 
 class PayStartDateWeek1ControllerSpec extends SpecBase with MockitoSugar {
 
   private implicit val messages: Messages = stubMessages()
+  private val minDate = LocalDate.now
+  private val maxDate = LocalDate.now.plusDays(1)
+  private val payStartDateLimits = PayStartDateLimits(minDate, maxDate)
 
   val formProvider = new PayStartDateWeek1FormProvider()
-  private def form = formProvider()
+  private def form = formProvider(payStartDateLimits)
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -66,7 +70,14 @@ class PayStartDateWeek1ControllerSpec extends SpecBase with MockitoSugar {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(answers)).build()
+      val mockPayStartDateService = mock[PayStartDateService]
+
+      when(mockPayStartDateService.gbPostApril24Dates(any())) thenReturn Right(payStartDateLimits)
+
+      val application =
+        applicationBuilder(userAnswers = Some(answers))
+          .overrides(bind[PayStartDateService].toInstance(mockPayStartDateService))
+          .build()
 
       running(application) {
         val result = route(application, getRequest).value
@@ -82,7 +93,14 @@ class PayStartDateWeek1ControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswers = answers.set(PayStartDateWeek1Page, validAnswer).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val mockPayStartDateService = mock[PayStartDateService]
+
+      when(mockPayStartDateService.gbPostApril24Dates(any())) thenReturn Right(payStartDateLimits)
+
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers))
+          .overrides(bind[PayStartDateService].toInstance(mockPayStartDateService))
+          .build()
 
       running(application) {
         val view = application.injector.instanceOf[PayStartDateWeek1View]
@@ -97,14 +115,17 @@ class PayStartDateWeek1ControllerSpec extends SpecBase with MockitoSugar {
     "must redirect to the next page when valid data is submitted" in {
 
       val mockSessionRepository = mock[SessionRepository]
+      val mockPayStartDateService = mock[PayStartDateService]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(mockPayStartDateService.gbPostApril24Dates(any())) thenReturn Right(payStartDateLimits)
 
       val application =
         applicationBuilder(userAnswers = Some(answers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+            bind[SessionRepository].toInstance(mockSessionRepository),
+            bind[PayStartDateService].toInstance(mockPayStartDateService)
           )
           .build()
 
@@ -118,7 +139,14 @@ class PayStartDateWeek1ControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(answers)).build()
+      val mockPayStartDateService = mock[PayStartDateService]
+
+      when(mockPayStartDateService.gbPostApril24Dates(any())) thenReturn Right(payStartDateLimits)
+
+      val application =
+        applicationBuilder(userAnswers = Some(answers))
+          .overrides(bind[PayStartDateService].toInstance(mockPayStartDateService))
+          .build()
 
       val request =
         FakeRequest(POST, payStartDateWeek1Route)
