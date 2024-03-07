@@ -22,7 +22,7 @@
         govukButton: GovukButton
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(preApril24OrNorthernIreland: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("confirmation.title")), showBackLink = false) {
 
@@ -39,27 +39,34 @@
         <a href="@routes.ConfirmationController.startAgain()" class="govuk-link">@messages("confirmation.guidance.p2.link2.text")</a>.
     </p>
 
+    <h2 class="govuk-heading-m">@messages("confirmation.guidance.downloadYourCompletedForm")</h2>
+    <p class="govuk-body">
+        <a href="@routes.PrintController.onDownload" class="govuk-link">@messages("confirmation.guidance.downloadYourCompletedForm.link.text")</a>
+    </p>
+
+    @if(preApril24OrNorthernIreland) {
+        <p class="govuk-body">@messages("confirmation.guidance.downloadYourCompletedForm.p1.preApril24OrNorthernIreland")</p>
+    } else {
+        <p class="govuk-body">@messages("confirmation.guidance.downloadYourCompletedForm.p1.postApril24")</p>
+    }
+
     <h2 class="govuk-heading-m">@messages("confirmation.guidance.whatHappensNext")</h2>
 
-    <p class="govuk-body">@messages("confirmation.guidance.p3")</p>
-    <p class="govuk-body">@messages("confirmation.guidance.p4")</p>
+    <p class="govuk-body">@messages("confirmation.guidance.whatHappensNext.p1")</p>
+    <p class="govuk-body">@messages("confirmation.guidance.whatHappensNext.p2")</p>
 
     <p class="govuk-body">
-        @messages("confirmation.guidance.p5.1")
-        <a href="@messages("confirmation.guidance.p5.link1.href")" class="govuk-link">@messages("confirmation.guidance.p5.link1.text")</a>.
-        @messages("confirmation.guidance.p5.2")
+        @messages("confirmation.guidance.whatHappensNext.p3.1")
+        <a href="@messages("confirmation.guidance.whatHappensNext.p3.link1.href")" class="govuk-link">@messages("confirmation.guidance.whatHappensNext.p3.link1.text")</a>.
+        @messages("confirmation.guidance.whatHappensNext.p3.2")
     </p>
 
     <p class="govuk-body">
-        @messages("confirmation.guidance.p6.1")
-        <a href="@messages("confirmation.guidance.p6.link1.href")" class="govuk-link">@messages("confirmation.guidance.p6.link1.text")</a>.
-        @messages("confirmation.guidance.p6.2")
-        <a href="@messages("confirmation.guidance.p6.link2.href")" class="govuk-link">@messages("confirmation.guidance.p6.link2.text")</a>.
+        @messages("confirmation.guidance.whatHappensNext.p4.1")
+        <a href="@messages("confirmation.guidance.whatHappensNext.p4.link1.href")" class="govuk-link">@messages("confirmation.guidance.whatHappensNext.p4.link1.text")</a>.
+        @messages("confirmation.guidance.whatHappensNext.p4.2")
+        <a href="@messages("confirmation.guidance.whatHappensNext.p4.link2.href")" class="govuk-link">@messages("confirmation.guidance.whatHappensNext.p4.link2.text")</a>.
     </p>
-
-    <p class="govuk-body">@messages("confirmation.guidance.p1")</p>
-
-    <a href="@routes.PrintController.onDownload" class="govuk-button">@messages("confirmation.download")</a>
 
     <p class="govuk-body">
         <a href="@config.exitSurveyUrl" class="govuk-link">@messages("confirmation.survey.link.text")</a>

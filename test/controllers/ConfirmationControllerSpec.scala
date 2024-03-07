@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import generators.ModelGenerators
-import models.{CountryOfResidence, Name, PaternityLeaveLengthGbPreApril24OrNi}
+import models.{CountryOfResidence, LeaveTakenTogetherOrSeparately, Name, PaternityLeaveLengthGbPostApril24, PaternityLeaveLengthGbPreApril24OrNi}
 import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
@@ -38,37 +38,73 @@ class ConfirmationControllerSpec extends SpecBase with MockitoSugar with ModelGe
 
   "Confirmation Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "must return OK and the correct view for a GET" - {
 
-      val answers =
-        emptyUserAnswers
-          .set(CountryOfResidencePage, CountryOfResidence.England).success.value
-          .set(BabyDateOfBirthPage, LocalDate.now).success.value
-          .set(BabyDueDatePage, LocalDate.now).success.value
-          .set(BabyHasBeenBornPage, true).success.value
-          .set(IsAdoptingOrParentalOrderPage, false).success.value
-          .set(IsBiologicalFatherPage, true).success.value
-          .set(IsCohabitingPage, true).success.value
-          .set(IsInQualifyingRelationshipPage, true).success.value
-          .set(NamePage, Name("first", "last")).success.value
-          .set(NinoPage, arbitrary[Nino].sample.value).success.value
-          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
-          .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
-          .set(WillHaveCaringResponsibilityPage, true).success.value
-          .set(WillTakeTimeToCareForChildPage, true).success.value
-          .set(WillTakeTimeToSupportPartnerPage, true).success.value
+      "for paternity leave pre-April 24" in {
+        val answers =
+          emptyUserAnswers
+            .set(CountryOfResidencePage, CountryOfResidence.England).success.value
+            .set(BabyDateOfBirthPage, LocalDate.now).success.value
+            .set(BabyDueDatePage, LocalDate.now).success.value
+            .set(BabyHasBeenBornPage, true).success.value
+            .set(IsAdoptingOrParentalOrderPage, false).success.value
+            .set(IsBiologicalFatherPage, true).success.value
+            .set(IsCohabitingPage, true).success.value
+            .set(IsInQualifyingRelationshipPage, true).success.value
+            .set(NamePage, Name("first", "last")).success.value
+            .set(NinoPage, arbitrary[Nino].sample.value).success.value
+            .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+            .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
+            .set(WillHaveCaringResponsibilityPage, true).success.value
+            .set(WillTakeTimeToCareForChildPage, true).success.value
+            .set(WillTakeTimeToSupportPartnerPage, true).success.value
 
-      val application = applicationBuilder(userAnswers = Some(answers)).build()
+        val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      running(application) {
-        val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
+        running(application) {
+          val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
 
-        val result = route(application, request).value
+          val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ConfirmationView]
+          val view = application.injector.instanceOf[ConfirmationView]
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(request, messages(application)).toString
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(preApril24OrNorthernIreland = true)(request, messages(application)).toString
+        }
+      }
+
+      "for paternity leave post-April 24" in {
+        val answers =
+          emptyUserAnswers
+            .set(CountryOfResidencePage, CountryOfResidence.England).success.value
+            .set(BabyDateOfBirthPage, LocalDate.now).success.value
+            .set(BabyDueDatePage, LocalDate.of(2024, 4, 7)).success.value
+            .set(BabyHasBeenBornPage, false).success.value
+            .set(IsAdoptingOrParentalOrderPage, false).success.value
+            .set(IsBiologicalFatherPage, true).success.value
+            .set(IsCohabitingPage, true).success.value
+            .set(IsInQualifyingRelationshipPage, true).success.value
+            .set(NamePage, Name("first", "last")).success.value
+            .set(NinoPage, arbitrary[Nino].sample.value).success.value
+            .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
+            .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
+            .set(PayStartDateGbPostApril24Page, Some(LocalDate.now())).success.value
+            .set(WillHaveCaringResponsibilityPage, true).success.value
+            .set(WillTakeTimeToCareForChildPage, true).success.value
+            .set(WillTakeTimeToSupportPartnerPage, true).success.value
+
+        val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+        running(application) {
+          val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
+
+          val result = route(application, request).value
+
+          val view = application.injector.instanceOf[ConfirmationView]
+
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(preApril24OrNorthernIreland = false)(request, messages(application)).toString
+        }
       }
     }
 
