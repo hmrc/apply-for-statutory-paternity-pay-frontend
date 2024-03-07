@@ -12,9 +12,9 @@
     @Formats.dateTimeFormat()(messages.lang).format(date)
 }
 
-<fo:block-container margin-top="8mm">
+<fo:block-container margin-top="4mm">
     <!-- Baby details -->
-    <fo:block role="H2" id="child-details" font-size="14pt" font-weight="bold" margin-bottom="3mm">@messages("section.childDetails")</fo:block>
+    <fo:block role="H2" id="child-details" font-size="14pt" font-weight="bold" margin-bottom="2mm">@messages("section.childDetails")</fo:block>
 
     <fo:block-container>
         <fo:block-container margin-bottom="2mm">

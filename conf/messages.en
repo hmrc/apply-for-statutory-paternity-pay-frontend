@@ -193,6 +193,7 @@ confirmation.guidance.whatHappensNext.p4.link2.text = Labour Relations Agency
 confirmation.guidance.whatHappensNext.p4.link2.href = https://www.gov.uk/government/organisations/labour-relations-agency
 confirmation.survey.link.text = What did you think of this service?
 confirmation.survey.guidance = (takes 30 seconds)
+confirmation.download = Download form
 
 isBiologicalFather.title = Are you the child’s biological father?
 isBiologicalFather.heading = Are you the child’s biological father?
@@ -337,7 +338,7 @@ pdf.declaration.adoption.declaration.2.bullet.2 = married to or in a civil partn
 pdf.declaration.adoption.declaration.2.bullet.3 = living with the person adopting the child in an enduring family relationship, but I am not an immediate family relative
 pdf.declaration.adoption.declaration.3 = I will not be taking Statutory Adoption Pay and Statutory Adoption Leave.
 pdf.declaration.adoption.declaration.4 = I will have responsibility for caring for the child.
-pdf.declaration.adoption.declaration.5 = I will take time off to support the person adopting, intending to adopt the child or to care for the child.
+pdf.declaration.adoption.declaration.5 = I will take time off to support the person adopting or intending to adopt the child, or to care for the child
 pdf.declaration.parentalOrder.declaration.1 = I declare that this information correct and complete to the best of my knowledge.
 pdf.declaration.parentalOrder.declaration.2 = I declare that I am (one of the following):
 pdf.declaration.parentalOrder.declaration.2.bullet.1 = married to or in a civil partnership with the other parental order parent

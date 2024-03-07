@@ -6,7 +6,7 @@
 @()(implicit request: RequestHeader, messages: Messages)
 
 
-<fo:block-container margin-top="8mm">
+<fo:block-container margin-top="4mm">
     <!-- Paternity details -->
     <fo:block role="H2" id="paternity-details" font-size="14pt" font-weight="bold" margin-bottom="3mm">@messages("section.paternityDetails")</fo:block>
 
@@ -15,7 +15,7 @@
         <fo:block-container margin-bottom="2mm">
             <fo:block>
                 <fo:inline font-weight="bold">@messages("pdf.paternityLength"): </fo:inline>
-                <fo:inline>@messages("paternityLeaveLengthGbPostApril24.unsure")</fo:inline>
+                <fo:inline>@messages("site.notProvided")</fo:inline>
             </fo:block>
         </fo:block-container>
     </fo:block-container>

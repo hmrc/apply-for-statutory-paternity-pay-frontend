@@ -5,11 +5,11 @@
 <fo:static-content flow-name="xsl-region-before">
     <fo:block>
         @if(messages.lang.locale.getLanguage == "cy") {
-            <fo:external-graphic content-width="3.5cm" src="url(conf/resources/logo_cy.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
+            <fo:external-graphic content-width="3cm" src="url(conf/resources/logo_cy.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
         } else {
-            <fo:external-graphic content-width="3.5cm" src="url(conf/resources/logo.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
+            <fo:external-graphic content-width="3cm" src="url(conf/resources/logo.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
         }
-        <fo:block role="H1" margin-left="4cm" margin-top="-1.25cm" text-align="right" font-size="15pt" font-weight="bold">
+        <fo:block role="H1" margin-left="3cm" margin-top="-1.75cm" text-align="right" font-size="14pt" font-weight="bold">
 
             @{model.eligibility match {
             case _: JourneyModel.BirthChildEligibility =>
