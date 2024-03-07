@@ -17,15 +17,17 @@
 package controllers
 
 import controllers.actions._
+import models.{JourneyModel, NormalMode}
 
 import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.Results.Redirect
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ConfirmationView
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class ConfirmationController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -38,9 +40,15 @@ class ConfirmationController @Inject()(
                                        journeyModelFilter: JourneyModelFilter
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData andThen journeyModelFilter) {
+  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData andThen journeyModelFilter) async {
     implicit request =>
-      Ok(view())
+      JourneyModel.from(request.userAnswers).fold(
+        _ => Future.failed(new IllegalStateException("JourneyModelFilter should prevent this from being reachable")),
+        model => Future.successful(model.paternityLeaveDetails match {
+          case JourneyModel.PaternityLeaveGbPreApril24OrNi(_, _) => Ok(view(preApril24OrNorthernIreland = true))
+          case _ => Ok(view(preApril24OrNorthernIreland = false))
+        })
+      )
   }
 
   def startAgain(): Action[AnyContent] = identify.async {
