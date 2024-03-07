@@ -11,7 +11,7 @@
     @Formats.dateTimeFormat()(messages.lang).format(date)
 }
 
-<fo:block-container margin-top="8mm">
+<fo:block-container margin-top="4mm">
     <!-- Paternity details -->
     <fo:block role="H2" id="paternity-details" font-size="14pt" font-weight="bold" margin-bottom="3mm">@messages("section.paternityDetails")</fo:block>
 
