@@ -15,7 +15,7 @@
         <fo:block-container margin-bottom="2mm">
             <fo:block>
                 <fo:inline font-weight="bold">@messages("pdf.paternityLength"): </fo:inline>
-                <fo:inline>@messages("paternityLeaveLengthGbPostApril24.unsure")</fo:inline>
+                <fo:inline>@messages("site.notProvided")</fo:inline>
             </fo:block>
         </fo:block-container>
     </fo:block-container>
