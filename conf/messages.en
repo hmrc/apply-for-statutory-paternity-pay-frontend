@@ -193,6 +193,7 @@ confirmation.guidance.whatHappensNext.p4.link2.text = Labour Relations Agency
 confirmation.guidance.whatHappensNext.p4.link2.href = https://www.gov.uk/government/organisations/labour-relations-agency
 confirmation.survey.link.text = What did you think of this service?
 confirmation.survey.guidance = (takes 30 seconds)
+confirmation.download = Download form
 
 isBiologicalFather.title = Are you the child’s biological father?
 isBiologicalFather.heading = Are you the child’s biological father?

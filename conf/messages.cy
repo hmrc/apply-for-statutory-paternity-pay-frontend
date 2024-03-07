@@ -178,6 +178,7 @@ confirmation.guidance.whatHappensNext.p4.link2.text = Asiantaeth Cysylltiadau Ll
 confirmation.guidance.whatHappensNext.p4.link2.href = https://www.gov.uk/government/organisations/labour-relations-agency
 confirmation.survey.link.text = Beth oedd eich barn am y gwasanaeth hwn?
 confirmation.survey.guidance = (mae’n cymryd 30 eiliad)
+confirmation.download = Lawrlwytho’r ffurflen
 
 isBiologicalFather.title = Ai chi yw tad biolegol y plentyn?
 isBiologicalFather.heading = Ai chi yw tad biolegol y plentyn?
