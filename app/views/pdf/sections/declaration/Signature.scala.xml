@@ -10,9 +10,15 @@
 <fo:block font-weight="bold" margin-bottom="1mm">@messages("pdf.declaration.date")</fo:block>
 
 <fo:block margin-top="2mm">
-    <fo:inline>@messages("date.day")</fo:inline>
-    <fo:inline padding-left="2.1cm">@messages("date.month")</fo:inline>
-    <fo:inline padding-left="1.6cm">@messages("date.year")</fo:inline>
+    <fo:inline-container width="2.85cm">
+        <fo:block>@messages("date.day")</fo:block>
+    </fo:inline-container>
+    <fo:inline-container width="2.85cm">
+        <fo:block>@messages("date.month")</fo:block>
+    </fo:inline-container>
+    <fo:inline-container width="2cm">
+        <fo:block>@messages("date.year")</fo:block>
+    </fo:inline-container>
 </fo:block>
 
 <fo:block margin-top="0.7cm">
