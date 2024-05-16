@@ -26,7 +26,7 @@ import java.time.{Clock, LocalDate}
 import java.time.temporal.TemporalAdjusters.next
 import javax.inject.Inject
 
-class PayStartDateService @Inject()(clock: Clock) {
+class PayStartDateService {
 
   def gbPreApril24OrNiDates(answers: UserAnswers): EitherNec[QuestionPage[_], PayStartDateLimits] = {
 
@@ -51,7 +51,7 @@ class PayStartDateService @Inject()(clock: Clock) {
         answers.getEither(PaternityLeaveLengthGbPreApril24OrNiPage).map(maxWeeksAllowed)
       ).parMapN { case (date, maxWeeks) =>
         val endDate = if (extendToEndOfWeek) date.plusWeeks(maxWeeks).`with`(next(SUNDAY)) else date.plusWeeks(maxWeeks)
-        PayStartDateLimits(LocalDate.now(clock), endDate)
+        PayStartDateLimits(date, endDate)
       }
 
     def getBirthParentalOrderDates(answers: UserAnswers): EitherNec[QuestionPage[_], PayStartDateLimits] =
@@ -104,7 +104,7 @@ class PayStartDateService @Inject()(clock: Clock) {
         answers.getEither(PaternityLeaveLengthGbPostApril24Page).map(maxWeeksAllowed)
       ).parMapN { case (date, maxWeeks) =>
         val endDate = if (extendToEndOfWeek) date.plusWeeks(maxWeeks).`with`(next(SUNDAY)) else date.plusWeeks(maxWeeks)
-        PayStartDateLimits(LocalDate.now(clock), endDate)
+        PayStartDateLimits(date, endDate)
       }
 
     def getBirthParentalOrderDates(answers: UserAnswers): EitherNec[QuestionPage[_], PayStartDateLimits] =

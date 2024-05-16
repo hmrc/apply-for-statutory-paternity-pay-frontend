@@ -264,7 +264,7 @@ payStartDateBabyBorn.change.hidden = y dyddiad yr hoffech i’ch Tâl Tadolaeth 
 
 payStartDateGbPreApril24OrNi.title = Ar ba ddyddiad yr hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau?
 payStartDateGbPreApril24OrNi.heading = Ar ba ddyddiad yr hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau?
-payStartDateGbPreApril24OrNi.p1 = Mae’n rhaid i’r dyddiad dechrau fod rhwng {0} a {1}. Gallwch newid y dyddiad hwn yn nes ymlaen, ond mae’n rhaid i chi roi o leiaf 28 diwrnod o rybudd i’ch cyflogwr ynghylch y dyddiad newydd.
+payStartDateGbPreApril24OrNi.p1 = Mae’n rhaid i’r dyddiad dechrau fod rhwng {0} a {1}. Gallwch newid y dyddiad hwn yn nes ymlaen, ond dylech roi o leiaf 28 diwrnod o rybudd i’ch cyflogwr ynghylch y dyddiad newydd.
 payStartDateGbPreApril24OrNi.p1.notBorn = The start date must be between {0} and {1}. You can change this date later but you must give your employer at least 28 days notice of the new date. If your baby is born sooner or later than expected, please discuss the situation with your employer.
 payStartDateGbPreApril24OrNi.hint = Er enghraifft, 12 11 2007.
 payStartDateGbPreApril24OrNi.checkYourAnswersLabel = Ar ba ddyddiad yr hoffech i’ch Tâl Tadolaeth Statudol a/neu Absenoldeb Tadolaeth ddechrau?
@@ -497,9 +497,9 @@ payStartDateGbPostApril24.change.hidden = pryd ydych chi eisiau i’ch Tâl Tado
 
 payStartDateWeek1.title = Beth yw dyddiad dechrau’ch wythnos gyntaf o absenoldeb? (dewisol)
 payStartDateWeek1.heading = Beth yw dyddiad dechrau’ch wythnos gyntaf o absenoldeb? (dewisol)
-payStartDateWeek1.p1.paternityFromBirth = Gallwch gymryd eich absenoldeb cyn pen 52 wythnos i enedigaeth y plentyn. Gallwch newid y dyddiadau hyn yn nes ymlaen, ond mae’n rhaid i chi roi 28 diwrnod o rybudd i’ch cyflogwr ynghylch y dyddiad newydd.
-payStartDateWeek1.p1.paternityFromUkAdoption = Gallwch gymryd eich absenoldeb cyn pen 52 wythnos i’r plentyn gael ei leoli. Gallwch newid y dyddiadau hyn yn nes ymlaen, ond mae’n rhaid i chi roi 28 diwrnod o rybudd i’ch cyflogwr ynghylch y dyddiad newydd.
-payStartDateWeek1.p1.paternityFromAdoptionFromAbroad = Gallwch gymryd eich absenoldeb cyn pen 52 wythnos i’r plentyn gyrraedd y DU. Gallwch newid y dyddiadau hyn yn nes ymlaen, ond mae’n rhaid i chi roi 28 diwrnod o rybudd i’ch cyflogwr ynghylch y dyddiad newydd.
+payStartDateWeek1.p1.paternityFromBirth = Gallwch gymryd eich absenoldeb cyn pen 52 wythnos i enedigaeth y plentyn. Gallwch ddarparu’r dyddiadau hyn neu eu newid yn nes ymlaen, ond dylech roi 28 diwrnod o rybudd i’ch cyflogwr ynghylch y dyddiad newydd.
+payStartDateWeek1.p1.paternityFromUkAdoption = Gallwch gymryd eich absenoldeb cyn pen 52 wythnos i’r plentyn gael ei leoli. Gallwch ddarparu’r dyddiadau hyn neu eu newid yn nes ymlaen, ond dylech roi 28 diwrnod o rybudd i’ch cyflogwr ynghylch y dyddiad newydd.
+payStartDateWeek1.p1.paternityFromAdoptionFromAbroad = Gallwch gymryd eich absenoldeb cyn pen 52 wythnos i’r plentyn gyrraedd y DU. Gallwch ddarparu’r dyddiadau hyn neu eu newid yn nes ymlaen, ond dylech roi 28 diwrnod o rybudd i’ch cyflogwr ynghylch y dyddiad newydd.
 payStartDateWeek1.hint = Er enghraifft, 12 11 2007.
 payStartDateWeek1.checkYourAnswersLabel = Beth yw dyddiad dechrau’ch wythnos gyntaf o absenoldeb?
 payStartDateWeek1.error.required.two = Mae’n rhaid i ddyddiad dechrau’ch wythnos gyntaf o absenoldeb gynnwys {0} a {1}
@@ -511,9 +511,9 @@ payStartDateWeek1.change.hidden = dyddiad dechrau’ch wythnos gyntaf o absenold
 
 payStartDateWeek2.title = Beth yw dyddiad dechrau’ch ail wythnos o absenoldeb? (dewisol)
 payStartDateWeek2.heading = Beth yw dyddiad dechrau’ch ail wythnos o absenoldeb? (dewisol)
-payStartDateWeek2.p1.paternityFromBirth = Gallwch gymryd eich absenoldeb cyn pen 52 wythnos i enedigaeth y plentyn. Gallwch ddarparu’r dyddiadau hyn neu eu newid yn nes ymlaen, ond mae’n rhaid i chi roi 28 diwrnod o rybudd i’ch cyflogwr ynghylch y dyddiad newydd.
-payStartDateWeek2.p1.paternityFromUkAdoption = Gallwch gymryd eich absenoldeb cyn pen 52 wythnos i’r plentyn gael ei leoli. Gallwch ddarparu’r dyddiadau hyn neu eu newid yn nes ymlaen, ond mae’n rhaid i chi roi 28 diwrnod o rybudd i’ch cyflogwr ynghylch y dyddiad newydd.
-payStartDateWeek2.p1.paternityFromAdoptionFromAbroad = Gallwch gymryd eich absenoldeb cyn pen 52 wythnos i’r plentyn gyrraedd y DU. Gallwch ddarparu’r dyddiadau hyn neu eu newid yn nes ymlaen, ond mae’n rhaid i chi roi 28 diwrnod o rybudd i’ch cyflogwr ynghylch y dyddiad newydd.
+payStartDateWeek2.p1.paternityFromBirth = Gallwch gymryd eich absenoldeb cyn pen 52 wythnos i enedigaeth y plentyn. Gallwch ddarparu’r dyddiadau hyn neu eu newid yn nes ymlaen, ond dylech roi 28 diwrnod o rybudd i’ch cyflogwr ynghylch y dyddiad newydd.
+payStartDateWeek2.p1.paternityFromUkAdoption = Gallwch gymryd eich absenoldeb cyn pen 52 wythnos i’r plentyn gael ei leoli. Gallwch ddarparu’r dyddiadau hyn neu eu newid yn nes ymlaen, ond dylech roi 28 diwrnod o rybudd i’ch cyflogwr ynghylch y dyddiad newydd.
+payStartDateWeek2.p1.paternityFromAdoptionFromAbroad = Gallwch gymryd eich absenoldeb cyn pen 52 wythnos i’r plentyn gyrraedd y DU. Gallwch ddarparu’r dyddiadau hyn neu eu newid yn nes ymlaen, ond dylech roi 28 diwrnod o rybudd i’ch cyflogwr ynghylch y dyddiad newydd.
 payStartDateWeek2.hint = Er enghraifft, 12 11 2007.
 payStartDateWeek2.checkYourAnswersLabel = Beth yw dyddiad dechrau’ch ail wythnos o absenoldeb?
 payStartDateWeek2.error.required.two = Mae’n rhaid i ddyddiad dechrau’ch ail wythnos o absenoldeb gynnwys {0} a {1}

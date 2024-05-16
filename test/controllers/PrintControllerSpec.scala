@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import generators.ModelGenerators
-import models.{CountryOfResidence, JourneyModel, Name, NormalMode, PaternityLeaveLengthGbPreApril24OrNi}
+import models.{CountryOfResidence, JourneyModel, Name, NormalMode, PaternityLeaveLengthGbPostApril24}
 import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito.{times, verify, when}
 import org.scalacheck.Arbitrary.arbitrary
@@ -53,8 +53,8 @@ class PrintControllerSpec extends SpecBase with EitherValues with MockitoSugar w
     .set(BabyHasBeenBornPage, true).success.value
     .set(BabyDueDatePage, dueDate).success.value
     .set(BabyDateOfBirthPage, birthDate).success.value
-    .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
-    .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
+    .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+    .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
 
   val model = JourneyModel.from(answers).value
 
