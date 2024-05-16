@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import generators.Generators
-import models.{CountryOfResidence, Name, PaternityLeaveLengthGbPreApril24OrNi}
+import models.{CountryOfResidence, Name, PaternityLeaveLengthGbPostApril24}
 import org.scalacheck.Arbitrary.arbitrary
 import pages._
 import play.api.i18n.Messages
@@ -49,8 +49,8 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
           .set(IsInQualifyingRelationshipPage, true).success.value
           .set(NamePage, Name("first", "last")).success.value
           .set(NinoPage, arbitrary[Nino].sample.value).success.value
-          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
-          .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
+          .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+          .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
           .set(WillHaveCaringResponsibilityPage, true).success.value
           .set(WillTakeTimeToCareForChildPage, true).success.value
           .set(WillTakeTimeToSupportPartnerPage, true).success.value
@@ -102,8 +102,8 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
 
         val paternityDetails = SummaryListViewModel(
           rows = Seq(
-            PaternityLeaveLengthGbPreApril24OrNiSummary.row(answers),
-            PayStartDateGbPreApril24OrNiSummary.row(answers),
+            PaternityLeaveLengthGbPostApril24Summary.row(answers),
+            PayStartDateGbPostApril24Summary.row(answers)
           ).flatten
         )
 

@@ -500,7 +500,7 @@ paternityLeaveLengthGbPostApril24.change.hidden = how long you will be on Patern
 
 payStartDateGbPreApril24OrNi.title = What date would you like your Statutory Paternity Pay and/or paternity leave to start?
 payStartDateGbPreApril24OrNi.heading = What date would you like your Statutory Paternity Pay and/or paternity leave to start?
-payStartDateGbPreApril24OrNi.p1 = The start date must be between {0} and {1}. You can change this date later but you must give your employer at least 28 days notice of the new date.
+payStartDateGbPreApril24OrNi.p1 = The start date must be between {0} and {1}. You can change this date later but you should give your employer at least 28 days notice of the new date.
 payStartDateGbPreApril24OrNi.p1.notBorn = The start date must be between {0} and {1}. You can change this date later but you must give your employer at least 28 days notice of the new date. If your baby is born sooner or later than expected, please discuss the situation with your employer.
 payStartDateGbPreApril24OrNi.hint = For example, 18 6 2007.
 payStartDateGbPreApril24OrNi.checkYourAnswersLabel = What date would you like your Statutory Paternity Pay and/or paternity leave to start?
@@ -514,9 +514,9 @@ payStartDateGbPreApril24OrNi.change.hidden = the date you would like your Statut
 
 payStartDateGbPostApril24.title = When do you want your Statutory Paternity Pay and/or Paternity leave to start? (optional)
 payStartDateGbPostApril24.heading = When do you want your Statutory Paternity Pay and/or Paternity leave to start? (optional)
-payStartDateGbPostApril24.p1.paternityFromBirth = Your leave can be taken within 52 weeks of the child’s birth. You can change this date later but you must give your employer 28 days notice of the new date.
-payStartDateGbPostApril24.p1.paternityFromUkAdoption = Your leave can be taken within 52 weeks of the child being placed. You can change this date later but you must give your employer 28 days notice of the new date.
-payStartDateGbPostApril24.p1.paternityFromAdoptionFromAbroad = Your leave can be taken within 52 weeks of the child entering the UK. You can change this date later but you must give your employer 28 days notice of the new date.
+payStartDateGbPostApril24.p1.paternityFromBirth = Your leave can be taken within 52 weeks of the child’s birth. You can change this date later but you should give your employer 28 days notice of the new date.
+payStartDateGbPostApril24.p1.paternityFromUkAdoption = Your leave can be taken within 52 weeks of the child being placed. You can change this date later but you should give your employer 28 days notice of the new date.
+payStartDateGbPostApril24.p1.paternityFromAdoptionFromAbroad = Your leave can be taken within 52 weeks of the child entering the UK. You can change this date later but you should give your employer 28 days notice of the new date.
 payStartDateGbPostApril24.hint = For example, 18 6 2007.
 payStartDateGbPostApril24.checkYourAnswersLabel = When do you want your Statutory Paternity Pay and/or Paternity leave to start?
 payStartDateGbPostApril24.error.required.all = Enter when you want your Statutory Paternity Pay and/or Paternity leave to start
@@ -529,9 +529,9 @@ payStartDateGbPostApril24.change.hidden = when you want your Statutory Paternity
 
 payStartDateWeek1.title = What is the start date of your first week of leave? (optional)
 payStartDateWeek1.heading = What is the start date of your first week of leave? (optional)
-payStartDateWeek1.p1.paternityFromBirth = Your leave can be taken within 52 weeks of the child’s birth. You can change these dates later but you must give your employer 28 days notice of the new date.
-payStartDateWeek1.p1.paternityFromUkAdoption = Your leave can be taken within 52 weeks of the child being placed. You can change these dates later but you must give your employer 28 days notice of the new date.
-payStartDateWeek1.p1.paternityFromAdoptionFromAbroad = Your leave can be taken within 52 weeks of the child entering the UK. You can change these dates later but you must give your employer 28 days notice of the new date.
+payStartDateWeek1.p1.paternityFromBirth = Your leave can be taken within 52 weeks of the child’s birth. You can provide or change these dates later but you should give your employer 28 days notice of the new date.
+payStartDateWeek1.p1.paternityFromUkAdoption = Your leave can be taken within 52 weeks of the child being placed. You can provide or change these dates later but you should give your employer 28 days notice of the new date.
+payStartDateWeek1.p1.paternityFromAdoptionFromAbroad = Your leave can be taken within 52 weeks of the child entering the UK. You can provide or change these dates later but you should give your employer 28 days notice of the new date.
 payStartDateWeek1.hint = For example, 18 6 2007.
 payStartDateWeek1.checkYourAnswersLabel = What is the start date of your first week of leave?
 payStartDateWeek1.error.required.two = The start date of your first week of leave must include {0} and {1}
@@ -543,9 +543,9 @@ payStartDateWeek1.change.hidden = the start date of your first week of leave
 
 payStartDateWeek2.title = What is the start date of your second week of leave? (optional)
 payStartDateWeek2.heading = What is the start date of your second week of leave? (optional)
-payStartDateWeek2.p1.paternityFromBirth = Your leave can be taken within 52 weeks of the child’s birth. You can provide or change these dates later but you must give your employer 28 days notice of the new date.
-payStartDateWeek2.p1.paternityFromUkAdoption = Your leave can be taken within 52 weeks of the child being placed. You can provide or change these dates later but you must give your employer 28 days notice of the new date.
-payStartDateWeek2.p1.paternityFromAdoptionFromAbroad = Your leave can be taken within 52 weeks of the child entering the UK. You can provide or change these dates later but you must give your employer 28 days notice of the new date.
+payStartDateWeek2.p1.paternityFromBirth = Your leave can be taken within 52 weeks of the child’s birth. You can provide or change these dates later but you should give your employer 28 days notice of the new date.
+payStartDateWeek2.p1.paternityFromUkAdoption = Your leave can be taken within 52 weeks of the child being placed. You can provide or change these dates later but you should give your employer 28 days notice of the new date.
+payStartDateWeek2.p1.paternityFromAdoptionFromAbroad = Your leave can be taken within 52 weeks of the child entering the UK. You can provide or change these dates later but you should give your employer 28 days notice of the new date.
 payStartDateWeek2.hint = For example, 18 6 2007.
 payStartDateWeek2.checkYourAnswersLabel = What is the start date of your second week of leave?
 payStartDateWeek2.error.required.two = The start date of your second week of leave must include {0} and {1}

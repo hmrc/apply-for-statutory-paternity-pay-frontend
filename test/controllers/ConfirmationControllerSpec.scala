@@ -41,11 +41,13 @@ class ConfirmationControllerSpec extends SpecBase with MockitoSugar with ModelGe
     "must return OK and the correct view for a GET" - {
 
       "for paternity leave pre-April 24" in {
+        val birthDate = LocalDate.of(2024, 3, 31)
+
         val answers =
           emptyUserAnswers
             .set(CountryOfResidencePage, CountryOfResidence.England).success.value
-            .set(BabyDateOfBirthPage, LocalDate.now).success.value
-            .set(BabyDueDatePage, LocalDate.now).success.value
+            .set(BabyDateOfBirthPage, birthDate).success.value
+            .set(BabyDueDatePage, birthDate).success.value
             .set(BabyHasBeenBornPage, true).success.value
             .set(IsAdoptingOrParentalOrderPage, false).success.value
             .set(IsBiologicalFatherPage, true).success.value
@@ -54,7 +56,7 @@ class ConfirmationControllerSpec extends SpecBase with MockitoSugar with ModelGe
             .set(NamePage, Name("first", "last")).success.value
             .set(NinoPage, arbitrary[Nino].sample.value).success.value
             .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
-            .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
+            .set(PayStartDateGbPreApril24OrNiPage, birthDate).success.value
             .set(WillHaveCaringResponsibilityPage, true).success.value
             .set(WillTakeTimeToCareForChildPage, true).success.value
             .set(WillTakeTimeToSupportPartnerPage, true).success.value
@@ -78,7 +80,7 @@ class ConfirmationControllerSpec extends SpecBase with MockitoSugar with ModelGe
           emptyUserAnswers
             .set(CountryOfResidencePage, CountryOfResidence.England).success.value
             .set(BabyDateOfBirthPage, LocalDate.now).success.value
-            .set(BabyDueDatePage, LocalDate.of(2024, 4, 7)).success.value
+            .set(BabyDueDatePage, LocalDate.now).success.value
             .set(BabyHasBeenBornPage, false).success.value
             .set(IsAdoptingOrParentalOrderPage, false).success.value
             .set(IsBiologicalFatherPage, true).success.value

@@ -19,7 +19,7 @@ package controllers.actions
 import base.SpecBase
 import generators.ModelGenerators
 import models.requests.DataRequest
-import models.{CountryOfResidence, Name, NormalMode, PaternityLeaveLengthGbPreApril24OrNi}
+import models.{CountryOfResidence, Name, NormalMode, PaternityLeaveLengthGbPostApril24}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.concurrent.ScalaFutures
 import pages._
@@ -56,8 +56,8 @@ class JourneyModelFilterSpec extends SpecBase with ScalaFutures with ModelGenera
           .set(IsInQualifyingRelationshipPage, true).success.value
           .set(NamePage, Name("first", "last")).success.value
           .set(NinoPage, arbitrary[Nino].sample.value).success.value
-          .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
-          .set(PayStartDateGbPreApril24OrNiPage, LocalDate.now).success.value
+          .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
+          .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
           .set(WillHaveCaringResponsibilityPage, true).success.value
           .set(WillTakeTimeToCareForChildPage, true).success.value
           .set(WillTakeTimeToSupportPartnerPage, true).success.value

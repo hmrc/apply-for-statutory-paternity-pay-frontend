@@ -40,10 +40,8 @@ class PayStartDateServiceSpec
     with Generators {
 
   private val today        = LocalDate.now
-  private val fixedInstant = today.atStartOfDay(ZoneId.systemDefault).toInstant
-  private val clock        = Clock.fixed(fixedInstant, ZoneId.systemDefault)
 
-  private val service = new PayStartDateService(clock)
+  private val service = new PayStartDateService()
 
   ".gbPreApril24OrNiDates" - {
 
@@ -54,7 +52,7 @@ class PayStartDateServiceSpec
 
       "and the user is taking one week" - {
 
-        "must give limits of today to 7 weeks after the DOB" in {
+        "must give limits of DOB to 7 weeks after the DOB" in {
 
           forAll(datesBetween(lowDate, highDate)) { date =>
             val answers =
@@ -66,14 +64,14 @@ class PayStartDateServiceSpec
 
             val result = service.gbPreApril24OrNiDates(answers).value
 
-            result mustEqual PayStartDateLimits(today, date.plusWeeks(7))
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(7))
           }
         }
       }
 
       "and the user is taking two weeks" - {
 
-        "must give limits of today to 6 weeks after the DOB" in {
+        "must give limits of DOB to 6 weeks after the DOB" in {
 
           forAll(datesBetween(lowDate, highDate)) { date =>
             val answers =
@@ -85,7 +83,7 @@ class PayStartDateServiceSpec
 
             val result = service.gbPreApril24OrNiDates(answers).value
 
-            result mustEqual PayStartDateLimits(today, date.plusWeeks(6))
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(6))
           }
         }
       }
@@ -136,7 +134,7 @@ class PayStartDateServiceSpec
 
       "and the user is taking one week" - {
 
-        "must give limits of today to 7 weeks after the DOB" in {
+        "must give limits of DOB to 7 weeks after the DOB" in {
 
           forAll(datesBetween(lowDate, highDate)) { date =>
             val answers =
@@ -149,14 +147,14 @@ class PayStartDateServiceSpec
 
             val result = service.gbPreApril24OrNiDates(answers).value
 
-            result mustEqual PayStartDateLimits(today, date.plusWeeks(7))
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(7))
           }
         }
       }
 
       "and the user is taking two weeks" - {
 
-        "must give limits of today to 6 weeks after the DOB" in {
+        "must give limits of DOB to 6 weeks after the DOB" in {
 
           forAll(datesBetween(lowDate, highDate)) { date =>
             val answers =
@@ -169,7 +167,7 @@ class PayStartDateServiceSpec
 
             val result = service.gbPreApril24OrNiDates(answers).value
 
-            result mustEqual PayStartDateLimits(today, date.plusWeeks(6))
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(6))
           }
         }
       }
@@ -222,7 +220,7 @@ class PayStartDateServiceSpec
 
       "and the user is taking one week" - {
 
-        "must give limits oftoday to the Sunday after 7 weeks after the placement date" in {
+        "must give limits of placement date to the Sunday after 7 weeks after the placement date" in {
 
           forAll(datesBetween(lowDate, highDate), Gen.oneOf(Adopting, SupportingAdoption)) { case (date, relationship) =>
             val answers =
@@ -236,14 +234,14 @@ class PayStartDateServiceSpec
 
             val result = service.gbPreApril24OrNiDates(answers).value
 
-            result mustEqual PayStartDateLimits(today, date.plusWeeks(7).`with`(next(SUNDAY)))
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(7).`with`(next(SUNDAY)))
           }
         }
       }
 
       "and the user is taking two weeks" - {
 
-        "must give limits of today to the Sunday after 6 weeks after the placement date" in {
+        "must give limits of placement date to the Sunday after 6 weeks after the placement date" in {
 
           forAll(datesBetween(lowDate, highDate), Gen.oneOf(Adopting, SupportingAdoption)) { case (date, relationship) =>
             val answers =
@@ -257,7 +255,7 @@ class PayStartDateServiceSpec
 
             val result = service.gbPreApril24OrNiDates(answers).value
 
-            result mustEqual PayStartDateLimits(today, date.plusWeeks(6).`with`(next(SUNDAY)))
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(6).`with`(next(SUNDAY)))
           }
         }
       }
@@ -312,7 +310,7 @@ class PayStartDateServiceSpec
 
       "and the user is taking one week" - {
 
-        "must give limits of today to the Sunday after 7 weeks after the entry date" in {
+        "must give limits of entry date to the Sunday after 7 weeks after the entry date" in {
 
           forAll(datesBetween(lowDate, highDate), Gen.oneOf(Adopting, SupportingAdoption)) { case (date, relationship) =>
             val answers =
@@ -326,14 +324,14 @@ class PayStartDateServiceSpec
 
             val result = service.gbPreApril24OrNiDates(answers).value
 
-            result mustEqual PayStartDateLimits(today, date.plusWeeks(7).`with`(next(SUNDAY)))
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(7).`with`(next(SUNDAY)))
           }
         }
       }
 
       "and the user is taking two weeks" - {
 
-        "must give limits of today to the Sunday after 6 weeks after the entry date" in {
+        "must give limits of entry date to the Sunday after 6 weeks after the entry date" in {
 
           forAll(datesBetween(lowDate, highDate), Gen.oneOf(Adopting, SupportingAdoption)) { case (date, relationship) =>
             val answers =
@@ -347,7 +345,7 @@ class PayStartDateServiceSpec
 
             val result = service.gbPreApril24OrNiDates(answers).value
 
-            result mustEqual PayStartDateLimits(today, date.plusWeeks(6).`with`(next(SUNDAY)))
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(6).`with`(next(SUNDAY)))
           }
         }
       }
@@ -408,7 +406,7 @@ class PayStartDateServiceSpec
 
       "and the user is taking one week" - {
 
-        "must give limits of today to 51 weeks after the DOB" in {
+        "must give limits of DOB to 51 weeks after the DOB" in {
 
           forAll(datesBetween(lowDate, highDate)) { date =>
             val answers =
@@ -420,14 +418,14 @@ class PayStartDateServiceSpec
 
             val result = service.gbPostApril24Dates(answers).value
 
-            result mustEqual PayStartDateLimits(today, date.plusWeeks(51))
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(51))
           }
         }
       }
 
       "and the user is taking two weeks" - {
 
-        "must give limits of today to 50 weeks after the DOB" in {
+        "must give limits of DOB to 50 weeks after the DOB" in {
 
           forAll(datesBetween(lowDate, highDate)) { date =>
             val answers =
@@ -439,7 +437,7 @@ class PayStartDateServiceSpec
 
             val result = service.gbPostApril24Dates(answers).value
 
-            result mustEqual PayStartDateLimits(today, date.plusWeeks(50))
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(50))
           }
         }
       }
@@ -490,7 +488,7 @@ class PayStartDateServiceSpec
 
       "and the user is taking one week" - {
 
-        "must give limits of today to 51 weeks after the DOB" in {
+        "must give limits of DOB to 51 weeks after the DOB" in {
 
           forAll(datesBetween(lowDate, highDate)) { date =>
             val answers =
@@ -503,14 +501,14 @@ class PayStartDateServiceSpec
 
             val result = service.gbPostApril24Dates(answers).value
 
-            result mustEqual PayStartDateLimits(today, date.plusWeeks(51))
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(51))
           }
         }
       }
 
       "and the user is taking two weeks" - {
 
-        "must give limits of today to 50 weeks after the DOB" in {
+        "must give limits of DOB to 50 weeks after the DOB" in {
 
           forAll(datesBetween(lowDate, highDate)) { date =>
             val answers =
@@ -523,7 +521,7 @@ class PayStartDateServiceSpec
 
             val result = service.gbPostApril24Dates(answers).value
 
-            result mustEqual PayStartDateLimits(today, date.plusWeeks(50))
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(50))
           }
         }
       }
@@ -576,7 +574,7 @@ class PayStartDateServiceSpec
 
       "and the user is taking one week" - {
 
-        "must give limits oftoday to the Sunday after 51 weeks after the placement date" in {
+        "must give limits of placement date to the Sunday after 51 weeks after the placement date" in {
 
           forAll(datesBetween(lowDate, highDate), Gen.oneOf(Adopting, SupportingAdoption)) { case (date, relationship) =>
             val answers =
@@ -590,14 +588,14 @@ class PayStartDateServiceSpec
 
             val result = service.gbPostApril24Dates(answers).value
 
-            result mustEqual PayStartDateLimits(today, date.plusWeeks(51).`with`(next(SUNDAY)))
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(51).`with`(next(SUNDAY)))
           }
         }
       }
 
       "and the user is taking two weeks" - {
 
-        "must give limits of today to the Sunday after 50 weeks after the placement date" in {
+        "must give limits of placement date to the Sunday after 50 weeks after the placement date" in {
 
           forAll(datesBetween(lowDate, highDate), Gen.oneOf(Adopting, SupportingAdoption)) { case (date, relationship) =>
             val answers =
@@ -611,7 +609,7 @@ class PayStartDateServiceSpec
 
             val result = service.gbPostApril24Dates(answers).value
 
-            result mustEqual PayStartDateLimits(today, date.plusWeeks(50).`with`(next(SUNDAY)))
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(50).`with`(next(SUNDAY)))
           }
         }
       }
@@ -666,7 +664,7 @@ class PayStartDateServiceSpec
 
       "and the user is taking one week" - {
 
-        "must give limits of today to the Sunday after 51 weeks after the entry date" in {
+        "must give limits of entry date to the Sunday after 51 weeks after the entry date" in {
 
           forAll(datesBetween(lowDate, highDate), Gen.oneOf(Adopting, SupportingAdoption)) { case (date, relationship) =>
             val answers =
@@ -680,14 +678,14 @@ class PayStartDateServiceSpec
 
             val result = service.gbPostApril24Dates(answers).value
 
-            result mustEqual PayStartDateLimits(today, date.plusWeeks(51).`with`(next(SUNDAY)))
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(51).`with`(next(SUNDAY)))
           }
         }
       }
 
       "and the user is taking two weeks" - {
 
-        "must give limits of today to the Sunday after 50 weeks after the entry date" in {
+        "must give limits of entry date to the Sunday after 50 weeks after the entry date" in {
 
           forAll(datesBetween(lowDate, highDate), Gen.oneOf(Adopting, SupportingAdoption)) { case (date, relationship) =>
             val answers =
@@ -701,7 +699,7 @@ class PayStartDateServiceSpec
 
             val result = service.gbPostApril24Dates(answers).value
 
-            result mustEqual PayStartDateLimits(today, date.plusWeeks(50).`with`(next(SUNDAY)))
+            result mustEqual PayStartDateLimits(date, date.plusWeeks(50).`with`(next(SUNDAY)))
           }
         }
       }
