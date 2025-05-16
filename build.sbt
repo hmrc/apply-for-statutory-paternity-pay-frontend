@@ -7,7 +7,7 @@ import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 lazy val appName: String = "apply-for-statutory-paternity-pay-frontend"
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.12"
+ThisBuild / scalaVersion := "2.13.16"
 
 lazy val microservice = (project in file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
