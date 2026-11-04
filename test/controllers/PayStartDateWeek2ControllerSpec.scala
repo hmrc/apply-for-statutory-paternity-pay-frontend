@@ -55,10 +55,10 @@ class PayStartDateWeek2ControllerSpec extends SpecBase with MockitoSugar {
 
   val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
 
-  def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
+  def getRequest: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, payStartDateWeek2Route)
 
-  def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
+  def postRequest: FakeRequest[AnyContentAsFormUrlEncoded] =
     FakeRequest(POST, payStartDateWeek2Route)
       .withFormUrlEncodedBody(
         "value.day"   -> validAnswer.value.getDayOfMonth.toString,

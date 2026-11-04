@@ -86,7 +86,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
     "must pass the answer into the provided block when the answer exists in user answers" in {
 
-      val answers = emptyUserAnswers.set(TestPage, 1).success.value
+      val answers: UserAnswers = emptyUserAnswers.set(TestPage, 1).success.value
       implicit val request = buildRequest(answers)
 
       val controller = new TestController()
@@ -99,8 +99,9 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
       implicit val request = buildRequest(emptyUserAnswers)
 
       val controller = new TestController()
+      val result = controller.get(TestPage)
 
-      controller.get(TestPage) mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad())
+      result mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad(None))
     }
   }
 
@@ -108,7 +109,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
     "must pass the answer into the provided block when the answer exists in user answers" in {
 
-      val answers = emptyUserAnswers.set(TestPage, 1).success.value
+      val answers: UserAnswers = emptyUserAnswers.set(TestPage, 1).success.value
       implicit val request = buildRequest(answers)
 
       val controller = new TestController()
@@ -122,7 +123,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
       val controller = new TestController()
 
-      controller.getAsync(TestPage).futureValue mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad())
+      controller.getAsync(TestPage).futureValue mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad(None))
     }
   }
 
@@ -130,7 +131,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
     "must pass BirthChild to the provided block when the answer to IsAdopting is false" in {
 
-      val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
+      val answers: UserAnswers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
       implicit val request = buildRequest(answers)
 
       val controller = new TestController()
@@ -143,7 +144,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
       forAll(Gen.oneOf(RelationshipToChild.values)) {
         reason =>
 
-          val answers =
+          val answers: UserAnswers =
             emptyUserAnswers
               .set(IsAdoptingOrParentalOrderPage, true).success.value
               .set(ReasonForRequestingPage, reason).success.value
@@ -162,17 +163,17 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
       val controller = new TestController()
 
-      controller.getRelationship mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad())
+      controller.getRelationship mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad(None))
     }
 
     "must redirect to journey recovery when IsAdopting is true and Reason has not been answered" in {
 
-      val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, true).success.value
+      val answers: UserAnswers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, true).success.value
       implicit val request = buildRequest(answers)
 
       val controller = new TestController()
 
-      controller.getRelationship mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad())
+      controller.getRelationship mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad(None))
     }
   }
 
@@ -180,7 +181,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
     "must pass BirthChild to the provided block when the answer to IsAdopting is false" in {
 
-      val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
+      val answers: UserAnswers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
       implicit val request = buildRequest(answers)
 
       val controller = new TestController()
@@ -193,7 +194,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
       forAll(Gen.oneOf(RelationshipToChild.values)) {
         reason =>
 
-          val answers =
+          val answers: UserAnswers =
             emptyUserAnswers
               .set(IsAdoptingOrParentalOrderPage, true).success.value
               .set(ReasonForRequestingPage, reason).success.value
@@ -212,17 +213,17 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
       val controller = new TestController()
 
-      controller.getRelationshipAsync.futureValue mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad())
+      controller.getRelationshipAsync.futureValue mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad(None))
     }
 
     "must redirect to journey recovery when IsAdopting is true and Reason has not been answered" in {
 
-      val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, true).success.value
+      val answers: UserAnswers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, true).success.value
       implicit val request = buildRequest(answers)
 
       val controller = new TestController()
 
-      controller.getRelationshipAsync.futureValue mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad())
+      controller.getRelationshipAsync.futureValue mustEqual Redirect(routes.JourneyRecoveryController.onPageLoad(None))
     }
   }
 
@@ -230,7 +231,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
     "must return Parental From Birth Child when the user is not adopting or a parental order parent" in {
 
-      val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
+      val answers: UserAnswers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
       implicit val request = buildRequest(answers)
 
       val controller = new TestController()
@@ -240,7 +241,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
     "must return Parental From Birth Child when the user is a parental order child" in {
 
-      val answers =
+      val answers: UserAnswers =
         emptyUserAnswers
           .set(IsAdoptingOrParentalOrderPage, false).success.value
           .set(IsAdoptingFromAbroadPage, false).success.value
@@ -256,7 +257,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
     "must return Parental From Uk Adoption when the user is adopting or supporting adoption from a child in the UK" in {
 
       val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
-      val answers =
+      val answers: UserAnswers =
         emptyUserAnswers
           .set(IsAdoptingOrParentalOrderPage, true).success.value
           .set(IsAdoptingFromAbroadPage, false).success.value
@@ -278,7 +279,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
           .set(IsAdoptingFromAbroadPage, true).success.value
           .set(ReasonForRequestingPage, relationship).success.value
 
-      implicit val request = buildRequest(answers)
+      implicit val request: DataRequest[AnyContent] = buildRequest(answers)
 
       val controller = new TestController()
 
@@ -290,7 +291,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
     "must return Parental From Birth Child when the user is not adopting or a parental order parent" in {
 
-      val answers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
+      val answers: UserAnswers = emptyUserAnswers.set(IsAdoptingOrParentalOrderPage, false).success.value
       implicit val request = buildRequest(answers)
 
       val controller = new TestController()
@@ -300,7 +301,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
     "must return Parental From Birth Child when the user is a parental order child" in {
 
-      val answers =
+      val answers: UserAnswers =
         emptyUserAnswers
           .set(IsAdoptingOrParentalOrderPage, false).success.value
           .set(IsAdoptingFromAbroadPage, false).success.value
@@ -316,7 +317,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
     "must return Parental From Uk Adoption when the user is adopting or supporting adoption from a child in the UK" in {
 
       val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
-      val answers =
+      val answers: UserAnswers =
         emptyUserAnswers
           .set(IsAdoptingOrParentalOrderPage, true).success.value
           .set(IsAdoptingFromAbroadPage, false).success.value
@@ -332,7 +333,7 @@ class AnswerExtractorSpec extends SpecBase with ScalaCheckPropertyChecks {
     "must return Parental From Adoption From Abroad when the user is adopting or supporting adoption from abroad" in {
 
       val relationship = Gen.oneOf(RelationshipToChild.Adopting, RelationshipToChild.SupportingAdoption).sample.value
-      val answers =
+      val answers: UserAnswers =
         emptyUserAnswers
           .set(IsAdoptingOrParentalOrderPage, true).success.value
           .set(IsAdoptingFromAbroadPage, true).success.value

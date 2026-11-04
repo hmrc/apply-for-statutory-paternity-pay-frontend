@@ -31,6 +31,6 @@ class NameFormProvider @Inject() extends Mappings {
         .verifying(maxLength(100, "name.error.firstName.length")),
       "lastName" -> text("name.error.lastName.required")
         .verifying(maxLength(100, "name.error.lastName.length"))
-    )(Name.apply)(Name.unapply)
+    )(Name.apply)(o => Some(Tuple.fromProductTyped(o)))
    )
  }

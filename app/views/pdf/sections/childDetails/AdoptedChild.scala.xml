@@ -8,7 +8,7 @@
 @(model: JourneyModel.AdoptedUkChild)(implicit request: RequestHeader, messages: Messages)
 
 @dateTimeFormat(date: LocalDate) = {
-    @Formats.dateTimeFormat()(messages.lang).format(date)
+    @Formats.dateTimeFormat(messages.lang).format(date)
 }
 
 <fo:block-container margin-top="4mm">

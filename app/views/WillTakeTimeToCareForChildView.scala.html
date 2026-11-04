@@ -26,7 +26,7 @@
 
 @layout(pageTitle = title(form, messages("willTakeTimeToCareForChild.title"))) {
 
-    @formHelper(action = routes.WillTakeTimeToCareForChildController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.WillTakeTimeToCareForChildController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

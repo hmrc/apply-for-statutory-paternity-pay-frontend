@@ -45,7 +45,7 @@ class SessionRepository @Inject()(
         Indexes.ascending("lastUpdated"),
         IndexOptions()
           .name("lastUpdatedIdx")
-          .expireAfter(appConfig.cacheTtl, TimeUnit.SECONDS)
+          .expireAfter(appConfig.cacheTtl.toLong, TimeUnit.SECONDS)
       )
     )
   ) {
@@ -60,7 +60,7 @@ class SessionRepository @Inject()(
         filter = byId(id),
         update = Updates.set("lastUpdated", Instant.now(clock)),
       )
-      .toFuture
+      .toFuture()
       .map(_ => true)
 
   def get(id: String): Future[Option[UserAnswers]] =
@@ -81,13 +81,13 @@ class SessionRepository @Inject()(
         replacement = updatedAnswers,
         options     = ReplaceOptions().upsert(true)
       )
-      .toFuture
+      .toFuture()
       .map(_ => true)
   }
 
   def clear(id: String): Future[Boolean] =
     collection
       .deleteOne(byId(id))
-      .toFuture
+      .toFuture()
       .map(_ => true)
 }

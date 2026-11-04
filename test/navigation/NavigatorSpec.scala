@@ -532,13 +532,13 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
         "to CYA when the answer is Unsure" in {
 
           val answers = emptyUserAnswers.set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.Unsure).success.value
-          navigator.nextPage(PaternityLeaveLengthGbPostApril24Page, NormalMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(PaternityLeaveLengthGbPostApril24Page, NormalMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
         }
       }
 
       "must go from Pay Start Date GB Post April 24 to CYA" in {
 
-        navigator.nextPage(PayStartDateGbPostApril24Page, NormalMode, emptyUserAnswers) mustEqual routes.CheckYourAnswersController.onPageLoad
+        navigator.nextPage(PayStartDateGbPostApril24Page, NormalMode, emptyUserAnswers) mustEqual routes.CheckYourAnswersController.onPageLoad()
       }
 
       "must go from Leave Taken Together or Separately" - {
@@ -563,12 +563,12 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
       "must go from Pay Start Date Week 2 to CYA" in {
 
-        navigator.nextPage(PayStartDateWeek2Page, NormalMode, emptyUserAnswers) mustEqual routes.CheckYourAnswersController.onPageLoad
+        navigator.nextPage(PayStartDateWeek2Page, NormalMode, emptyUserAnswers) mustEqual routes.CheckYourAnswersController.onPageLoad()
       }
 
       "must go from Pay Start Date GB Pre April 24 or NI to CYA" in {
 
-        navigator.nextPage(PayStartDateGbPreApril24OrNiPage, NormalMode, emptyUserAnswers) mustEqual routes.CheckYourAnswersController.onPageLoad
+        navigator.nextPage(PayStartDateGbPreApril24OrNiPage, NormalMode, emptyUserAnswers) mustEqual routes.CheckYourAnswersController.onPageLoad()
       }
     }
 
@@ -577,7 +577,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
       "must go from a page that doesn't exist in the edit route map to CheckYourAnswers" in {
 
         case object UnknownPage extends Page
-        navigator.nextPage(UnknownPage, CheckMode, UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad
+        navigator.nextPage(UnknownPage, CheckMode, UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad()
       }
 
       "must go from Is Adopting Or Parental Order" - {
@@ -595,7 +595,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
               .set(IsAdoptingOrParentalOrderPage, true).success.value
               .set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
 
-          navigator.nextPage(IsAdoptingOrParentalOrderPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(IsAdoptingOrParentalOrderPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to Check Answers when the answer is no and Is Biological Father has been answered" in {
@@ -605,7 +605,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
               .set(IsAdoptingOrParentalOrderPage, false).success.value
               .set(IsBiologicalFatherPage, true).success.value
 
-          navigator.nextPage(IsAdoptingOrParentalOrderPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(IsAdoptingOrParentalOrderPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to Is Biological Father when the answer is no and that question has not been answered" in {
@@ -620,13 +620,13 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
         "to Cannot Apply if the answer is yes" in {
 
           val answers = emptyUserAnswers.set(IsApplyingForStatutoryAdoptionPayPage, true).success.value
-          navigator.nextPage(IsApplyingForStatutoryAdoptionPayPage, CheckMode, answers) mustEqual routes.CannotApplyController.onPageLoad
+          navigator.nextPage(IsApplyingForStatutoryAdoptionPayPage, CheckMode, answers) mustEqual routes.CannotApplyController.onPageLoad()
         }
 
         "to Check Your Answers if the answer is no" in {
 
           val answers = emptyUserAnswers.set(IsApplyingForStatutoryAdoptionPayPage, false).success.value
-          navigator.nextPage(IsApplyingForStatutoryAdoptionPayPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(IsApplyingForStatutoryAdoptionPayPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
         }
       }
 
@@ -635,7 +635,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
         "to CYA when Reason for Requesting has been answered" in {
 
           val answers = emptyUserAnswers.set(ReasonForRequestingPage, RelationshipToChild.Adopting).success.value
-          navigator.nextPage(IsAdoptingFromAbroadPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(IsAdoptingFromAbroadPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to Reason for Requesting in Normal Mode when that question has not been answered" in {
@@ -649,7 +649,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
         "to CYA is Is in Qualifying Relationship has been answered" in {
 
           val answers = emptyUserAnswers.set(IsInQualifyingRelationshipPage, true).success.value
-          navigator.nextPage(ReasonForRequestingPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(ReasonForRequestingPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to Is In Qualifying Relationship if that question had not been answered" in {
@@ -665,7 +665,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
           "to Check Answers" in {
 
             val answers = emptyUserAnswers.set(IsBiologicalFatherPage, true).success.value
-            navigator.nextPage(IsBiologicalFatherPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(IsBiologicalFatherPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
         }
 
@@ -678,7 +678,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                 .set(IsBiologicalFatherPage, false).success.value
                 .set(IsInQualifyingRelationshipPage, true).success.value
 
-            navigator.nextPage(IsBiologicalFatherPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(IsBiologicalFatherPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
 
           "to Is In Qualifying Relationship when that has not already been answered" in {
@@ -696,7 +696,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
           "to Check Answers" in {
 
             val answers = emptyUserAnswers.set(IsInQualifyingRelationshipPage, true).success.value
-            navigator.nextPage(IsInQualifyingRelationshipPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(IsInQualifyingRelationshipPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
         }
 
@@ -709,7 +709,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                 .set(IsInQualifyingRelationshipPage, false).success.value
                 .set(IsCohabitingPage, true).success.value
 
-            navigator.nextPage(IsInQualifyingRelationshipPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(IsInQualifyingRelationshipPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
 
           "to Is Cohabiting when that has not already been answered" in {
@@ -725,7 +725,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
         "to Check Answers when the answer is yes" in {
 
           val answers = emptyUserAnswers.set(IsCohabitingPage, true).success.value
-          navigator.nextPage(IsCohabitingPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(IsCohabitingPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to Cannot Apply when the answer is no" in {
@@ -740,7 +740,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
         "to Check Answers when the answer is yes" in {
 
           val answers = emptyUserAnswers.set(WillHaveCaringResponsibilityPage, true).success.value
-          navigator.nextPage(WillHaveCaringResponsibilityPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(WillHaveCaringResponsibilityPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to Cannot Apply when the answer is no" in {
@@ -757,7 +757,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
           "to Check Answers" in {
 
             val answers = emptyUserAnswers.set(WillTakeTimeToCareForChildPage, true).success.value
-            navigator.nextPage(WillTakeTimeToCareForChildPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(WillTakeTimeToCareForChildPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
         }
 
@@ -770,7 +770,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                 .set(WillTakeTimeToCareForChildPage, false).success.value
                 .set(WillTakeTimeToSupportPartnerPage, true).success.value
 
-            navigator.nextPage(WillTakeTimeToCareForChildPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(WillTakeTimeToCareForChildPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
 
           "to Will Take Time to Support Mother when that question has not been answered" in {
@@ -786,7 +786,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
         "to Check Answers when the answer is yes" in {
 
           val answers = emptyUserAnswers.set(WillTakeTimeToSupportPartnerPage, true).success.value
-          navigator.nextPage(WillTakeTimeToSupportPartnerPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(WillTakeTimeToSupportPartnerPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to Cannot Apply when the answer is no" in {
@@ -807,7 +807,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                 .set(IsAdoptingOrParentalOrderPage, false).success.value
                 .set(BabyHasBeenBornPage, true).success.value
 
-            navigator.nextPage(NinoPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(NinoPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
 
           "to Has the Baby Been Born when it has not been answered" in {
@@ -831,7 +831,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                 .set(ReasonForRequestingPage, reason).success.value
                 .set(DateChildWasMatchedPage, LocalDate.now).success.value
 
-            navigator.nextPage(NinoPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(NinoPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
 
           "to Date Child Matched when it has not been answered" in {
@@ -859,7 +859,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                 .set(ReasonForRequestingPage, reason).success.value
                 .set(DateOfAdoptionNotificationPage, LocalDate.now).success.value
 
-            navigator.nextPage(NinoPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(NinoPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
 
           "to Date of Adoption Notification when it has not been answered" in {
@@ -885,7 +885,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                 .set(ReasonForRequestingPage, RelationshipToChild.ParentalOrder).success.value
                 .set(BabyHasBeenBornPage, true).success.value
 
-            navigator.nextPage(NinoPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(NinoPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
 
           "to Has the Baby Been Born when it has not been answered" in {
@@ -910,7 +910,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
             val answers = emptyUserAnswers
               .set(BabyHasBeenBornPage, true).success.value
               .set(BabyDateOfBirthPage, LocalDate.now).success.value
-            navigator.nextPage(BabyHasBeenBornPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(BabyHasBeenBornPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
 
           "to Baby Date of Birth when it has not been answered" in {
@@ -925,7 +925,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
           "to Check Answers" in {
 
             val answers = emptyUserAnswers.set(BabyHasBeenBornPage, false).success.value
-            navigator.nextPage(BabyHasBeenBornPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(BabyHasBeenBornPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
         }
       }
@@ -941,7 +941,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                 .set(ChildHasEnteredUkPage, true).success.value
                 .set(DateChildEnteredUkPage, LocalDate.now).success.value
 
-            navigator.nextPage(ChildHasEnteredUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(ChildHasEnteredUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
 
           "to Date Child Entered UK when it has not been answered" in {
@@ -961,7 +961,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                 .set(ChildHasEnteredUkPage, false).success.value
                 .set(DateChildExpectedToEnterUkPage, LocalDate.now).success.value
 
-            navigator.nextPage(ChildHasEnteredUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(ChildHasEnteredUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
 
           "to Date Child Expected to Enter UK when it has not been answered" in {
@@ -986,7 +986,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                   .set(DateChildEnteredUkPage, date).success.value
                   .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
 
-              navigator.nextPage(DateChildEnteredUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+              navigator.nextPage(DateChildEnteredUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
             }
           }
 
@@ -1000,7 +1000,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                   .set(DateChildEnteredUkPage, date).success.value
                   .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
 
-              navigator.nextPage(DateChildEnteredUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+              navigator.nextPage(DateChildEnteredUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
             }
           }
 
@@ -1016,7 +1016,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                   .set(DateChildEnteredUkPage, date).success.value
                   .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
 
-              navigator.nextPage(DateChildEnteredUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+              navigator.nextPage(DateChildEnteredUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
             }
           }
         }
@@ -1079,7 +1079,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                   .set(DateChildExpectedToEnterUkPage, date).success.value
                   .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
 
-              navigator.nextPage(DateChildExpectedToEnterUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+              navigator.nextPage(DateChildExpectedToEnterUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
             }
           }
 
@@ -1093,7 +1093,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                   .set(DateChildExpectedToEnterUkPage, date).success.value
                   .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
 
-              navigator.nextPage(DateChildExpectedToEnterUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+              navigator.nextPage(DateChildExpectedToEnterUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
             }
           }
 
@@ -1109,7 +1109,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                   .set(DateChildExpectedToEnterUkPage, date).success.value
                   .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
 
-              navigator.nextPage(DateChildExpectedToEnterUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+              navigator.nextPage(DateChildExpectedToEnterUkPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
             }
           }
         }
@@ -1170,7 +1170,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                 .set(ChildHasBeenPlacedPage, true).success.value
                 .set(ChildPlacementDatePage, LocalDate.now).success.value
 
-            navigator.nextPage(ChildHasBeenPlacedPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(ChildHasBeenPlacedPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
 
           "to Date Child Placement Date when it has not been answered" in {
@@ -1190,7 +1190,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                 .set(ChildHasBeenPlacedPage, false).success.value
                 .set(ChildExpectedPlacementDatePage, LocalDate.now).success.value
 
-            navigator.nextPage(ChildHasBeenPlacedPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(ChildHasBeenPlacedPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
 
           "to Child Expected Placement Date when it has not been answered" in {
@@ -1206,7 +1206,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
         "to Check Answers when it has not been answered" in {
 
-          navigator.nextPage(BabyDateOfBirthPage, CheckMode, emptyUserAnswers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(BabyDateOfBirthPage, CheckMode, emptyUserAnswers) mustEqual routes.CheckYourAnswersController.onPageLoad()
         }
       }
 
@@ -1223,7 +1223,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                   .set(BabyDueDatePage, date).success.value
                   .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
 
-              navigator.nextPage(BabyDueDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+              navigator.nextPage(BabyDueDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
             }
           }
 
@@ -1237,7 +1237,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                   .set(BabyDueDatePage, date).success.value
                   .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
 
-              navigator.nextPage(BabyDueDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+              navigator.nextPage(BabyDueDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
             }
           }
 
@@ -1253,7 +1253,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                   .set(BabyDueDatePage, date).success.value
                   .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
 
-              navigator.nextPage(BabyDueDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+              navigator.nextPage(BabyDueDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
             }
           }
         }
@@ -1316,7 +1316,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                   .set(ChildPlacementDatePage, date).success.value
                   .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
 
-              navigator.nextPage(ChildPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+              navigator.nextPage(ChildPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
             }
           }
 
@@ -1330,7 +1330,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                   .set(ChildPlacementDatePage, date).success.value
                   .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
 
-              navigator.nextPage(ChildPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+              navigator.nextPage(ChildPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
             }
           }
 
@@ -1346,7 +1346,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                   .set(ChildPlacementDatePage, date).success.value
                   .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
 
-              navigator.nextPage(ChildPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+              navigator.nextPage(ChildPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
             }
           }
         }
@@ -1409,7 +1409,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                   .set(ChildExpectedPlacementDatePage, date).success.value
                   .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
 
-              navigator.nextPage(ChildExpectedPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+              navigator.nextPage(ChildExpectedPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
             }
           }
 
@@ -1423,7 +1423,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                   .set(ChildExpectedPlacementDatePage, date).success.value
                   .set(PaternityLeaveLengthGbPreApril24OrNiPage, PaternityLeaveLengthGbPreApril24OrNi.OneWeek).success.value
 
-              navigator.nextPage(ChildExpectedPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+              navigator.nextPage(ChildExpectedPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
             }
           }
 
@@ -1439,7 +1439,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                   .set(ChildExpectedPlacementDatePage, date).success.value
                   .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
 
-              navigator.nextPage(ChildExpectedPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+              navigator.nextPage(ChildExpectedPlacementDatePage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
             }
           }
         }
@@ -1500,7 +1500,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                 .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.OneWeek).success.value
                 .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
 
-            navigator.nextPage(PaternityLeaveLengthGbPostApril24Page, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(PaternityLeaveLengthGbPostApril24Page, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
 
           "when the answer is Two Weeks and Leave Taken Together or Separately has been answered" in {
@@ -1510,13 +1510,13 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                 .set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.TwoWeeks).success.value
                 .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Separately).success.value
 
-            navigator.nextPage(PaternityLeaveLengthGbPostApril24Page, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(PaternityLeaveLengthGbPostApril24Page, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
 
           "when the answer is Unsure" in {
 
             val answers = emptyUserAnswers.set(PaternityLeaveLengthGbPostApril24Page, PaternityLeaveLengthGbPostApril24.Unsure).success.value
-            navigator.nextPage(PaternityLeaveLengthGbPostApril24Page, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(PaternityLeaveLengthGbPostApril24Page, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
         }
 
@@ -1550,7 +1550,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                 .set(PayStartDateGbPostApril24Page, Some(LocalDate.now)).success.value
                 .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Together).success.value
 
-            navigator.nextPage(LeaveTakenTogetherOrSeparatelyPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(LeaveTakenTogetherOrSeparatelyPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
 
           "when the answer is Separately and Pay Start Date Week 1 has been answered" in {
@@ -1560,7 +1560,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
                 .set(PayStartDateWeek1Page, Some(LocalDate.now)).success.value
                 .set(LeaveTakenTogetherOrSeparatelyPage, LeaveTakenTogetherOrSeparately.Separately).success.value
 
-            navigator.nextPage(LeaveTakenTogetherOrSeparatelyPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+            navigator.nextPage(LeaveTakenTogetherOrSeparatelyPage, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
           }
         }
 
@@ -1593,7 +1593,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
         "to CYA when Pay Start Date Week 2 has been answered" in {
 
           val answers = emptyUserAnswers.set(PayStartDateWeek2Page, Some(LocalDate.now)).success.value
-          navigator.nextPage(PayStartDateWeek1Page, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(PayStartDateWeek1Page, CheckMode, answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
         }
       }
     }

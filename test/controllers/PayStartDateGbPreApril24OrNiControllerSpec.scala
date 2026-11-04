@@ -54,10 +54,10 @@ class PayStartDateGbPreApril24OrNiControllerSpec extends SpecBase with MockitoSu
 
   lazy val payStartDateGbPreApril24OrNiRoute = routes.PayStartDateGbPreApril24OrNiController.onPageLoad(NormalMode).url
 
-  def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
+  def getRequest: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, payStartDateGbPreApril24OrNiRoute)
 
-  def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
+  def postRequest: FakeRequest[AnyContentAsFormUrlEncoded] =
     FakeRequest(POST, payStartDateGbPreApril24OrNiRoute)
       .withFormUrlEncodedBody(
         "value.day"   -> validAnswer.getDayOfMonth.toString,

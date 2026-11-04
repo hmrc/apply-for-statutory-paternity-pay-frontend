@@ -26,7 +26,7 @@
 
 @layout(pageTitle = title(form, messages("isBiologicalFather.title"))) {
 
-    @formHelper(action = routes.IsBiologicalFatherController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.IsBiologicalFatherController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

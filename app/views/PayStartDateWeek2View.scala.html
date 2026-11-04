@@ -27,7 +27,7 @@
 
 @layout(pageTitle = title(form, messages("payStartDateWeek2.title"))) {
 
-    @formHelper(action = routes.PayStartDateWeek2Controller.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.PayStartDateWeek2Controller.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))

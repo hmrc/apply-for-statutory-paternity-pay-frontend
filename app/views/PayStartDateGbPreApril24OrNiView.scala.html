@@ -30,7 +30,7 @@
 @layout(pageTitle = title(form, messages("payStartDateGbPreApril24OrNi.title"))) {
 
     @defining(if(showBabyNotBornHint) ".notBorn" else "") { p1Suffix =>
-        @formHelper(action = routes.PayStartDateGbPreApril24OrNiController.onSubmit(mode), 'autoComplete -> "off") {
+        @formHelper(action = routes.PayStartDateGbPreApril24OrNiController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
             @if(form.errors.nonEmpty) {
                 @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))
@@ -44,8 +44,8 @@
             <p class="govuk-body">
                 @messages(
                     s"payStartDateGbPreApril24OrNi.p1$p1Suffix",
-                    limits.min.format(dateTimeFormat()(messages.lang)),
-                    limits.max.format(dateTimeFormat()(messages.lang))
+                    limits.min.format(dateTimeFormat(messages.lang)),
+                    limits.max.format(dateTimeFormat(messages.lang))
                 )
             </p>
 

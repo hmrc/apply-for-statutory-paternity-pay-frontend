@@ -34,7 +34,7 @@
 
     <p class="govuk-body">
         @messages("confirmation.guidance.p2.1")
-        <a href="@routes.CheckYourAnswersController.onPageLoad" class="govuk-link">@messages("confirmation.guidance.p2.link1.text")</a>
+        <a href="@routes.CheckYourAnswersController.onPageLoad()" class="govuk-link">@messages("confirmation.guidance.p2.link1.text")</a>
         @messages("confirmation.guidance.p2.2")
         <a href="@routes.ConfirmationController.startAgain()" class="govuk-link">@messages("confirmation.guidance.p2.link2.text")</a>.
     </p>
