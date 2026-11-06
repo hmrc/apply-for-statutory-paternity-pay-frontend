@@ -82,6 +82,7 @@
         signOutUrl  = if(showSignOut) Some(controllers.auth.routes.AuthController.signOut().url) else None,
         phaseBanner = Some(betaBanner(appConfig.feedbackUrl)),
         userResearchBanner = if (appConfig.userResearchBannerEnabled) Some(UserResearchBanner(url = appConfig.userResearchBannerUrl)) else None,
+        isWelshTranslationAvailable = appConfig.languageTranslationEnabled
     )),
     beforeContentBlock = Some(beforeContent),
     footerBlock        = Some(hmrcStandardFooter()),
