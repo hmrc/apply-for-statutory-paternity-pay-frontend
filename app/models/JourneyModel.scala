@@ -289,14 +289,14 @@ object JourneyModel {
       case PaternityLeaveLengthGbPostApril24.OneWeek =>
         answers
           .getEither(PayStartDateGbPostApril24Page)
-          .map(start => PaternityLeaveGbPostApril24OneWeek(start))
+          .map(PaternityLeaveGbPostApril24OneWeek.apply)
 
       case PaternityLeaveLengthGbPostApril24.TwoWeeks =>
         answers.getEither(LeaveTakenTogetherOrSeparatelyPage).flatMap {
           case LeaveTakenTogetherOrSeparately.Together =>
             answers
               .getEither(PayStartDateGbPostApril24Page)
-              .map(start => PaternityLeaveGbPostApril24TwoWeeksTogether(start))
+              .map(PaternityLeaveGbPostApril24TwoWeeksTogether.apply)
 
           case LeaveTakenTogetherOrSeparately.Separately =>
             (
