@@ -53,10 +53,10 @@ class DateChildExpectedToEnterUkControllerSpec extends SpecBase with MockitoSuga
 
   override val emptyUserAnswers = UserAnswers(userAnswersId)
 
-  def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
+  def getRequest: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, dateChildExpectedToEnterUkRoute)
 
-  def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
+  def postRequest: FakeRequest[AnyContentAsFormUrlEncoded] =
     FakeRequest(POST, dateChildExpectedToEnterUkRoute)
       .withFormUrlEncodedBody(
         "value.day"   -> validAnswer.getDayOfMonth.toString,

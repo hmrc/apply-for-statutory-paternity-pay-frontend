@@ -43,7 +43,7 @@
         <h2 class="govuk-heading-m">@messages("checkYourAnswers.beforeYouContinue")</h2>
         <p class="govuk-body">@messages("checkYourAnswers.beforeYouContinue.guidance")</p>
 
-        <a id="continue" href="@routes.ConfirmationController.onPageLoad" class="govuk-button" role="button" data-module="govuk-button">
+        <a id="continue" href="@routes.ConfirmationController.onPageLoad()" class="govuk-button" role="button" data-module="govuk-button">
             @messages("checkYourAnswers.acceptAndContinue")
         </a>
     }

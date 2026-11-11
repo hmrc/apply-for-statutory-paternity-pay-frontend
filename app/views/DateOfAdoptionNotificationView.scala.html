@@ -27,7 +27,7 @@
 
 @layout(pageTitle = title(form, messages("dateOfAdoptionNotification.title"))) {
 
-    @formHelper(action = routes.DateOfAdoptionNotificationController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.DateOfAdoptionNotificationController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))

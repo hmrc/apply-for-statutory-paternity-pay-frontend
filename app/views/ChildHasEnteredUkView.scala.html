@@ -26,7 +26,7 @@
 
 @layout(pageTitle = title(form, messages("childHasEnteredUk.title"))) {
 
-    @formHelper(action = routes.ChildHasEnteredUkController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.ChildHasEnteredUkController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

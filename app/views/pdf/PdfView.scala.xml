@@ -28,12 +28,12 @@
 @(model: JourneyModel)(implicit request: RequestHeader, messages: Messages)
 
 @dateTimeFormat(date: LocalDate) = {
-    @Formats.dateTimeFormat()(messages.lang).format(date)
+    @Formats.dateTimeFormat(messages.lang).format(date)
 }
 
 <fo:root xml:lang="@messages.lang.locale.getLanguage" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:fox="http://xmlgraphics.apache.org/fop/extensions" font-family="sans-serif">
 
-    @layout()
+    @layout()()
 
     <fo:declarations>
         <pdf:catalog xmlns:pdf="http://xmlgraphics.apache.org/fop/extensions/pdf">

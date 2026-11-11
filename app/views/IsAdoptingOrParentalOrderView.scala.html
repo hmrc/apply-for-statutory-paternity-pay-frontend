@@ -26,7 +26,7 @@
 
 @layout(pageTitle = title(form, messages("isAdoptingOrParentalOrder.title"))) {
 
-    @formHelper(action = routes.IsAdoptingOrParentalOrderController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.IsAdoptingOrParentalOrderController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

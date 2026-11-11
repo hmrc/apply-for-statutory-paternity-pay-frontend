@@ -27,7 +27,7 @@
 
 @layout(pageTitle = title(form, messages("paternityLeaveLengthGbPreApril24OrNi.title"))) {
 
-    @formHelper(action = routes.PaternityLeaveLengthGbPreApril24OrNiController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.PaternityLeaveLengthGbPreApril24OrNiController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
